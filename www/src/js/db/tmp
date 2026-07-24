@@ -1,0 +1,64 @@
+
+/**
+ * [ingresoUsuarioOk - Funcion callback de success al registrar usuario]
+ * @param  {[object]} tx [Transaccion SQL]
+ * @param  {[object]} r  [Respuesta del SQL con mensajes]
+ */
+function ingresoUsuarioOk(tx,r)
+{
+	localStorage.setItem('id_usuario', r.insertId);
+
+	vista('home');
+}
+
+
+
+/**
+ * [ingresoUsuarioError - Funcion callback de error al registrar usuario]
+ * @param  {[type]} tx [Transaccion SQL]
+ * @param  {[type]} r  [Respuesta del SQL con mensajes]
+ */
+function ingresoUsuarioError(tx,r)
+{
+
+}
+
+function verificarUsuarioOk(tx, response){
+	if (response.rows.length>0) {
+		if (response.rows[0].estado==1) {
+			console.log('entra en def')
+			vista('home');
+		}
+	}
+}
+
+function verificarUsuarioError(tx, r){
+	console.log("entra en ERROR verificar");
+}
+
+/* LOGOUT CALLBACKS */
+function logoutOk(tx, response){
+	if (response.rowsAffected>0) {
+		$('#login').remove();
+		vista('index', 0);
+	}
+}
+
+function logoutError(tx, response){
+}
+/* LOGOUT CALLBACKS */
+
+function actualizarEstado(id_usuario){
+	query('UPDATE usuario SET estado = 1 WHERE id_usuario = ?', [id_usuario], 
+		function (tx, response){
+			if (response.rows.length >= 1) {
+				console.log('Estado de usuario actualizado.');
+			}
+		}, function (tx, response) {
+			console.log('Fallo el cambio de estado del usuario.');
+			console.log(tx);
+			console.log(response);
+		}
+	);
+}
+

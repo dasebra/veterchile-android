@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "153695742123",
+    "project_id": "sdiapp-9880b",
+    "storage_bucket": "sdiapp-9880b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:153695742123:android:cd172cf29c2e354ed56fee",
+        "android_client_info": {
+          "package_name": "com.medichile.sdi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "153695742123-1ruv0vmi32o259v3ik99tfk1ao3928js.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsPBKV3H20SwUjYCNxpZxfmaJdyGDnvt8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "153695742123-1ruv0vmi32o259v3ik99tfk1ao3928js.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

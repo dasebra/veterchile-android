@@ -1,0 +1,8 @@
+.blue .accordion{ border-top: 1px solid #DDDDDD; border-right: 1px solid #DDDDDD; border-left: 1px solid #DDDDDD;}
+.blue .accordion, .blue .accordion li {margin: 0; padding: 0; border: none;}
+.blue .accordion a {padding: 16px 16px 10px 28px;background: #fff repeat-x 0 0;text-decoration:none;display: block;color: #333333;font-weight: bold;border-bottom: 1px solid #cccccc;}
+.blue .accordion ul a {padding: 16px 16px 10px 45px;}
+.blue .accordion a.dcjq-parent, .black .accordion a.dcjq-parent:hover {background: #ffffff no-repeat 0 0;font-weight: bold;color: #333333;}
+.blue .accordion a.dcjq-parent.active {background: #F7FAFD;}
+.blue .accordion a:hover {background: #F7FAFD;}
+.blue .accordion a:active{}

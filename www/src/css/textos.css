@@ -1,0 +1,631 @@
+
+.pointer{
+    cursor: pointer;
+}
+
+.lineh3{
+    line-height: 3 !important;
+}
+
+
+.lineh5{
+    line-height: 5 !important;
+}
+
+.sin_decoracion{
+    text-decoration: none;
+    text-transform: none;
+}
+
+.sin_estilos{
+	font-style:normal;
+	font-transform:none;
+    text-decoration: none;
+    color: #CCCCCC;
+}
+.sin_estilos:hover{
+    font-style:normal;
+    font-transform:none;
+    text-decoration: none;
+    color: #CCCCCC;
+}
+
+.roboto{
+    font-family: 'Roboto', regular !important;
+}
+
+.roboto-light{
+    font-family: 'Roboto', light !important;
+}
+	
+/* ALTA Y BAJA */
+	
+.txt_alta{
+	text-transform:uppercase;
+	}
+	
+.txt_baja{
+	text-transform:capitalize;
+	}
+	
+.txt_bold{
+	font-weight:bold;
+	}
+
+/* BORDER */
+
+.border_bottom_dotted999999{
+    border-bottom: dotted 1px #999999;
+}
+
+.border_bottom_der999999{
+    border-bottom: solid 1px #999999;
+}
+
+.border_bottom_der999999{
+    border-bottom: solid 1px #999999;
+}
+
+
+/* ALIGN */	
+.align_center80{
+	width:80%;
+	margin-left:10%;
+	margin-right:10%;
+	text-align:center;	
+}
+.align_center100{
+	width:100%;
+	text-align:center;
+}
+.align_center100 img{
+	display:inline-block !important;
+}
+.align_left90{
+	width:90%;
+	text-align:justify;	
+	margin-left:5%;
+}
+.align_left90_sinjust{
+	width:90%;
+	margin-left:5%;
+}
+
+.text-right{
+    text-align: right !important;
+}
+.text-left{
+    text-align: left !important;
+}
+.text-center{
+    text-align: center !important;
+}
+
+
+/* ALIGN */
+
+.line-he{
+	line-height:29px;	
+}
+.al50{
+	text-align: center;
+    width: 100%;
+    margin-bottom: 50px;
+}
+.col-esp{
+	display:inline-block;
+	padding:0 20px 0 20px
+}
+.al50 div:hover{
+	color:#E97F25 !important;
+	cursor:pointer;
+}
+.lighter{
+	font-weight: lighter !important;
+}
+
+.size1{font-size:1px !important;}
+.size2{font-size:2px !important;}
+.size3{font-size:3px !important;}
+.size4{font-size:4px !important;}
+.size5{font-size:5px !important;}
+.size6{font-size:6px !important;}
+.size7{font-size:7px !important;}
+.size8{font-size:8px !important;}
+.size9{font-size:9px !important;}
+.size10{font-size:10px !important;}
+.size11{font-size:11px !important;}
+.size12{font-size:12px !important;}
+.size13{font-size:13px !important;}
+.size14{font-size:14px !important;}
+.size15{font-size:15px !important;}
+.size16{font-size:16px !important;}
+.size17{font-size:17px !important;}
+.size18{font-size:18px !important;}
+.size19{font-size:19px !important;}
+.size20{font-size:20px !important;}
+.size21{font-size:21px !important;}
+.size22{font-size:22px !important;}
+.size23{font-size:23px !important;}
+.size24{font-size:24px !important;}
+.size25{font-size:25px !important;}
+.size26{font-size:26px !important;}
+.size27{font-size:27px !important;}
+.size28{font-size:28px !important;}
+.size29{font-size:29px !important;}
+.size30{font-size:30px !important;}
+.size31{font-size:31px !important;}
+.size32{font-size:32px !important;}
+.size33{font-size:33px !important;}
+.size34{font-size:34px !important;}
+.size35{font-size:35px !important;}
+.size36{font-size:36px !important;}
+.size37{font-size:37px !important;}
+.size38{font-size:38px !important;}
+.size39{font-size:39px !important;}
+.size40{font-size:40px !important;}
+.size41{font-size:41px !important;}
+.size42{font-size:42px !important;}
+.size43{font-size:43px !important;}
+.size44{font-size:44px !important;}
+.size45{font-size:45px !important;}
+.size46{font-size:46px !important;}
+.size47{font-size:47px !important;}
+.size48{font-size:48px !important;}
+.size49{font-size:49px !important;}
+.size50{font-size:50px !important;}
+.size51{font-size:51px !important;}
+.size52{font-size:52px !important;}
+.size53{font-size:53px !important;}
+.size54{font-size:54px !important;}
+.size55{font-size:55px !important;}
+.size56{font-size:56px !important;}
+.size57{font-size:57px !important;}
+.size58{font-size:58px !important;}
+.size59{font-size:59px !important;}
+.size60{font-size:60px !important;}
+.size61{font-size:61px !important;}
+.size62{font-size:62px !important;}
+.size63{font-size:63px !important;}
+.size64{font-size:64px !important;}
+.size65{font-size:65px !important;}
+.size66{font-size:66px !important;}
+.size67{font-size:67px !important;}
+.size68{font-size:68px !important;}
+.size69{font-size:69px !important;}
+.size70{font-size:70px !important;}
+.size71{font-size:71px !important;}
+.size72{font-size:72px !important;}
+.size73{font-size:73px !important;}
+.size74{font-size:74px !important;}
+.size75{font-size:75px !important;}
+.size76{font-size:76px !important;}
+.size77{font-size:77px !important;}
+.size78{font-size:78px !important;}
+.size79{font-size:79px !important;}
+.size80{font-size:80px !important;}
+.size81{font-size:81px !important;}
+.size82{font-size:82px !important;}
+.size83{font-size:83px !important;}
+.size84{font-size:84px !important;}
+.size85{font-size:85px !important;}
+.size86{font-size:86px !important;}
+.size87{font-size:87px !important;}
+.size88{font-size:88px !important;}
+.size89{font-size:89px !important;}
+.size90{font-size:90px !important;}
+.size91{font-size:91px !important;}
+.size92{font-size:92px !important;}
+.size93{font-size:93px !important;}
+.size94{font-size:94px !important;}
+.size95{font-size:95px !important;}
+.size96{font-size:96px !important;}
+.size97{font-size:97px !important;}
+.size98{font-size:98px !important;}
+.size99{font-size:99px !important;}
+.size100{font-size:100px !important;}
+.size101{font-size:101px !important;}
+.size102{font-size:102px !important;}
+.size103{font-size:103px !important;}
+.size104{font-size:104px !important;}
+.size105{font-size:105px !important;}
+.size106{font-size:106px !important;}
+.size107{font-size:107px !important;}
+.size108{font-size:108px !important;}
+.size109{font-size:109px !important;}
+.size110{font-size:110px !important;}
+.size111{font-size:111px !important;}
+.size112{font-size:112px !important;}
+.size113{font-size:113px !important;}
+.size114{font-size:114px !important;}
+.size115{font-size:115px !important;}
+.size116{font-size:116px !important;}
+.size117{font-size:117px !important;}
+.size118{font-size:118px !important;}
+.size119{font-size:119px !important;}
+.size120{font-size:120px !important;}
+.size121{font-size:121px !important;}
+.size122{font-size:122px !important;}
+.size123{font-size:123px !important;}
+.size124{font-size:124px !important;}
+.size125{font-size:125px !important;}
+.size126{font-size:126px !important;}
+.size127{font-size:127px !important;}
+.size128{font-size:128px !important;}
+.size129{font-size:129px !important;}
+.size130{font-size:130px !important;}
+.size131{font-size:131px !important;}
+.size132{font-size:132px !important;}
+.size133{font-size:133px !important;}
+.size134{font-size:134px !important;}
+.size135{font-size:135px !important;}
+.size136{font-size:136px !important;}
+.size137{font-size:137px !important;}
+.size138{font-size:138px !important;}
+.size139{font-size:139px !important;}
+.size140{font-size:140px !important;}
+.size141{font-size:141px !important;}
+.size142{font-size:142px !important;}
+.size143{font-size:143px !important;}
+.size144{font-size:144px !important;}
+.size145{font-size:145px !important;}
+.size146{font-size:146px !important;}
+.size147{font-size:147px !important;}
+.size148{font-size:148px !important;}
+.size149{font-size:149px !important;}
+.size150{font-size:150px !important;}
+.size151{font-size:151px !important;}
+.size152{font-size:152px !important;}
+.size153{font-size:153px !important;}
+.size154{font-size:154px !important;}
+.size155{font-size:155px !important;}
+.size156{font-size:156px !important;}
+.size157{font-size:157px !important;}
+.size158{font-size:158px !important;}
+.size159{font-size:159px !important;}
+.size160{font-size:160px !important;}
+.size161{font-size:161px !important;}
+.size162{font-size:162px !important;}
+.size163{font-size:163px !important;}
+.size164{font-size:164px !important;}
+.size165{font-size:165px !important;}
+.size166{font-size:166px !important;}
+.size167{font-size:167px !important;}
+.size168{font-size:168px !important;}
+.size169{font-size:169px !important;}
+.size170{font-size:170px !important;}
+.size171{font-size:171px !important;}
+.size172{font-size:172px !important;}
+.size173{font-size:173px !important;}
+.size174{font-size:174px !important;}
+.size175{font-size:175px !important;}
+.size176{font-size:176px !important;}
+.size177{font-size:177px !important;}
+.size178{font-size:178px !important;}
+.size179{font-size:179px !important;}
+.size180{font-size:180px !important;}
+.size181{font-size:181px !important;}
+.size182{font-size:182px !important;}
+.size183{font-size:183px !important;}
+.size184{font-size:184px !important;}
+.size185{font-size:185px !important;}
+.size186{font-size:186px !important;}
+.size187{font-size:187px !important;}
+.size188{font-size:188px !important;}
+.size189{font-size:189px !important;}
+.size190{font-size:190px !important;}
+.size191{font-size:191px !important;}
+.size192{font-size:192px !important;}
+.size193{font-size:193px !important;}
+.size194{font-size:194px !important;}
+.size195{font-size:195px !important;}
+.size196{font-size:196px !important;}
+.size197{font-size:197px !important;}
+.size198{font-size:198px !important;}
+.size199{font-size:199px !important;}
+.size200{font-size:200px !important;}
+.size201{font-size:201px !important;}
+.size202{font-size:202px !important;}
+.size203{font-size:203px !important;}
+.size204{font-size:204px !important;}
+.size205{font-size:205px !important;}
+.size206{font-size:206px !important;}
+.size207{font-size:207px !important;}
+.size208{font-size:208px !important;}
+.size209{font-size:209px !important;}
+.size210{font-size:210px !important;}
+.size211{font-size:211px !important;}
+.size212{font-size:212px !important;}
+.size213{font-size:213px !important;}
+.size214{font-size:214px !important;}
+.size215{font-size:215px !important;}
+.size216{font-size:216px !important;}
+.size217{font-size:217px !important;}
+.size218{font-size:218px !important;}
+.size219{font-size:219px !important;}
+.size220{font-size:220px !important;}
+.size221{font-size:221px !important;}
+.size222{font-size:222px !important;}
+.size223{font-size:223px !important;}
+.size224{font-size:224px !important;}
+.size225{font-size:225px !important;}
+.size226{font-size:226px !important;}
+.size227{font-size:227px !important;}
+.size228{font-size:228px !important;}
+.size229{font-size:229px !important;}
+.size230{font-size:230px !important;}
+.size231{font-size:231px !important;}
+.size232{font-size:232px !important;}
+.size233{font-size:233px !important;}
+.size234{font-size:234px !important;}
+.size235{font-size:235px !important;}
+.size236{font-size:236px !important;}
+.size237{font-size:237px !important;}
+.size238{font-size:238px !important;}
+.size239{font-size:239px !important;}
+.size240{font-size:240px !important;}
+.size241{font-size:241px !important;}
+.size242{font-size:242px !important;}
+.size243{font-size:243px !important;}
+.size244{font-size:244px !important;}
+.size245{font-size:245px !important;}
+.size246{font-size:246px !important;}
+.size247{font-size:247px !important;}
+.size248{font-size:248px !important;}
+.size249{font-size:249px !important;}
+.size250{font-size:250px !important;}
+.size251{font-size:251px !important;}
+.size252{font-size:252px !important;}
+.size253{font-size:253px !important;}
+.size254{font-size:254px !important;}
+.size255{font-size:255px !important;}
+.size256{font-size:256px !important;}
+.size257{font-size:257px !important;}
+.size258{font-size:258px !important;}
+.size259{font-size:259px !important;}
+.size260{font-size:260px !important;}
+.size261{font-size:261px !important;}
+.size262{font-size:262px !important;}
+.size263{font-size:263px !important;}
+.size264{font-size:264px !important;}
+.size265{font-size:265px !important;}
+.size266{font-size:266px !important;}
+.size267{font-size:267px !important;}
+.size268{font-size:268px !important;}
+.size269{font-size:269px !important;}
+.size270{font-size:270px !important;}
+.size271{font-size:271px !important;}
+.size272{font-size:272px !important;}
+.size273{font-size:273px !important;}
+.size274{font-size:274px !important;}
+.size275{font-size:275px !important;}
+.size276{font-size:276px !important;}
+.size277{font-size:277px !important;}
+.size278{font-size:278px !important;}
+.size279{font-size:279px !important;}
+.size280{font-size:280px !important;}
+.size281{font-size:281px !important;}
+.size282{font-size:282px !important;}
+.size283{font-size:283px !important;}
+.size284{font-size:284px !important;}
+.size285{font-size:285px !important;}
+.size286{font-size:286px !important;}
+.size287{font-size:287px !important;}
+.size288{font-size:288px !important;}
+.size289{font-size:289px !important;}
+.size290{font-size:290px !important;}
+.size291{font-size:291px !important;}
+.size292{font-size:292px !important;}
+.size293{font-size:293px !important;}
+.size294{font-size:294px !important;}
+.size295{font-size:295px !important;}
+.size296{font-size:296px !important;}
+.size297{font-size:297px !important;}
+.size298{font-size:298px !important;}
+.size299{font-size:299px !important;}
+.size300{font-size:300px !important;}
+.size301{font-size:301px !important;}
+.size302{font-size:302px !important;}
+.size303{font-size:303px !important;}
+.size304{font-size:304px !important;}
+.size305{font-size:305px !important;}
+.size306{font-size:306px !important;}
+.size307{font-size:307px !important;}
+.size308{font-size:308px !important;}
+.size309{font-size:309px !important;}
+.size310{font-size:310px !important;}
+.size311{font-size:311px !important;}
+.size312{font-size:312px !important;}
+.size313{font-size:313px !important;}
+.size314{font-size:314px !important;}
+.size315{font-size:315px !important;}
+.size316{font-size:316px !important;}
+.size317{font-size:317px !important;}
+.size318{font-size:318px !important;}
+.size319{font-size:319px !important;}
+.size320{font-size:320px !important;}
+.size321{font-size:321px !important;}
+.size322{font-size:322px !important;}
+.size323{font-size:323px !important;}
+.size324{font-size:324px !important;}
+.size325{font-size:325px !important;}
+.size326{font-size:326px !important;}
+.size327{font-size:327px !important;}
+.size328{font-size:328px !important;}
+.size329{font-size:329px !important;}
+.size330{font-size:330px !important;}
+.size331{font-size:331px !important;}
+.size332{font-size:332px !important;}
+.size333{font-size:333px !important;}
+.size334{font-size:334px !important;}
+.size335{font-size:335px !important;}
+.size336{font-size:336px !important;}
+.size337{font-size:337px !important;}
+.size338{font-size:338px !important;}
+.size339{font-size:339px !important;}
+.size340{font-size:340px !important;}
+.size341{font-size:341px !important;}
+.size342{font-size:342px !important;}
+.size343{font-size:343px !important;}
+.size344{font-size:344px !important;}
+.size345{font-size:345px !important;}
+.size346{font-size:346px !important;}
+.size347{font-size:347px !important;}
+.size348{font-size:348px !important;}
+.size349{font-size:349px !important;}
+.size350{font-size:350px !important;}
+.size351{font-size:351px !important;}
+.size352{font-size:352px !important;}
+.size353{font-size:353px !important;}
+.size354{font-size:354px !important;}
+.size355{font-size:355px !important;}
+.size356{font-size:356px !important;}
+.size357{font-size:357px !important;}
+.size358{font-size:358px !important;}
+.size359{font-size:359px !important;}
+.size360{font-size:360px !important;}
+.size361{font-size:361px !important;}
+.size362{font-size:362px !important;}
+.size363{font-size:363px !important;}
+.size364{font-size:364px !important;}
+.size365{font-size:365px !important;}
+.size366{font-size:366px !important;}
+.size367{font-size:367px !important;}
+.size368{font-size:368px !important;}
+.size369{font-size:369px !important;}
+.size370{font-size:370px !important;}
+.size371{font-size:371px !important;}
+.size372{font-size:372px !important;}
+.size373{font-size:373px !important;}
+.size374{font-size:374px !important;}
+.size375{font-size:375px !important;}
+.size376{font-size:376px !important;}
+.size377{font-size:377px !important;}
+.size378{font-size:378px !important;}
+.size379{font-size:379px !important;}
+.size380{font-size:380px !important;}
+.size381{font-size:381px !important;}
+.size382{font-size:382px !important;}
+.size383{font-size:383px !important;}
+.size384{font-size:384px !important;}
+.size385{font-size:385px !important;}
+.size386{font-size:386px !important;}
+.size387{font-size:387px !important;}
+.size388{font-size:388px !important;}
+.size389{font-size:389px !important;}
+.size390{font-size:390px !important;}
+.size391{font-size:391px !important;}
+.size392{font-size:392px !important;}
+.size393{font-size:393px !important;}
+.size394{font-size:394px !important;}
+.size395{font-size:395px !important;}
+.size396{font-size:396px !important;}
+.size397{font-size:397px !important;}
+.size398{font-size:398px !important;}
+.size399{font-size:399px !important;}
+.size400{font-size:400px !important;}
+.size401{font-size:401px !important;}
+.size402{font-size:402px !important;}
+.size403{font-size:403px !important;}
+.size404{font-size:404px !important;}
+.size405{font-size:405px !important;}
+.size406{font-size:406px !important;}
+.size407{font-size:407px !important;}
+.size408{font-size:408px !important;}
+.size409{font-size:409px !important;}
+.size410{font-size:410px !important;}
+.size411{font-size:411px !important;}
+.size412{font-size:412px !important;}
+.size413{font-size:413px !important;}
+.size414{font-size:414px !important;}
+.size415{font-size:415px !important;}
+.size416{font-size:416px !important;}
+.size417{font-size:417px !important;}
+.size418{font-size:418px !important;}
+.size419{font-size:419px !important;}
+.size420{font-size:420px !important;}
+.size421{font-size:421px !important;}
+.size422{font-size:422px !important;}
+.size423{font-size:423px !important;}
+.size424{font-size:424px !important;}
+.size425{font-size:425px !important;}
+.size426{font-size:426px !important;}
+.size427{font-size:427px !important;}
+.size428{font-size:428px !important;}
+.size429{font-size:429px !important;}
+.size430{font-size:430px !important;}
+.size431{font-size:431px !important;}
+.size432{font-size:432px !important;}
+.size433{font-size:433px !important;}
+.size434{font-size:434px !important;}
+.size435{font-size:435px !important;}
+.size436{font-size:436px !important;}
+.size437{font-size:437px !important;}
+.size438{font-size:438px !important;}
+.size439{font-size:439px !important;}
+.size440{font-size:440px !important;}
+.size441{font-size:441px !important;}
+.size442{font-size:442px !important;}
+.size443{font-size:443px !important;}
+.size444{font-size:444px !important;}
+.size445{font-size:445px !important;}
+.size446{font-size:446px !important;}
+.size447{font-size:447px !important;}
+.size448{font-size:448px !important;}
+.size449{font-size:449px !important;}
+.size450{font-size:450px !important;}
+.size451{font-size:451px !important;}
+.size452{font-size:452px !important;}
+.size453{font-size:453px !important;}
+.size454{font-size:454px !important;}
+.size455{font-size:455px !important;}
+.size456{font-size:456px !important;}
+.size457{font-size:457px !important;}
+.size458{font-size:458px !important;}
+.size459{font-size:459px !important;}
+.size460{font-size:460px !important;}
+.size461{font-size:461px !important;}
+.size462{font-size:462px !important;}
+.size463{font-size:463px !important;}
+.size464{font-size:464px !important;}
+.size465{font-size:465px !important;}
+.size466{font-size:466px !important;}
+.size467{font-size:467px !important;}
+.size468{font-size:468px !important;}
+.size469{font-size:469px !important;}
+.size470{font-size:470px !important;}
+.size471{font-size:471px !important;}
+.size472{font-size:472px !important;}
+.size473{font-size:473px !important;}
+.size474{font-size:474px !important;}
+.size475{font-size:475px !important;}
+.size476{font-size:476px !important;}
+.size477{font-size:477px !important;}
+.size478{font-size:478px !important;}
+.size479{font-size:479px !important;}
+.size480{font-size:480px !important;}
+.size481{font-size:481px !important;}
+.size482{font-size:482px !important;}
+.size483{font-size:483px !important;}
+.size484{font-size:484px !important;}
+.size485{font-size:485px !important;}
+.size486{font-size:486px !important;}
+.size487{font-size:487px !important;}
+.size488{font-size:488px !important;}
+.size489{font-size:489px !important;}
+.size490{font-size:490px !important;}
+.size491{font-size:491px !important;}
+.size492{font-size:492px !important;}
+.size493{font-size:493px !important;}
+.size494{font-size:494px !important;}
+.size495{font-size:495px !important;}
+.size496{font-size:496px !important;}
+.size497{font-size:497px !important;}
+.size498{font-size:498px !important;}
+.size499{font-size:499px !important;}
+.size500{font-size:500px !important;}
+
+/* NO WRAP */
+.txt-nowrap{
+	white-space: nowrap !important;
+}

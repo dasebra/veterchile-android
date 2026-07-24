@@ -1,0 +1,28 @@
+  [
+    {
+      "id": "",
+      "text": "Selecciones Estado Civil",
+      "descripción": ""
+    },
+    {
+      "id": "Soltero",
+      "text": "Soltero",
+      "descripción": "Persona que no contrajo matrimonio ninguna vez"
+    },
+    {
+      "id": "Casado",
+      "text": "Casado",
+      "descripción": "Persona casada y que no enviudó, ni se separó, ni se divorció"
+    },
+    {
+      "id": "Divorciado",
+      "text": "Divorciado",
+      "descripción": "Persona que disolvió legalmente su último matrimonio"
+    },
+    {
+      "id": "Viudo",
+      "text": "Viudo",
+      "descripción": "Persona casada y su cónyuge fallecido"
+    }
+   
+  ]

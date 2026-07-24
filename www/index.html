@@ -1,0 +1,1621 @@
+<!DOCTYPE html> 
+<html>
+    <head>
+        <meta charset="UTF-8">
+    	<title>SDI</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <!-- Jquery -->
+        <script src="src/js/jquery/jquery.js"></script>
+
+        <!-- Jquery Mobile -->
+        <link rel="stylesheet" href="src/js/jqueryMobile/jquery.mobile.custom.structure.min.css" />
+        <script src="src/js/jqueryMobile/jquery.mobile.custom.min.js"></script>
+        
+        <!-- Boostrap-->
+        <link rel="stylesheet" href="src/js/bootstrap/bootstrap.css" />
+        <link rel="stylesheet" href="src/js/bootstrap/bootstrap-theme.min.css" />
+        <script src="src/js/bootstrap/bootstrap.min.js" type="text/javascript"></script>
+
+
+        <!-- Main -->
+        <link rel="stylesheet" href="src/css/estilos.css" />
+        <link rel="stylesheet" href="src/css/colores.css" />
+        <link rel="stylesheet" href="src/css/posicion.css" />
+        <link rel="stylesheet" href="src/css/posicion_celular.css" />
+        <link rel="stylesheet" href="src/css/posicion_tablet.css" />
+        <link rel="stylesheet" href="src/css/textos.css">
+        <link rel="stylesheet" href="src/css/textos_celular.css">
+        <link rel="stylesheet" href="src/css/textos_tablet.css">
+        <link rel="stylesheet" href="src/css/menu.css">
+        <script src="src/js/api/api.js"></script>
+        
+        <script src="src/js/db/usuario.js"></script>
+        <script src="src/js/db/db.js"></script>
+        
+        <script src="src/js/main/main.js"></script>
+
+        <!-- Modulos -->
+        <script src="src/js/login/modulo.js"></script>
+        <script src="src/js/home/modulo.js"></script>
+        <script src="src/js/autorizacion/modulo.js"></script>    
+        <script src="src/js/seguridad/modulo.js"></script>
+        <script src="src/js/notificaciones/modulo.js"></script>
+
+        <!-- Menu -->
+        <link href="src/css/dcaccordion.css" rel="stylesheet" type="text/css" />
+        <link href="src/css/skins/grey.css" rel="stylesheet" type="text/css" />
+        <script type='text/javascript' src='src/js/menu/jquery.cookie.js'></script>
+        <script type='text/javascript' src='src/js/menu/jquery.hoverIntent.minified.js'></script>
+        <script type='text/javascript' src='src/js/menu/jquery.dcjqaccordion.2.7.min.js'></script>
+
+        <!-- MSG -->
+        <link href="src/js/toast-master/css/jquery.toast.css" rel="stylesheet" type="text/css">
+        <script type="text/javascript" src="src/js/toast-master/js/jquery.toast.js"></script>
+        <script type="text/javascript" src="src/js/toast-master/js/toastr.js"></script>
+
+        <!-- MOMENT -->
+        <script type="text/javascript" src="src/js/moment/lib.js"></script>
+
+        <!-- CORDOVA -->
+        <script type="text/javascript" src="cordova.js"></script>
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+    </head>
+
+    <body>
+        <!--LOGIN-->
+        <div  style="background-image: url(src/images/bgappinicio.jpg); background-position: center center; background-size: cover; background-repeat: repeat; background-attachment: fixed;" data-role="page" id="login">
+            <div data-role="header" class="header" id="header_log">
+                <div class="row">
+                    <div class="col-xs-12  pt20 pb20" ondblclick="vista('log')"><p class="color-blanco text-center size18">MED-SDI</p></div>
+                </div>
+            </div>
+            <div role="main" class="ui-content">           
+                <div class="row">
+                    <div class="col-xs-3"></div>
+                    <div class="col-xs-6"><img alt="" class="img-responsive center-block mt40 wid200" src="src/images/login/logo-blanco-sdi.png"></div>
+                </div>
+                <!-- Login -->
+                <div class="row mt20" id="cont_i_login">
+                    <div class="col-xs-1"></div>
+                    <div class="col-xs-12">
+                        <div class="col-xs-12 mt70">
+                            <p class="size14 color-blanco txt_bold mb10">E-mail</p>
+                            <input type="email" class="input-app size16 color-gris col-xs-12" placeholder="" id="user" value="">
+                        </div>
+                        <div class="col-xs-12 mt40">
+                            <p class="size14 color-blanco txt_bold mb10">Contraseña</p>
+                            <label for="pass"></label><input type="password" class="input-app size16 color-gris col-xs-12" placeholder="" id="pass" value="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div data-role="footer" class="footer" id="footer_log">
+                <div class="row">
+                    <div class="col-xs-1"></div>
+                    <div class="col-xs-10 mt10">
+                        <div class="btn-app1 mt20 mb20" onclick="ingresarLogin()">Ingresar</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--CIERRE LOGIN-->
+        <!--SELECCIÓN DE ROL-->
+        <div data-role="page" id="seleccionar-rol">
+            <div data-role="header" class="header">
+                <div class="row bg-azul pt20 pb20">
+                    <div class="col-xs-12">
+                        <p class="color-blanco text-center size20 txt_bold">SELECCIONA TU PERFIL</p>
+                    </div>
+                </div>
+            </div>
+            <div role="main" class="ui-content selector-rol-contenido">
+                <p class="text-center size18 color-azul txt_bold">¿Cómo deseas ingresar?</p>
+                <p class="text-center color-gris mb20">La cuenta tiene más de un perfil disponible.</p>
+                <div id="roles-disponibles" class="selector-rol-grid"></div>
+            </div>
+            <div data-role="footer" class="footer">
+                <div class="row">
+                    <div class="col-xs-12 bg-azul pt20 pb20 color-blanco text-uppercase text-center pointer txt_bold size16" onclick="cerrarSesion()">CERRAR SESIÓN</div>
+                </div>
+            </div>
+        </div>
+        <!--CIERRE SELECCIÓN DE ROL-->
+
+        <!--INICIO PROFESIONAL-->
+        <div data-role="page" id="inicio-profesional">
+            <div data-role="header" class="header">
+                <div class="row bg-azul pt20">
+                    <div class="col-xs-12">
+                        <h2 class="letra-bold size14 color-blanco ml10 d-inline">
+                            <img class="img-circulo" width="35" src="src/images/fotoperfil.png">
+                            <span class="size11 blanco size13 mr10 ml15">Profesional</span>
+                        </h2>
+                        <div class="pt5 pb5 d-inline"><img alt="logo" class="text-right logo-header" src="src/images/logo.png"></div>
+                        <div class="col-xs-12 top-titulos">
+                            <p class="letra-bold color-azul-oscuro size18 text-center mt50">Perfil <span class="rol-activo-label">Profesional</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div role="main" class="ui-content">
+                <div class="container mt20">
+                    <div class="row">
+                        <div class="col-xs-12 mb20" onclick="vista('autorizaciones_sdi')">
+                            <div class="inicio-profesional-card">
+                                <div class="inicio-profesional-autorizacion-icono"></div>
+                                <div class="texto letra-bold">Mi autorización</div>
+                                <small class="color-gris mt10">Revisa tus solicitudes de autorización pendientes.</small>
+                            </div>
+                        </div>
+                        <div class="col-xs-12" onclick="abrirDesafiosAcceso()">
+                            <div id="boton_desafios_profesional" class="inicio-profesional-card">
+                                <div class="inicio-profesional-icono">🔐</div>
+                                <div class="texto letra-bold">Desafíos de acceso</div>
+                                <small class="color-gris mt10">Aprueba o rechaza nuevos inicios de sesión.</small>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 mt20 selector-multiple-roles" onclick="volverASeleccionRoles()">
+                            <div class="btn-app4">Cambiar perfil</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div data-role="footer" class="footer menu-inferior" id="footer-profesional">
+                <div class="row bg-azul">
+                    <div class="col-xs-12 pt10 pb10 text-center">
+                        <p class="color-blanco size13" onclick="cerrarSesion()">Cerrar sesión</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--CIERRE INICIO PROFESIONAL-->
+
+        <!--INICIO-->
+        <div data-role="page" id="index">
+            <div data-role="header" class="header" id="header_ind">
+                 <div class="row bg-azul pt20">
+                    <div class="col-xs-12">
+                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/fotoperfil.png"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
+
+                        <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
+
+                        <div class="col-xs-12 top-titulos">
+                            <p class="letra-bold color-azul-oscuro size18 text-center mt50">Seleccione preferencia</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div role="main" class="ui-content pb0">
+                <div class="container mt20">
+                    <div class="row">
+                        <div class="col-xs-12" onclick="vista('autorizaciones_sdi')">
+                            <div id="boton_autorizaciones">
+                                <div class="icono"></div>
+                                <div class="texto letra-bold">Mi autorización</div>
+                            </div>
+                        </div>
+                        <div class="col-xs-6" onclick="vista('recetaonline')">
+                            <div id="boton_documentos">
+                                <div class="icono"></div>
+                                <div class="texto letra-bold">Mis Documentos</div>
+                            </div>
+                        </div>
+                        <div class="col-xs-6" onclick="vista('med_no_insc'); solicitarEspecialidades('esp_profesional')">
+                            <div id="boton_med_no_insc">
+                                <div class="icono"></div>
+                                <div class="texto letra-bold">Médico <br> no inscrito</div>
+                            </div>
+                        </div>
+                        <div class="col-xs-6" onclick="vista('fmu_paciente'); solicitarFmu()">
+                            <div id="boton_fmu">
+                                <div class="icono"></div>
+                                <div class="texto letra-bold">FMU</div>
+                            </div>
+                        </div>
+                        <div class="col-xs-6" onclick="vista('pedirhora')">
+                            <div id="boton_pedir_hora">
+                                <div class="icono"></div>
+                                <div class="texto letra-bold">Agendar Hora</div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12" id="contenedor-citas" onclick="vista('citas'); solicitarMisHorasMedicas();">
+                            <div id="boton_citas">
+                                <div class="icono"></div>
+                                <div class="texto letra-bold">Mis citas</div>
+                            </div>
+                        </div>
+                        <div class="col-xs-6" onclick="abrirDesafiosAcceso()">
+                            <div id="boton_desafios">
+                                <div class="icono">🔐</div>
+                                <div class="texto letra-bold">Desafíos de acceso</div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 mt10 mb20 selector-multiple-roles" onclick="volverASeleccionRoles()">
+                            <div class="btn-app4">Cambiar perfil</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div data-role="footer" class="footer menu-inferior" id="footer-ph" >
+                <div class="row bg-azul ">
+                   <div class="col-xs-12 pt10 pb10 text-center ">
+                        <p class="color-blanco size13" onclick="vista('login')"><img class="mb10" width="20" src="src/images/salir.svg"><br>Cerrar sesión</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--CIRRE: INICIO-->
+        <!--FMU-->
+        <div data-role="page" id="fmu_paciente">
+            <div data-role="header" class="header" id="header_fmu">
+                <div class="row bg-azul">
+                    <div class="col-xs-12 mt20">
+                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/fotoperfil.png"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
+                        <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
+                        <div class="col-xs-12 top-titulos">
+                            <p class="letra-bold color-azul-oscuro size20 text-center mt30">Mi Ficha Médica Única</p>
+                            <div class="btn-app4 text-center  size14 mt20 mb20" onclick="solicitarFmu()">
+                                <img class="pr10" width="30" src="src/images/sincro.svg">Actualizar datos
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div role="main" class="ui-content">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="cards-grid">
+                          <!-- GRUPO SANGUINEO -->
+                          <button class="card-button" type="button">
+                            <img  width="35" style="border-radius: 10px;" src="src/images/gruposanguineo.png">
+                            <h4 class="card-title color-rojo">Grupo sanguíneo</h4>
+                            <h2 class="color-rojo  letra-bold text-center">A 2 rH +</h2>
+                          </button>
+
+                          <!-- ALERGIAS -->
+                          <button class="card-button" type="button">
+                            <img  width="35" style="border-radius: 10px;" src="src/images/alergias.png">
+                            <h6 class="card-title color-rojo">Alergias</h6>
+                            <ul class="card-list">
+                              <li>Naproxeno</li>
+                              <li>Anestesia</li>
+                              <li>Maní</li>
+                            </ul>
+                          </button>
+
+                          <!-- ENF.CRÓNICAS -->
+                          <button class="card-button" type="button">
+                            <img  width="35" style="border-radius: 10px;" src="src/images/enfermedad-cronica.png">
+                            <h6 class="card-title color-rojo">Enfermedades crónicas</h6>
+                            <ul class="card-list">
+                              <li>Hipertensión</li>
+                              <li>Resistencia a la insulina</li>
+                            </ul>
+                          </button>
+
+                          <!-- MEDICAMENTOS CRÓNICOS -->
+                          <button class="card-button" type="button">
+                            <img  width="35" style="border-radius: 10px;" src="src/images/medicamento-cronico.png">
+                            <h6 class="card-title color-rojo">Medicamentos crónicos</h6>
+                            <ul class="card-list">
+                              <li>Metformina</li>
+                              <li>Naproxeno</li>
+                              <li>Daflon</li>
+                              <li>Enalapril</li>
+                            </ul>
+                          </button>
+
+                          <!-- ULT.MEDICAMENTOS-->
+                          <button class="card-button" type="button">
+                            <img  width="35" style="border-radius: 10px;" src="src/images/medicamento.png">
+                            <h5 class="card-title color-celeste">Últimos medicamentos</h5>
+                            <ul class="card-list">
+                              <li>Escritalopram 20mg<br><span class="fecha-small">11/7/2025</span></li>
+                              <li>Paracetamol 500mg<br><span class="fecha-small">5/4/2025</span></li>
+                            </ul>
+                          </button>
+
+                          <!-- -ULTIMOS DIAGNÓSTICOS -->
+                          <button class="card-button" type="button">
+                            <img  width="35" style="border-radius: 10px;" src="src/images/diagnostico.png">
+                            <h6 class="card-title color-celeste">Último diagnóstico</h6>
+                            <ul class="card-list">
+                              <li>Otitis<br><span class="fecha-small">24/8/2025</span></li>
+                            </ul>
+                          </button>
+                          <!-- ÚLTIMA CIRUGÍA -->
+                          <button class="card-button" type="button">
+                            <img  width="35" style="border-radius: 10px;" src="src/images/cx.png">
+                            <h6 class="card-title color-celeste">Última Cirugía</h6>
+                            <ul class="card-list">
+                               <li>No existen registros</li>
+                               <!--<li>Colostomia<br><span class="fecha-small">5/4/2025</span></li>--><!--EJEMPLO DE CX-->
+                            </ul>
+                          </button>
+                          <!-- PRÓTESIS Y ORTESIS-->
+                          <button class="card-button" type="button">
+                            <img  width="35" style="border-radius: 10px;" src="src/images/protesis.png">
+                            <h6 class="card-title color-celeste">Prótesis y Ortesis</h6>
+                            <ul class="card-list">
+                              <li>No existen registros</li>
+                            </ul>
+                          </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb90">
+                    <div class="col-xs-12 mt20">
+                        <div class="card-button" style="min-height:100px;">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <h6 class="card-title color-rojo size16 mb10">Contacto de emergencia</h6>
+                                </div>
+                                <div class="col-xs-4 text-left">
+                                    <p>Nombre<br><span class="fecha-small">Luis Sepúlveda</span></p>
+                                </div>
+                                <div class="col-xs-4 text-left">
+                                    <p>Parentesco<br><span class="fecha-small">Padre</span></p>
+                                </div>
+                                <div class="col-xs-4 text-left">
+                                    <p>Teléfono<br><span class="fecha-small">+569 5453 2345</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div data-role="footer" class="footer menu-inferior bottom0" id="footer_fmu">
+                <div class="row bg-azul">
+                    <div class="col-xs-4 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('index')"><img class="mb10" width="20" src="src/images/home.svg"><br>Inicio</p>
+                    </div>
+                    <div class="col-xs-4 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('citas'); solicitarMisHorasMedicas();"><img class="mb10" width="20" src="src/images/citas.svg"><br>Citas</p>
+                    </div>
+                    <div class="col-xs-4 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('login')"><img class="mb10" width="20" src="src/images/salir.svg"><br>Cerrar sesión</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--CIERRE: FMU-->
+        <!--RECETA ONLINE-->
+        <div data-role="page" id="recetaonline">
+            <div data-role="header" class="header" id="header_ind">
+                 <div class="row bg-azul pt20">
+                    <div class="col-xs-12">
+                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/fotoperfil.png"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
+
+                        <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
+
+                        <div class="col-xs-12 top-titulos">
+                            <p class="letra-bold color-azul-oscuro size18 text-center mt50">Mis Documentos</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div role="main" class="ui-content pb0">
+                <div class="container mt20">
+                    <div class="row">
+                        <div class="col-xs-6" onclick="vista('examenesro')">
+                            <div id="boton_examenesro">
+                                <div class="icono"></div>
+                                <div class="texto letra-bold">Mis exámenes</div>
+                            </div>
+                        </div>
+                        <div class="col-xs-6" onclick="vista('recetasro')">
+                            <div id="boton_recetasro">
+                                <div class="icono"></div>
+                                <div class="texto letra-bold">Mis recetas</div>
+                            </div>
+                        </div>
+                          <div class="col-xs-6" onclick="vista('certificadosro')">
+                            <div id="boton_certificadosro">
+                                <div class="icono"></div>
+                                <div class="texto letra-bold text-center">Mis Consentimientos</div>
+                            </div>
+                        </div>
+                          <div class="col-xs-6" onclick="vista('documentosro')">
+                            <div id="boton_documentosro">
+                                <div class="icono"></div>
+                                <div class="texto letra-bold text-center">Mis documentos e indicaciones</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div data-role="footer" class="footer menu-inferior bottom0" id="footer_ph">
+                <div class="row bg-azul">
+                    <div class="col-xs-4 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('index')"><img class="mb10" width="20" src="src/images/home.svg"><br>Inicio</p>
+                    </div>
+                    <div class="col-xs-4 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('citas'); solicitarMisHorasMedicas();"><img class="mb10" width="20" src="src/images/citas.svg"><br>Citas</p>
+                    </div>
+                    <div class="col-xs-4 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('login')"><img class="mb10" width="20" src="src/images/salir.svg"><br>Cerrar sesión</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--CIRRE: INICIO-->
+        <!--EXÁMENES / RECETA ONLINE-->
+        <div data-role="page" id="examenesro">
+            <div data-role="header" class="header" id="header">
+                <div class="row bg-azul">
+                    <div class="col-xs-12 mt20">
+                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/fotoperfil.png"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
+
+                        <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
+
+                        <div class="col-xs-12 top-titulos">
+                            <p class="color-azul-oscuro size20 mt30 mb10 text-center">Mis exámenes</p>
+                        <div class="btn-app4 text-center mt20 mb20" onclick="list_document_user()"><img class="pr10" src="src/images/sincro.svg">Actualizar exámenes</div>
+                        </div>
+                    </div>
+                </div>          
+            </div>
+            <div role="main" class="ui-content">
+                <div class="row mb60">
+                    <div class="col-xs-12">
+                        <p class="mt20 text-center size18 mb20 color-azul-oscuro">Últimos registros de exámenes</p>
+                        <div class="col-xs-12 mb60" id="">
+                            <div class="card-button-dos mb20">
+                                <div class="row">
+                                    <div class="col-xs-12 text-left">
+                                        <p class="letra-small mb5 color-azul">Fecha: <span class="letra-small">11-11-2025 / 00:00:00</span></p>
+                                         <p class="letra-small mb5 color-azul">Nº Orden: <span class="letra-small">3723984238</span></p>
+                                        <div class="btn-app7" style="width: 40%; padding-left: 10px;">
+                                            Ver Examen
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-button-dos mb20">
+                                <div class="row">
+                                    <div class="col-xs-12 text-left">
+                                        <p class="letra-small mb5 color-azul">Fecha: <span class="letra-small">11-11-2025 / 00:00:00</span></p>
+                                         <p class="letra-small mb5 color-azul">Nº Orden: <span class="letra-small">3723984238</span></p>
+                                        <div class="btn-app8" style="width: 40%; padding-left: 10px;">
+                                            En proceso
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>                 
+            </div>
+            <div data-role="footer" class="footer menu-inferior bottom0" id="footer_ph">
+                <div class="row bg-azul">
+                    <div class="col-xs-3 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('index')"><img class="mb10" width="20" src="src/images/home.svg"><br>Inicio</p>
+                    </div>
+                    <div class="col-xs-3 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('recetaonline')"><img class="mb10" width="20" src="src/images/volver.svg"><br>Volver</p>
+                    </div>
+                    <div class="col-xs-3 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('citas'); solicitarMisHorasMedicas();"><img class="mb10" width="20" src="src/images/citas.svg"><br>Citas</p>
+                    </div>
+                    <div class="col-xs-3 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('login')"><img class="mb10" width="20" src="src/images/salir.svg"><br>Cerrar sesión</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--RECETAS / RECETA ONLINE-->
+        <div data-role="page" id="recetasro">
+            <div data-role="header" class="header" id="header">
+                <div class="row bg-azul">
+                    <div class="col-xs-12 mt20">
+                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/fotoperfil.png"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
+
+                        <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
+
+                        <div class="col-xs-12 top-titulos">
+                            <p class="color-azul-oscuro size20 mt30 mb10 text-center">Mis recetas</p>
+                        <div class="btn-app4 text-center mt20 mb20" onclick="list_document_user()"><img class="pr10" src="src/images/sincro.svg">Actualizar recetas</div>
+                        </div>
+                    </div>
+                </div>          
+            </div>
+            <div role="main" class="ui-content">
+                <div class="row mb60">
+                    <div class="col-xs-12">
+                        <p class="mt20 text-center size18 color-azul-oscuro mb20">Últimos registros de recetas</p>
+                        <div class="col-xs-12 mb60" id="">
+                            <div class="card-button-dos mb20">
+                                <div class="row">
+                                    <div class="col-xs-12 text-left">
+                                        <p class="letra-small mb5 color-azul">Fecha emisión: <span class="letra-small">22-08-2005</span></p>
+                                        <p class="letra-small mb5 color-azul">Tipo: <span class="color-rojo">Retenida</span></p>
+                                        <div class="btn-app7" style="width: 40%; padding-left: 10px;">
+                                            Ver Receta
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-button-dos mb20">
+                                <div class="row">
+                                    <div class="col-xs-12 text-left">
+
+                                        <p class="letra-small mb5 color-azul">Fecha emisión: <span class="letra-small">09-05-2010</span></p>
+                                        <p class="letra-small mb5 color-azul">Tipo: <span class="letra-small">Normal</span></p>
+                                        <div class="btn-app7" style="width: 40%; padding-left: 10px;">
+                                            Ver Receta
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>                 
+            </div>
+             <div data-role="footer" class="footer menu-inferior bottom0" id="footer_ro">
+                <div class="row bg-azul">
+                    <div class="col-xs-3 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('index')"><img class="mb10" width="20" src="src/images/home.svg"><br>Inicio</p>
+                    </div>
+                    <div class="col-xs-3 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('recetaonline')"><img class="mb10" width="20" src="src/images/volver.svg"><br>Volver</p>
+                    </div>
+                    <div class="col-xs-3 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('citas'); solicitarMisHorasMedicas();"><img class="mb10" width="20" src="src/images/citas.svg"><br>Citas</p>
+                    </div>
+                    <div class="col-xs-3 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('login')"><img class="mb10" width="20" src="src/images/salir.svg"><br>Cerrar sesión</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--LICENCIAS / RECETA ONLINE
+        <div data-role="page" id="licenciasro">
+            <div data-role="header" class="header" id="header">
+                <div class="row bg-azul">
+                    <div class="col-xs-12 mt20">
+                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/fotoperfil.png"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
+
+                        <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
+
+                        <div class="col-xs-12 top-titulos">
+                            <p class="color-azul-oscuro size20 mt30 mb10 text-center">Mis licencias</p>
+                        <div class="btn-app4 text-center mt20 mb20" onclick="list_document_user()"><img class="pr10" src="src/images/sincro.svg">Actualizar licencias</div>
+                        </div>
+                    </div>
+                </div>          
+            </div>
+            <div role="main" class="ui-content">
+                <div class="row mb60">
+                    <div class="col-xs-12">
+                        <p class="mt20 text-center size18 color-azul-oscuro mb20">Últimos registros de licencias</p>
+                        <div class="col-xs-12 mb60" id="">
+                            <div class="card-button-dos mb20">
+                                <div class="row">
+                                    <div class="col-xs-12 text-left">
+                                        <p class="letra-small mb5 color-azul">Fecha de inicio: <span class="letra-small">10-11-2025</span></p>
+                                         <p class="letra-small mb5 color-azul">Fecha de término: <span class="letra-small">01-12-2025</span></p>
+                                        <div class="btn-app7" style="width: 40%; padding-left: 10px;">
+                                            Ver Licencia
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>                 
+            </div>
+             <div data-role="footer" class="footer menu-inferior bottom0" id="footer_ro">
+                <div class="row bg-azul">
+                    <div class="col-xs-3 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('index')"><img class="mb10" width="20" src="src/images/home.svg"><br>Inicio</p>
+                    </div>
+                    <div class="col-xs-3 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('recetaonline')"><img class="mb10" width="20" src="src/images/volver.svg"><br>Volver</p>
+                    </div>
+                    <div class="col-xs-3 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('citas'); solicitarMisHorasMedicas();"><img class="mb10" width="20" src="src/images/citas.svg"><br>Citas</p>
+                    </div>
+                    <div class="col-xs-3 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('login')"><img class="mb10" width="20" src="src/images/salir.svg"><br>Cerrar sesión</p>
+                    </div>
+                </div>
+            </div>
+        </div>-->
+        <!--CONSENTIMIENTOS / RECETA ONLINE-->
+        <div data-role="page" id="certificadosro">
+            <div data-role="header" class="header" id="header">
+                <div class="row bg-azul">
+                    <div class="col-xs-12 mt20">
+                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/fotoperfil.png"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
+
+                        <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
+
+                        <div class="col-xs-12 top-titulos">
+                            <p class="color-azul-oscuro size20 mt30 mb10 text-center">Mis consentimientos </p>
+                        <div class="btn-app4 text-center mt20 mb20" onclick="list_document_user()"><img class="pr10" src="src/images/sincro.svg">Actualizar consentimientos</div>
+                        </div>
+                    </div>
+                </div>          
+            </div>
+            <div role="main" class="ui-content">
+                <div class="row mb60">
+                    <div class="col-xs-12">
+                        <p class="mt20 text-center size18 color-azul-oscuro mb20">Últimos registros de consentimientos</p>
+                        <div class="col-xs-12 mb60" id="">
+                            <div class="card-button-dos mb20">
+                                <div class="row">
+                                    <div class="col-xs-12 text-left">
+                                        <p class="letra-small mb5 color-azul">Tipo: <span class="letra-small">Titulo</span></p>
+                                        <p class="letra-small mb5 color-azul">Fecha emisión: <span class="letra-small">11-11-2025</span></p>
+                                        <div class="btn-app7" style="width: 40%; padding-left: 10px;">
+                                            Ver Consentimiento
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>                 
+            </div>
+             <div data-role="footer" class="footer menu-inferior bottom0" id="footer_ph">
+                <div class="row bg-azul">
+                    <div class="col-xs-3 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('index')"><img class="mb10" width="20" src="src/images/home.svg"><br>Inicio</p>
+                    </div>
+                    <div class="col-xs-3 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('recetaonline')"><img class="mb10" width="20" src="src/images/volver.svg"><br>Volver</p>
+                    </div>
+                    <div class="col-xs-3 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('citas'); solicitarMisHorasMedicas();"><img class="mb10" width="20" src="src/images/citas.svg"><br>Citas</p>
+                    </div>
+                    <div class="col-xs-3 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('login')"><img class="mb10" width="20" src="src/images/salir.svg"><br>Cerrar sesión</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--DOCUMENTOS / RECETA ONLINE-->
+        <div data-role="page" id="documentosro">
+            <div data-role="header" class="header" id="header">
+                <div class="row bg-azul">
+                    <div class="col-xs-12 mt20">
+                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/fotoperfil.png"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
+
+                        <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
+
+                        <div class="col-xs-12 top-titulos">
+                            <p class="color-azul-oscuro size20 mt30 mb10 text-center">Mis documentos</p>
+                        <div class="btn-app4 text-center mt20 mb20" onclick="list_document_user()"><img class="pr10" src="src/images/sincro.svg">Actualizar documentos</div>
+                        </div>
+                    </div>
+                </div>          
+            </div>
+            <div role="main" class="ui-content">
+                <div class="row mb60">
+                    <div class="col-xs-12">
+                        <p class="mt20 text-center size18 color-azul-oscuro mb20">Últimos registros de documentos</p>
+                         <div class="col-xs-12 mb60" id="">
+                            <div class="card-button-dos mb20">
+                                <div class="row">
+                                    <div class="col-xs-12 text-left">
+                                        <p class="letra-small mb5 color-azul">Tipo: <span class="letra-small">Certificado ausencia laboral</span></p>
+                                        <p class="letra-small mb5 color-azul">Fecha emisión: <span class="letra-small">11-11-2025</span></p>
+                                        <div class="btn-app7" style="width: 40%; padding-left: 10px;">
+                                            Ver Documento
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>                 
+            </div>
+             <div data-role="footer" class="footer menu-inferior bottom0" id="footer_ro">
+                <div class="row bg-azul">
+                    <div class="col-xs-3 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('index')"><img class="mb10" width="20" src="src/images/home.svg"><br>Inicio</p>
+                    </div>
+                    <div class="col-xs-3 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('recetaonline')"><img class="mb10" width="20" src="src/images/volver.svg"><br>Volver</p>
+                    </div>
+                    <div class="col-xs-3 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('citas'); solicitarMisHorasMedicas();"><img class="mb10" width="20" src="src/images/citas.svg"><br>Citas</p>
+                    </div>
+                    <div class="col-xs-3 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('login')"><img class="mb10" width="20" src="src/images/salir.svg"><br>Cerrar sesión</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--MEDICO NO INSCRITO-->
+        <div data-role="page" id="med_no_insc">
+            <div data-role="header" class="header" id="header-ni">
+                <div class="row bg-azul">
+                    <div class="col-xs-12 mt20">
+                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/fotoperfil.png"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
+
+                        <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
+
+                        <div class="col-xs-12 top-titulos">
+                            <p class="letra-bold color-azul-oscuro size20 text-center mt50 mb10">Atención por médico no inscrito</p>
+                        </div>
+                    </div>
+                </div>        
+            </div>
+            <div role="main" class="ui-content">
+                <div class="row mb60">
+                    <div class="col-xs-12">
+                       <div class="card-button-dos">
+                         <div class="row">
+                             <div class="col-xs-12">
+                                 <form method="post" action="#">
+                                            <div class="form-row pt20">
+                                                <div class="form-group col-xs-12">
+                                                    <label class="floating-label-activo">Rut</label>
+                                                    <input type="text"
+                                                           class="form-control form-control-sm"
+                                                           name="rut_profesional"
+                                                           id="rut_profesional"
+                                                           placeholder="Ej: 12345678-9"
+                                                           maxlength="12">
+                                                </div>
+                                                 <div class="form-group col-xs-12">
+                                                    <label class="floating-label-activo">Nombre</label>
+                                                    <input type="text" class="form-control form-control-sm"
+                                                        name="nombre_profesional" id="nombre_profesional">
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-xs-12">
+                                                    <label class="floating-label-activo">Correo</label>
+                                                    <input type="email" class="form-control form-control-sm"
+                                                        name="correo_profesional" id="correo_profesional">
+                                                </div>
+                                                <div class="form-group col-xs-12">
+                                                    <label class="floating-label-activo">Teléfono</label>
+                                                    <input type="text" class="form-control form-control-sm"id="telefono_profesional">
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-xs-12">
+                                                    <label class="floating-label-activo">Especialidad</label>
+                                                    <select class="form-control form-control-sm"
+                                                            name="esp_profesional" id="esp_profesional"
+                                                            onchange="cargarTipoEspecialidad('tipo_esp_profesional','esp_profesional')">
+                                                        <option value="">Seleccione especialidad</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                             <div class="form-row">
+                                                 <div class="form-group col-xs-12">
+                                                     <label class="floating-label-activo">Tipo Especialidad</label>
+                                                     <select class="form-control form-control-sm"
+                                                             name="tipo_esp_profesional" id="tipo_esp_profesional" onchange="cargarSubTipoEspecialidad('sub_tipo_esp_profesional','tipo_esp_profesional')">
+                                                     </select>
+                                                 </div>
+                                             </div>
+
+                                         <div class="form-row">
+                                             <div class="form-group col-xs-12">
+                                                 <label class="floating-label-activo">Sub Tipo Especialidad</label>
+                                                 <select class="form-control form-control-sm"
+                                                         name="sub_tipo_esp_profesional" id="sub_tipo_esp_profesional">
+                                                 </select>
+                                             </div>
+                                         </div>
+                                         
+                                            <div class="form-row">
+                                                <div class="form-group col-xs-12">
+                                                    <label class="floating-label-activo">Diagnósticos</label>
+                                                    <input type="text" class="form-control form-control-sm"
+                                                        name="diagnosticos" id="diagnosticos">
+                                                </div>
+                                                <div class="form-group col-xs-12">
+                                                    <label class="floating-label-activo">Exámenes solicitados</label>
+                                                    <input type="text" class="form-control form-control-sm"
+                                                        name="examenes" id="examenes">
+                                                </div>
+                                                 <div class="form-group col-xs-12">
+                                                    <label class="floating-label-activo">Medicamentos</label>
+                                                    <input type="text" class="form-control form-control-sm"
+                                                        name="medicamentos" id="medicamentos">
+                                                </div>
+                                            </div>
+                                            <div class="form-row hidden" id="div_paciente_dependiente" >
+                                                <div class="col-sm-10 mx-auto mt-2 mb10">
+                                                    <label class="floating-label-activo">RUT Paciente</label>
+                                                    <input type="text" class="form-control form-control-sm" name="rut_dependiente" id="rut_dependiente" placeholder="Ingrese RUT"/>
+                                                </div>
+                                            </div> 
+                                             <div class="form-row" style="margin-left:30px; margin-right:30px;">
+                                                <div class="col-xs-6 bg-purple pt8 pb8 rounded-left"><p class="color-blanco text-center size13" onclick="abrirDependiente()">Dependiente</p></div>
+                                                <div class="col-xs-6 bg-info pt8 pb8 rounded-right"><p class=" color-blanco text-center size13" onclick="guardarAtencion()">Guardar</p></div>
+                                             </div>
+                                        </form>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>               
+                </div>                 
+            </div>
+            <div data-role="footer" class="footer menu-inferior" id="fot-mni">
+                <div class="row bg-azul">
+                    <div class="col-xs-4 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('index')"><img class="mb10" width="20" src="src/images/home.svg"><br>Inicio</p>
+                    </div>
+                    <div class="col-xs-4 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('citas'); solicitarMisHorasMedicas();"><img class="mb10" width="20" src="src/images/citas.svg"><br>Citas</p>
+                    </div>
+                    <div class="col-xs-4 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('login')"><img class="mb10" width="20" src="src/images/salir.svg"><br>Cerrar sesión</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--CIERRE: MEDICO NO INSCRITO-->
+        <!--LOG APP-->
+        <div data-role="page" id="desafios-acceso">
+            <div data-role="header" class="header">
+                <div class="row"><div class="col-xs-12 bg-azul pt20 pb20"><p class="color-blanco text-center size20">DESAFÍOS DE ACCESO</p></div></div>
+            </div>
+            <div role="main" class="ui-content">
+                <p class="text-center color-gris mt20">Aprueba únicamente accesos que hayas iniciado tú.</p>
+                <div id="lista-desafios-acceso" class="mt20"></div>
+                <div class="btn-app1 mt20 mb20" onclick="cargarDesafiosAcceso()">ACTUALIZAR</div>
+            </div>
+            <div data-role="footer" class="footer">
+                <div class="row"><div class="col-xs-12 bg-azul pt20 pb20 color-blanco text-uppercase text-center pointer txt_bold size20" onclick="volverDesdeDesafiosAcceso()">VOLVER</div></div>
+            </div>
+        </div>
+
+        <div data-role="page" id="log">
+            <div data-role="header" class="header" id="header-l">
+                <div class="row">
+                    <div class="col-xs-12 bg-azul pt20 pb20"><p class="color-blanco text-center size20">LOG APP</p></div>
+                </div>          
+            </div>
+            <div role="main" class="ui-content">
+                <div class="row">
+                    <div class="col-xs-12" id="contenedor-log">
+                                    
+                    </div>
+                </div>                             
+            </div>  
+            <div data-role="footer" class="footer menu-inferior" id="footer-l">
+                <div class="row">
+                    <div class="col-xs-12 bg-azul pt10 pb10 color-blanco text-uppercase text-center pointer txt_bold size20" onclick="vista('login')"><img width="30" src="src/images/home.svg">Inicio</div>                
+                </div>
+            </div>
+        </div>
+        <!--CIERRE LOG APP-->
+        <!--BUSCADOR DE PROFESIONALES-->
+        <div data-role="page" id="pedirhora">
+            <div data-role="header" class="header" id="header-mismed">
+                <div class="row bg-azul">
+                    <div class="col-xs-12 mt20">
+                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/fotoperfil.png"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
+
+                        <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
+
+                        <div class="col-xs-12 top-titulos">
+                            <p class="letra-bold color-azul-oscuro size20 text-center mt20">Agendar hora</p>
+                            <p class="letra-bold size18 text-center mt20">Seleccione preferencia</p>
+
+                        </div>
+                    </div>
+                </div> 
+            </div>
+            <div role="main" class="ui-content"> 
+                <div class="row mt20" >
+                    <div class="container text-center">
+                        <div class="row">
+                            <div class="col-xs-6" onclick="vista('mis_medicos'); solicitarMedicos()">
+                                <div id="boton_pedirmm">
+                                    <div class="icono"></div>
+                                    <p class="texto letra-bold">Mis Profesionales</p>
+                                </div>
+                            </div>
+                            <div class="col-xs-6" onclick="vista('buscador_profesional');solicitarEspecialidades('especialidad'); dameRegiones('region')">
+                                <div id="boton_phbuscar">
+                                    <div class="icono"></div>
+                                    <p class="texto letra-bold">Buscar Profesionales</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div data-role="footer" class="footer menu-inferior bottom0" id="footer_fmu">
+                <div class="row bg-azul">
+                    <div class="col-xs-4 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('index')"><img class="mb10" width="20" src="src/images/home.svg"><br>Inicio</p>
+                    </div>
+                    <div class="col-xs-4 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('citas'); solicitarMisHorasMedicas();"><img class="mb10" width="20" src="src/images/citas.svg"><br>Citas</p>
+                    </div>
+                    <div class="col-xs-4 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('login')"><img class="mb10" width="20" src="src/images/salir.svg"><br>Cerrar sesión</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--CIERRE:BUSCADOR PROFESIONALES-->
+        <!--BUSCADOR POR PROFESIONAL NUEVO-->
+        <div data-role="page" id="buscador_profesional">
+            <div data-role="header" class="header" id="header-ni">
+                <div class="row bg-azul">
+                    <div class="col-xs-12 mt20">
+                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/fotoperfil.png"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
+                        <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
+                        <div class="col-xs-12 top-titulos">
+                            <p class="letra-bold color-azul-oscuro size20 text-center mt50">Buscador de profesionales</p>
+                            <p class="size14 text-center mb10">Ingrese los datos solicitados para buscar horas</p>
+                        </div>
+                    </div>
+                </div>        
+            </div>
+            <div role="main" class="ui-content">
+                <div class="row mb60">
+                    <div class="col-xs-12">
+                       <div class="card-button-dos">
+                         <div class="row pt20">
+                             <div class="col-xs-12">
+                                   <form method="post" action="#">
+                                        <div class="form-row">
+
+                                             <div class="form-group col-xs-12">
+                                                <label class="floating-label-activo">Tipo de profesional</label>
+                                                 <select class="form-control form-control-sm"
+                                                         name="especialidad" id="especialidad"
+                                                         onchange="cargarTipoEspecialidad('tipoespecialidad','especialidad')">
+                                                     <option value="">Seleccione especialidad</option>
+                                                 </select>
+                                            </div>
+                                            <div class="form-group col-xs-12">
+                                                <label class="floating-label-activo">Tipo Especialidad</label>
+                                                <select type="email" class="form-control form-control-sm"
+                                                    name="tipoespecialidad" id="tipoespecialidad" onchange="cargarSubTipoEspecialidad('subtipoespecialidad','tipoespecialidad')">
+                                                        <option>Seleccione</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group col-xs-12">
+                                                <label class="floating-label-activo">Sub Tipo Especialidad</label>
+                                                <select type="email" class="form-control form-control-sm"
+                                                        name="subtipoespecialidad" id="subtipoespecialidad" >
+                                                    <option>Seleccione</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group col-xs-12">
+                                                <label class="floating-label-activo">Región</label>
+                                                <select type="email" class="form-control form-control-sm"
+                                                    name="region" id="region" onchange="dameCiudades('ciudad','region')">
+                                                        <option>Seleccione</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group col-xs-12">
+                                                <label class="floating-label-activo">Comuna</label>
+                                                <select type="email" class="form-control form-control-sm"
+                                                    name="ciudad" id="ciudad">
+                                                        <option>Seleccione</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                         <div class="form-row">
+                                            <div class="col-xs-12 text-center">
+                                                <div class="btn-app6 mt20 mb10" onclick="buscarProfesionales()">
+                                                    <img src="src/images/lupa.svg" class="ml20 mr10 wid10" alt="Buscar horas"> Buscar horas
+                                                </div>
+                                            </div>
+                                         </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>               
+                </div>                 
+            </div>
+            <div data-role="footer" class="footer menu-inferior" id="fot-mni">
+                <div class="row bg-azul">
+                    <div class="col-xs-4 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('index')"><img class="mb10" width="20" src="src/images/home.svg"><br>Inicio</p>
+                    </div>
+                    <div class="col-xs-4 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('citas'); solicitarMisHorasMedicas();"><img class="mb10" width="20" src="src/images/citas.svg"><br>Citas</p>
+                    </div>
+                    <div class="col-xs-4 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('login')"><img class="mb10" width="20" src="src/images/salir.svg"><br>Cerrar sesión</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--CIERRE: BUSCADOR POR PROFESIONAL NUEVO-->
+        <!--BUSCAR POR MIS PROFESIONALES-->
+        <div data-role="page" id="mis_medicos">
+            <div data-role="header" class="header" id="header-ni">
+                <div class="row bg-azul">
+                    <div class="col-xs-12 mt20">
+                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/fotoperfil.png"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
+
+                        <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
+
+                        <div class="col-xs-12 top-titulos">
+                            <p class="letra-bold color-azul-oscuro size20 text-center mt30">Mis profesionales</p>
+                        </div>
+                    </div>
+                </div>        
+            </div>
+            <div role="main" class="ui-content">
+                 <div class="row mb60">
+                    <div class="col-xs-12" id="lista-medicos">
+
+                    </div>               
+                </div>                  
+            </div>
+            <div data-role="footer" class="footer menu-inferior" id="fot-mni">
+                <div class="row bg-azul">
+                    <div class="col-xs-4 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('index')"><img class="mb10" width="20" src="src/images/home.svg"><br>Inicio</p>
+                    </div>
+                    <div class="col-xs-4 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('citas'); solicitarMisHorasMedicas();"><img class="mb10" width="20" src="src/images/citas.svg"><br>Citas</p>
+                    </div>
+                    <div class="col-xs-4 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('login')"><img class="mb10" width="20" src="src/images/salir.svg"><br>Cerrar sesión</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--CIERRE: BUSCADOR DE MIS MEDICOS-->
+
+        <!-- PERFIL DEL PROFESIONAL -->
+        <div data-role="page" id="perfil_medico">
+            <div data-role="header" class="header" id="header-ni">
+                <div class="row bg-azul">
+                    <div class="col-xs-12 mt20">
+                        <h2 class="letra-bold size14 color-blanco ml10 d-inline">
+                            <img class="img-circulo" width="35" src="src/images/fotoperfil.png">
+                            <span class="size11 blanco size13 mr10 ml15">Jaime Kriman</span>
+                        </h2>
+                        <div class="pt5 pb5 d-inline">
+                            <img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png">
+                        </div>
+                        <div class="col-xs-12 top-titulos">
+
+                            <p class="letra-bold color-azul-oscuro size20 text-center mt50">Perfil del Profesional</p>
+                            <div class="btn-app4 text-center size14 mb20" onclick="vista('mis_medicos');">
+                                Volver a mis médicos
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div role="main" class="ui-content">
+                <div class="row mb60">
+                    <div class="col-xs-12" id="perfil-medico-content">
+                        <!-- Aquí se cargará dinámicamente la información del médico -->
+                    </div>
+                </div>
+            </div>
+
+            <div data-role="footer" class="footer menu-inferior" id="fot-mni">
+                <div class="row bg-azul">
+                    <div class="col-xs-4 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('index')">
+                            <img class="mb10" width="20" src="src/images/home.svg"><br>Inicio
+                        </p>
+                    </div>
+                    <div class="col-xs-4 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('citas'); solicitarMisHorasMedicas();">
+                            <img class="mb10" width="20" src="src/images/citas.svg"><br>Citas
+                        </p>
+                    </div>
+                    <div class="col-xs-4 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('login')">
+                            <img class="mb10" width="20" src="src/images/salir.svg"><br>Cerrar sesión
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- CIERRE PERFIL PROFESIONAL -->
+        <!-- MIS MEDICOS BUSCADOS -->
+        <div data-role="page" id="mis_medicos_buscados">
+            <div data-role="header" class="header" id="header-ni">
+                <div class="row bg-azul">
+                    <div class="col-xs-12 mt20">
+                        <h2 class="letra-bold size14 color-blanco ml10 d-inline">
+                            <img class="img-circulo" width="35" src="src/images/fotoperfil.png">
+                            <span class="size11 blanco size13 mr10 ml15">Jaime Kriman</span>
+                        </h2>
+                        <div class="pt5 pb5 d-inline">
+                            <img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png">
+                        </div>
+                        <div class="col-xs-12 top-titulos">
+                            <p class="letra-bold color-azul-oscuro size20 text-center mt50">Profesionales encontrados</p>
+                            <p class="size14 text-center mb10">Seleccione el profesional</p>
+                            <div class="btn-app4 text-center size14 mt20 mb20" onclick="vista('buscador_profesional');">
+                                <img class="pr10" width="30" src="src/images/lupa.svg">Volver a búsqueda
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div role="main" class="ui-content">
+                <div class="row mb60">
+                    <div class="col-xs-12" id="lista-medicos-buscados">
+                        <!-- Aquí se cargarán dinámicamente los médicos -->
+                    </div>
+                </div>
+            </div>
+
+            <div data-role="footer" class="footer menu-inferior" id="fot-mni">
+                <div class="row bg-azul">
+                    <div class="col-xs-4 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('index')">
+                            <img class="mb10" width="20" src="src/images/home.svg"><br>Inicio
+                        </p>
+                    </div>
+                    <div class="col-xs-4 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('citas'); solicitarMisHorasMedicas();">
+                            <img class="mb10" width="20" src="src/images/citas.svg"><br>Citas
+                        </p>
+                    </div>
+                    <div class="col-xs-4 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('login')">
+                            <img class="mb10" width="20" src="src/images/salir.svg"><br>Cerrar sesión
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- CIERRE: MIS MEDICOS BUSCADOS -->
+
+
+        <!-- LUGARES DE ATENCION DE PROFESIONAL -->
+        <div data-role="page" id="lugares_atencion">
+            <div data-role="header" class="header" id="header-ni">
+                <div class="row bg-azul">
+                    <div class="col-xs-12 mt20">
+                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/fotoperfil.png"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
+                        <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
+                        <div class="col-xs-12 top-titulos">
+                            <p class="letra-bold color-azul-oscuro size20 text-center mt50">Lugares de atención</p>
+                            <p class="size14 text-center mb10">Seleccione el lugar de atención</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div role="main" class="ui-content">
+                 <div class="row mb60">
+                    <div class="col-xs-12" id="lista-lugares">
+
+                    </div>
+                </div>
+            </div>
+            <div data-role="footer" class="footer menu-inferior" id="fot-mni">
+                <div class="row bg-azul">
+                    <div class="col-xs-4 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('index')"><img class="mb10" width="20" src="src/images/home.svg"><br>Inicio</p>
+                    </div>
+                    <div class="col-xs-4 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('citas'); solicitarMisHorasMedicas();"><img class="mb10" width="20" src="src/images/citas.svg"><br>Citas</p>
+                    </div>
+                    <div class="col-xs-4 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('login')"><img class="mb10" width="20" src="src/images/salir.svg"><br>Cerrar sesión</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- CIERRE: LUGARES DE ATENCION DE PROFESIONAL -->
+        <!-- seleccionar_fecha_hora -->
+        <div data-role="page" id="seleccionar_fecha_hora">
+            <div data-role="header" class="header" id="header-ni">
+                <div class="row bg-azul">
+                    <div class="col-xs-12 mt20">
+                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/fotoperfil.png"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
+                        <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
+                        <div class="col-xs-12 top-titulos">
+                            <p class="letra-bold color-azul-oscuro size20 text-center mt50">Seleccionar fecha y hora</p>
+                            <p class="size14 text-center mb10">Seleccione la fecha y hora de su cita</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div role="main" class="ui-content">
+                 <div class="row mb60">
+                    <div class="col-xs-12" id="lista-fechas">
+
+                    </div>
+                </div>
+            </div>
+            <div data-role="footer" class="footer menu-inferior" id="fot-mni">
+                <div class="row bg-azul">
+                    <div class="col-xs-4 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('index')"><img class="mb10" width="20" src="src/images/home.svg"><br>Inicio</p>
+                    </div>
+                    <div class="col-xs-4 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('citas'); solicitarMisHorasMedicas();"><img class="mb10" width="20" src="src/images/citas.svg"><br>Citas</p>
+                    </div>
+                    <div class="col-xs-4 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('login')"><img class="mb10" width="20" src="src/images/salir.svg"><br>Cerrar sesión</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- CIERRE: seleccionar_fecha_hora -->
+        <!--MIS CITAS MEDICAS AGENDADAS-->
+        <div data-role="page" id="citas">
+            <div data-role="header" class="header" id="header-ni">
+                <div class="row bg-azul">
+                    <div class="col-xs-12 mt20">
+                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/fotoperfil.png"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
+
+                        <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
+
+                        <div class="col-xs-12 top-titulos">
+                            <p class="letra-bold color-azul-oscuro size20 text-center mt30">Mis citas agendadas</p>
+                        </div>
+                    </div>
+                </div>        
+            </div>
+            <div role="main" class="ui-content">
+                <div class="row mb70">
+                    <div class="col-xs-12 mb20" id="lista-horas">
+
+                    </div> 
+
+                </div>               
+            </div>                 
+            <div data-role="footer" class="footer menu-inferior" id="fot-mni">
+                <div class="row bg-azul">
+                    <div class="col-xs-4 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('index')"><img class="mb10" width="20" src="src/images/home.svg"><br>Inicio</p>
+                    </div>
+                    <div class="col-xs-4 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('citas'); solicitarMisHorasMedicas();"><img class="mb10" width="20" src="src/images/citas.svg"><br>Citas</p>
+                    </div>
+                    <div class="col-xs-4 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('login')"><img class="mb10" width="20" src="src/images/salir.svg"><br>Cerrar sesión</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--CIERRE: MIS CITAS MEDICAS AGENDADAS-->
+        <!--CLAVE DESBLOQUEO-->
+        <div data-role="page" id="clave_desbloqueo">
+            <div data-role="header" class="header" id="header-d">
+                <div class="row">
+                    <div class="col-xs-12 bg-azul pt20 pb20"><p class="color-blanco text-center size20">CLAVE DESBLOQUEO</p></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">      
+                        <img class="img-responsive" src="src/images/home/bg.jpg">
+                    </div>                
+                </div>
+            </div>
+            <div role="main" class="ui-content">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <p class="color-azul size20 mt10 mb10 text-center">SDI</p>
+                        <input type="hidden" id="id_log">
+                        <p class="text-center mt10 mb10" id="log_reg_autorizacion">                        
+                        <p class="color-azul size20 mt10 mb10 text-center">INGRESE UN CLAVE PARA DESBLOQUEO</p>
+                        <p class="size14 mt10 mb10 text-center">Para registrar un equipo debe ingresar una clave de 4 dígitos, con esto podrá desbloquear y validar las peticiones.</p>
+                        <input type="password" id="password_desbloqueo" class="input-app center-block text-center color-azul mt10 mb10" value="" placeholder="">
+                    </div>
+                </div>                             
+            </div>
+                
+            <div data-role="footer" class="footer menu-inferior" id="footer-reg">
+                <div class="row">
+                    <div class="col-xs-12 bg-azul pt20 pb20 color-blanco text-uppercase text-center pointer txt_bold size20" onclick="registrarPassword()">Registrar equipo</div>
+                </div>
+            </div>
+        </div>
+        <!--CIERRE CLAVE DESBLOQUEO-->
+        <!--DISPOSITIVO REGISTRADO-->
+        <div id="modalRegistroDevice" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title size20" id="gridSystemModalLabel">Dispositivo Registrado</h4>
+                </div>
+                <div class="modal-body">
+                  <p class="size20">Se envió un correo para validar el dispositivo.</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default size20" data-dismiss="modal">CERRAR</button>
+                </div>
+              </div>
+            </div>
+        </div>
+        <!--CIERRE DISPOSITIVO REGISTRADO-->
+
+        <div data-role="page" id="autorizaciones_sdi">
+            <div data-role="header" class="header" id="header-ni">
+                <div class="row bg-azul">
+                    <div class="col-xs-12 mt20">
+                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/fotoperfil.png"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
+
+                        <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
+
+                        <div class="col-xs-12 top-titulos">
+                            <p class="letra-bold color-azul-oscuro size20 text-center mt30">Mis autorizaciones</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div role="main" class="ui-content">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <p class="color-azul size20 mt10 mb10 text-center">SDI <span class="color-azul-oscuro size20">PASS</span></p>
+                        <div class="btn-app4 text-center color-blanco size20 text-uppercase" onclick="list_log_device()">ACTUALIZAR PETICIONES</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="sdi-tabs mt20">
+                            <div class="sdi-tab active" onclick="cambiar_tab_sdi('autorizaciones', this)">
+                                Autorizaciones recibidas
+                            </div>
+
+                            <div class="sdi-tab" onclick="cambiar_tab_sdi('reposo', this)">
+                                Control de reposo
+                            </div>
+                        </div>
+
+                        <div class="sdi-tab-content active" id="content_autorizaciones">
+                            <p class="mt20">Autorizaciones recibidas</p>
+                            <ul class="size12" id="list_log_reg"></ul>
+                        </div>
+
+                        <div class="sdi-tab-content" id="content_reposo">
+                            <p class="mt20 txt_bold color-azul-oscuro">Control de reposo</p>
+                            <div class="reposo-resumen">
+
+                                <div class="reposo-resumen-header">
+                                    <i class="fa fa-user-md"></i>
+                                    Información del Reposo
+                                </div>
+
+                                <div class="reposo-resumen-body">
+
+                                    <div class="reposo-item">
+                                        <span class="reposo-label">Estado</span>
+                                        <span class="reposo-badge activo">ACTIVO</span>
+                                    </div>
+
+                                    <div class="reposo-item">
+                                        <span class="reposo-label">Paciente</span>
+                                        <span class="reposo-value">{}</span>
+                                    </div>
+
+                                    <div class="reposo-item">
+                                        <span class="reposo-label">Reposo hasta</span>
+                                        <span class="reposo-value">25-06-2026</span>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="sdi-reposo-card">
+
+                                <label class="sdi-label">Activar control de reposo</label>
+                                <select id="reposo_activo" class="input-app">
+                                    <option value="0">No</option>
+                                    <option value="1">Sí</option>
+                                </select>
+
+                                <label class="sdi-label mt10">Radio de movilidad permitido</label>
+                                <div class="sdi-input-group">
+                                    <input type="number" id="reposo_radio_km" class="input-app" value="1" min="0.1" step="0.1">
+                                    <span>Km</span>
+                                </div>
+
+                                <label class="sdi-label mt10">Frecuencia de verificación</label>
+                                <select id="reposo_frecuencia" class="input-app">
+                                    <option value="1">Cada 1 hora</option>
+                                    <option value="2">Cada 2 horas</option>
+                                    <option value="4">Cada 4 horas</option>
+                                    <option value="8">Cada 8 horas</option>
+                                </select>
+
+                                <label class="sdi-label mt10">Verificar medicamentos por cámara</label>
+                                <select id="reposo_control_medicamentos" class="input-app">
+                                    <option value="1">Sí</option>
+                                    <option value="0">No</option>
+                                </select>
+
+                                <label class="sdi-label mt10">Verificar ubicación del paciente</label>
+                                <select id="reposo_control_ubicacion" class="input-app">
+                                    <option value="1">Sí</option>
+                                    <option value="0">No</option>
+                                </select>
+
+                                <label class="sdi-label mt10">Dirección base del reposo</label>
+                                <textarea id="reposo_direccion" class="input-app" rows="2" placeholder="Ej: Av. Balmaceda 1234, La Serena"></textarea>
+
+                                <label class="sdi-label mt10">Observaciones</label>
+                                <textarea id="reposo_observaciones" class="input-app" rows="3" placeholder="Indicaciones adicionales para el paciente"></textarea>
+
+                                <div class="sdi-reposo-actions mt20">
+                                    <button type="button" class="sdi-btn sdi-btn-autorizar" onclick="guardar_config_reposo()">
+                                        GUARDAR CONFIGURACIÓN
+                                    </button>
+
+                                    <button type="button" class="sdi-btn sdi-btn-rechazar" onclick="probar_camara_reposo()">
+                                        PROBAR CÁMARA
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                            <!--
+                            <li class="mt10">- <span class="color-verde txt_bold">Autorización</span> Dr. Jaime Kriman - 22:59:00 20-12-20222</li>
+                            <li class="mt10">- <span class="color-rojo txt_bold">Rechazado </span> Dr. Jaime Kriman - 22:59:00 20-12-20222</li>
+                            -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div data-role="footer" class="footer menu-inferior" id="footer-autorizaciones">
+                <div class="row bg-azul">
+                    <div class="col-xs-4 pt10 pb10 text-center autorizaciones-footer-principal">
+                        <p class="color-blanco size12" onclick="volverInicioSegunRol()"><img class="mb10" width="20" src="src/images/home.svg"><br>Inicio</p>
+                    </div>
+                    <div class="col-xs-4 pt10 pb10 text-center autorizaciones-footer-citas">
+                        <p class="color-blanco size12" onclick="vista('citas'); solicitarMisHorasMedicas();"><img class="mb10" width="20" src="src/images/citas.svg"><br>Citas</p>
+                    </div>
+                    <div class="col-xs-4 pt10 pb10 text-center autorizaciones-footer-principal">
+                        <p class="color-blanco size12" onclick="cerrarSesion()"><img class="mb10" width="20" src="src/images/salir.svg"><br>Cerrar sesión</p>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div data-role="page" id="autorizacion">
+            <div data-role="header" class="header" id="header-ni">
+                <div class="row bg-azul">
+                    <div class="col-xs-12 mt20">
+                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/fotoperfil.png"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
+
+                        <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
+
+                        <div class="col-xs-12 top-titulos">
+                            <p class="letra-bold color-azul-oscuro size20 text-center mt30">Mis autorizaciones</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div role="main" class="ui-content">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <p class="color-azul size20 mt10 mb10 text-center">SDI</p>
+                        <input type="hidden" id="id_log">
+                        <p class="text-center mt10 mb10" id="log_reg_autorizacion">
+                            <!--
+                                Solicitud de Autorización
+                            El <span class="color-azul-oscuro">Dr. Jaime D.</span> Desea acceder a su <span class="color-azul-oscuro">FMU</span></p>
+                            -->
+                        <p class="color-azul size20 mt10 mb10 text-center">INGRESE CLAVE SDI</p>
+                        <input type="password" id="password_" class="input-app center-block text-center color-azul mt10 mb10" value="" placeholder="">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6 bg-verde pt20 pb20 color-blanco text-uppercase text-center pointer txt_bold size20" onclick="respuesta(1)">AUTORIZAR</div>
+                    <div class="col-xs-6 bg-rojo pt20 pb20 color-blanco text-uppercase text-center pointer txt_bold size20" onclick="respuesta(2)">RECHAZAR</div>
+                </div>
+            </div>
+
+            <div data-role="footer" class="footer menu-inferior" id="fot-mni">
+                <div class="row bg-azul">
+                    <div class="col-xs-4 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('index')"><img class="mb10" width="20" src="src/images/home.svg"><br>Inicio</p>
+                    </div>
+                    <div class="col-xs-4 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('citas'); solicitarMisHorasMedicas();"><img class="mb10" width="20" src="src/images/citas.svg"><br>Citas</p>
+                    </div>
+                    <div class="col-xs-4 pt10 pb10 text-center">
+                        <p class="color-blanco size12" onclick="vista('login')"><img class="mb10" width="20" src="src/images/salir.svg"><br>Cerrar sesión</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div data-role="page" id="autorizado">
+            <div data-role="header" class="header" id="header">
+                <div class="row">
+                    <div class="col-xs-12 bg-azul pt20 pb20"><p class="color-blanco text-center size20">ACEPTADA</p></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <img class="img-responsive" src="src/images/home/bg.jpg">
+                    </div>
+                </div>
+            </div>
+
+            <div role="main" class="ui-content">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <p class="color-azul size20 mt10 mb10 text-center">SDI</p>
+                        <p class="text-center mt10 mb10">Clave <span class="color-verde txt_bold">SDI Autorizada</span>
+                            <span class="msg_estado"></span></p>
+                        <img class="center-block mt320 mb20" src="src/images/home/ok.svg" width="100">
+                    </div>
+                </div>
+            </div>
+
+            <div data-role="footer" class="footer" id="footer">
+                <div class="row">
+                    <div class="col-xs-12 bg-azul pt20 pb20 color-blanco text-uppercase text-center pointer txt_bold size20" onclick="volverInicioSegunRol()">VOLVER</div>
+                </div>
+            </div>
+        </div>
+
+        <div data-role="page" id="rechazado">
+            <div data-role="header" class="header" id="header">
+                <div class="row">
+                    <div class="col-xs-12 bg-azul pt20 pb20"><p class="color-blanco text-center size20">RECHAZADA</p></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <img class="img-responsive" src="src/images/home/bg.jpg">
+                    </div>
+                </div>
+            </div>
+
+            <div role="main" class="ui-content">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <p class="color-azul size20 mt10 mb10 text-center">SDI</p>
+                        <p class="text-center mt10 mb10">Clave <span class="color-verde txt_bold">SDI Rechazada</span>
+                            <span class="msg_estado"></span></p>
+                        <img class="center-block mt320 mb20" src="src/images/home/cancel.svg" width="100">
+                    </div>
+                </div>
+            </div>
+
+            <div data-role="footer" class="footer" id="footer">
+                <div class="row">
+                    <div class="col-xs-12 bg-azul pt20 pb20 color-blanco text-uppercase text-center pointer txt_bold size20" onclick="volverInicioSegunRol()">VOLVER</div>
+                </div>
+            </div>
+        </div>
+
+        <div data-role="page" id="log">
+            <div data-role="header" class="header" id="header">
+                <div class="row">
+                    <div class="col-xs-12 bg-azul pt20 pb20"><p class="color-blanco text-center size20">LOG APP</p></div>
+                </div>
+            </div>
+
+            <div role="main" class="ui-content">
+                <div class="row">
+                    <div class="col-xs-12" id="contenedor-log">
+
+                    </div>
+                </div>
+            </div>
+
+            <div data-role="footer" class="footer" id="footer">
+                <div class="row">
+                    <div class="col-xs-12 bg-azul pt20 pb20 color-blanco text-uppercase text-center pointer txt_bold size20" onclick="vista('login')">VOLVER</div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

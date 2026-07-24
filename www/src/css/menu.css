@@ -1,0 +1,9 @@
+.ui-panel-inner > ul > li{
+    width: 100%;
+    list-style: none;
+    height: 46px;
+    border-bottom: 1px solid #999999;
+    list-style: none;
+    line-height: 3;
+}
+
