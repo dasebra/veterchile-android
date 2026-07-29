@@ -151,6 +151,13 @@
                                 <small class="color-gris mt10">Revisa tus solicitudes de autorización pendientes.</small>
                             </div>
                         </div>
+                        <div class="col-xs-12 mb20" onclick="vista('agenda-profesional'); cargarAgendaProfesional()">
+                            <div class="inicio-profesional-card">
+                                <div class="inicio-profesional-icono">📅</div>
+                                <div class="texto letra-bold">Mi agenda</div>
+                                <small class="color-gris mt10">Revisa tus citas por lugar de atención y entra a telemedicina.</small>
+                            </div>
+                        </div>
                         <div class="col-xs-12" onclick="abrirDesafiosAcceso()">
                             <div id="boton_desafios_profesional" class="inicio-profesional-card">
                                 <div class="inicio-profesional-icono">🔐</div>
@@ -173,6 +180,42 @@
             </div>
         </div>
         <!--CIERRE INICIO PROFESIONAL-->
+        <div data-role="page" id="agenda-profesional">
+            <div data-role="header" class="header">
+                <div class="row bg-azul pt20"><div class="col-xs-12">
+                    <p class="color-blanco size18 text-center">Mi agenda profesional</p>
+                </div></div>
+            </div>
+            <div role="main" class="ui-content agenda-profesional-contenido">
+                <div class="agenda-profesional-filtros">
+                    <label for="agenda_profesional_lugar">Lugar de atención</label>
+                    <select id="agenda_profesional_lugar" class="agenda-profesional-select" onchange="cargarAgendaProfesional(this.value)">
+                        <option value="">Todos los lugares</option>
+                    </select>
+                </div>
+                <div class="row agenda-profesional-navegacion">
+                    <div class="col-xs-2">
+                        <div class="btn-app4 agenda-profesional-flecha" onclick="cambiarDiaAgendaProfesional(-1)">‹</div>
+                    </div>
+                    <div class="col-xs-8">
+                        <input type="date" id="agenda_profesional_fecha" class="agenda-profesional-fecha" onchange="cargarAgendaProfesional()">
+                    </div>
+                    <div class="col-xs-2">
+                        <div class="btn-app4 agenda-profesional-flecha" onclick="cambiarDiaAgendaProfesional(1)">›</div>
+                    </div>
+                    <div class="col-xs-12 mt10">
+                        <div class="btn-app4 agenda-profesional-hoy" onclick="irHoyAgendaProfesional()">Hoy</div>
+                    </div>
+                </div>
+                <p id="agenda_profesional_dia_label" class="agenda-profesional-dia"></p>
+                <div id="lista-agenda-profesional" class="mt20 mb60"></div>
+            </div>
+            <div data-role="footer" class="footer menu-inferior">
+                <div class="row bg-azul"><div class="col-xs-12 pt10 pb10 text-center">
+                    <p class="color-blanco size13" onclick="vista('inicio-profesional')">Volver</p>
+                </div></div>
+            </div>
+        </div>
 
         <!--INICIO-->
         <div data-role="page" id="index">
@@ -454,7 +497,7 @@
 
                         <div class="col-xs-12 top-titulos">
                             <p class="color-azul-oscuro size20 mt30 mb10 text-center">Mis exámenes</p>
-                        <div class="btn-app4 text-center mt20 mb20" onclick="list_document_user()"><img class="pr10" src="src/images/sincro.svg">Actualizar exámenes</div>
+                        <div class="btn-app4 text-center mt20 mb20" onclick="list_examenes_paciente()"><img class="pr10" src="src/images/sincro.svg">Actualizar exámenes</div>
                         </div>
                     </div>
                 </div>          
@@ -463,30 +506,7 @@
                 <div class="row mb60">
                     <div class="col-xs-12">
                         <p class="mt20 text-center size18 mb20 color-azul-oscuro">Últimos registros de exámenes</p>
-                        <div class="col-xs-12 mb60" id="">
-                            <div class="card-button-dos mb20">
-                                <div class="row">
-                                    <div class="col-xs-12 text-left">
-                                        <p class="letra-small mb5 color-azul">Fecha: <span class="letra-small">11-11-2025 / 00:00:00</span></p>
-                                         <p class="letra-small mb5 color-azul">Nº Orden: <span class="letra-small">3723984238</span></p>
-                                        <div class="btn-app7" style="width: 40%; padding-left: 10px;">
-                                            Ver Examen
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-button-dos mb20">
-                                <div class="row">
-                                    <div class="col-xs-12 text-left">
-                                        <p class="letra-small mb5 color-azul">Fecha: <span class="letra-small">11-11-2025 / 00:00:00</span></p>
-                                         <p class="letra-small mb5 color-azul">Nº Orden: <span class="letra-small">3723984238</span></p>
-                                        <div class="btn-app8" style="width: 40%; padding-left: 10px;">
-                                            En proceso
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <div class="col-xs-12 mb60" id="list_examenes"></div>
                     </div>
                 </div>                 
             </div>
@@ -518,7 +538,7 @@
 
                         <div class="col-xs-12 top-titulos">
                             <p class="color-azul-oscuro size20 mt30 mb10 text-center">Mis recetas</p>
-                        <div class="btn-app4 text-center mt20 mb20" onclick="list_document_user()"><img class="pr10" src="src/images/sincro.svg">Actualizar recetas</div>
+                        <div class="btn-app4 text-center mt20 mb20" onclick="list_recetas_paciente()"><img class="pr10" src="src/images/sincro.svg">Actualizar recetas</div>
                         </div>
                     </div>
                 </div>          
@@ -527,31 +547,7 @@
                 <div class="row mb60">
                     <div class="col-xs-12">
                         <p class="mt20 text-center size18 color-azul-oscuro mb20">Últimos registros de recetas</p>
-                        <div class="col-xs-12 mb60" id="">
-                            <div class="card-button-dos mb20">
-                                <div class="row">
-                                    <div class="col-xs-12 text-left">
-                                        <p class="letra-small mb5 color-azul">Fecha emisión: <span class="letra-small">22-08-2005</span></p>
-                                        <p class="letra-small mb5 color-azul">Tipo: <span class="color-rojo">Retenida</span></p>
-                                        <div class="btn-app7" style="width: 40%; padding-left: 10px;">
-                                            Ver Receta
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-button-dos mb20">
-                                <div class="row">
-                                    <div class="col-xs-12 text-left">
-
-                                        <p class="letra-small mb5 color-azul">Fecha emisión: <span class="letra-small">09-05-2010</span></p>
-                                        <p class="letra-small mb5 color-azul">Tipo: <span class="letra-small">Normal</span></p>
-                                        <div class="btn-app7" style="width: 40%; padding-left: 10px;">
-                                            Ver Receta
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <div class="col-xs-12 mb60" id="list_recetas"></div>
                     </div>
                 </div>                 
             </div>
@@ -636,7 +632,7 @@
 
                         <div class="col-xs-12 top-titulos">
                             <p class="color-azul-oscuro size20 mt30 mb10 text-center">Mis consentimientos </p>
-                        <div class="btn-app4 text-center mt20 mb20" onclick="list_document_user()"><img class="pr10" src="src/images/sincro.svg">Actualizar consentimientos</div>
+                        <div class="btn-app4 text-center mt20 mb20" onclick="list_consentimientos()"><img class="pr10" src="src/images/sincro.svg">Actualizar consentimientos</div>
                         </div>
                     </div>
                 </div>          
@@ -645,19 +641,7 @@
                 <div class="row mb60">
                     <div class="col-xs-12">
                         <p class="mt20 text-center size18 color-azul-oscuro mb20">Últimos registros de consentimientos</p>
-                        <div class="col-xs-12 mb60" id="">
-                            <div class="card-button-dos mb20">
-                                <div class="row">
-                                    <div class="col-xs-12 text-left">
-                                        <p class="letra-small mb5 color-azul">Tipo: <span class="letra-small">Titulo</span></p>
-                                        <p class="letra-small mb5 color-azul">Fecha emisión: <span class="letra-small">11-11-2025</span></p>
-                                        <div class="btn-app7" style="width: 40%; padding-left: 10px;">
-                                            Ver Consentimiento
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <div class="col-xs-12 mb60" id="list_consentimientos"></div>
                     </div>
                 </div>                 
             </div>

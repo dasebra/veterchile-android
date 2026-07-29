@@ -7,6 +7,30 @@ $(document).on( "pageshow","#home",function( event ) {
     list_document_user();
 });
 
+$(document).on('pageshow', '#certificadosro', function() {
+    list_consentimientos();
+});
+
+$(document).on('pageshow', '#recetasro', function() {
+    list_recetas_paciente();
+});
+
+$(document).on('pageshow', '#examenesro', function() {
+    list_examenes_paciente();
+});
+
+$(document).on('click', '.js-ver-consentimiento', function() {
+    abrirConsentimiento($(this).attr('data-consentimiento-url'));
+});
+
+$(document).on('click', '.js-ver-receta', function() {
+    abrirConsentimiento($(this).attr('data-receta-url'));
+});
+
+$(document).on('click', '.js-ver-examen', function() {
+    abrirConsentimiento($(this).attr('data-examen-url'));
+});
+
 $(document).on( "pageshow","#autorizaciones_sdi",function( event ) {
     configurarFooterAutorizaciones();
     list_log_device();
@@ -17,6 +41,97 @@ $(document).on( "pageshow","#autorizaciones_sdi",function( event ) {
 const volverInicioSegunRol = () => {
     const rolActivo = localStorage.getItem('rolActivo');
     vista(rolActivo === 'Profesional' ? 'inicio-profesional' : 'index', 'fade');
+};
+
+const abrirVideollamadaApp = (url) => {
+    if (!url) return;
+    if (window.cordova && cordova.InAppBrowser) {
+        cordova.InAppBrowser.open(url, '_blank', 'location=yes,mediaPlaybackRequiresUserAction=no');
+    } else {
+        window.open(url, '_blank');
+    }
+};
+
+const fechaLocalAgendaProfesional = (fecha) => {
+    var year = fecha.getFullYear();
+    var month = String(fecha.getMonth() + 1).padStart(2, '0');
+    var day = String(fecha.getDate()).padStart(2, '0');
+    return year + '-' + month + '-' + day;
+};
+
+const irHoyAgendaProfesional = () => {
+    $('#agenda_profesional_fecha').val(fechaLocalAgendaProfesional(new Date()));
+    cargarAgendaProfesional();
+};
+
+const cambiarDiaAgendaProfesional = (dias) => {
+    var valor = $('#agenda_profesional_fecha').val() || fechaLocalAgendaProfesional(new Date());
+    var fecha = new Date(valor + 'T12:00:00');
+    fecha.setDate(fecha.getDate() + dias);
+    $('#agenda_profesional_fecha').val(fechaLocalAgendaProfesional(fecha));
+    cargarAgendaProfesional();
+};
+
+const cargarAgendaProfesional = (idLugar) => {
+    if (!$('#agenda_profesional_fecha').val()) {
+        $('#agenda_profesional_fecha').val(fechaLocalAgendaProfesional(new Date()));
+    }
+
+    var fechaSeleccionada = $('#agenda_profesional_fecha').val();
+    var fechaLabel = new Date(fechaSeleccionada + 'T12:00:00');
+    $('#agenda_profesional_dia_label').text(
+        fechaLabel.toLocaleDateString('es-CL', {
+            weekday: 'long',
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric'
+        })
+    );
+
+    var api = new Api('profesional', 'agenda');
+    api.request(
+        {
+            id_lugar_atencion: idLugar || $('#agenda_profesional_lugar').val() || '',
+            fecha: fechaSeleccionada
+        },
+        function(resp) {
+            var lugares = Array.isArray(resp.lugares) ? resp.lugares : [];
+            var actual = String(idLugar || $('#agenda_profesional_lugar').val() || '');
+            var opciones = '<option value="">Todos los lugares</option>';
+            lugares.forEach(function(lugar) {
+                opciones += '<option value="' + lugar.id + '">' +
+                    escaparTextoConsentimiento(lugar.nombre) + '</option>';
+            });
+            $('#agenda_profesional_lugar').html(opciones).val(actual);
+
+            var registros = Array.isArray(resp.registros) ? resp.registros : [];
+            var html = registros.length ? '' : '<p class="text-center">No hay citas para este día.</p>';
+            registros.forEach(function(hora) {
+                var video = hora.es_telemedicina
+                    ? (hora.puede_conectarse && hora.video_url
+                        ? '<div class="btn-app7 mt10" onclick="abrirVideollamadaApp(\'' +
+                            hora.video_url + '\')">Iniciar videollamada</div>'
+                        : '<div class="btn-app8 mt10">Telemedicina: ' +
+                            escaparTextoConsentimiento(hora.estado) + '</div>')
+                    : '';
+                html += '<div class="card-button-dos agenda-profesional-cita mb20">' +
+                    '<p class="agenda-profesional-paciente">' + escaparTextoConsentimiento(hora.paciente) + '</p>' +
+                    '<div class="agenda-profesional-detalle">' +
+                    '<p><b>Fecha</b><span>' + escaparTextoConsentimiento(fechaEsp(hora.fecha)) + '</span></p>' +
+                    '<p><b>Horario</b><span>' + escaparTextoConsentimiento(hora.hora_inicio) +
+                        ' - ' + escaparTextoConsentimiento(hora.hora_termino) + '</span></p>' +
+                    '<p><b>Lugar</b><span>' + escaparTextoConsentimiento(hora.lugar) + '</span></p>' +
+                    '<p><b>Estado</b><span>' + escaparTextoConsentimiento(hora.estado) + '</span></p>' +
+                    '</div>' +
+                    video + '</div>';
+            });
+            $('#lista-agenda-profesional').html(html);
+        },
+        function() {
+            $('#lista-agenda-profesional').html('<p>No fue posible cargar la agenda.</p>');
+        },
+        'GET'
+    );
 };
 
 const configurarFooterAutorizaciones = () => {
@@ -279,91 +394,273 @@ const registerDevice = () => {
 }
 
 const list_document_user = ()=>{
+    list_recetas_paciente();
+}
 
-    var estructura_html = '';
-    $('#list_recetas').html('');
-    $('#log_reg_autorizacion').html('');
+const escaparTextoConsentimiento = (valor) => {
+    return $('<div>').text(valor == null ? '' : String(valor)).html();
+};
 
-    var datos = {};
+const abrirConsentimiento = (url) => {
+    if (!url) {
+        return;
+    }
 
-    datos.id_paciente = _SESSION('id_usuario');
+    // Los documentos clínicos se abren directamente, sin enviar su URL
+    // temporal a visores externos.
+    if (window.cordova && cordova.InAppBrowser) {
+        cordova.InAppBrowser.open(url, '_blank', 'location=yes');
+        return;
+    }
 
-    cargando(1); 
+    window.open(url, '_blank');
+};
 
-    var api = new Api("documento", "ver_registro_recetas");
+const list_consentimientos = () => {
+    var $contenedor = $('#list_consentimientos');
+    $contenedor.html('<p class="text-center color-azul">Cargando consentimientos...</p>');
+    cargando(1);
+
+    var api = new Api('paciente', 'mis_consentimientos');
     api.request(
-        datos,
-        function (resp) {
-            LOG('Recetas estado:'+resp.estado);
-            LOG('Cantidad Recetas:'+resp.registros.length);
-            if (resp.estado == 1) {
+        {},
+        function(resp) {
+            var registros = Array.isArray(resp.registros) ? resp.registros : [];
 
-                var html_= `
-                            `;
-                /*
-                <table class="table table-hover table-border">
-                            <tr>
-                            <td>ID<td>
-                            <td>Diagnostico<td>
-                            <td>Posologia</td>
-                            <td>Fecha</td>
-                            <td>Receta</td>
-                            <tr>
-                */
+            if (resp.estado != 1 || registros.length === 0) {
+                $contenedor.html(
+                    '<div class="card-button-dos mb20">' +
+                        '<p class="text-center color-azul">No tienes consentimientos informados registrados.</p>' +
+                    '</div>'
+                );
+                cargando(0);
+                return;
+            }
 
-                resp.registros.forEach(reg => {    
-                   
-                    /*
-                      <tr>
-                    <td>${reg.id}<td>
-                    <td>${reg.hipotesis_diagnostico}<td>
-                    <td>${reg.posologia}</td>
-                    <td>${fechaEsp(reg.created_at)}</td>
-                    <td><a onclick="openReceta('${api.url}/documento/ver_receta_pdf/${reg.id}')">${svg_receta}</a></td>
-                    <tr>
-                    */
+            var html = '';
+            registros.forEach(function(registro) {
+                var tipo = escaparTextoConsentimiento(registro.tipo || 'Consentimiento informado');
+                var profesional = escaparTextoConsentimiento(registro.profesional || 'No informado');
+                var estado = escaparTextoConsentimiento(registro.estado_consentimiento || 'Pendiente');
+                var fecha = registro.fecha_emision
+                    ? escaparTextoConsentimiento(fechaEsp(registro.fecha_emision))
+                    : 'Sin fecha';
+                var pdfUrl = escaparTextoConsentimiento(registro.pdf_url || '');
 
-                    var posologia = reg.posologia==null?'sin registro':reg.posologia;
-                    var hipotesis_diagnostico = reg.hipotesis_diagnostico==null?'sin registro':reg.hipotesis_diagnostico;
-                    
+                html +=
+                    '<div class="card-button-dos mb20">' +
+                        '<div class="row">' +
+                            '<div class="col-xs-12 text-left">' +
+                                '<p class="letra-small mb5 color-azul"><b>Tipo:</b> ' + tipo + '</p>' +
+                                '<p class="letra-small mb5 color-azul"><b>Fecha emisión:</b> ' + fecha + '</p>' +
+                                '<p class="letra-small mb5 color-azul"><b>Profesional:</b> ' + profesional + '</p>' +
+                                '<p class="letra-small mb5 color-azul"><b>Estado:</b> ' + estado + '</p>' +
+                                (pdfUrl
+                                    ? '<div class="btn-app7 js-ver-consentimiento" ' +
+                                        'data-consentimiento-url="' + pdfUrl + '" ' +
+                                        'style="width: 55%; padding-left: 10px;">Ver consentimiento</div>'
+                                    : '') +
+                            '</div>' +
+                        '</div>' +
+                    '</div>';
+            });
 
-                    html_+=`                  
-                    <div class="box-documento">
-                            <p class="color-azul-oscuro size16">Receta</p>
-                            <p><b>RID:</b> ${reg.id}</p>
-                            <p><b>Diagnóstico:</b> ${hipotesis_diagnostico}</p>
-                            <p><b>Posologia:</b> ${posologia}</p>
-                            <p><b>Fecha:</b> ${fechaEsp(reg.created_at)}</p>
-                            <div class="btn-app5" onclick="openReceta('${api.url}/documento/ver_receta_pdf/${reg.id_ficha}')">VER DOCUMENTO</div>
-                        </div>   
-                    `;
+            $contenedor.html(html);
+            cargando(0);
+        },
+        function(xhr) {
+            var mensaje = xhr && xhr.status === 401
+                ? 'Tu sesión expiró. Ingresa nuevamente.'
+                : 'No fue posible cargar tus consentimientos.';
 
-                    //<td><a target="" href="${api.url}/documento/ver_receta_pdf/${reg.id}">${svg_receta}</a></td>
-                    //openReceta
-                  
+            $contenedor.html(
+                '<div class="card-button-dos mb20">' +
+                    '<p class="text-center color-azul">' + escaparTextoConsentimiento(mensaje) + '</p>' +
+                '</div>'
+            );
+            cargando(0);
+        },
+        'GET'
+    );
+};
+
+const list_recetas_paciente = () => {
+    var $contenedor = $('#list_recetas');
+    $contenedor.html('<p class="text-center color-azul">Cargando recetas...</p>');
+    cargando(1);
+
+    var api = new Api('paciente', 'mis_recetas');
+    api.request(
+        {},
+        function(resp) {
+            var registros = Array.isArray(resp.registros) ? resp.registros : [];
+
+            if (resp.estado != 1 || registros.length === 0) {
+                $contenedor.html(
+                    '<div class="card-button-dos mb20">' +
+                        '<p class="text-center color-azul">No tienes recetas registradas.</p>' +
+                    '</div>'
+                );
+                cargando(0);
+                return;
+            }
+
+            var html = '';
+            registros.forEach(function(receta) {
+                var fecha = receta.fecha_emision
+                    ? escaparTextoConsentimiento(fechaEsp(receta.fecha_emision))
+                    : 'Sin fecha';
+                var tipo = escaparTextoConsentimiento(receta.tipo || 'Receta médica');
+                var diagnostico = escaparTextoConsentimiento(
+                    receta.diagnostico || 'No informado'
+                );
+                var profesional = escaparTextoConsentimiento(
+                    receta.profesional || 'No informado'
+                );
+                var cantidad = Number(receta.cantidad_medicamentos || 0);
+                var pdfUrl = escaparTextoConsentimiento(receta.pdf_url || '');
+
+                html +=
+                    '<div class="card-button-dos mb20">' +
+                        '<div class="row">' +
+                            '<div class="col-xs-12 text-left">' +
+                                '<p class="letra-small mb5 color-azul"><b>Fecha emisión:</b> ' + fecha + '</p>' +
+                                '<p class="letra-small mb5 color-azul"><b>Tipo:</b> ' + tipo + '</p>' +
+                                '<p class="letra-small mb5 color-azul"><b>Diagnóstico:</b> ' + diagnostico + '</p>' +
+                                '<p class="letra-small mb5 color-azul"><b>Profesional:</b> ' + profesional + '</p>' +
+                                '<p class="letra-small mb5 color-azul"><b>Medicamentos:</b> ' + cantidad + '</p>' +
+                                (pdfUrl
+                                    ? '<div class="btn-app7 js-ver-receta" ' +
+                                        'data-receta-url="' + pdfUrl + '" ' +
+                                        'style="width: 55%; padding-left: 10px;">Ver receta</div>'
+                                    : '') +
+                            '</div>' +
+                        '</div>' +
+                    '</div>';
+            });
+
+            $contenedor.html(html);
+            cargando(0);
+        },
+        function(xhr) {
+            var mensaje = xhr && xhr.status === 401
+                ? 'Tu sesión expiró. Ingresa nuevamente.'
+                : 'No fue posible cargar tus recetas.';
+
+            $contenedor.html(
+                '<div class="card-button-dos mb20">' +
+                    '<p class="text-center color-azul">' +
+                        escaparTextoConsentimiento(mensaje) +
+                    '</p>' +
+                '</div>'
+            );
+            cargando(0);
+        },
+        'GET'
+    );
+};
+
+const list_examenes_paciente = () => {
+    var $contenedor = $('#list_examenes');
+    $contenedor.html('<p class="text-center color-azul">Cargando exámenes...</p>');
+    cargando(1);
+
+    var api = new Api('paciente', 'mis_examenes');
+    api.request(
+        {},
+        function(resp) {
+            var registros = Array.isArray(resp.registros) ? resp.registros : [];
+
+            if (resp.estado != 1 || registros.length === 0) {
+                $contenedor.html(
+                    '<div class="card-button-dos mb20">' +
+                        '<p class="text-center color-azul">No tienes órdenes ni resultados de exámenes.</p>' +
+                    '</div>'
+                );
+                cargando(0);
+                return;
+            }
+
+            var html = '';
+            registros.forEach(function(examen) {
+                var fecha = examen.fecha
+                    ? escaparTextoConsentimiento(fechaEsp(examen.fecha))
+                    : 'Sin fecha';
+                var nombre = escaparTextoConsentimiento(
+                    examen.nombre || 'Examen sin nombre'
+                );
+                var profesional = escaparTextoConsentimiento(
+                    examen.profesional || 'No informado'
+                );
+                var estado = escaparTextoConsentimiento(
+                    examen.estado_examen || 'Orden emitida'
+                );
+                var numeroOrden = escaparTextoConsentimiento(
+                    examen.numero_orden || ''
+                );
+                var archivos = Array.isArray(examen.archivos)
+                    ? examen.archivos
+                    : [];
+                var botones = '';
+
+                archivos.forEach(function(archivo) {
+                    var url = escaparTextoConsentimiento(archivo.url || '');
+                    var etiqueta = examen.tipo_registro === 'resultado'
+                        ? 'Ver resultado'
+                        : 'Ver orden';
+
+                    if (url) {
+                        botones +=
+                            '<div class="btn-app7 js-ver-examen mb5" ' +
+                                'data-examen-url="' + url + '" ' +
+                                'style="width: 55%; padding-left: 10px;">' +
+                                escaparTextoConsentimiento(etiqueta) +
+                            '</div>';
+                    }
                 });
 
-                if(resp.registros.length==0)
-                {
-                    html_+=`
-                    <div class="box-documento">
-                        <p class="size20 color-azul">Sin registro de documentos<td>
-                    </div>
-                    `; 
+                if (!botones) {
+                    botones =
+                        '<div class="btn-app8" style="width: 55%; padding-left: 10px;">' +
+                            estado +
+                        '</div>';
                 }
-                 html_+=`</table>`;
-                 $('#list_recetas').html(html_);    
-            }
-            cargando(0); 
 
-        },
-        function (resp) { 
-            cargando(0); 
-            msg('Lista log eventos', 'Error de lista de eventos', 'error');
-        },
-        "GET");
+                html +=
+                    '<div class="card-button-dos mb20">' +
+                        '<div class="row">' +
+                            '<div class="col-xs-12 text-left">' +
+                                '<p class="letra-small mb5 color-azul"><b>Fecha:</b> ' + fecha + '</p>' +
+                                '<p class="letra-small mb5 color-azul"><b>Nº registro:</b> ' + numeroOrden + '</p>' +
+                                '<p class="letra-small mb5 color-azul"><b>Examen:</b> ' + nombre + '</p>' +
+                                '<p class="letra-small mb5 color-azul"><b>Profesional:</b> ' + profesional + '</p>' +
+                                '<p class="letra-small mb5 color-azul"><b>Estado:</b> ' + estado + '</p>' +
+                                botones +
+                            '</div>' +
+                        '</div>' +
+                    '</div>';
+            });
 
-}
+            $contenedor.html(html);
+            cargando(0);
+        },
+        function(xhr) {
+            var mensaje = xhr && xhr.status === 401
+                ? 'Tu sesión expiró. Ingresa nuevamente.'
+                : 'No fue posible cargar tus exámenes.';
+
+            $contenedor.html(
+                '<div class="card-button-dos mb20">' +
+                    '<p class="text-center color-azul">' +
+                        escaparTextoConsentimiento(mensaje) +
+                    '</p>' +
+                '</div>'
+            );
+            cargando(0);
+        },
+        'GET'
+    );
+};
 
 const solicitarFmu = () => {
     var datos = {};
@@ -795,7 +1092,7 @@ const solicitarMisHorasMedicas = () => {
     var datos = {};
     datos.id_paciente = _SESSION('id_usuario');
     cargando(1);
-    var api = new Api("paciente", "mis_horas_medicas");
+    var api = new Api("paciente", "agenda");
     api.request(
         datos,
         function (resp) {
@@ -834,6 +1131,17 @@ const solicitarMisHorasMedicas = () => {
                             </div>
                         </div>
                     ` : '';
+                    const botonVideoHtml = hora.es_telemedicina ? (
+                        hora.puede_conectarse && hora.video_url ? `
+                        <div class="col-xs-12 text-center">
+                            <div class="btn-app7 mt10 mb10" onclick="abrirVideollamadaApp('${hora.video_url}')">
+                                Conectarse a videollamada
+                            </div>
+                        </div>` : `
+                        <div class="col-xs-12 text-center">
+                            <div class="btn-app8 mt10 mb10">Telemedicina: ${hora.estado}</div>
+                        </div>`
+                    ) : '';
 
                     if(hora.foto_perfil && hora.foto_perfil!='')
                     {
@@ -868,6 +1176,7 @@ const solicitarMisHorasMedicas = () => {
                             </div>
                             ${botonesHtml}
                             ${botonAnularHtml}
+                            ${botonVideoHtml}
                         </div>
                     </div>
                     `;
@@ -1496,7 +1805,10 @@ const confirmarHoraMedica = (idHora, fecha, hora) => {
         function (resp) {
             console.error('Error confirmando hora:', resp);
             cargando(0);
-            msg('Error', 'Error de conexión al confirmar la hora', 'error');
+            var mensaje = resp && resp.responseJSON && resp.responseJSON.msj
+                ? resp.responseJSON.msj
+                : 'No fue posible confirmar la hora.';
+            msg('Confirmar Hora', mensaje, 'error');
         },
         "POST");
 }

@@ -115,10 +115,16 @@ var Api = /** @class */ (function () {
             'paciente/mi_ficha_medica',
             'paciente/mis_profesionales',
             'paciente/mis_horas_medicas',
+            'paciente/agenda',
+            'profesional/agenda',
+            'paciente/mis_examenes',
+            'paciente/mis_recetas',
+            'paciente/mis_consentimientos',
             'paciente/ficha_atencion_app',           // *** NUEVA RUTA ***
             'paciente/ficha-atencion-app',           // *** POR SI ACASO ***
             'profesionales/buscar_profesionales',
-            'paciente/agendar_hora_medica'
+            'paciente/agendar_hora_medica',
+            'paciente/confirmar_hora_medica'
             // Agregar aquí cualquier otra ruta que requiera autenticación
         ];
 
@@ -383,4 +389,3 @@ async function debugTokenIssue() {
         }
     }
 }
-

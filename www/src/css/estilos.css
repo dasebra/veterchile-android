@@ -4,6 +4,134 @@ p {
     font-family: "NunitoSans" sans-serif;
 }
 
+/* Agenda móvil del profesional */
+#agenda-profesional .agenda-profesional-contenido {
+    padding: 20px 16px 80px;
+    background: #f5f8fc;
+}
+
+#agenda-profesional .agenda-profesional-filtros {
+    width: 100%;
+    margin-bottom: 18px;
+}
+
+#agenda-profesional .agenda-profesional-filtros .ui-select {
+    width: 100%;
+    margin: 0;
+}
+
+#agenda-profesional .agenda-profesional-filtros .ui-select .ui-btn {
+    width: 100%;
+    min-height: 44px;
+    margin: 0;
+    border: 1px solid #cbd7e7;
+    border-radius: 12px;
+    box-sizing: border-box;
+}
+
+#agenda-profesional .agenda-profesional-filtros label {
+    display: block;
+    margin: 0 0 7px;
+    color: #26374a;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+#agenda-profesional .agenda-profesional-select {
+    display: block;
+    width: 100% !important;
+    max-width: none !important;
+    height: 44px;
+    margin: 0;
+    padding: 0 42px 0 14px;
+    border: 1px solid #cbd7e7;
+    border-radius: 12px;
+    background-color: #fff;
+    color: #26374a;
+    font-size: 15px;
+    box-sizing: border-box;
+}
+
+#agenda-profesional .agenda-profesional-navegacion {
+    margin: 0 -5px;
+}
+
+#agenda-profesional .agenda-profesional-navegacion > div {
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+#agenda-profesional .agenda-profesional-fecha {
+    width: 100%;
+    height: 44px;
+    margin: 0;
+    padding: 0 10px;
+    border: 1px solid #cbd7e7;
+    border-radius: 12px;
+    background: #fff;
+    color: #26374a;
+    font-size: 14px;
+    font-weight: 700;
+    box-sizing: border-box;
+}
+
+#agenda-profesional .agenda-profesional-flecha {
+    height: 44px;
+    padding: 8px 0;
+    border-radius: 12px;
+    font-size: 22px;
+    line-height: 28px;
+}
+
+#agenda-profesional .agenda-profesional-hoy {
+    height: 40px;
+    border-radius: 12px;
+    line-height: 24px;
+}
+
+#agenda-profesional .agenda-profesional-dia {
+    margin: 22px 0 16px;
+    color: #1450bd;
+    font-size: 16px;
+    font-weight: 800;
+    text-align: center;
+    text-transform: capitalize;
+}
+
+#agenda-profesional .agenda-profesional-cita {
+    display: block;
+    padding: 16px;
+    border-left: 4px solid #30b8bd;
+    border-radius: 14px;
+    text-align: left;
+}
+
+#agenda-profesional .agenda-profesional-paciente {
+    margin: 0 0 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e3eaf2;
+    color: #153b73;
+    font-size: 16px;
+    font-weight: 800;
+}
+
+#agenda-profesional .agenda-profesional-detalle p {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 7px 0;
+    color: #526174;
+    font-size: 13px;
+}
+
+#agenda-profesional .agenda-profesional-detalle b {
+    color: #26374a;
+}
+
+#agenda-profesional .agenda-profesional-detalle span {
+    text-align: right;
+}
+
 body {
     background-color: #f7f7f7; 
     font-family: "NunitoSans" sans-serif;
