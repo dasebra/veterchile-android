@@ -11,6 +11,10 @@ window.onload = () =>{
 };
 
 function onDeviceReady() {
+    if (typeof actualizarBotonLoginBiometricoApp === 'function') {
+        actualizarBotonLoginBiometricoApp();
+    }
+
     // El plugin cordova-plugin-device no expone `device` en Browser.
     if (typeof device === 'undefined') {
         LOG('Información del dispositivo no disponible en esta plataforma.');
@@ -110,6 +114,15 @@ const obtenerUuidDispositivo = () => {
     var uuid = String(localStorage.getItem('uuid') || $('#uuid').val() || '');
 
     uuid = $.trim(uuid);
+    var esCordovaBrowser = typeof cordova !== 'undefined' && cordova.platformId === 'browser';
+    if ((!uuid || uuid === '0') && esCordovaBrowser) {
+        var identificador = typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
+            ? crypto.randomUUID()
+            : Date.now().toString(36) + '-' + Math.random().toString(36).slice(2);
+        uuid = 'browser-' + identificador;
+        $('#model_device').val('Chrome local');
+        localStorage.setItem('model_device', 'Chrome local');
+    }
     if (!uuid || uuid === '0') {
         return '';
     }
@@ -499,6 +512,15 @@ const validarEmail = (valor) => {
 
     return estado;
 }
+
+const abrirControlReposoProfesional = () => {
+    if (localStorage.getItem('rolActivo') !== 'Profesional') {
+        msg('Control de reposo', 'Esta herramienta está disponible únicamente para el perfil profesional.', 'warning');
+        volverInicioSegunRol();
+        return;
+    }
+    vista('control-reposo-profesional', 'fade');
+};
 
 const guardar_config_reposo = () => {
 

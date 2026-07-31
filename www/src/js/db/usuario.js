@@ -75,13 +75,16 @@ const sesionUsuarioInit = (usuario,pass) => {
         'apellido': '',
         'rut':  '',
         'avatar': '',
-        'foto_perfil': usuario.foto_perfil || '',
+        // La foto se asigna después, según el rol que el usuario seleccione.
+        'foto_perfil': '',
         'sexo' : usuario.sexo || '',
         'pass':pass
     }
            
+    localStorage.removeItem('foto_perfil');
+    localStorage.removeItem('foto_perfil_url');
     sesionUsuario(usuarioi);
-      actualizarHeaderUsuario();
+    actualizarHeaderUsuario();
     /*
 
     query('SELECT * FROM usuario WHERE id_usuario =?', [usuario.id], 
@@ -170,6 +173,13 @@ const cerrarSesion = () => {
         model_device: localStorage.getItem('model_device'),
         fcmToken: localStorage.getItem('fcmToken')
     };
+    const configuracionBiometrica = {};
+    for (var indice = 0; indice < localStorage.length; indice++) {
+        var claveBiometrica = localStorage.key(indice);
+        if (claveBiometrica && claveBiometrica.indexOf('biometria_') === 0) {
+            configuracionBiometrica[claveBiometrica] = localStorage.getItem(claveBiometrica);
+        }
+    }
 
     localStorage.clear();
 
@@ -178,8 +188,16 @@ const cerrarSesion = () => {
             localStorage.setItem(clave, datosDispositivo[clave]);
         }
     });
+    Object.keys(configuracionBiometrica).forEach(function (clave) {
+        if (configuracionBiometrica[clave]) {
+            localStorage.setItem(clave, configuracionBiometrica[clave]);
+        }
+    });
 
     $('#user, #pass').val('');
+    if (typeof actualizarBotonLoginBiometricoApp === 'function') {
+        actualizarBotonLoginBiometricoApp();
+    }
     vista('login','slide');
 }
 
@@ -187,19 +205,22 @@ const actualizarHeaderUsuario = () => {
     const nombre = _SESSION('nombre') || 'Usuario';
     const sexo = _SESSION('sexo') || 'O';
     var foto_perfil = _SESSION('foto_perfil') || '';
-    if(foto_perfil=='') {
-        if(sexo=='M'){
-            foto_perfil = 'www/src/images/ejemplo_dr.jpg';
-        }else if(sexo=='F'){
-            foto_perfil = 'www/src/images/ejemplo_dra.jpg';
-        }else{
-            foto_perfil = 'www/src/images/ejemplo_dr.jpg';
-        }
-    }else{
-        foto_perfil = 'https://med-sdi.cl/storage/'+foto_perfil;
+    var foto_perfil_url = _SESSION('foto_perfil_url') || '';
+
+    if (foto_perfil_url) {
+        foto_perfil = foto_perfil_url;
+    } else if (foto_perfil && !/^(https?:|data:|blob:|file:)/i.test(foto_perfil)) {
+        var baseWeb = typeof MEDSDI_API_URL !== 'undefined'
+            ? MEDSDI_API_URL.replace(/\/api\/?$/, '')
+            : 'https://med-sdi.cl';
+        foto_perfil = baseWeb + '/storage/' + foto_perfil.replace(/^\/+/, '');
     }
 
-    // Actualizar el span del nombre en el header
-    $('.header .row h2 span').text(nombre);
-    $('.header .row h2 img').attr('src',foto_perfil);
+    if(foto_perfil=='') {
+        foto_perfil = 'src/images/avatar-generico.svg';
+    }
+
+    // Mantener sincronizados los encabezados antiguos y los nuevos dashboards.
+    $('.header .row h2 span, .dashboard-user h2 span').text(nombre);
+    $('.header .row h2 img, .dashboard-user h2 img').attr('src', foto_perfil);
 }

@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+﻿<!DOCTYPE html> 
 <html>
     <head>
         <meta charset="UTF-8">
@@ -41,6 +41,8 @@
         <script src="src/js/autorizacion/modulo.js"></script>    
         <script src="src/js/seguridad/modulo.js"></script>
         <script src="src/js/notificaciones/modulo.js"></script>
+        <script src="src/js/mensajes/modulo.js"></script>
+        <script src="src/js/emergencia/modulo.js"></script>
 
         <!-- Menu -->
         <link href="src/css/dcaccordion.css" rel="stylesheet" type="text/css" />
@@ -67,38 +69,58 @@
 
     <body>
         <!--LOGIN-->
-        <div  style="background-image: url(src/images/bgappinicio.jpg); background-position: center center; background-size: cover; background-repeat: repeat; background-attachment: fixed;" data-role="page" id="login">
-            <div data-role="header" class="header" id="header_log">
-                <div class="row">
-                    <div class="col-xs-12  pt20 pb20" ondblclick="vista('log')"><p class="color-blanco text-center size18">MED-SDI</p></div>
+        <div data-role="page" id="login">
+            <div class="login-hero" ondblclick="vista('log')">
+                <span class="login-hero-orbe login-hero-orbe-uno"></span>
+                <span class="login-hero-orbe login-hero-orbe-dos"></span>
+                <span class="login-hero-cruz" aria-hidden="true"></span>
+                <div class="login-marca">
+                    <img src="src/images/login/logo-blanco-sdi.png" alt="MED-SDI">
+                    <p>Tu salud, siempre contigo</p>
                 </div>
             </div>
-            <div role="main" class="ui-content">           
-                <div class="row">
-                    <div class="col-xs-3"></div>
-                    <div class="col-xs-6"><img alt="" class="img-responsive center-block mt40 wid200" src="src/images/login/logo-blanco-sdi.png"></div>
-                </div>
-                <!-- Login -->
-                <div class="row mt20" id="cont_i_login">
-                    <div class="col-xs-1"></div>
-                    <div class="col-xs-12">
-                        <div class="col-xs-12 mt70">
-                            <p class="size14 color-blanco txt_bold mb10">E-mail</p>
-                            <input type="email" class="input-app size16 color-gris col-xs-12" placeholder="" id="user" value="">
-                        </div>
-                        <div class="col-xs-12 mt40">
-                            <p class="size14 color-blanco txt_bold mb10">Contraseña</p>
-                            <label for="pass"></label><input type="password" class="input-app size16 color-gris col-xs-12" placeholder="" id="pass" value="">
+            <div role="main" class="ui-content login-panel">
+                <div class="login-panel-contenido" id="cont_i_login">
+                    <div class="login-bienvenida">
+                        <span class="login-bienvenida-icono" aria-hidden="true">✦</span>
+                        <div>
+                            <h1>¡Hola! Bienvenido</h1>
+                            <p>Ingresa a tu cuenta MED-SDI</p>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div data-role="footer" class="footer" id="footer_log">
-                <div class="row">
-                    <div class="col-xs-1"></div>
-                    <div class="col-xs-10 mt10">
-                        <div class="btn-app1 mt20 mb20" onclick="ingresarLogin()">Ingresar</div>
+                    <div class="login-campo">
+                        <label for="user">Correo electrónico</label>
+                        <div class="login-input-contenedor">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 6.5h17v11h-17zM4 7l8 6 8-6"/></svg>
+                            <input type="email" class="input-app" placeholder="nombre@correo.cl" id="user" value="" autocomplete="email">
+                        </div>
                     </div>
+                    <div class="login-campo">
+                        <label for="pass">Contraseña</label>
+                        <div class="login-input-contenedor">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+                            <input type="password" class="input-app" placeholder="Ingresa tu contraseña" id="pass" value="" autocomplete="current-password">
+                        </div>
+                    </div>
+                    <button type="button" class="login-boton-principal" onclick="ingresarLogin()">
+                        <span>Ingresar</span>
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M14 7l5 5-5 5"/></svg>
+                    </button>
+                    <div id="login_con_biometria" class="login-biometria" style="display:none" onclick="ingresarConBiometriaApp()" role="button" tabindex="0">
+                        <span class="biometria-icono" aria-hidden="true">
+                            <svg viewBox="0 0 64 64">
+                                <path d="M18 29c0-8 6-14 14-14s14 6 14 14"/>
+                                <path d="M13 30C13 19 21 10 32 10s19 9 19 20"/>
+                                <path d="M23 31c0-5 4-9 9-9s9 4 9 9c0 12-3 20-8 27"/>
+                                <path d="M17 36c0 9-2 13-5 18M29 29c0 14-2 21-8 29M35 29c0 15 2 20 7 27M47 35c0 8 1 13 5 18"/>
+                            </svg>
+                        </span>
+                        <span class="login-biometria-texto"><strong>Ingresar con huella</strong><small>Acceso rápido y seguro</small></span>
+                    </div>
+                    <p class="login-seguridad">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>
+                        Tus datos están protegidos
+                    </p>
                 </div>
             </div>
         </div>
@@ -127,59 +149,189 @@
 
         <!--INICIO PROFESIONAL-->
         <div data-role="page" id="inicio-profesional">
-            <div data-role="header" class="header">
-                <div class="row bg-azul pt20">
-                    <div class="col-xs-12">
-                        <h2 class="letra-bold size14 color-blanco ml10 d-inline">
-                            <img class="img-circulo" width="35" src="src/images/fotoperfil.png">
-                            <span class="size11 blanco size13 mr10 ml15">Profesional</span>
+            <div data-role="header" class="header dashboard-header">
+                <span class="dashboard-orbe dashboard-orbe-uno"></span>
+                <span class="dashboard-orbe dashboard-orbe-dos"></span>
+                <div class="dashboard-topbar">
+                    <img alt="MED-SDI" class="dashboard-logo" src="src/images/logo.png">
+                    <span class="dashboard-role"><i></i> Profesional</span>
+                    <div class="dashboard-user">
+                        <h2>
+                            <img class="img-circulo" src="src/images/avatar-generico.svg" alt="Foto de perfil">
+                            <span>Profesional</span>
                         </h2>
-                        <div class="pt5 pb5 d-inline"><img alt="logo" class="text-right logo-header" src="src/images/logo.png"></div>
-                        <div class="col-xs-12 top-titulos">
-                            <p class="letra-bold color-azul-oscuro size18 text-center mt50">Perfil <span class="rol-activo-label">Profesional</span></p>
+                        <div class="header-menu-perfil">
+                            <button type="button" class="header-menu-puntos" onclick="toggleMenuPerfil(event)" aria-label="Abrir menú de perfil">⋮</button>
+                            <div class="header-menu-opciones">
+                                <button type="button" onclick="abrirMensajesApp()">Mensajes</button>
+                                <button type="button" onclick="abrirEditarPerfil()">Editar perfil</button>
+                                <button type="button" class="selector-multiple-roles" onclick="volverASeleccionRoles()">Cambiar perfil</button>
+                                <button type="button" onclick="cerrarSesion()">Cerrar sesión</button>
+                            </div>
                         </div>
                     </div>
+                </div>
+                <div class="dashboard-welcome">
+                    <span class="dashboard-kicker">Tu espacio de trabajo</span>
+                    <h1>¿Qué necesitas gestionar?</h1>
+                    <p>Accede rápidamente a tus herramientas MED-SDI.</p>
                 </div>
             </div>
-            <div role="main" class="ui-content">
-                <div class="container mt20">
-                    <div class="row">
-                        <div class="col-xs-12 mb20" onclick="vista('autorizaciones_sdi')">
-                            <div class="inicio-profesional-card">
-                                <div class="inicio-profesional-autorizacion-icono"></div>
-                                <div class="texto letra-bold">Mi autorización</div>
-                                <small class="color-gris mt10">Revisa tus solicitudes de autorización pendientes.</small>
+            <div role="main" class="ui-content dashboard-content">
+                <section class="dashboard-section">
+                    <div class="dashboard-section-title">
+                        <div><span>ACCESOS RÁPIDOS</span><h2>Gestión profesional</h2></div>
+                    </div>
+                    <div class="dashboard-grid profesional-grid">
+                        <div class="dashboard-card dashboard-card-featured" onclick="vista('autorizaciones_sdi')" role="button" tabindex="0">
+                            <span class="dashboard-card-icon icon-autorizacion"></span>
+                            <div class="dashboard-card-copy">
+                                <h3>Mi autorización</h3>
+                                <p>Revisa solicitudes pendientes</p>
                             </div>
+                            <span class="dashboard-card-arrow">›</span>
                         </div>
-                        <div class="col-xs-12 mb20" onclick="vista('agenda-profesional'); cargarAgendaProfesional()">
-                            <div class="inicio-profesional-card">
-                                <div class="inicio-profesional-icono">📅</div>
-                                <div class="texto letra-bold">Mi agenda</div>
-                                <small class="color-gris mt10">Revisa tus citas por lugar de atención y entra a telemedicina.</small>
+                        <div class="dashboard-card" onclick="vista('agenda-profesional'); cargarAgendaProfesional()" role="button" tabindex="0">
+                            <span class="dashboard-card-icon icon-agenda">
+                                <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18M8 14h3M8 17h6"/></svg>
+                            </span>
+                            <div class="dashboard-card-copy">
+                                <h3>Mi agenda</h3>
+                                <p>Citas y telemedicina</p>
                             </div>
+                            <span class="dashboard-card-arrow">›</span>
                         </div>
-                        <div class="col-xs-12" onclick="abrirDesafiosAcceso()">
-                            <div id="boton_desafios_profesional" class="inicio-profesional-card">
-                                <div class="inicio-profesional-icono">🔐</div>
-                                <div class="texto letra-bold">Desafíos de acceso</div>
-                                <small class="color-gris mt10">Aprueba o rechaza nuevos inicios de sesión.</small>
+                        <div class="dashboard-card" onclick="abrirControlReposoProfesional()" role="button" tabindex="0">
+                            <span class="dashboard-card-icon icon-reposo">
+                                <svg viewBox="0 0 24 24"><path d="M4 13h16v7H4zM6 13V9a3 3 0 0 1 3-3h2v7M4 17h16M7 20v2M17 20v2"/><path d="M14 7h5M16.5 4.5v5"/></svg>
+                            </span>
+                            <div class="dashboard-card-copy">
+                                <h3>Control de reposo</h3>
+                                <p>Configura seguimiento y verificaciones</p>
                             </div>
+                            <span class="dashboard-card-arrow">›</span>
                         </div>
-                        <div class="col-xs-12 mt20 selector-multiple-roles" onclick="volverASeleccionRoles()">
-                            <div class="btn-app4">Cambiar perfil</div>
+                        <div class="dashboard-card" onclick="abrirMedicoEmergencia()" role="button" tabindex="0">
+                            <span class="dashboard-card-icon icon-emergencia">
+                                <svg viewBox="0 0 24 24"><path d="M12 21s-8-4.5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6.5-8 11-8 11z"/><path d="M8 12h2l1-2 2 4 1-2h2"/></svg>
+                            </span>
+                            <div class="dashboard-card-copy">
+                                <h3>Pacientes de emergencia</h3>
+                                <p>Solicitudes y vínculos activos</p>
+                            </div>
+                            <span class="dashboard-card-arrow">›</span>
+                        </div>
+                        <div class="dashboard-card" onclick="abrirMensajesApp()" role="button" tabindex="0">
+                            <span class="dashboard-card-icon icon-mensajes">
+                                <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>
+                            </span>
+                            <div class="dashboard-card-copy">
+                                <h3>Mis mensajes <span class="mensajes-badge" style="display:none">0</span></h3>
+                                <p>Comunicaciones y archivos</p>
+                            </div>
+                            <span class="dashboard-card-arrow">›</span>
+                        </div>
+                        <div id="boton_desafios_profesional" class="dashboard-card" onclick="abrirDesafiosAcceso()" role="button" tabindex="0">
+                            <span class="dashboard-card-icon icon-seguridad">
+                                <svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 5 3 8 7 10 4-2 7-5 7-10V6z"/><rect x="9" y="10" width="6" height="5" rx="1"/><path d="M10.5 10V8.5a1.5 1.5 0 0 1 3 0V10"/></svg>
+                            </span>
+                            <div class="dashboard-card-copy">
+                                <h3>Control de acceso</h3>
+                                <p>Aprueba nuevos ingresos</p>
+                            </div>
+                            <span class="dashboard-card-arrow">›</span>
                         </div>
                     </div>
-                </div>
+                </section>
+                <button type="button" class="dashboard-switch selector-multiple-roles" onclick="volverASeleccionRoles()">
+                    <svg viewBox="0 0 24 24"><path d="M16 3h5v5M21 3l-6 6M8 21H3v-5M3 21l6-6"/></svg>
+                    Cambiar perfil
+                </button>
             </div>
-            <div data-role="footer" class="footer menu-inferior" id="footer-profesional">
-                <div class="row bg-azul">
-                    <div class="col-xs-12 pt10 pb10 text-center">
-                        <p class="color-blanco size13" onclick="cerrarSesion()">Cerrar sesión</p>
-                    </div>
-                </div>
+            <div data-role="footer" class="footer dashboard-footer" id="footer-profesional">
+                <button type="button" onclick="cerrarSesion()">
+                    <svg viewBox="0 0 24 24"><path d="M10 5H5v14h5M14 8l4 4-4 4M18 12H9"/></svg>
+                    Cerrar sesión
+                </button>
             </div>
         </div>
         <!--CIERRE INICIO PROFESIONAL-->
+        <div data-role="page" id="control-reposo-profesional">
+            <div data-role="header" class="header app-page-header">
+                <div class="app-page-header-contenido">
+                    <span class="app-page-header-icono">✚</span>
+                    <div>
+                        <h1>Control de reposo</h1>
+                        <p>Seguimiento indicado por el profesional</p>
+                    </div>
+                </div>
+            </div>
+            <div role="main" class="ui-content control-reposo-contenido">
+                <div class="reposo-resumen">
+                    <div class="reposo-resumen-header">
+                        <span>Resumen del reposo</span>
+                        <span class="reposo-badge activo">ACTIVO</span>
+                    </div>
+                    <div class="reposo-resumen-body">
+                        <div class="reposo-item">
+                            <span class="reposo-label">Paciente</span>
+                            <span class="reposo-value">Selecciona o carga un paciente</span>
+                        </div>
+                        <div class="reposo-item">
+                            <span class="reposo-label">Reposo hasta</span>
+                            <span class="reposo-value">Sin fecha configurada</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="sdi-reposo-card">
+                    <div class="reposo-form-encabezado">
+                        <span>CONFIGURACIÓN</span>
+                        <h2>Parámetros de seguimiento</h2>
+                        <p>Define las verificaciones que realizará el paciente durante su reposo.</p>
+                    </div>
+                    <label class="sdi-label">Activar control de reposo</label>
+                    <select id="reposo_activo" class="input-app">
+                        <option value="0">No</option>
+                        <option value="1">Sí</option>
+                    </select>
+                    <label class="sdi-label mt10">Radio de movilidad permitido</label>
+                    <div class="sdi-input-group">
+                        <input type="number" id="reposo_radio_km" class="input-app" value="1" min="0.1" step="0.1">
+                        <span>Km</span>
+                    </div>
+                    <label class="sdi-label mt10">Frecuencia de verificación</label>
+                    <select id="reposo_frecuencia" class="input-app">
+                        <option value="1">Cada 1 hora</option>
+                        <option value="2">Cada 2 horas</option>
+                        <option value="4">Cada 4 horas</option>
+                        <option value="8">Cada 8 horas</option>
+                    </select>
+                    <label class="sdi-label mt10">Verificar medicamentos por cámara</label>
+                    <select id="reposo_control_medicamentos" class="input-app">
+                        <option value="1">Sí</option>
+                        <option value="0">No</option>
+                    </select>
+                    <label class="sdi-label mt10">Verificar ubicación del paciente</label>
+                    <select id="reposo_control_ubicacion" class="input-app">
+                        <option value="1">Sí</option>
+                        <option value="0">No</option>
+                    </select>
+                    <label class="sdi-label mt10">Dirección base del reposo</label>
+                    <textarea id="reposo_direccion" class="input-app" rows="2" placeholder="Ej: Av. Balmaceda 1234, La Serena"></textarea>
+                    <label class="sdi-label mt10">Observaciones</label>
+                    <textarea id="reposo_observaciones" class="input-app" rows="3" placeholder="Indicaciones adicionales para el paciente"></textarea>
+                    <div class="sdi-reposo-actions mt20">
+                        <button type="button" class="sdi-btn sdi-btn-autorizar" onclick="guardar_config_reposo()">Guardar configuración</button>
+                        <button type="button" class="sdi-btn sdi-btn-rechazar" onclick="probar_camara_reposo()">Probar cámara</button>
+                    </div>
+                </div>
+            </div>
+            <div data-role="footer" class="footer menu-inferior">
+                <div class="row bg-azul"><div class="col-xs-12 pt10 pb10 text-center">
+                    <p class="color-blanco size13" onclick="vista('inicio-profesional')">Volver al inicio profesional</p>
+                </div></div>
+            </div>
+        </div>
         <div data-role="page" id="agenda-profesional">
             <div data-role="header" class="header">
                 <div class="row bg-azul pt20"><div class="col-xs-12">
@@ -219,85 +371,212 @@
 
         <!--INICIO-->
         <div data-role="page" id="index">
-            <div data-role="header" class="header" id="header_ind">
-                 <div class="row bg-azul pt20">
-                    <div class="col-xs-12">
-                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/fotoperfil.png"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
-
-                        <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
-
-                        <div class="col-xs-12 top-titulos">
-                            <p class="letra-bold color-azul-oscuro size18 text-center mt50">Seleccione preferencia</p>
+            <div data-role="header" class="header dashboard-header" id="header_ind">
+                <span class="dashboard-orbe dashboard-orbe-uno"></span>
+                <span class="dashboard-orbe dashboard-orbe-dos"></span>
+                <div class="dashboard-topbar">
+                    <img alt="MED-SDI" class="dashboard-logo" src="src/images/logo.png">
+                    <span class="dashboard-role"><i></i> Paciente</span>
+                    <div class="dashboard-user">
+                        <h2>
+                            <img class="img-circulo" src="src/images/avatar-generico.svg" alt="Foto de perfil">
+                            <span>Usuario</span>
+                        </h2>
+                        <div class="header-menu-perfil">
+                            <button type="button" class="header-menu-puntos" onclick="toggleMenuPerfil(event)" aria-label="Abrir menú de perfil">⋮</button>
+                            <div class="header-menu-opciones">
+                                <button type="button" onclick="abrirMensajesApp()">Mensajes</button>
+                                <button type="button" onclick="abrirEditarPerfil()">Editar perfil</button>
+                                <button type="button" class="selector-multiple-roles" onclick="volverASeleccionRoles()">Cambiar perfil</button>
+                                <button type="button" onclick="cerrarSesion()">Cerrar sesión</button>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <div class="dashboard-welcome">
+                    <span class="dashboard-kicker">Tu salud, siempre contigo</span>
+                    <h1>¿Qué necesitas hoy?</h1>
+                    <p>Gestiona tu información de salud en un solo lugar.</p>
+                </div>
             </div>
-            <div role="main" class="ui-content pb0">
-                <div class="container mt20">
-                    <div class="row">
-                        <div class="col-xs-12" onclick="vista('autorizaciones_sdi')">
-                            <div id="boton_autorizaciones">
-                                <div class="icono"></div>
-                                <div class="texto letra-bold">Mi autorización</div>
+            <div role="main" class="ui-content dashboard-content">
+                <section class="dashboard-section">
+                    <div class="dashboard-section-title">
+                        <div><span>ACCESOS RÁPIDOS</span><h2>Mi salud</h2></div>
+                    </div>
+                    <div class="dashboard-grid">
+                        <div id="boton_autorizaciones" class="dashboard-card dashboard-card-featured" onclick="vista('autorizaciones_sdi')" role="button" tabindex="0">
+                            <span class="dashboard-card-icon icon-autorizacion"></span>
+                            <div class="dashboard-card-copy">
+                                <h3>Mi autorización</h3>
+                                <p>Solicitudes y permisos</p>
+                            </div>
+                            <span class="dashboard-card-arrow">›</span>
+                        </div>
+                        <div id="tarjeta-medico-emergencia" class="dashboard-card dashboard-card-featured emergency-doctor-card" onclick="abrirMedicoEmergencia()" role="button" tabindex="0">
+                            <span class="dashboard-card-icon icon-emergencia">
+                                <svg viewBox="0 0 24 24"><path d="M12 21s-8-4.5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6.5-8 11-8 11z"/><path d="M8 12h2l1-2 2 4 1-2h2"/></svg>
+                            </span>
+                            <div class="dashboard-card-copy">
+                                <h3>Mi médico de emergencia</h3>
+                                <p id="medico-emergencia-resumen">Configura un contacto médico</p>
+                            </div>
+                            <span class="dashboard-card-arrow">›</span>
+                        </div>
+                        <button type="button" id="boton-panico-paciente" class="emergency-sos-button" style="display:none"
+                            onpointerdown="iniciarPulsacionSOS(event)" onpointerup="cancelarPulsacionSOS()" onpointerleave="cancelarPulsacionSOS()">
+                            <span class="sos-pulse">SOS</span>
+                            <span><strong>Mantén presionado</strong><small>Alertar y llamar a mi médico</small></span>
+                        </button>
+                        <div id="boton_documentos" class="dashboard-card" onclick="vista('recetaonline')" role="button" tabindex="0">
+                            <span class="dashboard-card-icon icon-documentos"></span>
+                            <div class="dashboard-card-copy">
+                                <h3>Mis documentos</h3>
+                                <p>Recetas y certificados</p>
                             </div>
                         </div>
-                        <div class="col-xs-6" onclick="vista('recetaonline')">
-                            <div id="boton_documentos">
-                                <div class="icono"></div>
-                                <div class="texto letra-bold">Mis Documentos</div>
+                        <div id="boton_med_no_insc" class="dashboard-card" onclick="vista('med_no_insc'); solicitarEspecialidades('esp_profesional')" role="button" tabindex="0">
+                            <span class="dashboard-card-icon icon-medico"></span>
+                            <div class="dashboard-card-copy">
+                                <h3>Médico no inscrito</h3>
+                                <p>Solicita una atención</p>
                             </div>
                         </div>
-                        <div class="col-xs-6" onclick="vista('med_no_insc'); solicitarEspecialidades('esp_profesional')">
-                            <div id="boton_med_no_insc">
-                                <div class="icono"></div>
-                                <div class="texto letra-bold">Médico <br> no inscrito</div>
+                        <div id="boton_fmu" class="dashboard-card" onclick="vista('fmu_paciente'); solicitarFmu()" role="button" tabindex="0">
+                            <span class="dashboard-card-icon icon-fmu"></span>
+                            <div class="dashboard-card-copy">
+                                <h3>Mi ficha médica</h3>
+                                <p>Ficha Médica Única</p>
                             </div>
                         </div>
-                        <div class="col-xs-6" onclick="vista('fmu_paciente'); solicitarFmu()">
-                            <div id="boton_fmu">
-                                <div class="icono"></div>
-                                <div class="texto letra-bold">FMU</div>
+                        <div id="boton_pedir_hora" class="dashboard-card" onclick="vista('pedirhora')" role="button" tabindex="0">
+                            <span class="dashboard-card-icon icon-agendar"></span>
+                            <div class="dashboard-card-copy">
+                                <h3>Agendar hora</h3>
+                                <p>Busca disponibilidad</p>
                             </div>
                         </div>
-                        <div class="col-xs-6" onclick="vista('pedirhora')">
-                            <div id="boton_pedir_hora">
-                                <div class="icono"></div>
-                                <div class="texto letra-bold">Agendar Hora</div>
+                        <div id="contenedor-citas" class="dashboard-card dashboard-card-featured dashboard-card-citas" onclick="vista('citas'); solicitarMisHorasMedicas();" role="button" tabindex="0">
+                            <span id="boton_citas" class="dashboard-card-icon icon-citas"></span>
+                            <div class="dashboard-card-copy">
+                                <h3>Mis citas</h3>
+                                <p>Próximas atenciones y controles</p>
+                            </div>
+                            <span class="dashboard-card-arrow">›</span>
+                        </div>
+                        <div id="boton_desafios" class="dashboard-card dashboard-card-small" onclick="abrirDesafiosAcceso()" role="button" tabindex="0">
+                            <span class="dashboard-card-icon icon-seguridad">
+                                <svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 5 3 8 7 10 4-2 7-5 7-10V6z"/><rect x="9" y="10" width="6" height="5" rx="1"/><path d="M10.5 10V8.5a1.5 1.5 0 0 1 3 0V10"/></svg>
+                            </span>
+                            <div class="dashboard-card-copy">
+                                <h3>Control de acceso</h3>
+                                <p>Seguridad</p>
                             </div>
                         </div>
-                        <div class="col-xs-12" id="contenedor-citas" onclick="vista('citas'); solicitarMisHorasMedicas();">
-                            <div id="boton_citas">
-                                <div class="icono"></div>
-                                <div class="texto letra-bold">Mis citas</div>
+                        <div id="boton_mensajes" class="dashboard-card dashboard-card-small" onclick="abrirMensajesApp()" role="button" tabindex="0">
+                            <span class="dashboard-card-icon icon-mensajes">
+                                <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>
+                            </span>
+                            <div class="dashboard-card-copy">
+                                <h3>Mis mensajes <span class="mensajes-badge" style="display:none">0</span></h3>
+                                <p>Comunicaciones</p>
                             </div>
                         </div>
-                        <div class="col-xs-6" onclick="abrirDesafiosAcceso()">
-                            <div id="boton_desafios">
-                                <div class="icono">🔐</div>
-                                <div class="texto letra-bold">Desafíos de acceso</div>
-                            </div>
+                    </div>
+                </section>
+                <button type="button" class="dashboard-switch selector-multiple-roles" onclick="volverASeleccionRoles()">
+                    <svg viewBox="0 0 24 24"><path d="M16 3h5v5M21 3l-6 6M8 21H3v-5M3 21l6-6"/></svg>
+                    Cambiar perfil
+                </button>
+            </div>
+            <div data-role="footer" class="footer dashboard-footer" id="footer-ph">
+                <button type="button" onclick="cerrarSesion()">
+                    <svg viewBox="0 0 24 24"><path d="M10 5H5v14h5M14 8l4 4-4 4M18 12H9"/></svg>
+                    Cerrar sesión
+                </button>
+            </div>
+        </div>
+        <!--CIRRE: INICIO-->
+        <div data-role="page" id="medico-emergencia-app">
+            <div data-role="header" class="header app-page-header emergency-page-header">
+                <div class="app-page-header-contenido">
+                    <span class="app-page-header-icono">♥</span>
+                    <div><h1>Contacto médico de emergencia</h1><p>Vínculo voluntario y confirmado</p></div>
+                </div>
+            </div>
+            <div role="main" class="ui-content emergency-app-content">
+                <div class="emergency-safety-note">
+                    <strong>Ante riesgo vital, contacta al servicio oficial de emergencias.</strong>
+                    <p>Esta función avisa a un profesional vinculado, pero no garantiza disponibilidad inmediata.</p>
+                </div>
+                <div id="emergency-patient-panel" style="display:none">
+                    <div id="emergency-current-link"></div>
+                    <section class="emergency-search-card">
+                        <h2>Buscar un profesional</h2>
+                        <p>El profesional deberá aceptar antes de quedar como contacto de emergencia.</p>
+                        <div class="emergency-search-row">
+                            <input type="search" id="emergency-professional-query" placeholder="Nombre, apellido o correo">
+                            <button type="button" onclick="buscarProfesionalEmergencia()">Buscar</button>
                         </div>
-                        <div class="col-xs-12 mt10 mb20 selector-multiple-roles" onclick="volverASeleccionRoles()">
-                            <div class="btn-app4">Cambiar perfil</div>
-                        </div>
+                        <div id="emergency-professional-results"></div>
+                    </section>
+                </div>
+                <div id="emergency-professional-panel" style="display:none">
+                    <div class="app-page-toolbar"><div class="app-toolbar-titulo">Solicitudes y pacientes</div>
+                        <button type="button" class="app-refresh-button" onclick="cargarMedicoEmergencia()">↻ <span>Actualizar</span></button>
+                    </div>
+                    <div id="emergency-professional-links"></div>
+                </div>
+            </div>
+            <div data-role="footer" class="footer menu-inferior">
+                <div class="row bg-azul"><div class="col-xs-12 pt10 pb10 text-center">
+                    <p class="color-blanco size13" onclick="volverInicioSegunRol()">Volver</p>
+                </div></div>
+            </div>
+        </div>
+        <!--MENSAJES-->
+        <div data-role="page" id="mensajes-app">
+            <div data-role="header" class="header app-page-header">
+                <div class="app-page-header-contenido">
+                    <span class="app-page-header-icono">✉</span>
+                    <div>
+                        <h1>Mis mensajes</h1>
+                        <p>Comunicaciones y documentos de MED-SDI</p>
                     </div>
                 </div>
             </div>
-            <div data-role="footer" class="footer menu-inferior" id="footer-ph" >
-                <div class="row bg-azul ">
-                   <div class="col-xs-12 pt10 pb10 text-center ">
-                        <p class="color-blanco size13" onclick="vista('login')"><img class="mb10" width="20" src="src/images/salir.svg"><br>Cerrar sesión</p>
+            <div role="main" class="ui-content mensajes-app-contenido">
+                <div class="app-page-toolbar">
+                    <div id="mensajes-app-resumen" class="mensajes-app-resumen"></div>
+                    <button type="button" class="app-refresh-button" onclick="cargarMensajesApp()">↻ <span>Actualizar</span></button>
+                </div>
+                <div id="mensajes-app-lista"></div>
+            </div>
+            <div id="mensaje-app-overlay" class="mensaje-app-overlay" aria-hidden="true">
+                <div class="mensaje-app-modal">
+                    <div class="mensaje-app-modal-header">
+                        <span>Detalle del mensaje</span>
+                        <button type="button" onclick="cerrarDetalleMensajeApp()" aria-label="Cerrar">×</button>
+                    </div>
+                    <div id="mensaje-app-modal-contenido" class="mensaje-app-modal-contenido"></div>
+                    <button type="button" class="mensaje-app-cerrar" onclick="cerrarDetalleMensajeApp()">Cerrar</button>
+                </div>
+            </div>
+            <div data-role="footer" class="footer menu-inferior">
+                <div class="row bg-azul">
+                    <div class="col-xs-12 pt10 pb10 text-center">
+                        <p class="color-blanco size13" onclick="volverInicioSegunRol()">Volver</p>
                     </div>
                 </div>
             </div>
         </div>
-        <!--CIRRE: INICIO-->
+        <!--CIERRE: MENSAJES-->
         <!--FMU-->
         <div data-role="page" id="fmu_paciente">
             <div data-role="header" class="header" id="header_fmu">
                 <div class="row bg-azul">
                     <div class="col-xs-12 mt20">
-                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/fotoperfil.png"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
+                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/avatar-generico.svg"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
                         <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
                         <div class="col-xs-12 top-titulos">
                             <p class="letra-bold color-azul-oscuro size20 text-center mt30">Mi Ficha Médica Única</p>
@@ -431,7 +710,7 @@
             <div data-role="header" class="header" id="header_ind">
                  <div class="row bg-azul pt20">
                     <div class="col-xs-12">
-                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/fotoperfil.png"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
+                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/avatar-generico.svg"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
 
                         <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
 
@@ -491,7 +770,7 @@
             <div data-role="header" class="header" id="header">
                 <div class="row bg-azul">
                     <div class="col-xs-12 mt20">
-                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/fotoperfil.png"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
+                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/avatar-generico.svg"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
 
                         <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
 
@@ -532,7 +811,7 @@
             <div data-role="header" class="header" id="header">
                 <div class="row bg-azul">
                     <div class="col-xs-12 mt20">
-                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/fotoperfil.png"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
+                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/avatar-generico.svg"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
 
                         <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
 
@@ -573,7 +852,7 @@
             <div data-role="header" class="header" id="header">
                 <div class="row bg-azul">
                     <div class="col-xs-12 mt20">
-                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/fotoperfil.png"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
+                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/avatar-generico.svg"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
 
                         <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
 
@@ -626,7 +905,7 @@
             <div data-role="header" class="header" id="header">
                 <div class="row bg-azul">
                     <div class="col-xs-12 mt20">
-                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/fotoperfil.png"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
+                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/avatar-generico.svg"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
 
                         <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
 
@@ -667,7 +946,7 @@
             <div data-role="header" class="header" id="header">
                 <div class="row bg-azul">
                     <div class="col-xs-12 mt20">
-                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/fotoperfil.png"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
+                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/avatar-generico.svg"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
 
                         <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
 
@@ -721,7 +1000,7 @@
             <div data-role="header" class="header" id="header-ni">
                 <div class="row bg-azul">
                     <div class="col-xs-12 mt20">
-                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/fotoperfil.png"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
+                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/avatar-generico.svg"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
 
                         <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
 
@@ -845,16 +1124,54 @@
         <!--CIERRE: MEDICO NO INSCRITO-->
         <!--LOG APP-->
         <div data-role="page" id="desafios-acceso">
-            <div data-role="header" class="header">
-                <div class="row"><div class="col-xs-12 bg-azul pt20 pb20"><p class="color-blanco text-center size20">DESAFÍOS DE ACCESO</p></div></div>
+            <div data-role="header" class="header app-page-header">
+                <div class="app-page-header-contenido">
+                    <span class="app-page-header-icono">🔐</span>
+                    <div>
+                        <h1>Control de accesos</h1>
+                        <p>Protege el ingreso a tu cuenta MED-SDI</p>
+                    </div>
+                </div>
             </div>
-            <div role="main" class="ui-content">
-                <p class="text-center color-gris mt20">Aprueba únicamente accesos que hayas iniciado tú.</p>
-                <div id="lista-desafios-acceso" class="mt20"></div>
-                <div class="btn-app1 mt20 mb20" onclick="cargarDesafiosAcceso()">ACTUALIZAR</div>
+            <div role="main" class="ui-content desafios-app-contenido">
+                <div class="seguridad-aviso">
+                    <span class="seguridad-aviso-icono">✓</span>
+                    <div>
+                        <strong>Confirma sólo solicitudes tuyas</strong>
+                        <p>Si no reconoces un acceso, recházalo. Nunca compartas tus claves.</p>
+                    </div>
+                </div>
+                <div class="app-page-toolbar">
+                    <div class="app-toolbar-titulo">Solicitudes pendientes</div>
+                    <button type="button" class="app-refresh-button" onclick="cargarDesafiosAcceso()">↻ <span>Actualizar</span></button>
+                </div>
+                <div id="lista-desafios-acceso"></div>
             </div>
-            <div data-role="footer" class="footer">
-                <div class="row"><div class="col-xs-12 bg-azul pt20 pb20 color-blanco text-uppercase text-center pointer txt_bold size20" onclick="volverDesdeDesafiosAcceso()">VOLVER</div></div>
+            <div id="desafio-confirmacion-overlay" class="desafio-confirmacion-overlay" aria-hidden="true">
+                <div class="desafio-confirmacion-modal" role="dialog" aria-modal="true" aria-labelledby="desafio-confirmacion-titulo">
+                    <div class="desafio-confirmacion-icono" id="desafio-confirmacion-icono">✓</div>
+                    <h2 id="desafio-confirmacion-titulo">Confirmar acceso</h2>
+                    <p id="desafio-confirmacion-texto">Verifica tu identidad para continuar.</p>
+                    <label for="desafio_clave_web">Clave SDI de 4 dígitos</label>
+                    <div class="desafio-clave-contenedor">
+                        <input type="password" id="desafio_clave_web" inputmode="numeric" maxlength="4" pattern="[0-9]*" autocomplete="off" placeholder="••••">
+                        <button type="button" id="desafio-ver-clave" onclick="alternarVisibilidadClaveDesafio()" aria-label="Mostrar u ocultar clave">Ver</button>
+                    </div>
+                    <p id="desafio-confirmacion-error" class="desafio-confirmacion-error" role="alert"></p>
+                    <button type="button" id="desafio-confirmar-clave" class="desafio-confirmar-clave" onclick="resolverDesafioConClave()">Confirmar con clave SDI</button>
+                    <div class="desafio-separador"><span>o</span></div>
+                    <button type="button" id="desafio-confirmar-huella" class="desafio-confirmar-huella" onclick="resolverDesafioConBiometria()">
+                        <span class="biometria-icono">☝</span>
+                        <span><strong>Usar huella digital</strong><small>Protegida por Android</small></span>
+                    </button>
+                    <p id="desafio-huella-ayuda" class="desafio-huella-ayuda"></p>
+                    <button type="button" class="desafio-confirmacion-cancelar" onclick="cerrarConfirmacionDesafio()">Cancelar</button>
+                </div>
+            </div>
+            <div data-role="footer" class="footer menu-inferior">
+                <div class="row bg-azul"><div class="col-xs-12 pt10 pb10 text-center">
+                    <p class="color-blanco size13" onclick="volverDesdeDesafiosAcceso()">Volver</p>
+                </div></div>
             </div>
         </div>
 
@@ -883,7 +1200,7 @@
             <div data-role="header" class="header" id="header-mismed">
                 <div class="row bg-azul">
                     <div class="col-xs-12 mt20">
-                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/fotoperfil.png"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
+                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/avatar-generico.svg"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
 
                         <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
 
@@ -899,7 +1216,7 @@
                 <div class="row mt20" >
                     <div class="container text-center">
                         <div class="row">
-                            <div class="col-xs-6" onclick="vista('mis_medicos'); solicitarMedicos()">
+                            <div class="col-xs-6" onclick="abrirMisProfesionales()">
                                 <div id="boton_pedirmm">
                                     <div class="icono"></div>
                                     <p class="texto letra-bold">Mis Profesionales</p>
@@ -935,7 +1252,7 @@
             <div data-role="header" class="header" id="header-ni">
                 <div class="row bg-azul">
                     <div class="col-xs-12 mt20">
-                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/fotoperfil.png"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
+                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/avatar-generico.svg"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
                         <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
                         <div class="col-xs-12 top-titulos">
                             <p class="letra-bold color-azul-oscuro size20 text-center mt50">Buscador de profesionales</p>
@@ -965,28 +1282,28 @@
                                                 <label class="floating-label-activo">Tipo Especialidad</label>
                                                 <select type="email" class="form-control form-control-sm"
                                                     name="tipoespecialidad" id="tipoespecialidad" onchange="cargarSubTipoEspecialidad('subtipoespecialidad','tipoespecialidad')">
-                                                        <option>Seleccione</option>
+                                                        <option value="">Seleccione (opcional)</option>
                                                 </select>
                                             </div>
                                             <div class="form-group col-xs-12">
                                                 <label class="floating-label-activo">Sub Tipo Especialidad</label>
                                                 <select type="email" class="form-control form-control-sm"
                                                         name="subtipoespecialidad" id="subtipoespecialidad" >
-                                                    <option>Seleccione</option>
+                                                    <option value="">Seleccione (opcional)</option>
                                                 </select>
                                             </div>
                                             <div class="form-group col-xs-12">
                                                 <label class="floating-label-activo">Región</label>
                                                 <select type="email" class="form-control form-control-sm"
                                                     name="region" id="region" onchange="dameCiudades('ciudad','region')">
-                                                        <option>Seleccione</option>
+                                                        <option value="">Seleccione región</option>
                                                 </select>
                                             </div>
                                             <div class="form-group col-xs-12">
                                                 <label class="floating-label-activo">Comuna</label>
                                                 <select type="email" class="form-control form-control-sm"
                                                     name="ciudad" id="ciudad">
-                                                        <option>Seleccione</option>
+                                                        <option value="">Seleccione comuna (opcional)</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -1024,7 +1341,7 @@
             <div data-role="header" class="header" id="header-ni">
                 <div class="row bg-azul">
                     <div class="col-xs-12 mt20">
-                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/fotoperfil.png"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
+                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/avatar-generico.svg"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
 
                         <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
 
@@ -1063,7 +1380,7 @@
                 <div class="row bg-azul">
                     <div class="col-xs-12 mt20">
                         <h2 class="letra-bold size14 color-blanco ml10 d-inline">
-                            <img class="img-circulo" width="35" src="src/images/fotoperfil.png">
+                            <img class="img-circulo" width="35" src="src/images/avatar-generico.svg">
                             <span class="size11 blanco size13 mr10 ml15">Jaime Kriman</span>
                         </h2>
                         <div class="pt5 pb5 d-inline">
@@ -1072,8 +1389,8 @@
                         <div class="col-xs-12 top-titulos">
 
                             <p class="letra-bold color-azul-oscuro size20 text-center mt50">Perfil del Profesional</p>
-                            <div class="btn-app4 text-center size14 mb20" onclick="vista('mis_medicos');">
-                                Volver a mis médicos
+                            <div class="btn-app4 text-center size14 mb20" onclick="volverDesdePerfilProfesional()">
+                                Volver a profesionales
                             </div>
                         </div>
                     </div>
@@ -1115,7 +1432,7 @@
                 <div class="row bg-azul">
                     <div class="col-xs-12 mt20">
                         <h2 class="letra-bold size14 color-blanco ml10 d-inline">
-                            <img class="img-circulo" width="35" src="src/images/fotoperfil.png">
+                            <img class="img-circulo" width="35" src="src/images/avatar-generico.svg">
                             <span class="size11 blanco size13 mr10 ml15">Jaime Kriman</span>
                         </h2>
                         <div class="pt5 pb5 d-inline">
@@ -1123,7 +1440,7 @@
                         </div>
                         <div class="col-xs-12 top-titulos">
                             <p class="letra-bold color-azul-oscuro size20 text-center mt50">Profesionales encontrados</p>
-                            <p class="size14 text-center mb10">Seleccione el profesional</p>
+                            <p id="resumen-profesionales-encontrados" class="size14 text-center mb10">Seleccione el profesional</p>
                             <div class="btn-app4 text-center size14 mt20 mb20" onclick="vista('buscador_profesional');">
                                 <img class="pr10" width="30" src="src/images/lupa.svg">Volver a búsqueda
                             </div>
@@ -1168,7 +1485,7 @@
             <div data-role="header" class="header" id="header-ni">
                 <div class="row bg-azul">
                     <div class="col-xs-12 mt20">
-                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/fotoperfil.png"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
+                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/avatar-generico.svg"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
                         <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
                         <div class="col-xs-12 top-titulos">
                             <p class="letra-bold color-azul-oscuro size20 text-center mt50">Lugares de atención</p>
@@ -1204,7 +1521,7 @@
             <div data-role="header" class="header" id="header-ni">
                 <div class="row bg-azul">
                     <div class="col-xs-12 mt20">
-                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/fotoperfil.png"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
+                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/avatar-generico.svg"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
                         <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
                         <div class="col-xs-12 top-titulos">
                             <p class="letra-bold color-azul-oscuro size20 text-center mt50">Seleccionar fecha y hora</p>
@@ -1235,12 +1552,81 @@
             </div>
         </div>
         <!-- CIERRE: seleccionar_fecha_hora -->
+        <div data-role="page" id="editar-perfil-app">
+            <div data-role="header" class="header">
+                <div class="row bg-azul pt20 pb20"><div class="col-xs-12">
+                    <p class="color-blanco size18 text-center">Editar mi perfil</p>
+                </div></div>
+            </div>
+            <div role="main" class="ui-content perfil-app-form">
+                <input type="hidden" id="perfil_app_rol">
+                <section class="perfil-app-seccion perfil-app-foto">
+                    <h3>Foto de perfil</h3>
+                    <img id="perfil_app_foto_preview" src="src/images/avatar-generico.svg" alt="Foto de perfil">
+                    <label for="perfil_app_foto">Seleccionar una nueva foto</label>
+                    <input type="file" id="perfil_app_foto" accept="image/jpeg,image/png,image/webp">
+                    <small class="color-gris">Formatos JPG, PNG o WEBP. Tamaño máximo: 5 MB.</small>
+                    <div class="btn-app7 mt10" onclick="guardarFotoPerfilApp()">Actualizar foto</div>
+                </section>
+                <section class="perfil-app-seccion">
+                <h3>Datos personales</h3>
+                <label>Nombres</label>
+                <input type="text" id="perfil_app_nombres">
+                <label>Primer apellido</label>
+                <input type="text" id="perfil_app_apellido_uno">
+                <label>Segundo apellido</label>
+                <input type="text" id="perfil_app_apellido_dos">
+                <label>Teléfono principal</label>
+                <input type="tel" id="perfil_app_telefono_uno">
+                <label>Teléfono secundario</label>
+                <input type="tel" id="perfil_app_telefono_dos">
+                <label>Correo electrónico</label>
+                <input type="email" id="perfil_app_email" readonly>
+                <small class="color-gris">El correo se muestra sólo como referencia.</small>
+                <div class="btn-app7 mt20" onclick="guardarPerfilApp()">Guardar cambios</div>
+                </section>
+                <section class="perfil-app-seccion perfil-app-seguridad-card">
+                    <h3><span class="perfil-app-seguridad-icono">🔐</span>Cambiar PIN del dispositivo</h3>
+                    <p class="perfil-app-ayuda">La clave es el PIN de 4 dígitos usado para autorizar solicitudes desde este equipo.</p>
+                    <label>Clave actual</label>
+                    <input type="password" id="perfil_app_clave_actual" inputmode="numeric" maxlength="4" autocomplete="off">
+                    <label>Nueva clave</label>
+                    <input type="password" id="perfil_app_clave_nueva" inputmode="numeric" maxlength="4" autocomplete="new-password">
+                    <label>Confirmar nueva clave</label>
+                    <input type="password" id="perfil_app_clave_confirmacion" inputmode="numeric" maxlength="4" autocomplete="new-password">
+                    <div class="btn-app7 mt20" onclick="cambiarClaveDispositivoApp()">Cambiar clave</div>
+                </section>
+                <section class="perfil-app-seccion perfil-app-seguridad-card" id="perfil_app_biometria">
+                    <h3><span class="perfil-app-seguridad-icono">☝</span>Huella para autorizar documentos</h3>
+                    <p id="perfil_app_biometria_estado" class="perfil-app-ayuda">Comprobando disponibilidad biométrica...</p>
+                    <p class="perfil-app-ayuda">Permite aprobar solicitudes y documentos usando la huella registrada en Android.</p>
+                    <label>PIN actual de este dispositivo</label>
+                    <input type="password" id="perfil_app_biometria_pin" inputmode="numeric" maxlength="4" autocomplete="off">
+                    <div id="perfil_app_biometria_activar" class="btn-app7 mt10" onclick="activarBiometriaApp()">Activar huella digital</div>
+                    <div id="perfil_app_biometria_desactivar" class="btn-app4 mt10" onclick="desactivarBiometriaApp()" style="display:none">Desactivar huella digital</div>
+                </section>
+                <section class="perfil-app-seccion perfil-app-seguridad-card">
+                    <h3><span class="perfil-app-seguridad-icono">👆</span>Inicio de sesión con huella</h3>
+                    <p id="perfil_app_biometria_login_estado" class="perfil-app-ayuda">El ingreso biométrico está desactivado.</p>
+                    <label>Contraseña de tu cuenta</label>
+                    <input type="password" id="perfil_app_password_login" autocomplete="current-password">
+                    <div id="perfil_app_biometria_login_activar" class="btn-app7 mt10" onclick="activarLoginBiometricoApp()">Activar ingreso con huella</div>
+                    <div id="perfil_app_biometria_login_desactivar" class="btn-app4 mt10" onclick="desactivarLoginBiometricoApp()" style="display:none">Desactivar ingreso con huella</div>
+                </section>
+            </div>
+            <div data-role="footer" class="footer menu-inferior">
+                <div class="row bg-azul"><div class="col-xs-12 pt10 pb10 text-center">
+                    <p class="color-blanco size13" onclick="volverInicioSegunRol()">Volver</p>
+                </div></div>
+            </div>
+        </div>
+        <!-- CIERRE: seleccionar_fecha_hora -->
         <!--MIS CITAS MEDICAS AGENDADAS-->
         <div data-role="page" id="citas">
             <div data-role="header" class="header" id="header-ni">
                 <div class="row bg-azul">
                     <div class="col-xs-12 mt20">
-                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/fotoperfil.png"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
+                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/avatar-generico.svg"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
 
                         <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
 
@@ -1285,10 +1671,10 @@
                     </div>                
                 </div>
             </div>
-            <div role="main" class="ui-content">
-                <div class="row">
-                    <div class="col-xs-12">
-                        <p class="color-azul size20 mt10 mb10 text-center">SDI</p>
+            <div role="main" class="ui-content autorizacion-segura-contenido">
+                <div class="autorizacion-segura-card">
+                    <div class="autorizacion-segura-icono">✓</div>
+                    <div class="autorizacion-segura-cuerpo">
                         <input type="hidden" id="id_log">
                         <p class="text-center mt10 mb10" id="log_reg_autorizacion">                        
                         <p class="color-azul size20 mt10 mb10 text-center">INGRESE UN CLAVE PARA DESBLOQUEO</p>
@@ -1327,7 +1713,7 @@
             <div data-role="header" class="header" id="header-ni">
                 <div class="row bg-azul">
                     <div class="col-xs-12 mt20">
-                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/fotoperfil.png"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
+                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/avatar-generico.svg"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
 
                         <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
 
@@ -1342,112 +1728,18 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <p class="color-azul size20 mt10 mb10 text-center">SDI <span class="color-azul-oscuro size20">PASS</span></p>
-                        <div class="btn-app4 text-center color-blanco size20 text-uppercase" onclick="list_log_device()">ACTUALIZAR PETICIONES</div>
+                        <button type="button" class="autorizaciones-actualizar" onclick="list_log_device()">
+                            <span class="autorizaciones-actualizar-icono">↻</span>
+                            <span><strong>Actualizar peticiones</strong><small>Buscar nuevas solicitudes</small></span>
+                        </button>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-xs-12">
-                        <div class="sdi-tabs mt20">
-                            <div class="sdi-tab active" onclick="cambiar_tab_sdi('autorizaciones', this)">
-                                Autorizaciones recibidas
-                            </div>
-
-                            <div class="sdi-tab" onclick="cambiar_tab_sdi('reposo', this)">
-                                Control de reposo
-                            </div>
-                        </div>
-
                         <div class="sdi-tab-content active" id="content_autorizaciones">
                             <p class="mt20">Autorizaciones recibidas</p>
                             <ul class="size12" id="list_log_reg"></ul>
                         </div>
-
-                        <div class="sdi-tab-content" id="content_reposo">
-                            <p class="mt20 txt_bold color-azul-oscuro">Control de reposo</p>
-                            <div class="reposo-resumen">
-
-                                <div class="reposo-resumen-header">
-                                    <i class="fa fa-user-md"></i>
-                                    Información del Reposo
-                                </div>
-
-                                <div class="reposo-resumen-body">
-
-                                    <div class="reposo-item">
-                                        <span class="reposo-label">Estado</span>
-                                        <span class="reposo-badge activo">ACTIVO</span>
-                                    </div>
-
-                                    <div class="reposo-item">
-                                        <span class="reposo-label">Paciente</span>
-                                        <span class="reposo-value">{}</span>
-                                    </div>
-
-                                    <div class="reposo-item">
-                                        <span class="reposo-label">Reposo hasta</span>
-                                        <span class="reposo-value">25-06-2026</span>
-                                    </div>
-
-                                </div>
-
-                            </div>
-                            <div class="sdi-reposo-card">
-
-                                <label class="sdi-label">Activar control de reposo</label>
-                                <select id="reposo_activo" class="input-app">
-                                    <option value="0">No</option>
-                                    <option value="1">Sí</option>
-                                </select>
-
-                                <label class="sdi-label mt10">Radio de movilidad permitido</label>
-                                <div class="sdi-input-group">
-                                    <input type="number" id="reposo_radio_km" class="input-app" value="1" min="0.1" step="0.1">
-                                    <span>Km</span>
-                                </div>
-
-                                <label class="sdi-label mt10">Frecuencia de verificación</label>
-                                <select id="reposo_frecuencia" class="input-app">
-                                    <option value="1">Cada 1 hora</option>
-                                    <option value="2">Cada 2 horas</option>
-                                    <option value="4">Cada 4 horas</option>
-                                    <option value="8">Cada 8 horas</option>
-                                </select>
-
-                                <label class="sdi-label mt10">Verificar medicamentos por cámara</label>
-                                <select id="reposo_control_medicamentos" class="input-app">
-                                    <option value="1">Sí</option>
-                                    <option value="0">No</option>
-                                </select>
-
-                                <label class="sdi-label mt10">Verificar ubicación del paciente</label>
-                                <select id="reposo_control_ubicacion" class="input-app">
-                                    <option value="1">Sí</option>
-                                    <option value="0">No</option>
-                                </select>
-
-                                <label class="sdi-label mt10">Dirección base del reposo</label>
-                                <textarea id="reposo_direccion" class="input-app" rows="2" placeholder="Ej: Av. Balmaceda 1234, La Serena"></textarea>
-
-                                <label class="sdi-label mt10">Observaciones</label>
-                                <textarea id="reposo_observaciones" class="input-app" rows="3" placeholder="Indicaciones adicionales para el paciente"></textarea>
-
-                                <div class="sdi-reposo-actions mt20">
-                                    <button type="button" class="sdi-btn sdi-btn-autorizar" onclick="guardar_config_reposo()">
-                                        GUARDAR CONFIGURACIÓN
-                                    </button>
-
-                                    <button type="button" class="sdi-btn sdi-btn-rechazar" onclick="probar_camara_reposo()">
-                                        PROBAR CÁMARA
-                                    </button>
-                                </div>
-
-                            </div>
-                        </div>
-                            <!--
-                            <li class="mt10">- <span class="color-verde txt_bold">Autorización</span> Dr. Jaime Kriman - 22:59:00 20-12-20222</li>
-                            <li class="mt10">- <span class="color-rojo txt_bold">Rechazado </span> Dr. Jaime Kriman - 22:59:00 20-12-20222</li>
-                            -->
-                        </ul>
                     </div>
                 </div>
             </div>
@@ -1473,7 +1765,7 @@
             <div data-role="header" class="header" id="header-ni">
                 <div class="row bg-azul">
                     <div class="col-xs-12 mt20">
-                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/fotoperfil.png"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
+                        <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/avatar-generico.svg"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
 
                         <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
 
@@ -1494,13 +1786,17 @@
                                 Solicitud de Autorización
                             El <span class="color-azul-oscuro">Dr. Jaime D.</span> Desea acceder a su <span class="color-azul-oscuro">FMU</span></p>
                             -->
-                        <p class="color-azul size20 mt10 mb10 text-center">INGRESE CLAVE SDI</p>
-                        <input type="password" id="password_" class="input-app center-block text-center color-azul mt10 mb10" value="" placeholder="">
+                        <label for="password_">Clave SDI de 4 dígitos</label>
+                        <input type="password" id="password_" class="input-app center-block text-center color-azul mt10 mb10" inputmode="numeric" maxlength="4" pattern="[0-9]*" autocomplete="off" value="" placeholder="••••">
+                        <div id="autorizar_con_biometria" class="biometria-autorizacion" style="display:none" onclick="respuestaBiometrica()">
+                            <span class="biometria-icono">☝</span>
+                            <span id="autorizar_con_biometria_texto">Confirmar con huella</span>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-6 bg-verde pt20 pb20 color-blanco text-uppercase text-center pointer txt_bold size20" onclick="respuesta(1)">AUTORIZAR</div>
-                    <div class="col-xs-6 bg-rojo pt20 pb20 color-blanco text-uppercase text-center pointer txt_bold size20" onclick="respuesta(2)">RECHAZAR</div>
+                    <div class="autorizacion-segura-acciones">
+                        <button type="button" class="autorizar" onclick="respuesta(1)">Autorizar</button>
+                        <button type="button" class="rechazar" onclick="respuesta(2)">Rechazar</button>
+                    </div>
                 </div>
             </div>
 

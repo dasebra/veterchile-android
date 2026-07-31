@@ -29,15 +29,17 @@ const registrarTokenPush = (token) => {
 };
 
 const manejarNotificacionPush = (mensaje) => {
-    if (!mensaje || (mensaje.type !== 'login_approval' && mensaje.type !== 'authorization_request')) return;
+    if (!mensaje || !['login_approval', 'authorization_request', 'direct_message', 'patient_emergency'].includes(mensaje.type)) return;
 
     const esAutorizacion = mensaje.type === 'authorization_request';
+    const esMensajeDirecto = mensaje.type === 'direct_message';
+    const esEmergencia = mensaje.type === 'patient_emergency';
     const usuarioDestino = String(mensaje.target_user_id || '');
     const usuarioActivo = String(_SESSION('id_usuario') || '');
 
     if (mensaje.tap === 'background' || mensaje.tap === 'foreground') {
         if (usuarioDestino && usuarioActivo && usuarioDestino !== usuarioActivo) {
-            localStorage.setItem(esAutorizacion ? 'autorizacionPendiente' : 'desafioAccesoPendiente', '1');
+            localStorage.setItem(esMensajeDirecto ? 'mensajePendiente' : (esAutorizacion ? 'autorizacionPendiente' : 'desafioAccesoPendiente'), '1');
             msg(
                 'Seguridad',
                 'Esta solicitud pertenece a otra cuenta registrada en este teléfono. Cierra sesión e ingresa con esa cuenta para aprobarla.',
@@ -47,14 +49,19 @@ const manejarNotificacionPush = (mensaje) => {
         }
 
         if (!localStorage.getItem('authToken')) {
-            localStorage.setItem(esAutorizacion ? 'autorizacionPendiente' : 'desafioAccesoPendiente', '1');
+            localStorage.setItem(esMensajeDirecto ? 'mensajePendiente' : (esAutorizacion ? 'autorizacionPendiente' : 'desafioAccesoPendiente'), '1');
             $('#user, #pass').val('');
             vista('login', 'fade');
             msg('Seguridad', 'Inicia sesión para revisar y aprobar este acceso.', 'info');
             return;
         }
 
-        if (esAutorizacion) {
+        if (esEmergencia) {
+            abrirMedicoEmergencia();
+        } else if (esMensajeDirecto) {
+            localStorage.removeItem('mensajePendiente');
+            abrirMensajesApp();
+        } else if (esAutorizacion) {
             if ($.mobile && $.mobile.activePage && $.mobile.activePage.attr('id') === 'autorizaciones_sdi') {
                 list_log_device();
             } else {
@@ -68,7 +75,11 @@ const manejarNotificacionPush = (mensaje) => {
 
     // En primer plano el plugin también muestra una notificación del sistema.
     // Actualizamos la lista si el usuario ya está mirando los desafíos.
-    if (esAutorizacion && $.mobile && $.mobile.activePage && $.mobile.activePage.attr('id') === 'autorizaciones_sdi') {
+    if (esEmergencia && $.mobile && $.mobile.activePage && $.mobile.activePage.attr('id') === 'medico-emergencia-app') {
+        cargarMedicoEmergencia();
+    } else if (esMensajeDirecto && $.mobile && $.mobile.activePage && $.mobile.activePage.attr('id') === 'mensajes-app') {
+        cargarMensajesApp();
+    } else if (esAutorizacion && $.mobile && $.mobile.activePage && $.mobile.activePage.attr('id') === 'autorizaciones_sdi') {
         list_log_device();
     } else if (!esAutorizacion && $.mobile && $.mobile.activePage && $.mobile.activePage.attr('id') === 'desafios-acceso') {
         cargarDesafiosAcceso();
@@ -76,7 +87,8 @@ const manejarNotificacionPush = (mensaje) => {
 };
 
 const inicializarNotificacionesPush = () => {
-    if (typeof FirebasexMessaging === 'undefined') {
+    const esCordovaBrowser = typeof cordova !== 'undefined' && cordova.platformId === 'browser';
+    if (esCordovaBrowser || typeof FirebasexMessaging === 'undefined') {
         console.log('Firebase Messaging no está disponible en esta plataforma.');
         return;
     }
@@ -98,6 +110,28 @@ const inicializarNotificacionesPush = () => {
             badge: true
         };
 
+        const messagesChannel = {
+            id: 'medsdi_messages',
+            name: 'Mensajes MED-SDI',
+            description: 'Mensajes enviados por profesionales y MED-SDI',
+            sound: 'default',
+            vibration: true,
+            importance: 'high',
+            visibility: 1,
+            badge: true
+        };
+
+        const emergencyChannel = {
+            id: 'medsdi_emergency',
+            name: 'Alertas SOS MED-SDI',
+            description: 'Alertas urgentes de pacientes vinculados',
+            sound: 'default',
+            vibration: true,
+            importance: 'high',
+            visibility: 1,
+            badge: true
+        };
+
         FirebasexMessaging.createChannel(channel, function () {
             FirebasexMessaging.setDefaultChannel(channel, function () {
                 console.log('Canal de seguridad MED-SDI configurado.');
@@ -106,6 +140,12 @@ const inicializarNotificacionesPush = () => {
             });
         }, function (error) {
             console.error('No se pudo crear el canal MED-SDI.', error);
+        });
+        FirebasexMessaging.createChannel(messagesChannel, function () {}, function (error) {
+            console.error('No se pudo crear el canal de mensajes MED-SDI.', error);
+        });
+        FirebasexMessaging.createChannel(emergencyChannel, function () {}, function (error) {
+            console.error('No se pudo crear el canal SOS MED-SDI.', error);
         });
 
         FirebasexMessaging.getToken(registrarTokenPush, function (error) {

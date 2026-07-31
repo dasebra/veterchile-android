@@ -1,4 +1,10 @@
 
+$(document).on('pageshow', '#login', function() {
+    if (typeof actualizarBotonLoginBiometricoApp === 'function') {
+        actualizarBotonLoginBiometricoApp();
+    }
+});
+
 const ingresarLogin = () => {
 
     var user = $.trim($('#user').val());
@@ -22,6 +28,9 @@ const ingresarLogin = () => {
 
     datos.user = user;
     datos.pass = pass;
+    datos.device_uuid = typeof obtenerUuidDispositivo === 'function'
+        ? obtenerUuidDispositivo()
+        : (localStorage.getItem('uuid') || $('#uuid').val() || null);
 
     cargando(1); 
 
@@ -44,6 +53,9 @@ const ingresarLogin = () => {
                 }
                 inicializarNotificacionesPush();
                 sesionUsuarioInit(resp.user,pass);
+                if (typeof restaurarEstadoBiometricoTrasLogin === 'function') {
+                    restaurarEstadoBiometricoTrasLogin();
+                }
                 prepararSeleccionRoles(resp);
             } else {
                 msg('Login', resp.msj || 'No se encontró el usuario o password incorrecto, vuelva a intentarlo.', 'error');
@@ -59,10 +71,10 @@ const ingresarLogin = () => {
     };
 
     // El token FCM identifica al teléfono previamente vinculado.
-    if (typeof FirebasexMessaging !== 'undefined') {
+    const esCordovaBrowser = typeof cordova !== 'undefined' && cordova.platformId === 'browser';
+    if (!esCordovaBrowser && typeof FirebasexMessaging !== 'undefined') {
         FirebasexMessaging.getToken(function (deviceToken) {
             datos.device_token = deviceToken;
-            datos.device_uuid = localStorage.getItem('uuid') || $('#uuid').val() || null;
             enviarSolicitudLogin();
         }, function () {
             enviarSolicitudLogin();
@@ -128,8 +140,20 @@ const seleccionarRolApp = (rol) => {
     localStorage.setItem('rolActivo', rol);
     aplicarPerfilActivo(rol);
     vista(rol === 'Profesional' ? 'inicio-profesional' : 'index', 'fade');
+    const esCordovaBrowser = typeof cordova !== 'undefined' && cordova.platformId === 'browser';
+    if (esCordovaBrowser && typeof checkDevice === 'function') {
+        setTimeout(function () { checkDevice(); }, 50);
+    }
+    setTimeout(function () {
+        if (typeof cargarMensajesApp === 'function') cargarMensajesApp();
+    }, 150);
 
-    if (localStorage.getItem('desafioAccesoPendiente') === '1') {
+    if (localStorage.getItem('mensajePendiente') === '1') {
+        localStorage.removeItem('mensajePendiente');
+        setTimeout(function () {
+            abrirMensajesApp();
+        }, 300);
+    } else if (localStorage.getItem('desafioAccesoPendiente') === '1') {
         localStorage.removeItem('desafioAccesoPendiente');
         setTimeout(function () {
             abrirDesafiosAcceso();
@@ -168,13 +192,20 @@ const aplicarPerfilActivo = (rol) => {
         perfil = null;
     }
 
+    // Evita reutilizar la imagen del rol anterior o de una sesión previa.
+    localStorage.removeItem('foto_perfil');
+    localStorage.removeItem('foto_perfil_url');
+
     if (perfil) {
         const nombre = rol === 'Profesional'
             ? [perfil.nombre, perfil.apellido_uno].filter(Boolean).join(' ')
             : [perfil.nombres, perfil.apellido_uno].filter(Boolean).join(' ');
 
         if (nombre) localStorage.setItem('nombre', nombre);
-        if (perfil.foto_perfil) localStorage.setItem('foto_perfil', perfil.foto_perfil);
+        if (perfil.foto_perfil) {
+            localStorage.setItem('foto_perfil', perfil.foto_perfil);
+            localStorage.setItem('foto_perfil_url', perfil.foto_perfil_url || '');
+        }
         if (perfil.sexo) localStorage.setItem('sexo', perfil.sexo);
     }
 

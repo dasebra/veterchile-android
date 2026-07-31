@@ -43,6 +43,182 @@ const volverInicioSegunRol = () => {
     vista(rolActivo === 'Profesional' ? 'inicio-profesional' : 'index', 'fade');
 };
 
+const toggleMenuPerfil = (event) => {
+    if (event) event.stopPropagation();
+    var $menu = $(event.currentTarget).closest('.header-menu-perfil');
+    $('.header-menu-perfil').not($menu).removeClass('abierto');
+    $menu.toggleClass('abierto');
+};
+
+$(document).on('click', function() {
+    $('.header-menu-perfil').removeClass('abierto');
+});
+
+const abrirEditarPerfil = () => {
+    $('.header-menu-perfil').removeClass('abierto');
+    var rol = localStorage.getItem('rolActivo') === 'Profesional'
+        ? 'Profesional'
+        : 'Paciente';
+    var api = new Api('perfil', 'datos');
+    api.request(
+        {rol: rol},
+        function(resp) {
+            var perfil = resp.perfil || {};
+            $('#perfil_app_rol').val(rol);
+            $('#perfil_app_nombres').val(perfil.nombres || '');
+            $('#perfil_app_apellido_uno').val(perfil.apellido_uno || '');
+            $('#perfil_app_apellido_dos').val(perfil.apellido_dos || '');
+            $('#perfil_app_telefono_uno').val(perfil.telefono_uno || '');
+            $('#perfil_app_telefono_dos').val(perfil.telefono_dos || '');
+            $('#perfil_app_email').val(perfil.email || '');
+            $('#perfil_app_foto').val('');
+            $('#perfil_app_foto_preview').attr(
+                'src',
+                perfil.foto_perfil_url || 'src/images/avatar-generico.svg'
+            );
+            $('#perfil_app_clave_actual, #perfil_app_clave_nueva, #perfil_app_clave_confirmacion, #perfil_app_biometria_pin, #perfil_app_password_login').val('');
+            vista('editar-perfil-app', 'fade');
+            if (typeof actualizarEstadoBiometriaApp === 'function') {
+                actualizarEstadoBiometriaApp();
+            }
+        },
+        function() {
+            msg('Perfil', 'No fue posible cargar el perfil.', 'error');
+        },
+        'GET'
+    );
+};
+
+const guardarPerfilApp = () => {
+    var datos = {
+        rol: $('#perfil_app_rol').val(),
+        nombres: $.trim($('#perfil_app_nombres').val()),
+        apellido_uno: $.trim($('#perfil_app_apellido_uno').val()),
+        apellido_dos: $.trim($('#perfil_app_apellido_dos').val()),
+        telefono_uno: $.trim($('#perfil_app_telefono_uno').val()),
+        telefono_dos: $.trim($('#perfil_app_telefono_dos').val())
+    };
+    var api = new Api('perfil', 'datos');
+    api.request(datos, function(resp) {
+        msg('Perfil', resp.msj || 'Perfil actualizado.', 'success');
+        localStorage.setItem('nombre', datos.nombres);
+        volverInicioSegunRol();
+    }, function(xhr) {
+        var mensaje = xhr.responseJSON && xhr.responseJSON.message
+            ? xhr.responseJSON.message
+            : 'Revisa los datos ingresados.';
+        msg('Perfil', mensaje, 'error');
+    }, 'PUT');
+};
+
+$(document).on('change', '#perfil_app_foto', function() {
+    var archivo = this.files && this.files[0];
+    if (!archivo) return;
+    if (!/^image\/(jpeg|png|webp)$/.test(archivo.type) || archivo.size > 5 * 1024 * 1024) {
+        this.value = '';
+        msg('Foto de perfil', 'Selecciona una imagen JPG, PNG o WEBP de hasta 5 MB.', 'error');
+        return;
+    }
+    $('#perfil_app_foto_preview').attr('src', URL.createObjectURL(archivo));
+});
+
+const guardarFotoPerfilApp = () => {
+    var input = document.getElementById('perfil_app_foto');
+    var archivo = input && input.files ? input.files[0] : null;
+    if (!archivo) {
+        msg('Foto de perfil', 'Selecciona una foto antes de continuar.', 'error');
+        return;
+    }
+
+    var formData = new FormData();
+    formData.append('rol', $('#perfil_app_rol').val());
+    formData.append('foto', archivo);
+
+    $.ajax({
+        url: MEDSDI_API_URL + '/perfil/foto',
+        type: 'POST',
+        data: formData,
+        headers: {
+            'Accept': 'application/json',
+            'X-Auth-Token': localStorage.getItem('authToken')
+        },
+        contentType: false,
+        processData: false,
+        success: function(resp) {
+            $('#perfil_app_foto_preview').attr('src', resp.foto_perfil_url);
+            $('#perfil_app_foto').val('');
+            localStorage.setItem('foto_perfil', resp.foto_perfil || '');
+            localStorage.setItem('foto_perfil_url', resp.foto_perfil_url || '');
+
+            var clavePerfil = $('#perfil_app_rol').val() === 'Profesional'
+                ? 'perfilProfesional'
+                : 'perfilPaciente';
+            try {
+                var perfilGuardado = JSON.parse(localStorage.getItem(clavePerfil) || '{}');
+                perfilGuardado.foto_perfil = resp.foto_perfil || '';
+                perfilGuardado.foto_perfil_url = resp.foto_perfil_url || '';
+                localStorage.setItem(clavePerfil, JSON.stringify(perfilGuardado));
+            } catch (error) {
+                console.log('No fue posible actualizar la copia local del perfil.', error);
+            }
+
+            if (typeof actualizarHeaderUsuario === 'function') {
+                actualizarHeaderUsuario();
+            }
+            msg('Foto de perfil', resp.msj || 'Foto actualizada.', 'success');
+        },
+        error: function(xhr) {
+            var mensaje = xhr.responseJSON && xhr.responseJSON.message
+                ? xhr.responseJSON.message
+                : 'No fue posible actualizar la foto.';
+            msg('Foto de perfil', mensaje, 'error');
+        }
+    });
+};
+
+const cambiarClaveDispositivoApp = () => {
+    var actual = $.trim($('#perfil_app_clave_actual').val());
+    var nueva = $.trim($('#perfil_app_clave_nueva').val());
+    var confirmacion = $.trim($('#perfil_app_clave_confirmacion').val());
+    var uuid = typeof obtenerUuidDispositivo === 'function'
+        ? obtenerUuidDispositivo()
+        : (localStorage.getItem('uuid') || $('#uuid').val());
+
+    if (!/^\d{4}$/.test(actual) || !/^\d{4}$/.test(nueva)) {
+        msg('Clave del dispositivo', 'Las claves deben contener exactamente 4 dígitos.', 'error');
+        return;
+    }
+    if (nueva !== confirmacion) {
+        msg('Clave del dispositivo', 'La confirmación no coincide con la nueva clave.', 'error');
+        return;
+    }
+    if (!uuid || uuid === '0') {
+        msg('Clave del dispositivo', 'No fue posible identificar este dispositivo.', 'error');
+        return;
+    }
+
+    var api = new Api('perfil', 'clave-dispositivo');
+    api.request({
+        uuid: uuid,
+        clave_actual: actual,
+        clave_nueva: nueva,
+        clave_nueva_confirmation: confirmacion
+    }, function(resp) {
+        localStorage.setItem('password', nueva);
+        $('#pass_device').val(nueva);
+        if (typeof actualizarSecretoBiometricoApp === 'function') {
+            actualizarSecretoBiometricoApp(nueva);
+        }
+        $('#perfil_app_clave_actual, #perfil_app_clave_nueva, #perfil_app_clave_confirmacion').val('');
+        msg('Clave del dispositivo', resp.msj || 'Clave actualizada.', 'success');
+    }, function(xhr) {
+        var mensaje = xhr.responseJSON && xhr.responseJSON.message
+            ? xhr.responseJSON.message
+            : 'No fue posible cambiar la clave.';
+        msg('Clave del dispositivo', mensaje, 'error');
+    }, 'PUT');
+};
+
 const abrirVideollamadaApp = (url) => {
     if (!url) return;
     if (window.cordova && cordova.InAppBrowser) {
@@ -158,7 +334,6 @@ const checkDevice = (onReady, silencioso) => {
 
     var datos = {};
 
-    datos.id_user = _SESSION('id_usuario');
     datos.uuid = typeof obtenerUuidDispositivo === 'function'
         ? obtenerUuidDispositivo()
         : (localStorage.getItem('uuid') || $('#uuid').val());
@@ -177,7 +352,7 @@ const checkDevice = (onReady, silencioso) => {
         cargando(1);
     }
 
-    var api = new Api("user_devices", "ver_registros");
+    var api = new Api("mobile-authorization", "device");
     api.request(
         datos,
         function (resp) {
@@ -692,6 +867,14 @@ const solicitarFmu = () => {
         "GET");
 }
 
+const textoDatoProfesional = (valor) => {
+    if (valor == null) return '';
+    if (typeof valor === 'object') {
+        return valor.nombre || valor.descripcion || valor.valor || '';
+    }
+    return String(valor);
+};
+
 const solicitarMedicos = () => {
     var datos = {};
     datos.id_paciente = _SESSION('id_usuario');
@@ -720,9 +903,9 @@ const solicitarMedicos = () => {
                         medico.apellido_dos
                     ].filter(Boolean).join(' ').trim() || 'Profesional';
                     const especialidadCompleta = [
-                        medico.especialidad || medico.nombre_especialidad,
-                        medico.tipo_especialidad || medico.nombre_tipo_especialidad,
-                        medico.sub_tipo_especialidad || medico.nombre_sub_tipo_especialidad
+                        textoDatoProfesional(medico.especialidad) || medico.nombre_especialidad,
+                        textoDatoProfesional(medico.tipo_especialidad) || medico.nombre_tipo_especialidad,
+                        textoDatoProfesional(medico.sub_tipo_especialidad) || medico.nombre_sub_tipo_especialidad
                     ].filter(Boolean).filter(function (valor, indice, lista) {
                         return lista.indexOf(valor) === indice;
                     }).join(' - ') || 'Especialidad no informada';
@@ -787,6 +970,17 @@ const solicitarMedicos = () => {
         },
         "GET");
 }
+
+const abrirMisProfesionales = () => {
+    setSession('origen_seleccion_profesional', 'mis_medicos');
+    vista('mis_medicos', 'fade');
+    solicitarMedicos();
+};
+
+const volverDesdePerfilProfesional = () => {
+    const origen = getSession('origen_seleccion_profesional') || 'mis_medicos';
+    vista(origen === 'mis_medicos_buscados' ? 'mis_medicos_buscados' : 'mis_medicos', 'fade');
+};
 
 const damePerfilMedico = (idMedico) => {
     console.log('Ver perfil médico ID:', idMedico);
@@ -915,14 +1109,20 @@ const agendarHora = (idMedico, nombreMedico, especialidad) => {
                 setSession('especialidad_medico_seleccionado', especialidad);
 
                 // Actualizar el header con la información del médico y botón de retorno
+                const origen = getSession('origen_seleccion_profesional') || 'mis_medicos';
+                const vistaRetorno = origen === 'mis_medicos_buscados' ? 'mis_medicos_buscados' : 'mis_medicos';
+                const textoRetorno = origen === 'mis_medicos_buscados'
+                    ? 'Volver a resultados'
+                    : 'Volver a mis profesionales';
+
                 $('#lugares_atencion .top-titulos').html(`
                     <p class="letra-bold color-azul-oscuro size20 text-center mt50">Lugares de atención</p>
                     <div class="bg-azul-claro p10 mb20 border-radius-5">
                         <p class="size16 color-azul text-center mb5"><strong>${nombreMedico}</strong></p>
                         <p class="size14 text-center mb0">${especialidad}</p>
                     </div>
-                    <div class="btn-app4 text-center size14 mb20" onclick="vista('mis_medicos_buscados');">
-                         Volver a profesionales
+                    <div class="btn-app4 text-center size14 mb20" onclick="vista('${vistaRetorno}');">
+                         ${textoRetorno}
                     </div>
                     <p class="size14 text-center mb10">Seleccione el lugar de atención</p>
                 `);
@@ -970,7 +1170,9 @@ const agendarHora = (idMedico, nombreMedico, especialidad) => {
 }
 
 const actualizarTarjetasFMU = (fmu) => {
-    let antecedentes = fmu.antecedentes;
+    const $paginaFmu = $('#fmu_paciente');
+    const $tarjetas = $paginaFmu.find('.cards-grid .card-button');
+    let antecedentes = Array.isArray(fmu.antecedentes) ? fmu.antecedentes : [];
     let alergias = [];
     let enfermedades = [];
     let medicamentos = [];
@@ -978,7 +1180,7 @@ const actualizarTarjetasFMU = (fmu) => {
     antecedentes.forEach(antecedente => {
         if(antecedente.id_tipo_antecedente === 6) { // Alergia
             alergias.push(antecedente);
-        } else if (antecedente.id_tipo_antecedente === 1 || antecedente.id_tipo_antecedente == 2) { // Enfermedad Crónica
+        } else if (antecedente.id_tipo_antecedente === 1) { // Patología crónica
             enfermedades.push(antecedente);
         }else if (antecedente.id_tipo_antecedente === 3) { // Cirugía
             cirugias.push(antecedente);
@@ -988,20 +1190,22 @@ const actualizarTarjetasFMU = (fmu) => {
     });
 
     // Grupo Sanguíneo
-    if (fmu.grupo_sanguineo) {
-        $('.cards-grid .card-button:eq(0) h2').text(fmu.grupo_sanguineo.nombre_gs);
-    }
+    $tarjetas.eq(0).find('h2').text(
+        fmu.grupo_sanguineo && fmu.grupo_sanguineo.nombre_gs
+            ? fmu.grupo_sanguineo.nombre_gs
+            : 'N/A'
+    );
 
     let ultima_alergia = alergias.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
     fmu.ultima_alergia = ultima_alergia || null;
     // Alergias
     if(fmu.ultima_alergia) {
         const fecha = fechaEsp(fmu.ultima_alergia.created_at);
-        $('.cards-grid .card-button:eq(1) .card-list').html(
+        $tarjetas.eq(1).find('.card-list').html(
             `<li>${fmu.ultima_alergia.antecedente_data.nombre}<br><span class="fecha-small">${fecha}</span></li>`
         );
     } else {
-        $('.cards-grid .card-button:eq(1) .card-list').html('<li>No existen registros</li>');
+        $tarjetas.eq(1).find('.card-list').html('<li>No existen registros</li>');
     }
 
     if(enfermedades.length > 0) {
@@ -1009,9 +1213,9 @@ const actualizarTarjetasFMU = (fmu) => {
         enfermedades.forEach(enfermedad => {
             htmlEnfermedades += `<li>${enfermedad.antecedente_data.nombre}</li>`;
         });
-        $('.cards-grid .card-button:eq(2) .card-list').html(htmlEnfermedades);
+        $tarjetas.eq(2).find('.card-list').html(htmlEnfermedades);
     } else {
-        $('.cards-grid .card-button:eq(2) .card-list').html('<li>No hay enfermedades crónicas</li>');
+        $tarjetas.eq(2).find('.card-list').html('<li>No hay enfermedades crónicas</li>');
     }
 
     // Medicamentos Crónicos
@@ -1020,9 +1224,9 @@ const actualizarTarjetasFMU = (fmu) => {
         fmu.medicamentos_cronicos.forEach(medicamento => {
             htmlMedicamentosCronicos += `<li>${medicamento.nombre}</li>`;
         });
-        $('.cards-grid .card-button:eq(3) .card-list').html(htmlMedicamentosCronicos);
+        $tarjetas.eq(3).find('.card-list').html(htmlMedicamentosCronicos);
     } else {
-        $('.cards-grid .card-button:eq(3) .card-list').html('<li>No hay medicamentos crónicos</li>');
+        $tarjetas.eq(3).find('.card-list').html('<li>No hay medicamentos crónicos</li>');
     }
 
     // Últimos Medicamentos
@@ -1032,9 +1236,9 @@ const actualizarTarjetasFMU = (fmu) => {
             const fecha = fechaEsp(medicamento.fecha);
             htmlUltimosMeds += `<li>${medicamento.nombre}<br><span class="fecha-small">${fecha}</span></li>`;
         });
-        $('.cards-grid .card-button:eq(4) .card-list').html(htmlUltimosMeds);
+        $tarjetas.eq(4).find('.card-list').html(htmlUltimosMeds);
     } else {
-        $('.cards-grid .card-button:eq(4) .card-list').html('<li>No hay medicamentos recientes</li>');
+        $tarjetas.eq(4).find('.card-list').html('<li>No hay medicamentos recientes</li>');
     }
 
     // Último Diagnóstico
@@ -1043,9 +1247,9 @@ const actualizarTarjetasFMU = (fmu) => {
         const ultimaFicha = fmu.fichas.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
         const fecha = fechaEsp(ultimaFicha.created_at);
         const diagnostico = `<li>${ultimaFicha.hipotesis_diagnostico}<br><span class="fecha-small">${fecha}</span></li>`;
-        $('.cards-grid .card-button:eq(5) .card-list').html(diagnostico);
+        $tarjetas.eq(5).find('.card-list').html(diagnostico);
     } else {
-        $('.cards-grid .card-button:eq(5) .card-list').html('<li>No hay diagnósticos recientes</li>');
+        $tarjetas.eq(5).find('.card-list').html('<li>No hay diagnósticos recientes</li>');
     }
 
     let ultima_cirugia = cirugias.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
@@ -1054,11 +1258,11 @@ const actualizarTarjetasFMU = (fmu) => {
     // Última Cirugía
     if (fmu.ultima_cirugia) {
         const fecha = fechaEsp(fmu.ultima_cirugia.created_at);
-        $('.cards-grid .card-button:eq(6) .card-list').html(
+        $tarjetas.eq(6).find('.card-list').html(
             `<li>${fmu.ultima_cirugia.antecedente_data.procedimiento} - ${fmu.ultima_cirugia.comentario}<br><span class="fecha-small">${fecha}</span></li><br><span class="letra-small">${fmu.ultima_cirugia.antecedente_data.profesional || ''}</span>`
         );
     } else {
-        $('.cards-grid .card-button:eq(6) .card-list').html('<li>No existen registros</li>');
+        $tarjetas.eq(6).find('.card-list').html('<li>No existen registros</li>');
     }
 
     // Prótesis y Ortesis
@@ -1067,23 +1271,25 @@ const actualizarTarjetasFMU = (fmu) => {
         fmu.protesis_ortesis.forEach(item => {
             htmlProtesis += `<li>${item.nombre}</li>`;
         });
-        $('.cards-grid .card-button:eq(7) .card-list').html(htmlProtesis);
+        $tarjetas.eq(7).find('.card-list').html(htmlProtesis);
     } else {
-        $('.cards-grid .card-button:eq(7) .card-list').html('<li>No existen registros</li>');
+        $tarjetas.eq(7).find('.card-list').html('<li>No existen registros</li>');
     }
 
     // Contacto de Emergencia
     if (fmu.contacto_emergencia) {
-        $('.card-button:last .col-xs-4:eq(0) .fecha-small').text(fmu.contacto_emergencia.nombre || 'No registrado');
-        $('.card-button:last .col-xs-4:eq(1) .fecha-small').text(fmu.contacto_emergencia.parentezco || 'No registrado');
-        $('.card-button:last .col-xs-4:eq(2) .fecha-small').text(fmu.contacto_emergencia.telefono || 'No registrado');
+        const $contacto = $paginaFmu.find('.ui-content > .row.mb90 .card-button');
+        $contacto.find('.col-xs-4').eq(0).find('.fecha-small').text(fmu.contacto_emergencia.nombre || 'No registrado');
+        $contacto.find('.col-xs-4').eq(1).find('.fecha-small').text(fmu.contacto_emergencia.parentezco || 'No registrado');
+        $contacto.find('.col-xs-4').eq(2).find('.fecha-small').text(fmu.contacto_emergencia.telefono || 'No registrado');
     }
 }
 
 const mostrarSinDatos = () => {
     // Mostrar mensajes por defecto cuando no hay datos
-    $('.cards-grid .card-button:eq(0) h2').text('No disponible');
-    $('.cards-grid .card-button .card-list').each(function() {
+    const $paginaFmu = $('#fmu_paciente');
+    $paginaFmu.find('.cards-grid .card-button').eq(0).find('h2').text('No disponible');
+    $paginaFmu.find('.cards-grid .card-button .card-list').each(function() {
         $(this).html('<li>No hay datos disponibles</li>');
     });
 }
@@ -1376,7 +1582,250 @@ const cargarSubTipoEspecialidad = (select,selectIdTipoEspecialidad) => {
     );
 }
 
+var modalidadesAgendaContexto = null;
+var prestacionesAgendaContexto = null;
+
 const seleccionarLugarAtencion = (idLugar, idProfesional, nombreLugar) => {
+    setSession('id_lugar_seleccionado', idLugar);
+    setSession('id_profesional_seleccionado', idProfesional);
+    setSession('nombre_lugar_seleccionado', nombreLugar);
+    setSession('tipo_agenda_seleccionado', '');
+    setSession('tipo_hora_medica_seleccionado', '');
+    setSession('id_procedimiento_seleccionado', '');
+    setSession('nombre_procedimiento_seleccionado', '');
+
+    cargando(1);
+    var api = new Api('profesionales', 'tipos_agenda_lugar_atencion');
+    api.request(
+        {id_profesional: idProfesional, id_lugar: idLugar},
+        function(resp) {
+            var modalidades = resp.registros || [];
+            cargando(0);
+
+            if (!modalidades.length) {
+                mostrarSinFechasDisponibles();
+                return;
+            }
+
+            if (modalidades.length === 1) {
+                if (modalidades[0].tipo_hora_medica === 'E') {
+                    modalidadesAgendaContexto = {
+                        modalidades: modalidades,
+                        idLugar: idLugar,
+                        idProfesional: idProfesional,
+                        nombreLugar: nombreLugar
+                    };
+                    cargarPrestacionesAgenda(
+                        modalidades[0],
+                        idLugar,
+                        idProfesional,
+                        nombreLugar
+                    );
+                    vista('seleccionar_fecha_hora', 'fade');
+                    return;
+                }
+                seleccionarTipoAgenda(
+                    modalidades[0].id,
+                    modalidades[0].tipo_hora_medica,
+                    modalidades[0].nombre,
+                    idLugar,
+                    idProfesional,
+                    nombreLugar
+                );
+                return;
+            }
+
+            mostrarTiposAgendaDisponibles(modalidades, idLugar, idProfesional, nombreLugar);
+        },
+        function() {
+            cargando(0);
+            msg('Modalidad de atención', 'No fue posible cargar las modalidades disponibles.', 'error');
+        },
+        'GET'
+    );
+};
+
+const mostrarTiposAgendaDisponibles = (modalidades, idLugar, idProfesional, nombreLugar) => {
+    const nombreMedico = getSession('nombre_medico_seleccionado');
+    const especialidadMedico = getSession('especialidad_medico_seleccionado');
+    modalidadesAgendaContexto = {
+        modalidades: modalidades,
+        idLugar: idLugar,
+        idProfesional: idProfesional,
+        nombreLugar: nombreLugar
+    };
+    const tarjetas = modalidades.map(function(modalidad, indice) {
+        const esTelemedicina = Number(modalidad.id) === 3;
+        return `
+            <button type="button" class="modalidad-agenda-card"
+                onclick="seleccionarModalidadAgendaPorIndice(${indice})">
+                <span class="modalidad-agenda-icono">${esTelemedicina ? '▣' : '⌖'}</span>
+                <span class="modalidad-agenda-texto">
+                    <strong>${escaparTextoAgenda(modalidad.nombre)}</strong>
+                    <small>${escaparTextoAgenda(modalidad.descripcion)}</small>
+                </span>
+                <span class="modalidad-agenda-flecha">›</span>
+            </button>`;
+    }).join('');
+
+    $('#seleccionar_fecha_hora .top-titulos').html(`
+        <p class="letra-bold color-azul-oscuro size20 text-center mt50">¿Cómo quieres atenderte?</p>
+        <div class="agenda-seleccion-resumen">
+            <strong>${escaparTextoAgenda(nombreMedico)}</strong>
+            <span>${escaparTextoAgenda(especialidadMedico)}</span>
+            <small>⌖ ${escaparTextoAgenda(nombreLugar)}</small>
+        </div>
+        <div class="btn-app4 text-center size14 mb20" onclick="vista('lugares_atencion');">Volver a lugares</div>
+    `);
+    $('#lista-fechas').html(`
+        <div class="modalidades-agenda-contenedor">
+            <p>Selecciona una modalidad de atención</p>
+            ${tarjetas}
+        </div>
+    `);
+    vista('seleccionar_fecha_hora', 'fade');
+};
+
+const seleccionarModalidadAgendaPorIndice = (indice) => {
+    if (!modalidadesAgendaContexto || !modalidadesAgendaContexto.modalidades[indice]) return;
+    const modalidad = modalidadesAgendaContexto.modalidades[indice];
+
+    if (modalidad.tipo_hora_medica === 'E') {
+        cargarPrestacionesAgenda(
+            modalidad,
+            modalidadesAgendaContexto.idLugar,
+            modalidadesAgendaContexto.idProfesional,
+            modalidadesAgendaContexto.nombreLugar
+        );
+        return;
+    }
+
+    seleccionarTipoAgenda(
+        modalidad.id,
+        modalidad.tipo_hora_medica,
+        modalidad.nombre,
+        modalidadesAgendaContexto.idLugar,
+        modalidadesAgendaContexto.idProfesional,
+        modalidadesAgendaContexto.nombreLugar
+    );
+};
+
+const cargarPrestacionesAgenda = (modalidad, idLugar, idProfesional, nombreLugar) => {
+    cargando(1);
+    var api = new Api('profesionales', 'prestaciones_lugar_atencion');
+    api.request(
+        {id_profesional: idProfesional, id_lugar: idLugar},
+        function(resp) {
+            cargando(0);
+            const prestaciones = Array.isArray(resp.registros) ? resp.registros : [];
+            if (!prestaciones.length) {
+                msg(
+                    'Exámenes y procedimientos',
+                    'Este profesional todavía no tiene prestaciones activas configuradas en este lugar.',
+                    'warning'
+                );
+                return;
+            }
+
+            prestacionesAgendaContexto = {
+                prestaciones: prestaciones,
+                modalidad: modalidad,
+                idLugar: idLugar,
+                idProfesional: idProfesional,
+                nombreLugar: nombreLugar
+            };
+
+            const tarjetas = prestaciones.map(function(prestacion, indice) {
+                const codigo = prestacion.codigo
+                    ? `<small>Código: ${escaparTextoAgenda(prestacion.codigo)}</small>`
+                    : '';
+                const valor = prestacion.valor !== null
+                    ? `<small>Valor: $${Number(prestacion.valor).toLocaleString('es-CL')}</small>`
+                    : '';
+
+                return `
+                    <button type="button" class="modalidad-agenda-card"
+                        onclick="seleccionarPrestacionAgendaPorIndice(${indice})">
+                        <span class="modalidad-agenda-icono">+</span>
+                        <span class="modalidad-agenda-texto">
+                            <strong>${escaparTextoAgenda(prestacion.nombre)}</strong>
+                            <small>${escaparTextoAgenda(prestacion.tipo_nombre)}</small>
+                            ${codigo}
+                            ${valor}
+                        </span>
+                        <span class="modalidad-agenda-flecha">›</span>
+                    </button>`;
+            }).join('');
+
+            $('#lista-fechas').html(`
+                <div class="modalidades-agenda-contenedor">
+                    <p>Selecciona el examen o procedimiento</p>
+                    ${tarjetas}
+                    <button type="button" class="btn-app4 text-center size14 mt20"
+                        onclick="mostrarTiposAgendaDisponibles(
+                            modalidadesAgendaContexto.modalidades,
+                            modalidadesAgendaContexto.idLugar,
+                            modalidadesAgendaContexto.idProfesional,
+                            modalidadesAgendaContexto.nombreLugar
+                        )">
+                        Volver a modalidades
+                    </button>
+                </div>
+            `);
+        },
+        function() {
+            cargando(0);
+            msg('Exámenes y procedimientos', 'No fue posible cargar las prestaciones.', 'error');
+        },
+        'GET'
+    );
+};
+
+const seleccionarPrestacionAgendaPorIndice = (indice) => {
+    if (!prestacionesAgendaContexto || !prestacionesAgendaContexto.prestaciones[indice]) return;
+    const prestacion = prestacionesAgendaContexto.prestaciones[indice];
+    const modalidad = prestacionesAgendaContexto.modalidad;
+
+    setSession('id_procedimiento_seleccionado', prestacion.id_procedimiento);
+    setSession('nombre_procedimiento_seleccionado', prestacion.nombre);
+
+    seleccionarTipoAgenda(
+        modalidad.id,
+        modalidad.tipo_hora_medica,
+        modalidad.nombre,
+        prestacionesAgendaContexto.idLugar,
+        prestacionesAgendaContexto.idProfesional,
+        prestacionesAgendaContexto.nombreLugar
+    );
+};
+
+const seleccionarTipoAgenda = (tipoAgenda, tipoHoraMedica, nombreModalidad, idLugar, idProfesional, nombreLugar) => {
+    setSession('tipo_agenda_seleccionado', tipoAgenda);
+    setSession('tipo_hora_medica_seleccionado', tipoHoraMedica);
+    setSession('nombre_modalidad_seleccionada', nombreModalidad);
+    cargarFechasAgendaSeleccionada(idLugar, idProfesional, nombreLugar);
+};
+
+const volverDesdeFechasAgenda = () => {
+    if (
+        getSession('tipo_hora_medica_seleccionado') === 'E'
+        && prestacionesAgendaContexto
+    ) {
+        cargarPrestacionesAgenda(
+            prestacionesAgendaContexto.modalidad,
+            prestacionesAgendaContexto.idLugar,
+            prestacionesAgendaContexto.idProfesional,
+            prestacionesAgendaContexto.nombreLugar
+        );
+        return;
+    }
+
+    vista('lugares_atencion');
+};
+
+const escaparTextoAgenda = (valor) => $('<div>').text(valor == null ? '' : String(valor)).html();
+
+const cargarFechasAgendaSeleccionada = (idLugar, idProfesional, nombreLugar) => {
     console.log('Lugar de atención seleccionado ID:', idLugar);
 
     // Obtener datos del médico desde la sesión
@@ -1390,7 +1839,8 @@ const seleccionarLugarAtencion = (idLugar, idProfesional, nombreLugar) => {
 
     var datos = {
         id_profesional: idProfesional,
-        id_lugar: idLugar
+        id_lugar: idLugar,
+        tipo_agenda: getSession('tipo_agenda_seleccionado')
     };
 
     cargando(1);
@@ -1418,9 +1868,15 @@ const seleccionarLugarAtencion = (idLugar, idProfesional, nombreLugar) => {
                             <p class="size16 color-azul text-center mb5"><strong>${nombreMedico}</strong></p>
                             <p class="size14 text-center mb5">${especialidadMedico}</p>
                             <p class="size13 text-center mb0"><img class="mr5" width="12" src="src/images/ubicacion.svg">${nombreLugar}</p>
+                            <span class="agenda-modalidad-seleccionada">${getSession('nombre_modalidad_seleccionada')}</span>
+                            ${getSession('nombre_procedimiento_seleccionado')
+                                ? `<span class="agenda-modalidad-seleccionada">${escaparTextoAgenda(getSession('nombre_procedimiento_seleccionado'))}</span>`
+                                : ''}
                         </div>
-                        <div class="btn-app4 text-center size14 mb20" onclick="vista('lugares_atencion');">
-                            Volver a lugares
+                        <div class="btn-app4 text-center size14 mb20" onclick="volverDesdeFechasAgenda();">
+                            ${getSession('tipo_hora_medica_seleccionado') === 'E'
+                                ? 'Volver a prestaciones'
+                                : 'Volver a lugares'}
                         </div>
                     `);
 
@@ -1517,7 +1973,8 @@ const cargarHorasDisponibles = () => {
     const datos = {
         id_profesional: getSession('id_profesional_seleccionado'),
         id_lugar: getSession('id_lugar_seleccionado'),
-        fecha: fechaSeleccionada
+        fecha: fechaSeleccionada,
+        tipo_agenda: getSession('tipo_agenda_seleccionado')
     };
 
     cargando(1);
@@ -1775,10 +2232,12 @@ const confirmarHoraMedica = (idHora, fecha, hora) => {
     }
 
     const datos = {
-        id_paciente: _SESSION('id_usuario'),
         id_profesional: getSession('id_profesional_seleccionado'),
         id_lugar: getSession('id_lugar_seleccionado'),
-        tipo_hora_medica: 'C',
+        tipo_agenda: getSession('tipo_agenda_seleccionado'),
+        tipo_hora_medica: getSession('tipo_hora_medica_seleccionado') || 'C',
+        id_procedimiento: getSession('id_procedimiento_seleccionado') || null,
+        examen: getSession('nombre_procedimiento_seleccionado') || '',
         id_hora: idHora,
         fecha: fecha,
         hora: hora,
@@ -1910,6 +2369,23 @@ const dameCiudades = (select, selectIdRegion) => {
         "GET");
 }
 
+var profesionalesBusquedaCache = [];
+
+const agendarProfesionalDesdeBusqueda = (indice) => {
+    const prof = profesionalesBusquedaCache[indice];
+    if (!prof) return;
+    const nombre = [prof.nombre, prof.apellido_uno, prof.apellido_dos]
+        .filter(Boolean).join(' ').trim() || 'Profesional';
+    const especialidad = [
+        textoDatoProfesional(prof.especialidad) || prof.nombre_especialidad,
+        textoDatoProfesional(prof.tipo_especialidad) || prof.nombre_tipo_especialidad,
+        textoDatoProfesional(prof.sub_tipo_especialidad) || prof.nombre_sub_tipo_especialidad
+    ].filter(Boolean).filter(function(valor, posicion, lista) {
+        return lista.indexOf(valor) === posicion;
+    }).join(' - ') || 'Especialidad no informada';
+    agendarHora(prof.id, nombre, especialidad);
+};
+
 const buscarProfesionales = () => {
 
     // validar que se haya seleccionado una especialidad
@@ -1933,6 +2409,7 @@ const buscarProfesionales = () => {
         nombre_profesional: $.trim($('#nombre_profesional_busqueda').val()),
         token: "mobile-original-" + Date.now()
     };
+    setSession('origen_seleccion_profesional', 'mis_medicos_buscados');
     cargando(1);
     var api = new Api("profesionales", "buscar_profesionales");
     api.request(
@@ -1941,10 +2418,18 @@ const buscarProfesionales = () => {
             LOG('buscar profesionales estado:' + resp.estado);
             console.log(resp.profesionales);
             vista('mis_medicos_buscados', 'fade');
+            $('#resumen-profesionales-encontrados').text(
+                resp.total_resultados === 1
+                    ? 'Encontramos 1 profesional'
+                    : 'Encontramos ' + Number(resp.total_resultados || 0) + ' profesionales'
+            );
             if (resp.estado == 1 && resp.profesionales && resp.profesionales.length > 0) {
+                profesionalesBusquedaCache = resp.profesionales;
                 let htmlProfesionales = '';
-                resp.profesionales.forEach(prof => {
-                    if(prof.foto_perfil && prof.foto_perfil!=''){
+                resp.profesionales.forEach((prof, indiceProfesional) => {
+                    if (prof.img_profesional) {
+                        var fotoPerfil = prof.img_profesional;
+                    } else if(prof.foto_perfil && prof.foto_perfil!=''){
                         var fotoPerfil = 'https://med-sdi.cl/storage/'+prof.foto_perfil;
                     }else{
                         if(prof.sexo && prof.sexo=='F'){
@@ -1959,15 +2444,15 @@ const buscarProfesionales = () => {
                         prof.apellido_dos
                     ].filter(Boolean).join(' ').trim() || 'Profesional';
                     const especialidadCompleta = [
-                        prof.especialidad || prof.nombre_especialidad,
-                        prof.tipo_especialidad || prof.nombre_tipo_especialidad,
-                        prof.sub_tipo_especialidad || prof.nombre_sub_tipo_especialidad
+                        textoDatoProfesional(prof.especialidad) || prof.nombre_especialidad,
+                        textoDatoProfesional(prof.tipo_especialidad) || prof.nombre_tipo_especialidad,
+                        textoDatoProfesional(prof.sub_tipo_especialidad) || prof.nombre_sub_tipo_especialidad
                     ].filter(Boolean).filter(function (valor, indice, lista) {
                         return lista.indexOf(valor) === indice;
                     }).join(' - ') || 'Especialidad no informada';
-                    const lugarAtencion = prof.nombre_lugar_atencion
-                        || prof.lugar_atencion
-                        || prof.direccion
+                    const lugarAtencion = textoDatoProfesional(prof.nombre_lugar_atencion)
+                        || textoDatoProfesional(prof.lugar_atencion)
+                        || textoDatoProfesional(prof.direccion)
                         || 'Lugar de atención por confirmar';
 
                     htmlProfesionales += `
@@ -1980,7 +2465,7 @@ const buscarProfesionales = () => {
                                 <p class="size16 color-azul mb5">${nombreCompleto}</p>
                                 <p class="letra-small mb5">${especialidadCompleta}</p>
                                 <p class="letra-small mb5"><img class="mr10" width="15" src="src/images/ubicacion.svg">${lugarAtencion}</p>
-                                <div class="btn-app7" style="width: 100%;" onclick="agendarHora(${prof.id}, '${nombreCompleto}', '${especialidadCompleta}')">
+                                <div class="btn-app7" style="width: 100%;" onclick="agendarProfesionalDesdeBusqueda(${indiceProfesional})">
                                     Agendar Hora
                                 </div>
                             </div>
@@ -2032,13 +2517,11 @@ const list_log_device = ()=>{
 
     var datos = {};
 
-    datos.id_user_recept = _SESSION('id_usuario');
-
     $('#list_log_reg').html(
         '<p class="text-center color-gris mt20">Cargando autorizaciones...</p>'
     );
 
-    var api = new Api("log_user_devices", "ver_registros");
+    var api = new Api("mobile-authorization", "requests");
 
     api.request(
         datos,

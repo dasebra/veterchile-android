@@ -59,7 +59,9 @@ var Api = /** @class */ (function () {
         var requestData;
         var contentType = false;
         var processData = true;
-        var url = this.url_ + `/${this.modulo_}/${this.metodo_}`;
+        // Evita redirecciones de Apache: los navegadores bloquean una
+        // redirecciÃ³n dentro de una peticiÃ³n CORS preflight.
+        var url = (this.url_ + `/${this.modulo_}/${this.metodo_}`).replace(/\/+$/, '');
 
         if (methodSend === 'GET') {
             // Para GET: agregar parámetros a la URL
@@ -117,6 +119,9 @@ var Api = /** @class */ (function () {
             'paciente/mis_horas_medicas',
             'paciente/agenda',
             'profesional/agenda',
+            'perfil/datos',
+            'perfil/foto',
+            'perfil/clave-dispositivo',
             'paciente/mis_examenes',
             'paciente/mis_recetas',
             'paciente/mis_consentimientos',
@@ -125,11 +130,16 @@ var Api = /** @class */ (function () {
             'profesionales/buscar_profesionales',
             'paciente/agendar_hora_medica',
             'paciente/confirmar_hora_medica'
+            ,'mensajes/'
+            ,'mensajes'
+            ,'mensajes/leer'
             // Agregar aquí cualquier otra ruta que requiera autenticación
         ];
 
         var currentRoute = this.modulo_ + '/' + this.metodo_;
-        return protectedRoutes.includes(currentRoute);
+        return protectedRoutes.includes(currentRoute)
+            || currentRoute.indexOf('mensajes') === 0
+            || currentRoute.indexOf('mobile-authorization/') === 0;
     };
 
     // Resto del código igual...

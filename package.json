@@ -34,7 +34,11 @@
         "IOS_FCM_ENABLED": "true",
         "IOS_ENABLE_CRITICAL_ALERTS_ENABLED": "false"
       },
-      "cordova-plugin-dialogs": {}
+      "cordova-plugin-dialogs": {},
+      "cordova-plugin-fingerprint-aio": {}
     }
+  },
+  "dependencies": {
+    "cordova-plugin-fingerprint-aio": "6.0.1"
   }
 }
