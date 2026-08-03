@@ -40,7 +40,16 @@ function onDeviceReady() {
     registrarNotificacionesDeSesion();
 
     document.addEventListener('resume', registrarNotificacionesDeSesion, false);
+    document.addEventListener('backbutton', manejarBotonAtrasApp, false);
 }
+
+const manejarBotonAtrasApp = (event) => {
+    const pagina = $.mobile && $.mobile.activePage ? $.mobile.activePage.attr('id') : '';
+    if (pagina === 'control-reposo-paciente' || pagina === 'control-reposo-profesional') {
+        if (event) event.preventDefault();
+        volverInicioSegunRol();
+    }
+};
 
 function registrarNotificacionesDeSesion() {
     if (!_SESSION('authToken')) {
@@ -520,30 +529,193 @@ const abrirControlReposoProfesional = () => {
         return;
     }
     vista('control-reposo-profesional', 'fade');
+    cargar_controles_reposo();
+};
+
+let controlReposoPacienteSeleccionado = null;
+let controlReposoPacienteActivo = null;
+let controlReposoFotoBase64 = null;
+
+const reposoApi = (metodo, datos, callback, method = 'GET') => {
+    const api = new Api('rest-controls', metodo);
+    api.request(datos || {}, callback, function (xhr) {
+        let mensaje = 'No fue posible completar la operación.';
+        try { mensaje = JSON.parse(xhr.responseText).message || mensaje; } catch (e) {}
+        msg('Control de reposo', mensaje, 'error');
+    }, method, false, 30000);
+};
+
+const buscar_pacientes_reposo = () => {
+    const query = $.trim($('#reposo_buscar_paciente').val() || '');
+    reposoApi('patients', {q: query}, function (pacientes) {
+        const contenedor = $('#reposo_resultados_pacientes').empty();
+        if (!pacientes || !pacientes.length) {
+            contenedor.html('<p class="reposo-aviso">No hay pacientes con licencias emitidas por este profesional.</p>');
+            return;
+        }
+        pacientes.forEach(function (paciente) {
+            const boton = $('<button type="button" class="reposo-paciente-opcion"></button>');
+            boton.append($('<strong></strong>').text(paciente.name));
+            boton.append($('<span></span>').text(`${paciente.rut} · Licencia hasta ${paciente.ends_at || 'sin fecha'}${paciente.address ? ' · ' + paciente.address : ''}`));
+            boton.on('click', function () { seleccionar_paciente_reposo(paciente); });
+            contenedor.append(boton);
+        });
+    });
+};
+
+const seleccionar_paciente_reposo = (paciente) => {
+    controlReposoPacienteSeleccionado = paciente;
+    $('#reposo_licencia_id').val(paciente.license_id);
+    $('#reposo_paciente_resumen').text(`${paciente.name} (${paciente.rut})`);
+    $('#reposo_fecha_resumen').text(paciente.ends_at || 'Sin fecha configurada');
+    $('#reposo_direccion').val(paciente.address || '');
+    $('#reposo_resultados_pacientes .reposo-paciente-opcion').removeClass('seleccionado');
+    $('#reposo_resultados_pacientes .reposo-paciente-opcion').filter(function () {
+        return $(this).text().indexOf(paciente.rut) !== -1;
+    }).addClass('seleccionado');
 };
 
 const guardar_config_reposo = () => {
+    const licenciaId = $('#reposo_licencia_id').val();
+    if (!licenciaId) {
+        msg('Control de reposo', 'Selecciona primero un paciente con licencia.', 'warning');
+        return;
+    }
+    if ($('#reposo_activo').val() !== '1') {
+        msg('Control de reposo', 'Selecciona “Sí” en activar control de reposo.', 'warning');
+        return;
+    }
+    reposoApi('', {
+        license_id: Number(licenciaId),
+        radius_km: Number($('#reposo_radio_km').val()),
+        frequency_hours: Number($('#reposo_frecuencia').val()),
+        verify_medications: $('#reposo_control_medicamentos').val() === '1',
+        verify_location: $('#reposo_control_ubicacion').val() === '1',
+        base_address: $.trim($('#reposo_direccion').val() || ''),
+        notes: $.trim($('#reposo_observaciones').val() || '')
+    }, function (respuesta) {
+        $('#reposo_estado_guardado').html(`<div class="reposo-aviso exito">Solicitud enviada. ${respuesta.notification_sent ? 'El paciente fue notificado.' : 'El paciente aún no tiene notificaciones activas.'}</div>`);
+        msg('Control de reposo', 'Configuración guardada correctamente.', 'success');
+    }, 'POST');
+};
 
-    let datos = {
-        activo: $('#reposo_activo').val(),
-        radio_km: $('#reposo_radio_km').val(),
-        frecuencia_horas: $('#reposo_frecuencia').val(),
-        control_medicamentos: $('#reposo_control_medicamentos').val(),
-        control_ubicacion: $('#reposo_control_ubicacion').val(),
-        direccion: $('#reposo_direccion').val(),
-        observaciones: $('#reposo_observaciones').val(),
-        id_user_recept: _SESSION('id_usuario')
+const cargar_controles_reposo = () => {
+    if (localStorage.getItem('rolActivo') === 'Profesional') {
+        buscar_pacientes_reposo();
+        reposoApi('', {}, function (respuesta) {
+            render_controles_reposo_profesional(respuesta.controls || []);
+        });
+        return;
+    }
+    reposoApi('', {}, function (respuesta) {
+        controlReposoPacienteActivo = respuesta.controls && respuesta.controls.length ? respuesta.controls[0] : null;
+        if (!controlReposoPacienteActivo) {
+            msg('Control de reposo', 'No tienes solicitudes de control pendientes.', 'info');
+            volverInicioSegunRol();
+            return;
+        }
+        mostrar_control_reposo_paciente(controlReposoPacienteActivo);
+        vista('control-reposo-paciente', 'fade');
+    });
+};
+
+const render_controles_reposo_profesional = (controles) => {
+    const contenedor = $('#reposo_controles_lista').empty();
+    if (!controles.length) {
+        contenedor.html('<p class="reposo-aviso">Aún no hay controles configurados.</p>');
+        return;
+    }
+    const estados = {pending_acceptance: 'Pendiente de aceptación', active: 'Activo', rejected: 'Rechazado', completed: 'Finalizado'};
+    controles.forEach(function (control) {
+        const verificaciones = control.checkins || [];
+        const ultima = verificaciones.length ? verificaciones[0] : null;
+        const tarjeta = $('<div class="reposo-control-item"></div>');
+        tarjeta.append($('<div class="reposo-control-cabecera"></div>')
+            .append($('<strong></strong>').text(control.patient || 'Paciente'))
+            .append($('<span class="reposo-badge"></span>').addClass(control.status === 'active' ? 'activo' : '').text(estados[control.status] || control.status)));
+        tarjeta.append($('<small></small>').text(`Licencia #${control.license_id} · hasta ${control.ends_at || 'sin fecha'}`));
+        tarjeta.append($('<p></p>').text(ultima
+            ? `Última verificación: ${ultima.captured_at || ''} · ${ultima.status === 'outside_radius' ? 'fuera del radio permitido' : 'recibida correctamente'}`
+            : 'Todavía no hay verificaciones enviadas.'));
+        contenedor.append(tarjeta);
+    });
+};
+
+const mostrar_control_reposo_paciente = (control) => {
+    $('#reposo_paciente_profesional').text(control.professional || 'Profesional tratante');
+    $('#reposo_paciente_indicaciones').text(control.notes || 'Revisa y acepta las condiciones para comenzar.');
+    const fechaHasta = control.ends_at ? new Date(control.ends_at).toLocaleDateString('es-CL') : 'Sin fecha';
+    const estados = {pending_acceptance: 'PENDIENTE', active: 'ACTIVO', rejected: 'RECHAZADO', completed: 'FINALIZADO'};
+    $('#reposo_paciente_estado').text(estados[control.status] || control.status).attr('data-status', control.status);
+    $('#reposo_paciente_detalle').html(`
+        <div class="reposo-item"><span class="reposo-label">Licencia</span><span class="reposo-value">#${control.license_id}</span></div>
+        <div class="reposo-item"><span class="reposo-label">Reposo hasta</span><span class="reposo-value">${fechaHasta}</span></div>
+        <div class="reposo-item"><span class="reposo-label">Frecuencia</span><span class="reposo-value">Cada ${control.frequency_hours} hora(s)</span></div>
+        <div class="reposo-item"><span class="reposo-label">Ubicación</span><span class="reposo-value">${control.verify_location ? `Sí, radio ${control.radius_km} km` : 'No solicitada'}</span></div>
+        <div class="reposo-item"><span class="reposo-label">Fotografía</span><span class="reposo-value">${control.verify_medications ? 'Solicitada' : 'No solicitada'}</span></div>`);
+    const activo = control.status === 'active';
+    $('#reposo_decision_acciones').toggle(!activo);
+    $('#reposo_checkin_panel').toggle(activo);
+    $('#reposo_foto').toggle(!!control.verify_medications);
+    $('#reposo_foto_boton').toggle(!!control.verify_medications);
+};
+
+const obtener_ubicacion_reposo = () => new Promise(function (resolve, reject) {
+    if (!navigator.geolocation) return reject(new Error('Geolocalización no disponible.'));
+    navigator.geolocation.getCurrentPosition(function (position) {
+        resolve({latitude: position.coords.latitude, longitude: position.coords.longitude, accuracy_meters: position.coords.accuracy});
+    }, function () { reject(new Error('Debes permitir el acceso a tu ubicación.')); }, {enableHighAccuracy: true, timeout: 20000, maximumAge: 0});
+});
+
+const decidir_control_reposo = async (decision) => {
+    if (!controlReposoPacienteActivo) return;
+    let ubicacion = {};
+    try {
+        if (decision === 'accept' && controlReposoPacienteActivo.verify_location) ubicacion = await obtener_ubicacion_reposo();
+    } catch (error) { msg('Ubicación requerida', error.message, 'warning'); return; }
+    reposoApi(`${controlReposoPacienteActivo.id}/decision`, Object.assign({decision: decision}, ubicacion), function (respuesta) {
+        controlReposoPacienteActivo = respuesta.control;
+        mostrar_control_reposo_paciente(controlReposoPacienteActivo);
+        msg('Control de reposo', decision === 'accept' ? 'Control aceptado. Ya puedes realizar la verificación.' : 'Solicitud rechazada.', 'success');
+        if (decision === 'reject') volverInicioSegunRol();
+    }, 'POST');
+};
+
+$(document).on('change', '#reposo_foto', function () {
+    const archivo = this.files && this.files[0];
+    controlReposoFotoBase64 = null;
+    $('#reposo_foto_nombre').text(archivo ? archivo.name : 'Usar la cámara del teléfono');
+    if (!archivo) return;
+    const lector = new FileReader();
+    lector.onload = function (evento) {
+        controlReposoFotoBase64 = evento.target.result;
+        $('#reposo_foto_preview').attr('src', controlReposoFotoBase64).show();
     };
+    lector.readAsDataURL(archivo);
+});
 
-    console.log('Config reposo:', datos);
-
-    // aquí después llamas a tu API
-    // var api = new Api("control_reposo", "guardar_configuracion");
-    // api.request(datos, success, error, "POST");
-}
-
-const probar_camara_reposo = () => {
-    console.log('Abrir cámara para prueba de medicamentos');
-
-    // Aquí después puedes conectar plugin/cámara Cordova
-}
+const enviar_verificacion_reposo = async () => {
+    if (!controlReposoPacienteActivo || !$('#reposo_consentimiento').prop('checked')) {
+        msg('Consentimiento', 'Debes autorizar expresamente el envío de esta verificación.', 'warning');
+        return;
+    }
+    if (controlReposoPacienteActivo.verify_medications && !controlReposoFotoBase64) {
+        msg('Fotografía requerida', 'Toma una fotografía antes de enviar.', 'warning');
+        return;
+    }
+    let ubicacion = {};
+    try { if (controlReposoPacienteActivo.verify_location) ubicacion = await obtener_ubicacion_reposo(); }
+    catch (error) { msg('Ubicación requerida', error.message, 'warning'); return; }
+    reposoApi(`${controlReposoPacienteActivo.id}/checkins`, Object.assign(ubicacion, {
+        photo: controlReposoFotoBase64,
+        consent: true
+    }), function (respuesta) {
+        const fuera = respuesta.checkin.status === 'outside_radius';
+        $('#reposo_paciente_resultado').html(`<div class="reposo-aviso ${fuera ? '' : 'exito'}">Verificación enviada ${fuera ? 'fuera del radio configurado' : 'correctamente'}.</div>`);
+        $('#reposo_consentimiento').prop('checked', false);
+        $('#reposo_foto').val('');
+        $('#reposo_foto_nombre').text('Usar la cámara del teléfono');
+        $('#reposo_foto_preview').hide();
+        controlReposoFotoBase64 = null;
+    }, 'POST');
+};

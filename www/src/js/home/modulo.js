@@ -1283,7 +1283,82 @@ const actualizarTarjetasFMU = (fmu) => {
         $contacto.find('.col-xs-4').eq(1).find('.fecha-small').text(fmu.contacto_emergencia.parentezco || 'No registrado');
         $contacto.find('.col-xs-4').eq(2).find('.fecha-small').text(fmu.contacto_emergencia.telefono || 'No registrado');
     }
+
+    renderizarOdontogramaFMU(fmu.odontograma || []);
 }
+
+let odontogramaFmuActual = {};
+
+const piezasOdontogramaSuperior = ['1.8','1.7','1.6','1.5','1.4','1.3','1.2','1.1','2.1','2.2','2.3','2.4','2.5','2.6','2.7','2.8'];
+const piezasOdontogramaInferior = ['4.8','4.7','4.6','4.5','4.4','4.3','4.2','4.1','3.1','3.2','3.3','3.4','3.5','3.6','3.7','3.8'];
+
+const estadoPiezaOdontograma = (historial) => {
+    let estado = 'normal';
+    historial.forEach(function(registro) {
+        const diagnostico = String(registro.diagnostico || '').toLowerCase();
+        const tratamiento = String(registro.tratamiento || '').toLowerCase();
+        if (diagnostico.indexOf('carie') !== -1) estado = 'carie';
+        if (tratamiento.indexOf('implante') !== -1) {
+            estado = String(registro.estado) === '0' ? 'ausente' : 'implante';
+        }
+        if (tratamiento.indexOf('endodoncia') !== -1 || tratamiento.indexOf('pulpotomia') !== -1 || tratamiento.indexOf('pulpectomia') !== -1) {
+            estado = 'endodoncia';
+        }
+    });
+    return estado;
+};
+
+const renderizarFilaOdontogramaFMU = (piezas) => piezas.map(function(pieza) {
+    const historial = odontogramaFmuActual[pieza] || [];
+    const estado = estadoPiezaOdontograma(historial);
+    const codigoImagen = pieza.replace('.', '');
+    let carpeta = '';
+    let prefijo = 'd';
+    if (estado === 'carie') { carpeta = 'carie/'; prefijo = 'carie'; }
+    if (estado === 'endodoncia') { carpeta = 'endodoncia/'; prefijo = 'endo'; }
+    if (estado === 'implante') { carpeta = 'implante/'; prefijo = 'impl'; }
+    if (estado === 'ausente') { carpeta = 'diente-ausente/'; prefijo = 'dau'; }
+    const imagen = 'https://med-sdi.cl/images/dental/dientes/' + carpeta + prefijo + codigoImagen + '.png';
+    const indicador = historial.length ? '<span class="odontograma-pieza-cantidad">' + historial.length + '</span>' : '';
+    return '<button type="button" class="odontograma-pieza estado-' + estado + '" onclick="mostrarHistorialDental(\'' + pieza + '\')">' +
+        indicador + '<img src="' + imagen + '" alt="Pieza ' + pieza + '" onerror="this.style.visibility=\'hidden\'">' +
+        '<strong>' + pieza + '</strong></button>';
+}).join('');
+
+const renderizarOdontogramaFMU = (registros) => {
+    odontogramaFmuActual = {};
+    (Array.isArray(registros) ? registros : []).forEach(function(registro) {
+        const pieza = String(registro.pieza || '').trim();
+        if (!pieza) return;
+        if (!odontogramaFmuActual[pieza]) odontogramaFmuActual[pieza] = [];
+        odontogramaFmuActual[pieza].push(registro);
+    });
+    $('#odontograma_fmu_superior').html(renderizarFilaOdontogramaFMU(piezasOdontogramaSuperior));
+    $('#odontograma_fmu_inferior').html(renderizarFilaOdontogramaFMU(piezasOdontogramaInferior));
+    $('#odontograma_fmu_historial').hide().empty();
+};
+
+const mostrarHistorialDental = (pieza) => {
+    const historial = (odontogramaFmuActual[pieza] || []).slice().sort(function(a, b) {
+        return new Date(b.created_at || 0) - new Date(a.created_at || 0);
+    });
+    let contenido = '<div class="odontograma-historial-titulo"><strong>Pieza ' + pieza + '</strong><button type="button" onclick="cerrarHistorialDental()">×</button></div>';
+    if (!historial.length) {
+        contenido += '<p class="odontograma-sin-registros">Esta pieza no tiene registros odontológicos.</p>';
+    } else {
+        historial.forEach(function(registro) {
+            const fecha = registro.created_at ? fechaEsp(registro.created_at) : 'Fecha no informada';
+            const diagnostico = escaparTextoConsentimiento(registro.diagnostico || 'Sin diagnóstico informado');
+            const tratamiento = escaparTextoConsentimiento(registro.tratamiento || registro.descripcion || 'Sin tratamiento informado');
+            contenido += '<div class="odontograma-historial-item"><span>' + escaparTextoConsentimiento(fecha) + '</span>' +
+                '<b>' + diagnostico + '</b><p>' + tratamiento + '</p></div>';
+        });
+    }
+    $('#odontograma_fmu_historial').html(contenido).slideDown(180);
+};
+
+const cerrarHistorialDental = () => $('#odontograma_fmu_historial').slideUp(150);
+const alternarLeyendaOdontograma = () => $('#odontograma_fmu_leyenda').slideToggle(150);
 
 const mostrarSinDatos = () => {
     // Mostrar mensajes por defecto cuando no hay datos
@@ -1292,6 +1367,7 @@ const mostrarSinDatos = () => {
     $paginaFmu.find('.cards-grid .card-button .card-list').each(function() {
         $(this).html('<li>No hay datos disponibles</li>');
     });
+    renderizarOdontogramaFMU([]);
 }
 
 const solicitarMisHorasMedicas = () => {

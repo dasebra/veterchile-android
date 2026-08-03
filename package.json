@@ -15,9 +15,11 @@
   "devDependencies": {
     "cordova-android": "^14.0.1",
     "cordova-browser": "^7.0.0",
+    "cordova-plugin-camera": "^8.0.0",
     "cordova-plugin-dialogs": "^2.0.2",
     "cordova-plugin-firebasex-core": "^2.0.0",
     "cordova-plugin-firebasex-messaging": "^2.0.1",
+    "cordova-plugin-geolocation": "^5.0.0",
     "cordova-plugin-inappbrowser": "^6.0.0"
   },
   "cordova": {
@@ -35,7 +37,14 @@
         "IOS_ENABLE_CRITICAL_ALERTS_ENABLED": "false"
       },
       "cordova-plugin-dialogs": {},
-      "cordova-plugin-fingerprint-aio": {}
+      "cordova-plugin-fingerprint-aio": {},
+      "cordova-plugin-camera": {
+        "ANDROIDX_CORE_VERSION": "1.6.+"
+      },
+      "cordova-plugin-geolocation": {
+        "ANDROIDX_CORE_VERSION": "1.6.+",
+        "GPS_REQUIRED": "true"
+      }
     }
   },
   "dependencies": {

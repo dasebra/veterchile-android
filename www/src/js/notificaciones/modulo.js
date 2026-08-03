@@ -29,11 +29,12 @@ const registrarTokenPush = (token) => {
 };
 
 const manejarNotificacionPush = (mensaje) => {
-    if (!mensaje || !['login_approval', 'authorization_request', 'direct_message', 'patient_emergency'].includes(mensaje.type)) return;
+    if (!mensaje || !['login_approval', 'authorization_request', 'direct_message', 'patient_emergency', 'rest_control_request', 'rest_control_reminder'].includes(mensaje.type)) return;
 
     const esAutorizacion = mensaje.type === 'authorization_request';
     const esMensajeDirecto = mensaje.type === 'direct_message';
     const esEmergencia = mensaje.type === 'patient_emergency';
+    const esControlReposo = mensaje.type === 'rest_control_request' || mensaje.type === 'rest_control_reminder';
     const usuarioDestino = String(mensaje.target_user_id || '');
     const usuarioActivo = String(_SESSION('id_usuario') || '');
 
@@ -56,7 +57,9 @@ const manejarNotificacionPush = (mensaje) => {
             return;
         }
 
-        if (esEmergencia) {
+        if (esControlReposo) {
+            cargar_controles_reposo();
+        } else if (esEmergencia) {
             abrirMedicoEmergencia();
         } else if (esMensajeDirecto) {
             localStorage.removeItem('mensajePendiente');
@@ -132,6 +135,17 @@ const inicializarNotificacionesPush = () => {
             badge: true
         };
 
+        const restControlChannel = {
+            id: 'medsdi_rest_control',
+            name: 'Control de reposo MED-SDI',
+            description: 'Solicitudes y recordatorios de verificación de reposo',
+            sound: 'default',
+            vibration: true,
+            importance: 'high',
+            visibility: 1,
+            badge: true
+        };
+
         FirebasexMessaging.createChannel(channel, function () {
             FirebasexMessaging.setDefaultChannel(channel, function () {
                 console.log('Canal de seguridad MED-SDI configurado.');
@@ -146,6 +160,9 @@ const inicializarNotificacionesPush = () => {
         });
         FirebasexMessaging.createChannel(emergencyChannel, function () {}, function (error) {
             console.error('No se pudo crear el canal SOS MED-SDI.', error);
+        });
+        FirebasexMessaging.createChannel(restControlChannel, function () {}, function (error) {
+            console.error('No se pudo crear el canal de control de reposo.', error);
         });
 
         FirebasexMessaging.getToken(registrarTokenPush, function (error) {

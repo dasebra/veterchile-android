@@ -139,7 +139,8 @@ var Api = /** @class */ (function () {
         var currentRoute = this.modulo_ + '/' + this.metodo_;
         return protectedRoutes.includes(currentRoute)
             || currentRoute.indexOf('mensajes') === 0
-            || currentRoute.indexOf('mobile-authorization/') === 0;
+            || currentRoute.indexOf('mobile-authorization/') === 0
+            || currentRoute.indexOf('rest-controls') === 0;
     };
 
     // Resto del código igual...

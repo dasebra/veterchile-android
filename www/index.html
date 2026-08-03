@@ -275,11 +275,11 @@
                     <div class="reposo-resumen-body">
                         <div class="reposo-item">
                             <span class="reposo-label">Paciente</span>
-                            <span class="reposo-value">Selecciona o carga un paciente</span>
+                            <span class="reposo-value" id="reposo_paciente_resumen">Selecciona un paciente con licencia</span>
                         </div>
                         <div class="reposo-item">
                             <span class="reposo-label">Reposo hasta</span>
-                            <span class="reposo-value">Sin fecha configurada</span>
+                            <span class="reposo-value" id="reposo_fecha_resumen">Sin fecha configurada</span>
                         </div>
                     </div>
                 </div>
@@ -289,6 +289,13 @@
                         <h2>Parámetros de seguimiento</h2>
                         <p>Define las verificaciones que realizará el paciente durante su reposo.</p>
                     </div>
+                    <label class="sdi-label">Buscar paciente con licencia</label>
+                    <div class="sdi-input-group">
+                        <input type="search" id="reposo_buscar_paciente" class="input-app" placeholder="Nombre, apellido o RUT">
+                        <button type="button" class="sdi-btn sdi-btn-autorizar" onclick="buscar_pacientes_reposo()">Buscar</button>
+                    </div>
+                    <div id="reposo_resultados_pacientes" class="reposo-resultados"></div>
+                    <input type="hidden" id="reposo_licencia_id">
                     <label class="sdi-label">Activar control de reposo</label>
                     <select id="reposo_activo" class="input-app">
                         <option value="0">No</option>
@@ -322,8 +329,17 @@
                     <textarea id="reposo_observaciones" class="input-app" rows="3" placeholder="Indicaciones adicionales para el paciente"></textarea>
                     <div class="sdi-reposo-actions mt20">
                         <button type="button" class="sdi-btn sdi-btn-autorizar" onclick="guardar_config_reposo()">Guardar configuración</button>
-                        <button type="button" class="sdi-btn sdi-btn-rechazar" onclick="probar_camara_reposo()">Probar cámara</button>
+                        <button type="button" class="sdi-btn sdi-btn-rechazar" onclick="cargar_controles_reposo()">Actualizar</button>
                     </div>
+                    <div id="reposo_estado_guardado" class="mt10"></div>
+                </div>
+                <div class="sdi-reposo-card reposo-controles-card">
+                    <div class="reposo-form-encabezado">
+                        <span>SEGUIMIENTO</span>
+                        <h2>Controles enviados</h2>
+                        <p>Revisa la aceptación y las verificaciones realizadas por tus pacientes.</p>
+                    </div>
+                    <div id="reposo_controles_lista"><p class="reposo-aviso">Aún no hay controles configurados.</p></div>
                 </div>
             </div>
             <div data-role="footer" class="footer menu-inferior">
@@ -331,6 +347,40 @@
                     <p class="color-blanco size13" onclick="vista('inicio-profesional')">Volver al inicio profesional</p>
                 </div></div>
             </div>
+        </div>
+        <div data-role="page" id="control-reposo-paciente">
+            <div data-role="header" class="header app-page-header">
+                <button type="button" data-role="none" class="reposo-volver-header" onclick="volverInicioSegunRol()" aria-label="Volver al inicio">‹</button>
+                <div class="app-page-header-contenido">
+                    <span class="app-page-header-icono">✓</span>
+                    <div><h1>Verificación de reposo</h1><p>Comparte evidencia sólo cuando tú lo autorices</p></div>
+                </div>
+            </div>
+            <div role="main" class="ui-content control-reposo-contenido">
+                <div class="sdi-reposo-card">
+                    <div class="reposo-form-encabezado">
+                        <div class="reposo-solicitud-linea"><span>SOLICITUD DEL PROFESIONAL</span><span id="reposo_paciente_estado" class="reposo-estado-chip">PENDIENTE</span></div>
+                        <h2 id="reposo_paciente_profesional">Control de reposo</h2>
+                        <p id="reposo_paciente_indicaciones">Revisa las condiciones antes de aceptar.</p>
+                    </div>
+                    <div id="reposo_paciente_detalle"></div>
+                    <div class="sdi-reposo-actions mt20" id="reposo_decision_acciones">
+                        <button type="button" class="sdi-btn sdi-btn-autorizar" onclick="decidir_control_reposo('accept')">Aceptar control</button>
+                        <button type="button" class="sdi-btn sdi-btn-rechazar" onclick="decidir_control_reposo('reject')">Rechazar</button>
+                    </div>
+                    <div id="reposo_checkin_panel" style="display:none">
+                        <h3 class="reposo-evidencia-titulo">Enviar comprobación</h3>
+                        <p class="reposo-aviso-privacidad">La cámara y ubicación se usarán sólo para esta comprobación. Nada se captura sin presionar el botón.</p>
+                        <input type="file" data-role="none" id="reposo_foto" accept="image/*" capture="environment" class="reposo-foto-input">
+                        <label for="reposo_foto" id="reposo_foto_boton" class="reposo-foto-boton"><span class="reposo-foto-icono">▣</span><span><strong>Tomar fotografía</strong><small id="reposo_foto_nombre">Usar la cámara del teléfono</small></span></label>
+                        <img id="reposo_foto_preview" alt="Vista previa" style="display:none;max-width:100%;margin-top:10px;border-radius:12px">
+                        <label class="reposo-consentimiento mt10"><input type="checkbox" data-role="none" id="reposo_consentimiento"><span>Autorizo enviar esta foto y mi ubicación actual.</span></label>
+                        <button type="button" data-role="none" class="sdi-btn sdi-btn-autorizar reposo-enviar" onclick="enviar_verificacion_reposo()"><span>✓</span> Enviar verificación</button>
+                    </div>
+                    <div id="reposo_paciente_resultado" class="mt10"></div>
+                </div>
+            </div>
+            <div class="reposo-footer"><button type="button" data-role="none" onclick="volverInicioSegunRol()">⌂ Volver al inicio</button></div>
         </div>
         <div data-role="page" id="agenda-profesional">
             <div data-role="header" class="header">
@@ -420,6 +470,14 @@
                             <div class="dashboard-card-copy">
                                 <h3>Mi médico de emergencia</h3>
                                 <p id="medico-emergencia-resumen">Configura un contacto médico</p>
+                            </div>
+                            <span class="dashboard-card-arrow">›</span>
+                        </div>
+                        <div class="dashboard-card dashboard-card-featured" onclick="cargar_controles_reposo()" role="button" tabindex="0">
+                            <span class="dashboard-card-icon icon-seguridad">✓</span>
+                            <div class="dashboard-card-copy">
+                                <h3>Control de reposo</h3>
+                                <p>Solicitudes y verificaciones pendientes</p>
                             </div>
                             <span class="dashboard-card-arrow">›</span>
                         </div>
@@ -666,6 +724,31 @@
                               <li>No existen registros</li>
                             </ul>
                           </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 mt20">
+                        <div class="card-button odontograma-fmu-card" id="odontograma_fmu">
+                            <div class="odontograma-fmu-encabezado">
+                                <div>
+                                    <h6 class="card-title color-azul size16 mb5">Historial odontológico</h6>
+                                    <p class="fecha-small mb10">Toca una pieza para revisar sus atenciones.</p>
+                                </div>
+                                <button type="button" class="odontograma-leyenda-btn" onclick="alternarLeyendaOdontograma()">Simbología</button>
+                            </div>
+                            <div id="odontograma_fmu_leyenda" class="odontograma-fmu-leyenda" style="display:none;">
+                                <span><i class="estado-normal"></i>Sano</span>
+                                <span><i class="estado-carie"></i>Caries</span>
+                                <span><i class="estado-endodoncia"></i>Endodoncia</span>
+                                <span><i class="estado-implante"></i>Implante</span>
+                                <span><i class="estado-ausente"></i>Ausente</span>
+                            </div>
+                            <p class="odontograma-maxilar">Maxilar superior</p>
+                            <div id="odontograma_fmu_superior" class="odontograma-fmu-grid"></div>
+                            <p class="odontograma-maxilar mt15">Maxilar inferior</p>
+                            <div id="odontograma_fmu_inferior" class="odontograma-fmu-grid"></div>
+                            <div id="odontograma_fmu_historial" class="odontograma-fmu-historial" style="display:none;"></div>
                         </div>
                     </div>
                 </div>

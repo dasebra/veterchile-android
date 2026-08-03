@@ -3738,6 +3738,64 @@ placeholder{
   margin: 0; color: #7b8fa1; font-size: 10px; line-height: 1.4; text-align: left;
 }
 
+.reposo-resultados { display: grid; gap: 8px; margin-top: 10px; }
+.reposo-paciente-opcion {
+  display: flex; flex-direction: column; width: 100%; padding: 11px 13px;
+  border: 1px solid #d6e3ec; border-radius: 12px; background: #f7fafc;
+  color: #29465f; text-align: left; box-shadow: none; text-shadow: none;
+}
+.reposo-paciente-opcion strong { font-size: 13px; }
+.reposo-paciente-opcion span { margin-top: 3px; color: #71869a; font-size: 10px; }
+.reposo-paciente-opcion.seleccionado { border-color: #28a9b7; background: #e8f8fa; }
+.reposo-aviso { padding: 11px; border-radius: 10px; background: #fff5df; color: #8b621b; font-size: 11px; }
+.reposo-aviso.exito { background: #e5f7eb; color: #26743c; }
+.reposo-aviso-privacidad { padding: 12px; border-left: 4px solid #27a7b4; background: #edf9fa; color: #38586b; font-size: 11px; line-height: 1.5; }
+.reposo-controles-card { margin-top: -100px; }
+.reposo-control-item { padding: 12px 0; border-bottom: 1px solid #e5edf3; }
+.reposo-control-item:last-child { border-bottom: 0; }
+.reposo-control-cabecera { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.reposo-control-cabecera strong { color: #1f405d; font-size: 13px; }
+.reposo-control-item small { display: block; margin-top: 4px; color: #72879a; font-size: 10px; }
+.reposo-control-item p { margin: 7px 0 0; color: #466176; font-size: 11px; line-height: 1.4; }
+#control-reposo-paciente .control-reposo-contenido { max-width: 680px; margin: 0 auto; }
+#control-reposo-paciente .sdi-reposo-card { margin: 4px 0 76px; }
+
+#control-reposo-paciente { background: #f2f7fa; }
+#control-reposo-paciente .app-page-header { position: relative; }
+.reposo-volver-header {
+  position: absolute; left: 10px; top: 50%; z-index: 3; width: 38px; height: 38px;
+  margin-top: -19px; border: 0; border-radius: 12px; background: rgba(255,255,255,.18);
+  color: #fff; font-size: 30px; line-height: 32px; box-shadow: none; text-shadow: none;
+}
+#control-reposo-paciente .app-page-header-contenido { padding-left: 46px; }
+#control-reposo-paciente .app-page-header-icono { display: none; }
+#control-reposo-paciente .sdi-reposo-card { padding: 16px; border: 1px solid #dce8ee; box-shadow: 0 7px 20px rgba(41,70,95,.09); }
+.reposo-solicitud-linea { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.reposo-solicitud-linea > span:first-child { color: #20a5b3; font-size: 8px; font-weight: 900; letter-spacing: 1.1px; }
+.reposo-estado-chip { padding: 4px 9px; border-radius: 20px; background: #fff1d6; color: #956319; font-size: 9px; font-weight: 900; }
+.reposo-estado-chip[data-status="active"] { background: #def6e6; color: #247940; }
+.reposo-estado-chip[data-status="rejected"] { background: #fde4e5; color: #a9323a; }
+#control-reposo-paciente .reposo-item { gap: 15px; padding: 10px 2px; }
+#control-reposo-paciente .reposo-label { color: #6d8191; font-size: 11px; }
+#control-reposo-paciente .reposo-value { color: #243e53; font-size: 12px; text-align: right; }
+.reposo-evidencia-titulo { margin: 18px 0 8px; color: #23465f; font-size: 14px; }
+.reposo-foto-input { position: absolute; width: 1px !important; height: 1px; opacity: 0; pointer-events: none; }
+.reposo-foto-boton {
+  display: flex; align-items: center; gap: 11px; margin: 10px 0; padding: 12px;
+  border: 1px dashed #8dcbd1; border-radius: 13px; background: #f3fbfc; color: #285269;
+}
+.reposo-foto-icono { display: flex; width: 36px; height: 36px; flex: 0 0 36px; align-items: center; justify-content: center; border-radius: 10px; background: #d9f3f5; color: #1599a7; font-size: 18px; }
+.reposo-foto-boton > span:last-child { display: flex; min-width: 0; flex-direction: column; }
+.reposo-foto-boton strong { font-size: 12px; }
+.reposo-foto-boton small { overflow: hidden; margin-top: 2px; color: #758b9a; font-size: 9px; text-overflow: ellipsis; white-space: nowrap; }
+.reposo-consentimiento { display: grid; grid-template-columns: 22px 1fr; align-items: start; gap: 10px; margin: 14px 1px; color: #405c70; font-size: 11px; line-height: 1.45; }
+.sdi-reposo-card .reposo-consentimiento input { appearance: none; width: 22px !important; height: 22px; min-height: 22px; margin: 0; padding: 0; border: 2px solid #9db2c0; border-radius: 6px; background: #fff; }
+.sdi-reposo-card .reposo-consentimiento input:checked { border-color: #25aeb8; background: #25aeb8; box-shadow: inset 0 0 0 4px #fff; }
+.reposo-enviar { width: 100%; min-height: 48px; margin: 0; border: 0; border-radius: 13px; background: linear-gradient(135deg,#22ad70,#31bd75); color: #fff; font-size: 12px; font-weight: 900; box-shadow: 0 6px 14px rgba(36,172,109,.22); text-shadow: none; }
+.reposo-enviar span { margin-right: 5px; }
+.reposo-footer { position: fixed; right: 0; bottom: 0; left: 0; z-index: 20; box-sizing: border-box; padding: 8px 14px calc(8px + env(safe-area-inset-bottom)); background: rgba(255,255,255,.98); border-top: 1px solid #dce6ed; }
+.reposo-footer button { width: 100%; min-height: 42px; border: 1px solid #b9cad6; border-radius: 12px; background: #fff; color: #31556f; font-weight: 800; box-shadow: none; text-shadow: none; }
+
 /* Médico de emergencia y alerta SOS */
 .dashboard-card .icon-emergencia { background: #fff0f1; }
 .dashboard-card .icon-emergencia svg { stroke: #d84957; }
@@ -3815,3 +3873,26 @@ placeholder{
 .emergency-empty p { margin: 5px 0 0; font-size: 9px; text-align: center; }
 
 /* FIN - PROYECTO */
+.odontograma-fmu-card { display:block; width:100%; padding:16px; text-align:left; }
+.odontograma-fmu-encabezado { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
+.odontograma-leyenda-btn { border:0; border-radius:16px; background:#edf5ff; color:#2452a4; font-size:12px; font-weight:700; padding:7px 11px; }
+.odontograma-fmu-leyenda { display:flex; flex-wrap:wrap; gap:8px 12px; margin:5px 0 12px; font-size:11px; color:#52627a; }
+.odontograma-fmu-leyenda span { display:flex; align-items:center; gap:4px; }
+.odontograma-fmu-leyenda i { width:9px; height:9px; border-radius:50%; display:inline-block; }
+.odontograma-maxilar { color:#617089; font-size:11px; font-weight:700; margin:4px 0 7px; text-transform:uppercase; letter-spacing:.4px; }
+.odontograma-fmu-grid { display:grid; grid-template-columns:repeat(8,minmax(30px,1fr)); gap:6px; }
+.odontograma-pieza { position:relative; min-width:0; min-height:64px; padding:5px 2px 4px; border:1px solid #dce5ef; border-radius:9px; background:#fff; color:#243b60; text-align:center; }
+.odontograma-pieza img { display:block; width:100%; height:39px; object-fit:contain; margin:auto; }
+.odontograma-pieza strong { display:block; font-size:10px; line-height:12px; }
+.odontograma-pieza-cantidad { position:absolute; top:-5px; right:-4px; min-width:16px; height:16px; padding:0 4px; border-radius:8px; background:#2452a4; color:#fff; font-size:9px; line-height:16px; z-index:2; }
+.odontograma-pieza.estado-carie { border-color:#f05a5a; background:#fff5f5; }
+.odontograma-pieza.estado-endodoncia { border-color:#8d66c2; background:#faf6ff; }
+.odontograma-pieza.estado-implante { border-color:#3cae82; background:#f2fcf8; }
+.odontograma-pieza.estado-ausente { border-color:#8e99a8; background:#f3f5f7; opacity:.8; }
+.odontograma-fmu-leyenda .estado-normal { background:#dce5ef; }.odontograma-fmu-leyenda .estado-carie { background:#f05a5a; }.odontograma-fmu-leyenda .estado-endodoncia { background:#8d66c2; }.odontograma-fmu-leyenda .estado-implante { background:#3cae82; }.odontograma-fmu-leyenda .estado-ausente { background:#8e99a8; }
+.odontograma-fmu-historial { margin-top:14px; border-top:1px solid #dce5ef; padding-top:12px; }
+.odontograma-historial-titulo { display:flex; justify-content:space-between; align-items:center; color:#2452a4; font-size:15px; margin-bottom:8px; }
+.odontograma-historial-titulo button { border:0; background:transparent; color:#66758b; font-size:24px; line-height:20px; }
+.odontograma-historial-item { border-left:3px solid #36afbb; background:#f7fafc; border-radius:0 7px 7px 0; padding:8px 10px; margin-bottom:7px; }
+.odontograma-historial-item span { display:block; color:#7a8799; font-size:10px; }.odontograma-historial-item b { display:block; color:#263b5c; font-size:12px; margin:2px 0; }.odontograma-historial-item p,.odontograma-sin-registros { margin:0; color:#52627a; font-size:11px; }
+@media (max-width:360px) { .odontograma-fmu-grid { gap:4px; }.odontograma-pieza { min-height:58px; }.odontograma-pieza img { height:34px; } }
