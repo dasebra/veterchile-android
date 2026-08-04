@@ -5,8 +5,19 @@
 .jq-toast-wrap * { margin: 0; padding: 0; }
 
 .jq-toast-wrap.bottom-left { bottom: 20px; left: 20px; }
-/*.jq-toast-wrap.bottom-right { bottom: 20px; right: 40px; }*/
-.jq-toast-wrap.bottom-right { top: 0;}
+/* Posición por defecto de msg(): abajo y centrado, como los avisos nativos de
+   Android. Antes era `top: 0` a sangre completa y tapaba las cabeceras. */
+.jq-toast-wrap.bottom-right {
+    top: auto;
+    right: 0;
+    bottom: calc(16px + env(safe-area-inset-bottom));
+    left: 0;
+    width: 100%;
+    max-width: 460px;
+    box-sizing: border-box;
+    margin: 0 auto;
+    padding: 0 16px;
+}
 .jq-toast-wrap.top-left { top: 20px; left: 20px; }
 .jq-toast-wrap.top-right { top: 20px; right: 40px; }
 
@@ -45,6 +56,41 @@
 }
 
 .jq-icon-warning {
-    background-color: #ffb136;
+    background-color: #b45309;
     color: #fff
+}
+
+/* Ajustes visuales del toast para alinearlo con el lenguaje de la app */
+.jq-toast-single {
+    border-radius: 14px;
+    font-family: "NunitoSans", "Nunito Sans", sans-serif;
+    font-size: 13px;
+    line-height: 1.45;
+    padding: 14px 16px;
+    box-shadow: 0 10px 26px rgba(8, 40, 96, .22);
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+.jq-toast-single h2 {
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 800;
+    margin: 0 0 3px;
+}
+
+/* Debe ir después de .jq-toast-single: reserva el espacio del icono
+   para que el texto no se monte encima. */
+.jq-has-icon {
+    padding: 14px 16px 14px 54px;
+    background-position: 16px 15px;
+    background-size: 22px 22px;
+}
+
+.close-jq-toast-single {
+    top: 6px;
+    right: 11px;
+    font-size: 24px;
+    line-height: 1;
+    opacity: .75;
 }

@@ -75,19 +75,12 @@
                 <span class="login-hero-orbe login-hero-orbe-dos"></span>
                 <span class="login-hero-cruz" aria-hidden="true"></span>
                 <div class="login-marca">
-                    <img src="src/images/login/logo-blanco-sdi.png" alt="MED-SDI">
-                    <p>Tu salud, siempre contigo</p>
+                    <img src="src/images/logo.svg" alt="MED-SDI">
                 </div>
             </div>
             <div role="main" class="ui-content login-panel">
                 <div class="login-panel-contenido" id="cont_i_login">
-                    <div class="login-bienvenida">
-                        <span class="login-bienvenida-icono" aria-hidden="true">✦</span>
-                        <div>
-                            <h1>¡Hola! Bienvenido</h1>
-                            <p>Ingresa a tu cuenta MED-SDI</p>
-                        </div>
-                    </div>
+                    <h1 class="login-titulo">Ingresa a tu cuenta MED-SDI</h1>
                     <div class="login-campo">
                         <label for="user">Correo electrónico</label>
                         <div class="login-input-contenedor">
@@ -102,20 +95,24 @@
                             <input type="password" class="input-app" placeholder="Ingresa tu contraseña" id="pass" value="" autocomplete="current-password">
                         </div>
                     </div>
+                    <a class="login-recuperar">¿Olvidaste tu contraseña?</a>
                     <button type="button" class="login-boton-principal" onclick="ingresarLogin()">
                         <span>Ingresar</span>
                         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M14 7l5 5-5 5"/></svg>
                     </button>
-                    <div id="login_con_biometria" class="login-biometria" style="display:none" onclick="ingresarConBiometriaApp()" role="button" tabindex="0">
-                        <span class="biometria-icono" aria-hidden="true">
-                            <svg viewBox="0 0 64 64">
-                                <path d="M18 29c0-8 6-14 14-14s14 6 14 14"/>
-                                <path d="M13 30C13 19 21 10 32 10s19 9 19 20"/>
-                                <path d="M23 31c0-5 4-9 9-9s9 4 9 9c0 12-3 20-8 27"/>
-                                <path d="M17 36c0 9-2 13-5 18M29 29c0 14-2 21-8 29M35 29c0 15 2 20 7 27M47 35c0 8 1 13 5 18"/>
-                            </svg>
-                        </span>
-                        <span class="login-biometria-texto"><strong>Ingresar con huella</strong><small>Acceso rápido y seguro</small></span>
+                    <div id="login_con_biometria" class="login-biometria-bloque" style="display:none">
+                        <span class="login-separador"><span>o</span></span>
+                        <div class="login-biometria" onclick="ingresarConBiometriaApp()" role="button" tabindex="0">
+                            <span class="biometria-icono" aria-hidden="true">
+                                <svg viewBox="0 0 64 64">
+                                    <path d="M18 29c0-8 6-14 14-14s14 6 14 14"/>
+                                    <path d="M13 30C13 19 21 10 32 10s19 9 19 20"/>
+                                    <path d="M23 31c0-5 4-9 9-9s9 4 9 9c0 12-3 20-8 27"/>
+                                    <path d="M17 36c0 9-2 13-5 18M29 29c0 14-2 21-8 29M35 29c0 15 2 20 7 27M47 35c0 8 1 13 5 18"/>
+                                </svg>
+                            </span>
+                            <span class="login-biometria-texto"><strong>Ingresar con huella</strong><small>Acceso rápido y seguro</small></span>
+                        </div>
                     </div>
                     <p class="login-seguridad">
                         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/></svg>
@@ -127,22 +124,18 @@
         <!--CIERRE LOGIN-->
         <!--SELECCIÓN DE ROL-->
         <div data-role="page" id="seleccionar-rol">
-            <div data-role="header" class="header">
-                <div class="row bg-azul pt20 pb20">
-                    <div class="col-xs-12">
-                        <p class="color-blanco text-center size20 txt_bold">SELECCIONA TU PERFIL</p>
-                    </div>
-                </div>
+            <div data-role="header" class="header selector-rol-header">
+                <span class="selector-rol-orbe selector-rol-orbe-uno" aria-hidden="true"></span>
+                <span class="selector-rol-orbe selector-rol-orbe-dos" aria-hidden="true"></span>
+                <img class="selector-rol-logo" src="src/images/logo.svg" alt="MED-SDI">
+                <h1 class="selector-rol-titulo-pantalla">Selecciona tu perfil</h1>
+                <p class="selector-rol-sub">La cuenta tiene más de un perfil disponible.</p>
             </div>
             <div role="main" class="ui-content selector-rol-contenido">
-                <p class="text-center size18 color-azul txt_bold">¿Cómo deseas ingresar?</p>
-                <p class="text-center color-gris mb20">La cuenta tiene más de un perfil disponible.</p>
                 <div id="roles-disponibles" class="selector-rol-grid"></div>
             </div>
-            <div data-role="footer" class="footer">
-                <div class="row">
-                    <div class="col-xs-12 bg-azul pt20 pb20 color-blanco text-uppercase text-center pointer txt_bold size16" onclick="cerrarSesion()">CERRAR SESIÓN</div>
-                </div>
+            <div data-role="footer" class="footer selector-rol-footer">
+                <button type="button" class="selector-rol-salir" onclick="cerrarSesion()">Cerrar sesión</button>
             </div>
         </div>
         <!--CIERRE SELECCIÓN DE ROL-->

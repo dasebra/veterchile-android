@@ -112,9 +112,22 @@ const prepararSeleccionRoles = (respuesta) => {
     vista('seleccionar-rol', 'fade');
 };
 
+// Iconos en SVG en línea: el color y el grosor se controlan desde el CSS y se
+// dibujan igual en cualquier Android, a diferencia de los emoji.
+const ICONOS_ROL = {
+    Profesional: '<svg viewBox="0 0 24 24" aria-hidden="true">' +
+        '<path d="M6.5 3v5.5a4.5 4.5 0 0 0 9 0V3"/>' +
+        '<path d="M4.9 3h3.2"/><path d="M13.9 3h3.2"/>' +
+        '<path d="M11 13v2.6a3.6 3.6 0 0 0 7.2 0v-.9"/>' +
+        '<circle cx="18.2" cy="12.8" r="2.1"/></svg>',
+    Paciente: '<svg viewBox="0 0 24 24" aria-hidden="true">' +
+        '<circle cx="12" cy="8.2" r="3.7"/>' +
+        '<path d="M4.9 20c0-3.8 3.2-6.3 7.1-6.3s7.1 2.5 7.1 6.3"/></svg>'
+};
+
 const renderizarSelectorRoles = (roles) => {
     const html = roles.map(function (rol) {
-        const icono = rol === 'Profesional' ? '🩺' : '👤';
+        const icono = ICONOS_ROL[rol] || ICONOS_ROL.Paciente;
         return '<button type="button" class="selector-rol-card" onclick="seleccionarRolApp(\'' + rol + '\')">' +
             '<span class="selector-rol-icono">' + icono + '</span>' +
             '<span class="selector-rol-titulo">Ingresar como ' + rol + '</span>' +

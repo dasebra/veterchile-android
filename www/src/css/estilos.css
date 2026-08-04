@@ -1929,50 +1929,194 @@ placeholder{
     z-index: 2;
 }
 
-.selector-rol-contenido {
+/* Selección de perfil pantalla 2 */
+#seleccionar-rol:not(.ui-page-active) {
+    display: none !important;
+}
+
+#seleccionar-rol.ui-page-active {
+    display: flex !important;
+    flex-direction: column;
+}
+
+#seleccionar-rol {
+    min-height: 100vh;
+    overflow-x: hidden;
+    background: radial-gradient(circle at 12% 14%, rgba(255,255,255,.16) 0 4px, transparent 5px),
+                radial-gradient(circle at 85% 11%, rgba(255,255,255,.12) 0 3px, transparent 4px),
+                linear-gradient(160deg, #0d48af 0%, #1766c8 52%, #27a5c5 100%) !important;
+    color: #fff;
+    font-family: "NunitoSans", "Nunito Sans", sans-serif;
+}
+
+#seleccionar-rol .ui-header,
+#seleccionar-rol .ui-footer,
+#seleccionar-rol .selector-rol-header,
+#seleccionar-rol .selector-rol-footer {
+    flex: 0 0 auto;
+    border: 0;
+    background: transparent !important;
+}
+
+#seleccionar-rol .selector-rol-header {
+    position: relative;
+    padding: calc(26px + env(safe-area-inset-top)) 24px 0;
+}
+
+/* Mismos círculos decorativos del login, para que el fondo sea idéntico */
+#seleccionar-rol .selector-rol-orbe {
+    position: absolute;
+    border: 1px solid rgba(255,255,255,.18);
+    border-radius: 50%;
+    background: rgba(255,255,255,.08);
+    pointer-events: none;
+}
+
+#seleccionar-rol .selector-rol-orbe-uno { top: -62px; left: -54px; width: 186px; height: 186px; }
+#seleccionar-rol .selector-rol-orbe-dos { right: -58px; top: 34px; width: 152px; height: 152px; }
+
+#seleccionar-rol .selector-rol-logo {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: min(34vw, 124px);
+    height: auto;
+    margin: 0 auto 18px;
+    filter: drop-shadow(0 4px 12px rgba(0,34,89,.2));
+}
+
+#seleccionar-rol .selector-rol-titulo-pantalla {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    color: #fff;
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 1.2;
+    text-align: center;
+    text-wrap: balance;
+}
+
+#seleccionar-rol .selector-rol-sub {
+    position: relative;
+    z-index: 1;
+    margin: 9px 0 0;
+    color: rgba(255,255,255,.84);
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    text-wrap: balance;
+}
+
+#seleccionar-rol .selector-rol-contenido.ui-content {
     display: flex;
+    flex: 1 1 auto;
     flex-direction: column;
     justify-content: center;
+    padding: 22px 20px 10px !important;
 }
 
 .selector-rol-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 16px;
+    grid-template-columns: 1fr;
+    gap: 14px;
     width: 100%;
-    max-width: 620px;
-    margin: 20px auto;
+    max-width: 560px;
+    margin: 0 auto;
+}
+
+/* Desde phablet hacia arriba caben dos tarjetas sin apretar el texto */
+@media (min-width: 480px) {
+    .selector-rol-grid {
+        grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    }
 }
 
 .selector-rol-card {
-    border: 0;
-    border-radius: 16px;
-    background: #fff;
-    min-height: 150px;
-    padding: 20px;
-    box-shadow: 0 2px 16px 2px rgba(69, 90, 100, 0.25);
     display: flex;
+    min-height: 170px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: 14px;
+    padding: 22px 14px;
+    border: 0;
+    border-radius: 20px;
+    background: #fff;
+    box-shadow: 0 12px 28px rgba(6,34,82,.22);
     cursor: pointer;
+    transition: transform .18s ease;
 }
 
 .selector-rol-card:active {
-    transform: scale(.98);
+    transform: scale(.97);
 }
 
-.selector-rol-icono,
+.selector-rol-icono {
+    display: flex;
+    width: 64px;
+    height: 64px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #eaf2ff;
+    line-height: 1;
+}
+
+.selector-rol-icono svg {
+    width: 31px;
+    height: 31px;
+    fill: none;
+    stroke: #1450bd;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.7;
+}
+
 .inicio-profesional-icono {
     font-size: 42px;
     line-height: 1;
 }
 
 .selector-rol-titulo {
-    color: #1450bd;
-    font-size: 16px;
-    font-weight: 700;
+    color: #173a5e;
+    font-size: 15px;
+    font-weight: 800;
+    line-height: 1.3;
+    text-align: center;
+}
+
+#seleccionar-rol .selector-rol-footer {
+    padding: 10px 20px calc(22px + env(safe-area-inset-bottom));
+}
+
+#seleccionar-rol .selector-rol-salir {
+    display: block;
+    width: 100%;
+    max-width: 560px;
+    min-height: 50px;
+    box-sizing: border-box;
+    margin: 0 auto;
+    border: 1.5px solid rgba(255,255,255,.42);
+    border-radius: 15px;
+    background: rgba(255,255,255,.10);
+    color: #fff;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+#seleccionar-rol .selector-rol-salir:active {
+    background: rgba(255,255,255,.2);
+}
+
+@media (max-height: 620px) {
+    #seleccionar-rol .selector-rol-header { padding-top: calc(16px + env(safe-area-inset-top)); }
+    #seleccionar-rol .selector-rol-logo { width: min(27vw, 96px); margin-bottom: 12px; }
+    #seleccionar-rol .selector-rol-titulo-pantalla { font-size: 21px; }
+    .selector-rol-card { min-height: 138px; gap: 10px; }
+    .selector-rol-icono { width: 52px; height: 52px; font-size: 25px; }
 }
 
 .inicio-profesional-card {
@@ -2285,30 +2429,17 @@ placeholder{
   #login {
       --login-azul: #1450bd;
       min-height: 100vh;
-      overflow: hidden;
-      background: #eef5fb !important;
+      overflow-x: hidden;
+      background: radial-gradient(circle at 12% 14%, rgba(255,255,255,.16) 0 4px, transparent 5px),
+                  radial-gradient(circle at 85% 11%, rgba(255,255,255,.12) 0 3px, transparent 4px),
+                  linear-gradient(160deg, #0d48af 0%, #1766c8 52%, #27a5c5 100%) !important;
       color: #233c54;
       font-family: "NunitoSans", "Nunito Sans", sans-serif;
   }
 
   #login .login-hero {
       position: relative;
-      min-height: 35vh;
-      overflow: hidden;
-      background: radial-gradient(circle at 12% 24%, rgba(255,255,255,.16) 0 4px, transparent 5px),
-                  radial-gradient(circle at 85% 22%, rgba(255,255,255,.12) 0 3px, transparent 4px),
-                  linear-gradient(145deg, #0d48af 0%, #1766c8 58%, #27a5c5 100%);
-  }
-
-  #login .login-hero::after {
-      position: absolute;
-      right: -8%;
-      bottom: -43px;
-      left: -8%;
-      height: 92px;
-      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
-      background: #eef5fb;
-      content: "";
+      background: transparent;
   }
 
   #login .login-hero-orbe {
@@ -2316,10 +2447,11 @@ placeholder{
       border: 1px solid rgba(255,255,255,.18);
       border-radius: 50%;
       background: rgba(255,255,255,.08);
+      pointer-events: none;
   }
 
-  #login .login-hero-orbe-uno { top: -55px; left: -50px; width: 180px; height: 180px; }
-  #login .login-hero-orbe-dos { right: -55px; bottom: 22px; width: 150px; height: 150px; }
+  #login .login-hero-orbe-uno { top: -62px; left: -54px; width: 186px; height: 186px; }
+  #login .login-hero-orbe-dos { right: -58px; top: 34px; width: 152px; height: 152px; }
 
   #login .login-hero-cruz {
       position: absolute;
@@ -2345,78 +2477,44 @@ placeholder{
       position: relative;
       z-index: 1;
       display: flex;
-      min-height: calc(35vh - 22px);
       align-items: center;
       flex-direction: column;
       justify-content: center;
-      padding: max(22px, env(safe-area-inset-top)) 24px 30px;
+      padding: calc(38px + env(safe-area-inset-top)) 24px 28px;
       text-align: center;
   }
 
   #login .login-marca img {
-      width: min(49vw, 205px);
+      display: block;
+      width: min(52vw, 198px);
       height: auto;
+      margin: 0 auto;
       filter: drop-shadow(0 5px 14px rgba(0,34,89,.2));
-  }
-
-  #login .login-marca p {
-      margin: 9px 0 0;
-      color: rgba(255,255,255,.86);
-      font-size: 13px;
-      font-weight: 600;
-      text-align: center;
   }
 
   #login .login-panel.ui-content {
       position: relative;
       z-index: 2;
-      width: calc(100% - 28px);
-      max-width: 480px;
-      min-height: 65vh;
+      width: calc(100% - 32px);
+      max-width: 420px;
       box-sizing: border-box;
-      margin: -30px auto 0;
-      padding: 0 0 calc(20px + env(safe-area-inset-bottom));
-      border-radius: 30px 30px 0 0;
+      margin: 0 auto calc(30px + env(safe-area-inset-bottom));
+      padding: 0 !important;
+      border-radius: 24px;
       background: #fff;
-      box-shadow: 0 -8px 28px rgba(34,72,112,.1);
+      box-shadow: 0 14px 34px rgba(6,34,82,.28);
   }
 
   #login .login-panel-contenido { padding: 28px 24px 20px; }
 
-  #login .login-bienvenida {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 24px;
-  }
-
-  #login .login-bienvenida-icono {
-      display: flex;
-      flex: 0 0 43px;
-      width: 43px;
-      height: 43px;
-      align-items: center;
-      justify-content: center;
-      border-radius: 14px;
-      background: #e4f8fa;
-      color: #1ba6b6;
-      font-size: 22px;
-  }
-
-  #login .login-bienvenida h1 {
-      margin: 0;
-      color: #173a5e;
-      font-size: 21px;
-      font-weight: 800;
-      line-height: 1.2;
-  }
-
-  #login .login-bienvenida p {
-      margin: 3px 0 0;
-      color: #7890a5;
-      font-size: 12px;
-      font-weight: 600;
-      text-align: left;
+  #login .login-titulo {
+      margin: 0 0 24px;
+      color: var(--login-azul);
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.3;
+      text-align: center;
+      text-wrap: balance;
   }
 
   #login .login-campo { margin-bottom: 16px; }
@@ -2440,7 +2538,7 @@ placeholder{
       height: 20px;
       transform: translateY(-50%);
       fill: none;
-      stroke: #6d8ba5;
+      stroke: #38546e;
       stroke-linecap: round;
       stroke-linejoin: round;
       stroke-width: 1.7;
@@ -2463,7 +2561,7 @@ placeholder{
 
   #login .login-input-contenedor input.input-app {
       width: 100%;
-      height: 50px;
+      height: 52px;
       box-sizing: border-box;
       padding: 0 15px 0 46px;
       border: 1px solid #d8e4ee;
@@ -2471,8 +2569,9 @@ placeholder{
       background: #f7fafc;
       color: #263f56;
       font-family: inherit;
-      font-size: 14px;
+      font-size: 16px;
       font-weight: 600;
+      text-transform: none !important;
       box-shadow: none;
   }
 
@@ -2481,7 +2580,45 @@ placeholder{
       background: transparent;
   }
 
-  #login .login-input-contenedor input::placeholder { color: #9aacbc; opacity: 1; }
+  #login .login-input-contenedor input::placeholder {
+      color: #687b8d;
+      font-size: 14px;
+      font-weight: 500;
+      opacity: 1;
+  }
+
+  #login .login-recuperar {
+      display: block;
+      margin: -4px 3px 4px;
+      color: var(--login-azul);
+      font-size: 13px;
+      font-weight: 700;
+      text-align: right;
+      text-decoration: none;
+      cursor: pointer;
+  }
+
+  /* Ingreso con huella: pausado a la espera de habilitarlo.
+     Para reactivarlo, elimina esta única regla. El marcado y el JS siguen intactos. */
+  #login .login-biometria-bloque { display: none !important; }
+
+  #login .login-separador {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 4px 0 13px;
+      color: #687b8d;
+      font-size: 12px;
+      font-weight: 700;
+  }
+
+  #login .login-separador::before,
+  #login .login-separador::after {
+      flex: 1;
+      height: 1px;
+      background: #dce7ef;
+      content: "";
+  }
 
   #login .login-boton-principal {
       display: flex;
@@ -2515,13 +2652,18 @@ placeholder{
   }
 
   #login .login-biometria {
-      min-height: 54px;
+      display: flex;
+      min-height: 56px;
       box-sizing: border-box;
-      padding: 7px 16px;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 9px 16px;
       border: 1.5px solid #91d3db;
       border-radius: 15px;
       background: #f1fbfc;
       color: #147f91;
+      cursor: pointer;
       box-shadow: none;
   }
 
@@ -2553,8 +2695,8 @@ placeholder{
       line-height: 1.25;
   }
 
-  #login .login-biometria-texto strong { font-size: 13px; font-weight: 800; }
-  #login .login-biometria-texto small { color: #6a9ca4; font-size: 9px; font-weight: 600; }
+  #login .login-biometria-texto strong { font-size: 14px; font-weight: 800; }
+  #login .login-biometria-texto small { color: #147f91; font-size: 12px; font-weight: 600; }
 
   #login .login-seguridad {
       display: flex;
@@ -2562,8 +2704,8 @@ placeholder{
       justify-content: center;
       gap: 6px;
       margin: 17px 0 0;
-      color: #91a2b0;
-      font-size: 9px;
+      color: #38546e;
+      font-size: 12px;
       font-weight: 700;
       text-align: center;
   }
@@ -2578,20 +2720,93 @@ placeholder{
       stroke-width: 1.7;
   }
 
-  @media (max-height: 680px) {
-      #login .login-hero,
-      #login .login-marca { min-height: 29vh; }
-      #login .login-panel.ui-content { min-height: 71vh; }
-      #login .login-panel-contenido { padding-top: 22px; }
-      #login .login-bienvenida { margin-bottom: 17px; }
+  @keyframes loginMarcaEntra {
+      0%   { opacity: 0; transform: translateY(34vh) scale(1.14); }
+      12%  { opacity: 1; transform: translateY(34vh) scale(1.14); }
+      44%  { opacity: 1; transform: translateY(34vh) scale(1.14); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
   }
 
-  @media (min-width: 600px) {
-      #login .login-panel.ui-content {
-          min-height: auto;
-          margin-bottom: 32px;
-          border-radius: 30px;
+  @keyframes loginPanelEntra {
+      0%   { opacity: 0; transform: translateY(26px); }
+      100% { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes loginOrbeEntra {
+      0%   { opacity: 0; }
+      100% { opacity: 1; }
+  }
+
+  @keyframes loginCruzEntra {
+      0%   { opacity: 0; }
+      100% { opacity: .18; }
+  }
+
+  #login .login-marca {
+      animation: loginMarcaEntra 2.15s cubic-bezier(.22,.9,.28,1) both;
+  }
+
+  #login .login-panel.ui-content {
+      animation: loginPanelEntra .55s cubic-bezier(.22,.9,.28,1) 1.97s both;
+  }
+
+  #login .login-hero-orbe {
+      animation: loginOrbeEntra .7s ease-out 1.85s both;
+  }
+
+  #login .login-hero-cruz {
+      animation: loginCruzEntra .7s ease-out 1.85s both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+      #login .login-marca,
+      #login .login-panel.ui-content,
+      #login .login-hero-orbe,
+      #login .login-hero-cruz {
+          animation: none;
       }
+  }
+
+  /* Compacto: Android de gama baja (~320-374px) */
+  @media (max-width: 374px) {
+      #login .login-panel.ui-content { width: calc(100% - 24px); }
+      #login .login-panel-contenido { padding: 24px 18px 18px; }
+      #login .login-titulo { font-size: 17px; margin-bottom: 20px; }
+      #login .login-marca { padding: calc(30px + env(safe-area-inset-top)) 18px 24px; }
+      #login .login-marca img { width: min(58vw, 176px); }
+      #login .login-input-contenedor > svg { left: 13px; }
+      #login .login-input-contenedor input.input-app { padding-left: 42px; }
+  }
+
+  /* Pantallas bajas */
+  @media (max-height: 680px) {
+      #login .login-marca { padding: calc(22px + env(safe-area-inset-top)) 24px 18px; }
+      #login .login-marca img { width: min(44vw, 166px); }
+      #login .login-panel-contenido { padding-top: 22px; }
+      #login .login-titulo { margin-bottom: 17px; }
+  }
+
+  /* Landscape de teléfono: prioriza el formulario sobre la marca */
+  @media (max-height: 500px) {
+      #login .login-marca { padding: calc(14px + env(safe-area-inset-top)) 24px 10px; }
+      #login .login-marca img { width: min(34vw, 132px); }
+      #login .login-campo { margin-bottom: 12px; }
+      #login .login-titulo { margin-bottom: 14px; }
+      #login .login-panel.ui-content { margin-bottom: calc(18px + env(safe-area-inset-bottom)); }
+  }
+
+  /* Teléfonos grandes, tablets y navegador: centrado vertical */
+  @media (min-width: 600px) {
+      /* Sobre `.ui-page-active`, nunca sobre `#login` a secas: un ID le ganaría
+         a `.ui-page{display:none}` y la página no se ocultaría jamás. */
+      #login.ui-page-active {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+      }
+
+      #login .login-marca { padding-top: 24px; }
+      #login .login-panel.ui-content { max-width: 440px; margin-bottom: 36px; }
   }
 
   /* Paneles principales de paciente y profesional */
@@ -2764,6 +2979,15 @@ placeholder{
       box-sizing: border-box;
       padding: 30px 16px 18px !important;
       background: #f2f7fb;
+  }
+
+  /* Centra el contenido cuando sobra alto (tablets, pantallas grandes) y deja
+     el scroll normal cuando no cabe. La palabra `safe` es imprescindible: sin
+     ella, en pantallas pequeñas el borde superior queda inalcanzable. */
+  #index > .dashboard-content.ui-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: safe center;
   }
 
   .dashboard-section {
@@ -3070,7 +3294,7 @@ placeholder{
       font-family: "NunitoSans", "Nunito Sans", sans-serif;
   }
 
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) {
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) {
       --app-blue: #1450bd;
       --app-navy: #173a5e;
       --app-teal: #21aeb9;
@@ -3081,7 +3305,7 @@ placeholder{
       color: #304b63;
   }
 
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) > .header:not(.app-page-header) {
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .header:not(.app-page-header) {
       position: relative;
       z-index: 3;
       overflow: visible;
@@ -3090,7 +3314,7 @@ placeholder{
       box-shadow: 0 5px 18px rgba(20,80,150,.14);
   }
 
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) > .header:not(.app-page-header) > .row {
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .header:not(.app-page-header) > .row {
       min-height: 58px;
       box-sizing: border-box;
       margin: 0;
@@ -3098,13 +3322,13 @@ placeholder{
       background: transparent !important;
   }
 
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) > .header:not(.app-page-header) > .row > .col-xs-12 {
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .header:not(.app-page-header) > .row > .col-xs-12 {
       position: relative;
       min-height: 36px;
       padding: 0;
   }
 
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) > .header:not(.app-page-header) h2 {
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .header:not(.app-page-header) h2 {
       display: inline-flex !important;
       max-width: calc(100% - 112px);
       align-items: center;
@@ -3113,7 +3337,7 @@ placeholder{
       vertical-align: middle;
   }
 
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) > .header:not(.app-page-header) h2 .img-circulo {
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .header:not(.app-page-header) h2 .img-circulo {
       width: 34px !important;
       height: 34px;
       flex: 0 0 34px;
@@ -3122,7 +3346,7 @@ placeholder{
       background: #fff;
   }
 
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) > .header:not(.app-page-header) h2 span {
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .header:not(.app-page-header) h2 span {
       overflow: hidden;
       margin: 0 !important;
       color: #fff;
@@ -3133,7 +3357,7 @@ placeholder{
       white-space: nowrap;
   }
 
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) > .header:not(.app-page-header) .logo-header {
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .header:not(.app-page-header) .logo-header {
       position: absolute;
       top: 5px;
       right: 3px;
@@ -3142,7 +3366,7 @@ placeholder{
       filter: brightness(0) invert(1);
   }
 
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) > .header:not(.app-page-header) .top-titulos {
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .header:not(.app-page-header) .top-titulos {
       width: calc(100% + 30px);
       min-height: 0;
       margin: 13px -15px -12px;
@@ -3151,7 +3375,7 @@ placeholder{
       background: var(--app-bg);
   }
 
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) > .header:not(.app-page-header) .top-titulos p {
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .header:not(.app-page-header) .top-titulos p {
       margin: 0 !important;
       color: var(--app-navy);
       font-size: 18px;
@@ -3169,52 +3393,52 @@ placeholder{
 
   .app-page-header h1 { font-weight: 900; }
 
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) > .ui-content {
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .ui-content {
       box-sizing: border-box;
       padding: 18px 16px 92px !important;
       background: var(--app-bg);
   }
 
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) > .ui-content > .container {
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .ui-content > .container {
       width: 100%;
       max-width: 680px;
       padding: 0;
       margin: 0 auto;
   }
 
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) .card-button,
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) .card-button-dos,
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) .box-documento,
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) .card-list li {
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) .card-button,
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) .card-button-dos,
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) .box-documento,
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) .card-list li {
       border: 1px solid var(--app-border);
       border-radius: 16px;
       background: #fff;
       box-shadow: 0 5px 15px rgba(37,72,108,.07);
   }
 
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) .card-button,
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) .card-button-dos {
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) .card-button,
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) .card-button-dos {
       min-height: 74px;
       box-sizing: border-box;
       margin-bottom: 12px;
       padding: 14px;
   }
 
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) .form-group {
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) .form-group {
       margin-bottom: 14px;
   }
 
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) label,
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) .sdi-label {
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) label,
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) .sdi-label {
       color: #39566f;
       font-size: 11px;
       font-weight: 800;
   }
 
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) .form-control,
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) input.input-app,
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) select,
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) textarea {
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) .form-control,
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) input.input-app,
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) select,
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) textarea {
       min-height: 46px;
       box-sizing: border-box;
       border: 1px solid #d6e3ec;
@@ -3226,32 +3450,32 @@ placeholder{
       box-shadow: none;
   }
 
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) textarea {
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) textarea {
       min-height: 92px;
       padding: 12px;
   }
 
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) .ui-input-text,
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) .ui-select .ui-btn {
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) .ui-input-text,
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) .ui-select .ui-btn {
       border-color: #d6e3ec;
       border-radius: 13px;
       background: #fff;
       box-shadow: none;
   }
 
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) .ui-input-text.ui-focus {
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) .ui-input-text.ui-focus {
       border-color: #69bccc;
       box-shadow: 0 0 0 3px rgba(49,185,207,.12);
   }
 
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) .btn-app1,
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) .btn-app2,
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) .btn-app3,
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) .btn-app4,
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) .btn-app5,
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) .btn-app6,
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) .btn-app7,
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) .btn-app8 {
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) .btn-app1,
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) .btn-app2,
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) .btn-app3,
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) .btn-app4,
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) .btn-app5,
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) .btn-app6,
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) .btn-app7,
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) .btn-app8 {
       min-height: 43px;
       box-sizing: border-box;
       padding: 10px 16px;
@@ -3264,15 +3488,15 @@ placeholder{
       text-shadow: none;
   }
 
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) .btn-app4,
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) .btn-app7 {
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) .btn-app4,
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) .btn-app7 {
       border: 0;
       background: linear-gradient(135deg, var(--app-blue), #2478ce);
       color: #fff;
       box-shadow: 0 7px 16px rgba(20,80,189,.18);
   }
 
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) > .menu-inferior {
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .menu-inferior {
       position: fixed;
       z-index: 900;
       right: 0;
@@ -3286,19 +3510,19 @@ placeholder{
       box-shadow: 0 -5px 18px rgba(34,66,100,.08);
   }
 
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) > .menu-inferior > .row {
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .menu-inferior > .row {
       margin: 0;
       background: transparent !important;
   }
 
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) > .menu-inferior [class*="col-xs-"] {
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .menu-inferior [class*="col-xs-"] {
       min-height: 54px;
       padding-top: 8px !important;
       padding-bottom: 7px !important;
       color: #60798f;
   }
 
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) > .menu-inferior p {
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .menu-inferior p {
       margin: 0;
       color: #60798f !important;
       font-size: 9px;
@@ -3306,7 +3530,7 @@ placeholder{
       text-shadow: none;
   }
 
-  .ui-page:not(#login):not(#index):not(#inicio-profesional) > .menu-inferior img {
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .menu-inferior img {
       width: 19px;
       max-height: 20px;
       margin-bottom: 4px !important;
@@ -3314,7 +3538,7 @@ placeholder{
   }
 
   @media (min-width: 700px) {
-      .ui-page:not(#login):not(#index):not(#inicio-profesional) > .ui-content {
+      .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .ui-content {
           padding-right: max(24px, calc((100% - 680px) / 2)) !important;
           padding-left: max(24px, calc((100% - 680px) / 2)) !important;
       }
