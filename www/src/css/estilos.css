@@ -2598,10 +2598,6 @@ placeholder{
       cursor: pointer;
   }
 
-  /* Ingreso con huella: pausado a la espera de habilitarlo.
-     Para reactivarlo, elimina esta única regla. El marcado y el JS siguen intactos. */
-  #login .login-biometria-bloque { display: none !important; }
-
   #login .login-separador {
       display: flex;
       align-items: center;
