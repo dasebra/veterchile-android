@@ -194,6 +194,16 @@
                             </div>
                             <span class="dashboard-card-arrow">›</span>
                         </div>
+                        <div class="dashboard-card" onclick="abrirMisPacientesProfesional()" role="button" tabindex="0">
+                            <span class="dashboard-card-icon icon-pacientes">
+                                <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20v-2a6 6 0 0 1 12 0v2M16 11a3 3 0 0 1 0-6M17 14a5 5 0 0 1 4 5v1"/></svg>
+                            </span>
+                            <div class="dashboard-card-copy">
+                                <h3>Mis pacientes</h3>
+                                <p>Busca pacientes que has atendido</p>
+                            </div>
+                            <span class="dashboard-card-arrow">›</span>
+                        </div>
                         <div class="dashboard-card" onclick="abrirControlReposoProfesional()" role="button" tabindex="0">
                             <span class="dashboard-card-icon icon-reposo">
                                 <svg viewBox="0 0 24 24"><path d="M4 13h16v7H4zM6 13V9a3 3 0 0 1 3-3h2v7M4 17h16M7 20v2M17 20v2"/><path d="M14 7h5M16.5 4.5v5"/></svg>
@@ -390,20 +400,45 @@
                 </div>
                 <div class="row agenda-profesional-navegacion">
                     <div class="col-xs-2">
-                        <div class="btn-app4 agenda-profesional-flecha" onclick="cambiarDiaAgendaProfesional(-1)">‹</div>
+                        <button type="button" data-role="none" class="agenda-profesional-boton agenda-profesional-flecha" onclick="cambiarDiaAgendaProfesional(-1)" aria-label="Día anterior">‹</button>
                     </div>
                     <div class="col-xs-8">
                         <input type="date" id="agenda_profesional_fecha" class="agenda-profesional-fecha" onchange="cargarAgendaProfesional()">
                     </div>
                     <div class="col-xs-2">
-                        <div class="btn-app4 agenda-profesional-flecha" onclick="cambiarDiaAgendaProfesional(1)">›</div>
+                        <button type="button" data-role="none" class="agenda-profesional-boton agenda-profesional-flecha" onclick="cambiarDiaAgendaProfesional(1)" aria-label="Día siguiente">›</button>
                     </div>
                     <div class="col-xs-12 mt10">
-                        <div class="btn-app4 agenda-profesional-hoy" onclick="irHoyAgendaProfesional()">Hoy</div>
+                        <button type="button" data-role="none" class="agenda-profesional-boton agenda-profesional-hoy" onclick="irHoyAgendaProfesional()">Hoy</button>
                     </div>
                 </div>
                 <p id="agenda_profesional_dia_label" class="agenda-profesional-dia"></p>
                 <div id="lista-agenda-profesional" class="mt20 mb60"></div>
+            </div>
+            <div data-role="footer" class="footer menu-inferior">
+                <div class="row bg-azul"><div class="col-xs-12 pt10 pb10 text-center">
+                    <p class="color-blanco size13" onclick="vista('inicio-profesional')">Volver</p>
+                </div></div>
+            </div>
+        </div>
+
+        <div data-role="page" id="mis-pacientes-profesional">
+            <div data-role="header" class="header">
+                <div class="row bg-azul pt20"><div class="col-xs-12">
+                    <p class="color-blanco size18 text-center">Mis pacientes</p>
+                </div></div>
+            </div>
+            <div role="main" class="ui-content mis-pacientes-contenido">
+                <div class="mis-pacientes-buscador">
+                    <label for="mis_pacientes_buscar">Buscar por nombre, RUT, correo o teléfono</label>
+                    <div class="mis-pacientes-buscador-fila">
+                        <input type="search" data-role="none" id="mis_pacientes_buscar" placeholder="Escribe para buscar">
+                        <button type="button" data-role="none" onclick="cargarMisPacientesProfesional(1)">Buscar</button>
+                    </div>
+                </div>
+                <p id="mis_pacientes_resumen" class="mis-pacientes-resumen"></p>
+                <div id="lista-mis-pacientes-profesional" class="mis-pacientes-lista"></div>
+                <div id="mis_pacientes_paginacion" class="mis-pacientes-paginacion"></div>
             </div>
             <div data-role="footer" class="footer menu-inferior">
                 <div class="row bg-azul"><div class="col-xs-12 pt10 pb10 text-center">

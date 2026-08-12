@@ -119,6 +119,7 @@ var Api = /** @class */ (function () {
             'paciente/mis_horas_medicas',
             'paciente/agenda',
             'profesional/agenda',
+            'profesional/mis_pacientes',
             'perfil/datos',
             'perfil/foto',
             'perfil/clave-dispositivo',

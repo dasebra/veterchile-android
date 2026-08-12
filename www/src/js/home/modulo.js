@@ -310,6 +310,75 @@ const cargarAgendaProfesional = (idLugar) => {
     );
 };
 
+var paginaMisPacientesProfesional = 1;
+
+const abrirMisPacientesProfesional = () => {
+    paginaMisPacientesProfesional = 1;
+    $('#mis_pacientes_buscar').val('');
+    vista('mis-pacientes-profesional');
+    cargarMisPacientesProfesional(1);
+};
+
+const cargarMisPacientesProfesional = (pagina) => {
+    paginaMisPacientesProfesional = pagina || 1;
+    $('#lista-mis-pacientes-profesional').html('<div class="mis-pacientes-vacio">Cargando pacientes...</div>');
+
+    var api = new Api('profesional', 'mis_pacientes');
+    api.request(
+        {
+            buscar: ($('#mis_pacientes_buscar').val() || '').trim(),
+            pagina: paginaMisPacientesProfesional,
+            por_pagina: 20
+        },
+        function(resp) {
+            var registros = Array.isArray(resp.registros) ? resp.registros : [];
+            var paginacion = resp.paginacion || {};
+            var html = '';
+
+            registros.forEach(function(paciente) {
+                var nombre = escaparTextoConsentimiento(paciente.nombre || 'Paciente');
+                var iniciales = (paciente.nombre || 'P').split(/\s+/).slice(0, 2).map(function(parte) {
+                    return parte.charAt(0).toUpperCase();
+                }).join('');
+                var contacto = paciente.telefono || paciente.email || 'Sin datos de contacto';
+                var ultima = paciente.ultima_atencion ? fechaEsp(String(paciente.ultima_atencion).substring(0, 10)) : 'Sin fecha';
+
+                html += '<article class="mis-paciente-card">' +
+                    '<div class="mis-paciente-avatar">' + escaparTextoConsentimiento(iniciales) + '</div>' +
+                    '<div class="mis-paciente-datos"><h3>' + nombre + '</h3>' +
+                    '<p><b>RUT:</b> ' + escaparTextoConsentimiento(paciente.rut || 'No registrado') + '</p>' +
+                    '<p><b>Contacto:</b> ' + escaparTextoConsentimiento(contacto) + '</p>' +
+                    '<p><b>Última atención:</b> ' + escaparTextoConsentimiento(ultima) + '</p>' +
+                    '<span>' + Number(paciente.total_atenciones || 0) + ' atención(es)</span></div></article>';
+            });
+
+            $('#lista-mis-pacientes-profesional').html(
+                html || '<div class="mis-pacientes-vacio">No se encontraron pacientes atendidos.</div>'
+            );
+            $('#mis_pacientes_resumen').text((paginacion.total || 0) + ' paciente(s)');
+
+            var actual = Number(paginacion.pagina_actual || 1);
+            var ultima = Number(paginacion.ultima_pagina || 1);
+            $('#mis_pacientes_paginacion').html(
+                '<button type="button" data-role="none" ' + (actual <= 1 ? 'disabled' : '') +
+                ' onclick="cargarMisPacientesProfesional(' + (actual - 1) + ')">Anterior</button>' +
+                '<span>Página ' + actual + ' de ' + ultima + '</span>' +
+                '<button type="button" data-role="none" ' + (actual >= ultima ? 'disabled' : '') +
+                ' onclick="cargarMisPacientesProfesional(' + (actual + 1) + ')">Siguiente</button>'
+            );
+        },
+        function() {
+            $('#lista-mis-pacientes-profesional').html('<div class="mis-pacientes-vacio mis-pacientes-error">No fue posible cargar los pacientes.</div>');
+            $('#mis_pacientes_paginacion').empty();
+        },
+        'GET'
+    );
+};
+
+$(document).on('keyup', '#mis_pacientes_buscar', function(event) {
+    if (event.key === 'Enter') cargarMisPacientesProfesional(1);
+});
+
 const configurarFooterAutorizaciones = () => {
     const esProfesional = localStorage.getItem('rolActivo') === 'Profesional';
     const $pagina = $('#autorizaciones_sdi');
