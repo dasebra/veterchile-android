@@ -1,8 +1,22 @@
 var notificacionesPushInicializadas = false;
+var notificacionesPushUltimaInicializacion = 0;
+var notificacionesPushInicializacionMs = 5 * 60 * 1000;
+var registroTokenPushEnCurso = false;
 
 const registrarTokenPush = (token) => {
     const authToken = localStorage.getItem('authToken');
-    if (!authToken || !token) return;
+    if (!authToken || !token || registroTokenPushEnCurso) return;
+
+    var usuario = String(_SESSION('id_usuario') || '');
+    var uuid = String(localStorage.getItem('uuid') || '');
+    var registroKey = usuario + '|' + uuid + '|' + token;
+
+    if (localStorage.getItem('fcmRegistrationKey') === registroKey) {
+        localStorage.setItem('fcmToken', token);
+        return;
+    }
+
+    registroTokenPushEnCurso = true;
 
     $.ajax({
         url: MEDSDI_API_URL + '/mobile/devices',
@@ -20,9 +34,12 @@ const registrarTokenPush = (token) => {
         },
         success: function () {
             localStorage.setItem('fcmToken', token);
+            localStorage.setItem('fcmRegistrationKey', registroKey);
+            registroTokenPushEnCurso = false;
             console.log('Token FCM registrado en MED-SDI.');
         },
         error: function (xhr) {
+            registroTokenPushEnCurso = false;
             console.error('No se pudo registrar el token FCM.', xhr.status);
         }
     });
@@ -81,15 +98,23 @@ const manejarNotificacionPush = (mensaje) => {
     if (esEmergencia && $.mobile && $.mobile.activePage && $.mobile.activePage.attr('id') === 'medico-emergencia-app') {
         cargarMedicoEmergencia();
     } else if (esMensajeDirecto && $.mobile && $.mobile.activePage && $.mobile.activePage.attr('id') === 'mensajes-app') {
-        cargarMensajesApp();
+        cargarMensajesApp(true);
     } else if (esAutorizacion && $.mobile && $.mobile.activePage && $.mobile.activePage.attr('id') === 'autorizaciones_sdi') {
         list_log_device();
     } else if (!esAutorizacion && $.mobile && $.mobile.activePage && $.mobile.activePage.attr('id') === 'desafios-acceso') {
-        cargarDesafiosAcceso();
+        cargarDesafiosAcceso(true);
     }
 };
 
-const inicializarNotificacionesPush = () => {
+const inicializarNotificacionesPush = (forzar) => {
+    forzar = forzar === true;
+    var ahora = Date.now();
+
+    if (!forzar && notificacionesPushUltimaInicializacion && (ahora - notificacionesPushUltimaInicializacion) < notificacionesPushInicializacionMs) {
+        return;
+    }
+    notificacionesPushUltimaInicializacion = ahora;
+
     const esCordovaBrowser = typeof cordova !== 'undefined' && cordova.platformId === 'browser';
     if (esCordovaBrowser || typeof FirebasexMessaging === 'undefined') {
         console.log('Firebase Messaging no está disponible en esta plataforma.');

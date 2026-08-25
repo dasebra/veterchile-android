@@ -1,0 +1,11 @@
+{
+  "android": {
+    "release": {
+      "keystore": "C:\\MedSDI_app\\medsdi-release.jks",
+      "storePassword": "Medsdi*2026*",
+      "alias": "medsdi",
+      "password": "Medsdi*2026*",
+      "keystoreType": ""
+    }
+  }
+}

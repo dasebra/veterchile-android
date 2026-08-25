@@ -52,12 +52,16 @@ function crearDB(){
     
 	crearTablas();
 	
-	setTimeout(()=>{checkSesionUsuario2();},1000);
+	setTimeout(function(){
+		if (typeof checkSesionUsuario2 === 'function') {
+			checkSesionUsuario2();
+		}
+	},250);
 
 }
 
 //Event Listener que avisa cuando el movil esta listo para poder ejecutar las transacciones de la DB
-document.addEventListener("deviceready", crearDB(), false);
+document.addEventListener("deviceready", crearDB, false);
 
 /**
  * [crearTablas - Crea la tabla de usuarios en la web db]

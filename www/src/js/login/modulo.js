@@ -5,6 +5,54 @@ $(document).on('pageshow', '#login', function() {
     }
 });
 
+
+let loginBloqueoInterval = null;
+
+const formatearTiempoBloqueoLogin = (segundos) => {
+    segundos = Math.max(0, parseInt(segundos || 0, 10));
+    const minutos = Math.floor(segundos / 60);
+    const resto = segundos % 60;
+    return String(minutos).padStart(2, '0') + ':' + String(resto).padStart(2, '0');
+};
+
+const detenerBloqueoVisualLogin = () => {
+    if (loginBloqueoInterval) {
+        clearInterval(loginBloqueoInterval);
+        loginBloqueoInterval = null;
+    }
+
+    const boton = $('#login .login-boton-principal');
+    boton.prop('disabled', false).removeClass('login-bloqueado');
+    boton.find('span').first().text('Ingresar');
+};
+
+const iniciarBloqueoVisualLogin = (segundos) => {
+    segundos = Math.max(1, parseInt(segundos || 0, 10));
+
+    if (loginBloqueoInterval) {
+        clearInterval(loginBloqueoInterval);
+    }
+
+    const boton = $('#login .login-boton-principal');
+    boton.prop('disabled', true).addClass('login-bloqueado');
+
+    const actualizar = () => {
+        boton.find('span').first().text(
+            'Reintentar en ' + formatearTiempoBloqueoLogin(segundos)
+        );
+
+        if (segundos <= 0) {
+            detenerBloqueoVisualLogin();
+            return;
+        }
+
+        segundos--;
+    };
+
+    actualizar();
+    loginBloqueoInterval = setInterval(actualizar, 1000);
+};
+
 const ingresarLogin = () => {
 
     var user = $.trim($('#user').val());
@@ -41,6 +89,7 @@ const ingresarLogin = () => {
         function (resp) {
             console.log(resp);
             if (resp.estado == 1) {
+                detenerBloqueoVisualLogin();
                 //console.log(resp);
                 console.log("LOGIN EXITOSO");
                 console.log("Token recibido:", resp.token); // ¡NUEVO!
@@ -58,7 +107,38 @@ const ingresarLogin = () => {
                 }
                 prepararSeleccionRoles(resp);
             } else {
-                msg('Login', resp.msj || 'No se encontró el usuario o password incorrecto, vuelva a intentarlo.', 'error');
+                if (resp.bloqueado) {
+                    const segundos = parseInt(resp.segundos_restantes || 900, 10);
+
+                    iniciarBloqueoVisualLogin(segundos);
+
+                    msg(
+                        'Acceso temporalmente bloqueado',
+                        (resp.msj || 'Has alcanzado el máximo de intentos.') +
+                        ' Podrás volver a intentar en ' +
+                        Math.max(1, Math.ceil(segundos / 60)) +
+                        ' minuto(s).',
+                        'error'
+                    );
+                } else if (typeof resp.intentos_restantes !== 'undefined') {
+                    const restantes = parseInt(resp.intentos_restantes, 10);
+
+                    msg(
+                        'Login',
+                        resp.msj || (
+                            restantes === 1
+                                ? 'Usuario o contraseña incorrectos. Te queda 1 intento.'
+                                : 'Usuario o contraseña incorrectos. Te quedan ' + restantes + ' intentos.'
+                        ),
+                        'error'
+                    );
+                } else {
+                    msg(
+                        'Login',
+                        resp.msj || 'No se encontró el usuario o password incorrecto, vuelva a intentarlo.',
+                        'error'
+                    );
+                }
             }
             cargando(0); 
 
@@ -157,9 +237,6 @@ const seleccionarRolApp = (rol) => {
     if (esCordovaBrowser && typeof checkDevice === 'function') {
         setTimeout(function () { checkDevice(); }, 50);
     }
-    setTimeout(function () {
-        if (typeof cargarMensajesApp === 'function') cargarMensajesApp();
-    }, 150);
 
     if (localStorage.getItem('mensajePendiente') === '1') {
         localStorage.removeItem('mensajePendiente');

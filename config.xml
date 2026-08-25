@@ -1,20 +1,85 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.medichile.app" version="1.0.1" android-versionCode="10001" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.medichile.app"
+    version="1.0.3"
+    android-versionCode="10003"
+    xmlns="http://www.w3.org/ns/widgets"
+    xmlns:cdv="http://cordova.apache.org/ns/1.0">
+
     <name>MED-SDI</name>
-    <description>Aplicación móvil de Salud Digital Integrada</description>
-    <author>Salud Digital Integrada</author>
+
+    <description>
+        Aplicación móvil de Salud Digital Integrada
+    </description>
+
+    <author>
+        Salud Digital Integrada
+    </author>
+
     <content src="index.html" />
+
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+
     <platform name="android">
-        <preference name="AndroidWindowSplashScreenAnimatedIcon" value="resources/android/splash-icon.png" />
-        <preference name="AndroidWindowSplashScreenBackground" value="#1450BD" />
-        <resource-file src="resources/android/notification/ic_stat_medsdi.png" target="app/src/main/res/drawable/ic_stat_medsdi.png" />
-        <icon density="mdpi" src="resources/android/icon/drawable-mdpi-icon.png" background="resources/android/icon/adaptive/adaptive-mdpi-background.png" foreground="resources/android/icon/adaptive/adaptive-mdpi-foreground.png" />
-        <icon density="hdpi" src="resources/android/icon/drawable-hdpi-icon.png" background="resources/android/icon/adaptive/adaptive-hdpi-background.png" foreground="resources/android/icon/adaptive/adaptive-hdpi-foreground.png" />
-        <icon density="xhdpi" src="resources/android/icon/drawable-xhdpi-icon.png" background="resources/android/icon/adaptive/adaptive-xhdpi-background.png" foreground="resources/android/icon/adaptive/adaptive-xhdpi-foreground.png" />
-        <icon density="xxhdpi" src="resources/android/icon/drawable-xxhdpi-icon.png" background="resources/android/icon/adaptive/adaptive-xxhdpi-background.png" foreground="resources/android/icon/adaptive/adaptive-xxhdpi-foreground.png" />
-        <icon density="xxxhdpi" src="resources/android/icon/drawable-xxxhdpi-icon.png" background="resources/android/icon/adaptive/adaptive-xxxhdpi-background.png" foreground="resources/android/icon/adaptive/adaptive-xxxhdpi-foreground.png" />
-        <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" background="resources/android/icon/adaptive/adaptive-ldpi-background.png" foreground="resources/android/icon/adaptive/adaptive-ldpi-foreground.png" />
+
+        <preference
+            name="AndroidWindowSplashScreenAnimatedIcon"
+            value="resources/android/splash-icon.png"
+        />
+
+        <preference
+            name="AndroidWindowSplashScreenBackground"
+            value="#1450BD"
+        />
+
+        <resource-file
+            src="resources/android/notification/ic_stat_medsdi.png"
+            target="app/src/main/res/drawable/ic_stat_medsdi.png"
+        />
+
+        <icon
+            density="mdpi"
+            src="resources/android/icon/drawable-mdpi-icon.png"
+            background="resources/android/icon/adaptive/adaptive-mdpi-background.png"
+            foreground="resources/android/icon/adaptive/adaptive-mdpi-foreground.png"
+        />
+
+        <icon
+            density="hdpi"
+            src="resources/android/icon/drawable-hdpi-icon.png"
+            background="resources/android/icon/adaptive/adaptive-hdpi-background.png"
+            foreground="resources/android/icon/adaptive/adaptive-hdpi-foreground.png"
+        />
+
+        <icon
+            density="xhdpi"
+            src="resources/android/icon/drawable-xhdpi-icon.png"
+            background="resources/android/icon/adaptive/adaptive-xhdpi-background.png"
+            foreground="resources/android/icon/adaptive/adaptive-xhdpi-foreground.png"
+        />
+
+        <icon
+            density="xxhdpi"
+            src="resources/android/icon/drawable-xxhdpi-icon.png"
+            background="resources/android/icon/adaptive/adaptive-xxhdpi-background.png"
+            foreground="resources/android/icon/adaptive/adaptive-xxhdpi-foreground.png"
+        />
+
+        <icon
+            density="xxxhdpi"
+            src="resources/android/icon/drawable-xxxhdpi-icon.png"
+            background="resources/android/icon/adaptive/adaptive-xxxhdpi-background.png"
+            foreground="resources/android/icon/adaptive/adaptive-xxxhdpi-foreground.png"
+        />
+
+        <icon
+            density="ldpi"
+            src="resources/android/icon/drawable-ldpi-icon.png"
+            background="resources/android/icon/adaptive/adaptive-ldpi-background.png"
+            foreground="resources/android/icon/adaptive/adaptive-ldpi-foreground.png"
+        />
+
     </platform>
+
 </widget>

@@ -249,23 +249,63 @@ const showHiddenBlock = (hidden,show) => {
     $('#'+show[key]).addClass('fade-in').removeClass('hidden');
 }
 
+var medsdiCargandoContador = 0;
+
 const cargando = (estado) => {
-    if(estado)
-    {
-        $.mobile.loading( 'show', {
+    if (estado) {
+        medsdiCargandoContador++;
+
+        // Si ya hay un loader visible, no lo recreamos.
+        if (medsdiCargandoContador > 1) {
+            return;
+        }
+
+        $.mobile.loading('show', {
             text: '',
             textVisible: true,
             theme: 'z',
             html: `
-            <div class='cont_cargando'>
-            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin:auto;display:block;" width="90px" height="90px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid"><circle cx="50" cy="50" r="32" stroke-width="8" stroke="#08454d" stroke-dasharray="50.26548245743669 50.26548245743669" fill="none" stroke-linecap="round" transform="rotate(159.089 50 50)"> <animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 50;360 50 50"></animateTransform></circle><circle cx="50" cy="50" r="23" stroke-width="8" stroke="#01c5dd" stroke-dasharray="36.12831551628262 36.12831551628262" stroke-dashoffset="36.12831551628262" fill="none" stroke-linecap="round" transform="rotate(-159.089 50 50)"> <animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" keyTimes="0;1" values="0 50 50;-360 50 50"></animateTransform></circle></svg>
-                <p>Cargando...</p>
+            <div class="cont_cargando medsdi-loader-global" role="status" aria-live="polite">
+                <div class="medsdi-loader-marca">MED-SDI</div>
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     style="margin:auto;display:block;"
+                     width="76px" height="76px"
+                     viewBox="0 0 100 100"
+                     preserveAspectRatio="xMidYMid">
+                    <circle cx="50" cy="50" r="32" stroke-width="8"
+                            stroke="#1450bd"
+                            stroke-dasharray="50.265 50.265"
+                            fill="none" stroke-linecap="round">
+                        <animateTransform attributeName="transform"
+                                          type="rotate"
+                                          dur="1s"
+                                          repeatCount="indefinite"
+                                          values="0 50 50;360 50 50"/>
+                    </circle>
+                    <circle cx="50" cy="50" r="23" stroke-width="8"
+                            stroke="#31aeb7"
+                            stroke-dasharray="36.128 36.128"
+                            stroke-dashoffset="36.128"
+                            fill="none" stroke-linecap="round">
+                        <animateTransform attributeName="transform"
+                                          type="rotate"
+                                          dur="1s"
+                                          repeatCount="indefinite"
+                                          values="0 50 50;-360 50 50"/>
+                    </circle>
+                </svg>
+                <p>Cargando información…</p>
             </div>`
         });
-    }else{
-        $.mobile.loading( 'hide');
+        return;
     }
-}
+
+    medsdiCargandoContador = Math.max(0, medsdiCargandoContador - 1);
+
+    if (medsdiCargandoContador === 0) {
+        $.mobile.loading('hide');
+    }
+};
 
 const formato_miles = (num,iva) => {
     var num = parseInt(num);
@@ -342,6 +382,38 @@ const monedaPesos = (moneda) => {
     //console.log(parseFloat(moneda).toFixed(2).replace('.', ",").replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1."));
     return parseFloat(moneda).toFixed(0).replace('.', ",").replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
 }
+
+function formatearRutBusqueda(input) {
+
+    let valor = input.value;
+
+    let limpio = valor
+        .replace(/\./g, '')
+        .replace(/-/g, '')
+        .replace(/\s/g, '')
+        .toUpperCase();
+
+    // Si no parece RUT, no tocar el valor
+    if (!/^\d{1,8}[0-9K]?$/.test(limpio)) {
+        return;
+    }
+
+    if (limpio.length < 2) {
+        input.value = limpio;
+        return;
+    }
+
+    let cuerpo = limpio.slice(0, -1);
+    let dv = limpio.slice(-1);
+
+    input.value = cuerpo + '-' + dv;
+}
+
+// Formatea automáticamente el RUT en el buscador de “Mis pacientes”.
+// Se usa delegación porque la app navega entre páginas con jQuery Mobile.
+$(document).on('input', '#mis_pacientes_buscar', function () {
+    formatearRutBusqueda(this);
+});
 
 const armar_tabla_head = (datos, div_taget) => {
     var html = '<table class="table table-responsive  table-hover size10" id="' + div_taget + '">';

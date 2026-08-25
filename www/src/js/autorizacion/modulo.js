@@ -12,6 +12,9 @@ $(document).on( "pageshow","#autorizacion",function( event ) {
         .toggleClass('col-xs-6', esProfesional);
 
     actualizarBotonBiometriaAutorizacion();
+
+    // El PIN debe estar disponible siempre que se abra el detalle.
+    $('#autorizacion #password_').val('');
 });
 
 const claveBiometriaApp = () => {
@@ -269,6 +272,78 @@ const actualizarSecretoBiometricoApp = (nuevoPin) => {
     });
 };
 
+
+
+/* =========================================================
+   MED-SDI - Confirmación biométrica para acciones sensibles
+   Reutilizable desde reservas, documentos u otras acciones.
+   ========================================================= */
+const confirmarBiometriaAccionApp = (descripcion) => {
+    return new Promise(function(resolve) {
+        if (!biometriaHabilitadaApp()) {
+            resolve({
+                ok: false,
+                motivo: 'no_habilitada',
+                mensaje: 'La confirmación biométrica no está activada para esta cuenta y dispositivo.'
+            });
+            return;
+        }
+
+        if (typeof Fingerprint === 'undefined') {
+            resolve({
+                ok: false,
+                motivo: 'no_disponible',
+                mensaje: 'La biometría no está disponible en este dispositivo.'
+            });
+            return;
+        }
+
+        Fingerprint.loadBiometricSecret(
+            opcionesBiometriaApp(
+                descripcion || 'Confirma tu identidad para continuar.'
+            ),
+            function(secreto) {
+                try {
+                    var boveda = decodificarBovedaBiometricaApp(secreto);
+
+                    if (!boveda.pin) {
+                        throw new Error('No hay una clave SDI protegida con huella.');
+                    }
+
+                    var pinDispositivo = localStorage.getItem('password') || $('#pass_device').val() || '';
+
+                    if (pinDispositivo && pinDispositivo !== '0' && String(boveda.pin) !== String(pinDispositivo)) {
+                        throw new Error('La credencial biométrica ya no coincide con la clave actual del dispositivo.');
+                    }
+
+                    resolve({
+                        ok: true,
+                        pin: String(boveda.pin)
+                    });
+                } catch (error) {
+                    resolve({
+                        ok: false,
+                        motivo: 'credencial_invalida',
+                        mensaje: error.message || 'No fue posible validar la credencial biométrica.'
+                    });
+                }
+            },
+            function(error) {
+                if (error && Number(error.code) === -113) {
+                    localStorage.removeItem(claveBiometriaApp());
+                    actualizarEstadoBiometriaApp();
+                }
+
+                resolve({
+                    ok: false,
+                    motivo: 'cancelada',
+                    mensaje: (error && error.message) || 'La confirmación biométrica fue cancelada.'
+                });
+            }
+        );
+    });
+};
+
 const actualizarBotonBiometriaAutorizacion = () => {
     var mostrar = biometriaHabilitadaApp() && typeof Fingerprint !== 'undefined';
     $('#autorizar_con_biometria').toggle(mostrar);
@@ -295,7 +370,7 @@ const respuestaBiometrica = () => {
                 if (!boveda.pin) {
                     throw new Error('No hay una clave SDI protegida con huella.');
                 }
-                $('#password_').val(boveda.pin);
+                $('#autorizacion #password_').val(boveda.pin);
                 respuesta(accion_log_actual === 2 ? 2 : 1);
             } catch (error) {
                 msg('Huella digital', error.message, 'error');
@@ -314,7 +389,7 @@ const respuestaBiometrica = () => {
 
 const respuesta = (estado) => {
 
-    var pass_device1 = $.trim($('#password_').val());
+    var pass_device1 = $.trim($('#autorizacion #password_').val());
     var pass_device2 = localStorage.getItem('password') || $('#pass_device').val();
 
     // Nunca usar el valor inicial "0" como clave de autorización.
@@ -342,16 +417,21 @@ const respuesta = (estado) => {
         if($('#uuid').val()!=0)
         {
             navigator.notification.alert('Clave Incorrecta, vuelva a ingresar.', ()=>{}, ['Clave Incorrecta'], ['Cerrar'])
-            $('#password_').val('').focus();
+            $('#autorizacion #password_').val('').focus();
             return false;
         }else{
             alert('Clave Incorrecta');
-            $('#password_').val('').focus();
+            $('#autorizacion #password_').val('').focus();
             return false;
         }
     }
     
-    var id = $('#id_log').val();
+    var id = $('#autorizacion #id_log_autorizacion').val();
+
+    if (!id) {
+        msg('Autorización', 'No fue posible identificar la solicitud. Vuelve al listado e inténtalo nuevamente.', 'error');
+        return false;
+    }
 
     var datos = {};
 
@@ -372,13 +452,13 @@ const respuesta = (estado) => {
         function (resp) {
             
             if (resp.estado == 1 && estado == 1) {
-                $('#password_').val('');
+                $('#autorizacion #password_').val('');
                 vista('autorizado');
             } else if (resp.estado == 1 && estado == 2) {
-                $('#password_').val('');
+                $('#autorizacion #password_').val('');
                 vista('rechazado');
             } else if (resp.estado == 2) {
-                $('#password_').val('');
+                $('#autorizacion #password_').val('');
                 msg('Autorización', resp.msg || 'Esta solicitud ya fue procesada.', 'warning');
                 vista('autorizaciones_sdi', 'fade');
                 cargando(0);

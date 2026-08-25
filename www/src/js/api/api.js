@@ -10,6 +10,51 @@ var MEDSDI_API_URL = (
 /**
  * Created by Paul on 24/09/2018.
  */
+
+// Gestor global de peticiones. Evita GET duplicados simultáneos y corta
+// temporalmente nuevas peticiones cuando Laravel responde 429.
+var MEDSDI_REQUEST_STATE = {
+    inflight: {},
+    cache: {},
+    cooldownUntil: 0
+};
+
+// Loader global: todas las peticiones API reales muestran espera.
+// GET servidos desde caché o reutilizados no abren un loader nuevo.
+const medsdiGlobalLoadingStart = () => {
+    if (typeof cargando === 'function') {
+        cargando(1);
+    }
+};
+
+const medsdiGlobalLoadingEnd = () => {
+    if (typeof cargando === 'function') {
+        cargando(0);
+    }
+};
+
+const medsdiCacheTtl = (url) => {
+    var path = String(url || '');
+    if (path.indexOf('/mobile-authorization/device') !== -1) return 5 * 60 * 1000;
+    if (path.indexOf('/mobile-2fa/challenges') !== -1) return 30 * 1000;
+    if (path.indexOf('/perfil/datos') !== -1) return 60 * 1000;
+    if (path.indexOf('/paciente/dame_regiones') !== -1) return 30 * 60 * 1000;
+    if (path.indexOf('/paciente/dame_ciudades') !== -1) return 10 * 60 * 1000;
+    return 8 * 1000;
+};
+
+const medsdiClearGetCache = () => {
+    MEDSDI_REQUEST_STATE.cache = {};
+};
+
+const medsdiRequestKey = (method, url) => String(method || 'GET').toUpperCase() + ' ' + url;
+
+const medsdiRetryAfterMs = (xhr) => {
+    if (!xhr || typeof xhr.getResponseHeader !== 'function') return 60000;
+    var retryAfter = parseInt(xhr.getResponseHeader('Retry-After') || '0', 10);
+    return retryAfter > 0 ? retryAfter * 1000 : 60000;
+};
+
 var datosRequest = /** @class */ (function () {
     function datosRequest(modulo_, metodo_, data_, debug_) {
         if (debug_ === void 0) { debug_ = false; }
@@ -29,59 +74,82 @@ var Api = /** @class */ (function () {
     }
 
     Api.prototype.request = function (data, callback, errorcallback, methodSend, debug, _timeout) {
-        if(_timeout==undefined)
-            _timeout = 10000;
+        if (_timeout == undefined) _timeout = 15000;
 
-        // Preparar headers básicos
-        var headers = {
-            'Accept': 'application/json'
-        };
+        callback = typeof callback === 'function' ? callback : function () {};
+        errorcallback = typeof errorcallback === 'function' ? errorcallback : function () {};
+        methodSend = String(methodSend || 'GET').toUpperCase();
 
-        // Verificar si necesita autenticación
+        var headers = {'Accept': 'application/json'};
         var needsAuth = this.needsAuth();
         var token = localStorage.getItem('authToken');
 
-        console.log("🔍 Ruta:", this.modulo_ + '/' + this.metodo_);
-        console.log("🔒 Necesita auth:", needsAuth);
-        console.log("🎫 Token disponible:", token ? "Sí (" + token.substring(0, 20) + "...)" : "No");
-
-        // Agregar token si existe para rutas protegidas
         if (token && needsAuth) {
-            // *** CAMBIO IMPORTANTE: Usar X-Auth-Token en lugar de Authorization ***
             headers['X-Auth-Token'] = token;
-            console.log("✅ Token agregado a headers como X-Auth-Token");
         } else if (needsAuth && !token) {
-            console.log("❌ Ruta protegida pero no hay token");
-            errorcallback({status: 401, responseText: "No token available"});
+            errorcallback({status: 401, responseText: 'No token available'});
             return;
         }
 
         var requestData;
         var contentType = false;
         var processData = true;
-        // Evita redirecciones de Apache: los navegadores bloquean una
-        // redirecciÃ³n dentro de una peticiÃ³n CORS preflight.
-        var url = (this.url_ + `/${this.modulo_}/${this.metodo_}`).replace(/\/+$/, '');
+        var url = (this.url_ + '/' + this.modulo_ + '/' + this.metodo_).replace(/\/+$/, '');
 
         if (methodSend === 'GET') {
-            // Para GET: agregar parámetros a la URL
             if (data && Object.keys(data).length > 0) {
                 var params = new URLSearchParams(data).toString();
                 url += '?' + params;
             }
             requestData = undefined;
         } else {
-            // Para POST/PUT: enviar como JSON
             headers['Content-Type'] = 'application/json';
-            requestData = JSON.stringify(data);
+            requestData = JSON.stringify(data || {});
             contentType = 'application/json';
             processData = false;
         }
 
-        console.log("📤 URL final:", url);
-        console.log("📋 Headers:", headers);
+        var requestKey = medsdiRequestKey(methodSend, url);
+        var now = Date.now();
 
-        $.ajax({
+        if (MEDSDI_REQUEST_STATE.cooldownUntil > now) {
+            var waitSeconds = Math.ceil((MEDSDI_REQUEST_STATE.cooldownUntil - now) / 1000);
+            console.warn('[MED-SDI] API en cooldown por 429. Restan ' + waitSeconds + 's.');
+            errorcallback({status: 429, responseText: 'Rate limit cooldown', retry_after: waitSeconds}, 'ratelimit', 'Too Many Requests');
+            return;
+        }
+
+        // Reutilizar GET recientes. Reduce navegación repetitiva y presión sobre Laravel.
+        if (methodSend === 'GET' && MEDSDI_REQUEST_STATE.cache[requestKey]) {
+            var cached = MEDSDI_REQUEST_STATE.cache[requestKey];
+            if ((now - cached.createdAt) < cached.ttl) {
+                console.log('[MED-SDI] GET desde caché:', url);
+                setTimeout(function () { callback(cached.response); }, 0);
+                return null;
+            }
+            delete MEDSDI_REQUEST_STATE.cache[requestKey];
+        }
+
+        // Si el mismo GET ya está viajando al servidor, compartimos la respuesta.
+        if (methodSend === 'GET' && MEDSDI_REQUEST_STATE.inflight[requestKey]) {
+            MEDSDI_REQUEST_STATE.inflight[requestKey].success.push(callback);
+            MEDSDI_REQUEST_STATE.inflight[requestKey].error.push(errorcallback);
+            console.log('[MED-SDI] GET duplicado reutilizado:', url);
+            return MEDSDI_REQUEST_STATE.inflight[requestKey].xhr;
+        }
+
+        if (methodSend === 'GET') {
+            MEDSDI_REQUEST_STATE.inflight[requestKey] = {
+                success: [callback],
+                error: [errorcallback],
+                xhr: null
+            };
+        }
+
+        var startedAt = Date.now();
+        medsdiGlobalLoadingStart();
+
+        var xhrRequest = $.ajax({
             type: methodSend,
             url: url,
             data: requestData,
@@ -89,26 +157,63 @@ var Api = /** @class */ (function () {
             headers: headers,
             contentType: contentType,
             processData: processData,
-            success: function(response) {
-                console.log("✅ Respuesta exitosa:", response);
-                callback(response);
-            },
-            error: function(xhr, status, error) {
-                console.log("❌ Error en petición:");
-                console.log("  Status:", xhr.status);
-                console.log("  Response:", xhr.responseText);
-                console.log("  Headers enviados:", headers);
+            success: function (response) {
+                console.log('[MED-SDI] ' + methodSend + ' ' + url + ' OK en ' + (Date.now() - startedAt) + 'ms');
 
-                if (xhr.status === 401) {
-                    console.log('🚫 Token expirado o inválido - limpiando');
-                    localStorage.removeItem('authToken');
-                    vista('login', 'fade');
+                if (methodSend === 'GET') {
+                    MEDSDI_REQUEST_STATE.cache[requestKey] = {
+                        response: response,
+                        createdAt: Date.now(),
+                        ttl: medsdiCacheTtl(url)
+                    };
+                } else {
+                    // Cualquier escritura puede invalidar datos previamente cacheados.
+                    medsdiClearGetCache();
                 }
 
-                errorcallback(xhr, status, error);
+                if (methodSend === 'GET' && MEDSDI_REQUEST_STATE.inflight[requestKey]) {
+                    var listeners = MEDSDI_REQUEST_STATE.inflight[requestKey].success.slice();
+                    delete MEDSDI_REQUEST_STATE.inflight[requestKey];
+                    listeners.forEach(function (fn) { fn(response); });
+                } else {
+                    callback(response);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('[MED-SDI] ' + methodSend + ' ' + url + ' ERROR', xhr.status, status, error);
+
+                if (xhr.status === 429) {
+                    MEDSDI_REQUEST_STATE.cooldownUntil = Date.now() + medsdiRetryAfterMs(xhr);
+                }
+
+                if (xhr.status === 401) {
+                    localStorage.removeItem('authToken');
+                    if (typeof vista === 'function') vista('login', 'fade');
+                }
+
+                if (methodSend === 'GET' && MEDSDI_REQUEST_STATE.inflight[requestKey]) {
+                    var listeners = MEDSDI_REQUEST_STATE.inflight[requestKey].error.slice();
+                    delete MEDSDI_REQUEST_STATE.inflight[requestKey];
+                    listeners.forEach(function (fn) { fn(xhr, status, error); });
+                } else {
+                    errorcallback(xhr, status, error);
+                }
+            },
+            complete: function () {
+                medsdiGlobalLoadingEnd();
+
+                if (methodSend === 'GET' && MEDSDI_REQUEST_STATE.inflight[requestKey] && !MEDSDI_REQUEST_STATE.inflight[requestKey].xhr) {
+                    delete MEDSDI_REQUEST_STATE.inflight[requestKey];
+                }
             },
             timeout: _timeout
         });
+
+        if (methodSend === 'GET' && MEDSDI_REQUEST_STATE.inflight[requestKey]) {
+            MEDSDI_REQUEST_STATE.inflight[requestKey].xhr = xhrRequest;
+        }
+
+        return xhrRequest;
     };
 
     // *** CAMBIO IMPORTANTE: Agregar la nueva ruta a protectedRoutes ***
@@ -141,6 +246,7 @@ var Api = /** @class */ (function () {
         return protectedRoutes.includes(currentRoute)
             || currentRoute.indexOf('mensajes') === 0
             || currentRoute.indexOf('mobile-authorization/') === 0
+            || currentRoute.indexOf('mobile-2fa/') === 0
             || currentRoute.indexOf('rest-controls') === 0;
     };
 

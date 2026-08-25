@@ -1,23 +1,45 @@
 var mensajesAppCache = [];
+var mensajesAppCargando = false;
+var mensajesAppUltimaCarga = 0;
+var mensajesAppCacheMs = 15000;
 
 const escaparTextoMensaje = (valor) => $('<div>').text(valor == null ? '' : String(valor)).html();
 
 const abrirMensajesApp = () => {
     $('.header-menu-perfil').removeClass('abierto');
     vista('mensajes-app', 'fade');
-    cargarMensajesApp();
 };
 
-const cargarMensajesApp = () => {
+const cargarMensajesApp = (forzar) => {
+    forzar = forzar === true;
+    var ahora = Date.now();
+
+    if (mensajesAppCargando) {
+        console.log('[MED-SDI] Mensajes ya se están cargando.');
+        return;
+    }
+
+    if (!forzar && mensajesAppUltimaCarga && (ahora - mensajesAppUltimaCarga) < mensajesAppCacheMs) {
+        renderMensajesApp(
+            mensajesAppCache,
+            mensajesAppCache.filter(function(item) { return !item.leido; }).length
+        );
+        return;
+    }
+
+    mensajesAppCargando = true;
     $('#mensajes-app-lista').html(
         '<div class="app-estado-carga"><span class="app-spinner"></span><p>Actualizando tus mensajes…</p></div>'
     );
     var rol = localStorage.getItem('rolActivo') === 'Profesional' ? 'Profesional' : 'Paciente';
     var api = new Api('mensajes', '');
     api.request({rol: rol}, function(resp) {
+        mensajesAppCargando = false;
+        mensajesAppUltimaCarga = Date.now();
         mensajesAppCache = resp.registros || [];
         renderMensajesApp(mensajesAppCache, Number(resp.no_leidos || 0));
     }, function() {
+        mensajesAppCargando = false;
         $('#mensajes-app-resumen').html('');
         $('#mensajes-app-lista').html(
             '<div class="mensajes-app-vacio">No fue posible cargar tus mensajes. Intenta nuevamente.</div>'

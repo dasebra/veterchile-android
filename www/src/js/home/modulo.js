@@ -1,10 +1,97 @@
 var svg_receta = '<svg style="width: 40px;" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" xmlns:xlink="http://www.w3.org/1999/xlink" enable-background="new 0 0 512 512"> <g> <g> <g> <path d="m208,177.2h27.7v26.2c0,11.3 9.1,20.4 20.4,20.4 11.3,0 20.4-9.1 20.4-20.4v-26.2h27.7c11.3,0 20.4-9.1 20.4-20.4 0-11.3-9.1-20.4-20.4-20.4h-27.7v-26.2c0-11.3-9.1-20.4-20.4-20.4-11.3,0-20.4,9.1-20.4,20.4v26.2h-27.7c-11.3,0-20.4,9.1-20.4,20.4 0,11.3 9.2,20.4 20.4,20.4z"/> <path d="M440.5,10.8H71.8c-11.3,0-20.4,9.1-20.4,20.4v449.2c0,11.3,9.1,20.4,20.4,20.4h368.7c11.3,0,20.4-9.1,20.4-20.4V31.2 C460.9,20,451.8,10.8,440.5,10.8z M420.1,460H92.2V51.7h327.9V460z"/> <path d="m157.3,318h197.6c11.3,0 20.4-9.1 20.4-20.4 0-11.3-9.1-20.4-20.4-20.4h-197.6c-11.3,0-20.4,9.1-20.4,20.4 0,11.2 9.1,20.4 20.4,20.4z"/> <path d="m157.3,409.6h197.6c11.3,0 20.4-9.1 20.4-20.4 0-11.3-9.1-20.4-20.4-20.4h-197.6c-11.3,0-20.4,9.1-20.4,20.4 0,11.2 9.1,20.4 20.4,20.4z"/> </g> </g> </g></svg>';
 
-$(document).on( "pageshow","#home",function( event ) {
-    if($('#uuid').val()!=0)
-    checkDevice();
-    else
-    list_document_user();
+
+/* =========================================================
+   SweetAlert2 MED-SDI
+   Funciones reutilizables para toda la aplicación.
+   Si SweetAlert2 no carga, se usa confirm/alert del navegador.
+   ========================================================= */
+
+const swalMedsdi = (titulo, mensaje, tipo, opciones) => {
+    tipo = tipo || 'info';
+    opciones = opciones || {};
+
+    if (typeof Swal === 'undefined') {
+        window.alert((titulo ? titulo + '\n\n' : '') + (mensaje || ''));
+        return Promise.resolve({isConfirmed: true});
+    }
+
+    return Swal.fire(Object.assign({
+        title: titulo || 'MED-SDI',
+        text: mensaje || '',
+        icon: tipo,
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: '#1450bd',
+        buttonsStyling: true,
+        heightAuto: false,
+        allowOutsideClick: false,
+        customClass: {
+            popup: 'swal-medsdi-popup',
+            title: 'swal-medsdi-title',
+            htmlContainer: 'swal-medsdi-text',
+            confirmButton: 'swal-medsdi-confirm',
+            cancelButton: 'swal-medsdi-cancel'
+        }
+    }, opciones));
+};
+
+const confirmarMedsdi = (titulo, mensaje, opciones) => {
+    opciones = opciones || {};
+
+    if (typeof Swal === 'undefined') {
+        return Promise.resolve(window.confirm((titulo ? titulo + '\n\n' : '') + (mensaje || '')));
+    }
+
+    return Swal.fire(Object.assign({
+        title: titulo || 'Confirmar',
+        text: mensaje || '',
+        icon: opciones.icon || 'question',
+        showCancelButton: true,
+        confirmButtonText: opciones.confirmButtonText || 'Confirmar',
+        cancelButtonText: opciones.cancelButtonText || 'Cancelar',
+        confirmButtonColor: opciones.confirmButtonColor || '#1450bd',
+        cancelButtonColor: opciones.cancelButtonColor || '#7b8a9a',
+        reverseButtons: true,
+        focusCancel: true,
+        heightAuto: false,
+        allowOutsideClick: false,
+        allowEscapeKey: true,
+        customClass: {
+            popup: 'swal-medsdi-popup',
+            title: 'swal-medsdi-title',
+            htmlContainer: 'swal-medsdi-text',
+            confirmButton: 'swal-medsdi-confirm',
+            cancelButton: 'swal-medsdi-cancel'
+        }
+    }, opciones)).then(function(resultado) {
+        return !!resultado.isConfirmed;
+    });
+};
+
+
+$(document).on("pageshow", "#home", function () {
+    // La verificación del equipo se reutiliza durante varios minutos.
+    // No cargamos recetas automáticamente desde el home.
+    if (typeof checkDevice === 'function') {
+        checkDevice(null, true);
+    }
+});
+
+$(document).on('pageshow', '#index, #inicio-profesional', function () {
+    if (typeof checkDevice !== 'function') {
+        return;
+    }
+
+    checkDevice(function (deviceReady) {
+        if (!deviceReady) {
+            return;
+        }
+
+        console.log(
+            'Dispositivo verificado. Emergency token:',
+            localStorage.getItem('emergencyToken') ? 'OK' : 'NO DISPONIBLE'
+        );
+    }, true);
 });
 
 $(document).on('pageshow', '#certificadosro', function() {
@@ -28,14 +115,32 @@ $(document).on('click', '.js-ver-receta', function() {
 });
 
 $(document).on('click', '.js-ver-examen', function() {
-    abrirConsentimiento($(this).attr('data-examen-url'));
+    abrirDocumentoClinico($(this).attr('data-examen-url'), 'examen');
 });
 
-$(document).on( "pageshow","#autorizaciones_sdi",function( event ) {
+$(document).on("pageshow", "#autorizaciones_sdi", function () {
     configurarFooterAutorizaciones();
-    list_log_device();
 
-    checkDevice(function () {}, true);
+    // La primera vista prioriza las solicitudes que requieren acción.
+    if (!autorizacionesFiltroActivo) {
+        autorizacionesFiltroActivo = 'pendientes';
+    }
+
+    // Primero verificamos el dispositivo. Solo si está OK cargamos autorizaciones.
+    checkDevice(function (deviceReady) {
+        if (!deviceReady) {
+            return;
+        }
+
+        // Fuerza una recarga al entrar, pero manteniendo protección
+        // contra solicitudes simultáneas.
+        list_log_device();
+    }, true);
+});
+
+$(document).on('pagehide', '#autorizaciones_sdi', function () {
+    // Solo liberamos la lista pesada. El detalle pertenece a otra página.
+    $('#list_log_reg').empty();
 });
 
 const volverInicioSegunRol = () => {
@@ -399,7 +504,52 @@ $(document).on('pageshow', '#med_no_insc', function() {
   //  limpiarFormularioBusquedaMedico();
 //});
 
+var checkDeviceEnCurso = false;
+var checkDeviceUltimaVerificacion = 0;
+// Una verificación válida del dispositivo se reutiliza durante 5 minutos.
+var checkDeviceCacheMs = 5 * 60 * 1000;
+// Si varias vistas piden verificación mientras una petición está en curso,
+// sus callbacks quedan esperando la misma respuesta en vez de lanzar otra petición.
+var checkDeviceCallbacksPendientes = [];
+
+const resolverCallbacksCheckDevice = (resultado) => {
+    var callbacks = checkDeviceCallbacksPendientes.slice();
+    checkDeviceCallbacksPendientes = [];
+
+    callbacks.forEach(function(callback) {
+        try {
+            callback(resultado);
+        } catch (error) {
+            console.error('[MED-SDI] Error ejecutando callback de checkDevice:', error);
+        }
+    });
+};
+
 const checkDevice = (onReady, silencioso) => {
+
+    var ahora = Date.now();
+
+    // Reutilizar una verificación reciente.
+    if (
+        checkDeviceUltimaVerificacion &&
+        (ahora - checkDeviceUltimaVerificacion) < checkDeviceCacheMs
+    ) {
+        if (typeof onReady === 'function') {
+            onReady(true);
+        }
+        return;
+    }
+
+    // Si ya hay una verificación en curso, la siguiente vista espera
+    // el mismo resultado. Así evitamos peticiones duplicadas y pantallas pegadas.
+    if (checkDeviceEnCurso) {
+        if (typeof onReady === 'function') {
+            checkDeviceCallbacksPendientes.push(onReady);
+        }
+
+        console.log('[MED-SDI] checkDevice ya está en ejecución; reutilizando la petición actual.');
+        return;
+    }
 
     var datos = {};
 
@@ -411,76 +561,141 @@ const checkDevice = (onReady, silencioso) => {
         if (typeof onReady === 'function') {
             onReady(false);
         }
+
         if (!silencioso) {
             msg('Check Device', 'No fue posible identificar este dispositivo.', 'error');
         }
+
         return;
     }
+
+    if (typeof onReady === 'function') {
+        checkDeviceCallbacksPendientes.push(onReady);
+    }
+
+    checkDeviceEnCurso = true;
 
     if (!silencioso) {
         cargando(1);
     }
 
-    var api = new Api("mobile-authorization", "device");
+    console.log('[MED-SDI] Verificando dispositivo:', datos.uuid);
+
+    var api = new Api('mobile-authorization', 'device');
+
     api.request(
         datos,
         function (resp) {
-            LOG('check device:'+resp.estado);
+            checkDeviceEnCurso = false;
+
+            if (!silencioso) {
+                cargando(0);
+            }
+
+            console.log('[MED-SDI] checkDevice respuesta:', resp);
+
             if (resp.estado == 0) {
-                if (typeof onReady === 'function') {
-                    onReady(false);
-                } else {
+                resolverCallbacksCheckDevice(false);
+
+                // Cuando la llamada original no esperaba callback, mantenemos
+                // el flujo legacy para registrar el equipo.
+                if (typeof onReady !== 'function') {
                     registrarPasswordShow();
                 }
-            } else {      
-                if(resp.registros[0].estado == 0)
-                {
-                    if (typeof onReady === 'function') {
-                        onReady(false);
-                    } else {
-                        vista('login','fade');
-                        $('#modalRegistroDevice').modal('show');
-                    }
-                }else{
-                    //PASS DEVICE
-                    setSession('password', resp.password); 
-                    $('#pass_device').val(resp.password);
 
-                    if (typeof onReady === 'function') {
-                        if (!silencioso) {
-                            cargando(0);
-                        }
-                        onReady(true);
-                        return;
-                    }
+                return;
+            }
 
-                    var paginaActiva = $.mobile && $.mobile.activePage
-                        ? $.mobile.activePage.attr('id')
-                        : null;
+            if (!resp.registros || !resp.registros.length) {
+                console.error('[MED-SDI] Respuesta checkDevice sin registros.', resp);
+                resolverCallbacksCheckDevice(false);
+                return;
+            }
 
-                    if (paginaActiva === 'autorizaciones_sdi') {
-                        list_log_device();
-                    } else if (paginaActiva === 'autorizacion') {
-                        // La clave ya quedó cargada en esta pantalla.
-                    } else {
-                        list_document_user();
-                    }
+            if (resp.registros[0].estado == 0) {
+                resolverCallbacksCheckDevice(false);
+
+                if (typeof onReady !== 'function') {
+                    vista('login', 'fade');
+                    $('#modalRegistroDevice').modal('show');
                 }
+
+                return;
             }
+
+            if (resp.password) {
+                setSession('password', resp.password);
+                $('#pass_device').val(resp.password);
+            }
+
+            if (resp.registros[0].emergency_token) {
+                localStorage.setItem(
+                    'emergencyToken',
+                    resp.registros[0].emergency_token
+                );
+            }
+
+            // Solo las verificaciones exitosas quedan cacheadas.
+            checkDeviceUltimaVerificacion = Date.now();
+            resolverCallbacksCheckDevice(true);
+
+            /*
+             * IMPORTANTE:
+             * checkDevice ya no carga recetas/documentos ni otras vistas.
+             * Cada módulo obtiene sus datos únicamente cuando el usuario entra
+             * realmente en esa pantalla.
+             */
+        },
+        function (xhr, status, error) {
+            checkDeviceEnCurso = false;
+
             if (!silencioso) {
                 cargando(0);
             }
 
-        },
-        function (resp) {
-            if (!silencioso) {
-                cargando(0);
+            console.error('[MED-SDI] CHECK DEVICE ERROR', {
+                status: xhr ? xhr.status : null,
+                responseText: xhr ? xhr.responseText : null,
+                responseJSON: xhr ? xhr.responseJSON : null,
+                ajaxStatus: status,
+                error: error,
+                uuid: datos.uuid,
+                api: typeof MEDSDI_API_URL !== 'undefined' ? MEDSDI_API_URL : ''
+            });
+
+            resolverCallbacksCheckDevice(false);
+
+            if (xhr && xhr.status === 429) {
+                // Pequeño enfriamiento para no insistir inmediatamente.
+                checkDeviceUltimaVerificacion = Date.now();
+
+                if (!silencioso) {
+                    msg(
+                        'Check Device',
+                        'Se realizaron demasiadas verificaciones. Intenta nuevamente en unos minutos.',
+                        'warning'
+                    );
+                }
+                return;
             }
-            msg('Check Device', 'Error de verificación', 'error');
+
+            var mensaje = 'Error de verificación';
+
+            if (xhr && xhr.responseJSON && xhr.responseJSON.message) {
+                mensaje = xhr.responseJSON.message;
+            } else if (xhr && xhr.status) {
+                mensaje += ' (HTTP ' + xhr.status + ')';
+            } else {
+                mensaje += ' (sin respuesta del servidor)';
+            }
+
+            if (!silencioso) {
+                msg('Check Device', mensaje, 'error');
+            }
         },
-        "GET");
+        'GET'
+    );
 }
-
 
 const registrarPasswordShow = () => {
     vista('clave_desbloqueo','fade');
@@ -584,7 +799,9 @@ const registerDevice = () => {
 
     datos.id_user = _SESSION('id_usuario');
     datos.alias = $('#model_device').val();
-    datos.uuid = $('#uuid').val();
+    datos.uuid = typeof obtenerUuidDispositivo === 'function'
+        ? obtenerUuidDispositivo()
+        : ($('#uuid').val() || localStorage.getItem('uuid') || '');
     datos.password = $('#pass_device').val();
     datos.estado = 0;
     datos.fecha_ingreso = `${year}-${month}-${day} 00:00:00`;
@@ -645,19 +862,84 @@ const escaparTextoConsentimiento = (valor) => {
     return $('<div>').text(valor == null ? '' : String(valor)).html();
 };
 
-const abrirConsentimiento = (url) => {
+const abrirDocumentoClinico = (url, tipo) => {
     if (!url) {
         return;
     }
 
-    // Los documentos clínicos se abren directamente, sin enviar su URL
-    // temporal a visores externos.
+    const esAndroid = (
+        (typeof device !== 'undefined' && String(device.platform || '').toLowerCase() === 'android') ||
+        /Android/i.test(navigator.userAgent || '')
+    );
+
+    /*
+     * Android WebView / cordova-plugin-inappbrowser no ofrece un visor PDF
+     * nativo fiable. Cuando el servidor devuelve un PDF, el WebView puede
+     * quedar negro mientras intenta interpretarlo.
+     *
+     * En Android abrimos documentos clínicos en el visor del sistema
+     * (Chrome/visor PDF instalado), que es mucho más rápido y estable.
+     * En iOS/browser mantenemos el InAppBrowser habitual.
+     */
     if (window.cordova && cordova.InAppBrowser) {
-        cordova.InAppBrowser.open(url, '_blank', 'location=yes');
+        if (esAndroid) {
+            try {
+                cordova.InAppBrowser.open(url, '_system', 'location=yes');
+            } catch (error) {
+                console.error('[MED-SDI] No fue posible abrir el documento con el visor del sistema:', error);
+                cordova.InAppBrowser.open(url, '_blank', 'location=yes');
+            }
+            return;
+        }
+
+        cargando(1);
+
+        const navegador = cordova.InAppBrowser.open(
+            url,
+            '_blank',
+            'location=yes,hidden=yes,clearcache=no,clearsessioncache=no'
+        );
+
+        let cerrado = false;
+
+        const terminarCarga = () => {
+            if (cerrado) return;
+            cargando(0);
+            try {
+                navegador.show();
+            } catch (error) {
+                console.log('[MED-SDI] Documento abierto.', error);
+            }
+        };
+
+        navegador.addEventListener('loadstop', terminarCarga);
+        navegador.addEventListener('loaderror', function(event) {
+            if (cerrado) return;
+            cargando(0);
+            console.error('[MED-SDI] Error cargando documento clínico:', event);
+            msg('Documento', 'No fue posible abrir el documento.', 'error');
+        });
+        navegador.addEventListener('exit', function() {
+            cerrado = true;
+            cargando(0);
+        });
+
+        // Seguridad: no dejar el loader bloqueado si WebView no emite loadstop.
+        setTimeout(function() {
+            if (!cerrado) {
+                terminarCarga();
+            }
+        }, 8000);
+
         return;
     }
 
     window.open(url, '_blank');
+};
+
+// Compatibilidad con recetas, consentimientos y llamadas existentes.
+const abrirConsentimiento = (url) => {
+    abrirDocumentoClinico(url, 'documento');
 };
 
 const list_consentimientos = () => {
@@ -906,7 +1188,28 @@ const list_examenes_paciente = () => {
     );
 };
 
-const solicitarFmu = () => {
+
+const limpiarFmuAntesDeCargar = () => {
+    const $paginaFmu = $('#fmu_paciente');
+    const $tarjetas = $paginaFmu.find('.cards-grid .card-button');
+
+    $paginaFmu.find('.cards-grid').addClass('fmu-datos-pendientes');
+
+    // Nunca dejamos visibles datos del paciente anterior ni datos demo.
+    $tarjetas.eq(0).find('h2').text('');
+    $tarjetas.find('.card-list').empty();
+
+    // Contacto de emergencia.
+    $paginaFmu.find('.ui-content > .row.mb90 .card-button .fecha-small').text('');
+
+    // Odontograma e historial.
+    $('#odontograma_fmu_superior, #odontograma_fmu_inferior, #odontograma_fmu_historial').empty();
+    $('#odontograma_fmu_historial').hide();
+};
+
+const solicitarFmu = (forzar) => {
+    limpiarFmuAntesDeCargar();
+
     var datos = {};
     datos.id_paciente = _SESSION('id_usuario');
     datos.token = "mobile-original-" + Date.now()
@@ -922,8 +1225,10 @@ const solicitarFmu = () => {
             if (resp.estado == 1) {
                 const fmu = resp;
                 actualizarTarjetasFMU(fmu);
+                $('#fmu_paciente .cards-grid').removeClass('fmu-datos-pendientes');
             } else {
                 mostrarSinDatos();
+                $('#fmu_paciente .cards-grid').removeClass('fmu-datos-pendientes');
             }
             cargando(0);
         },
@@ -1346,11 +1651,13 @@ const actualizarTarjetasFMU = (fmu) => {
     }
 
     // Contacto de Emergencia
+    const $contacto = $paginaFmu.find('.ui-content > .row.mb90 .card-button');
     if (fmu.contacto_emergencia) {
-        const $contacto = $paginaFmu.find('.ui-content > .row.mb90 .card-button');
         $contacto.find('.col-xs-4').eq(0).find('.fecha-small').text(fmu.contacto_emergencia.nombre || 'No registrado');
         $contacto.find('.col-xs-4').eq(1).find('.fecha-small').text(fmu.contacto_emergencia.parentezco || 'No registrado');
         $contacto.find('.col-xs-4').eq(2).find('.fecha-small').text(fmu.contacto_emergencia.telefono || 'No registrado');
+    } else {
+        $contacto.find('.fecha-small').text('');
     }
 
     renderizarOdontogramaFMU(fmu.odontograma || []);
@@ -1439,113 +1746,188 @@ const mostrarSinDatos = () => {
     renderizarOdontogramaFMU([]);
 }
 
-const solicitarMisHorasMedicas = () => {
+var citasPacienteRegistros = [];
+var citasPacienteFiltro = 'todas';
+
+const estadoFiltroCita = (hora) => {
+    var estado = Number(hora && hora.id_estado);
+    if (estado === 1) return 'reservadas';
+    if (estado === 2) return 'confirmadas';
+    return 'otras';
+};
+
+const actualizarContadoresCitas = () => {
+    var contadores = {
+        todas: citasPacienteRegistros.length,
+        reservadas: 0,
+        confirmadas: 0,
+        otras: 0
+    };
+
+    citasPacienteRegistros.forEach(function(hora) {
+        var grupo = estadoFiltroCita(hora);
+        contadores[grupo] = (contadores[grupo] || 0) + 1;
+    });
+
+    $('#citas-contador-todas').text(contadores.todas);
+    $('#citas-contador-reservadas').text(contadores.reservadas);
+    $('#citas-contador-confirmadas').text(contadores.confirmadas);
+    $('#citas-contador-otras').text(contadores.otras);
+
+    return contadores;
+};
+
+const cambiarFiltroCitas = (filtro) => {
+    citasPacienteFiltro = ['todas', 'reservadas', 'confirmadas', 'otras'].includes(filtro)
+        ? filtro
+        : 'todas';
+
+    $('#citas .citas-filtro')
+        .removeClass('active')
+        .attr('aria-selected', 'false');
+
+    $('#citas .citas-filtro[data-filtro="' + citasPacienteFiltro + '"]')
+        .addClass('active')
+        .attr('aria-selected', 'true');
+
+    renderizarCitasPaciente();
+};
+
+const renderizarCitasPaciente = () => {
+    var registros = citasPacienteRegistros.filter(function(hora) {
+        return citasPacienteFiltro === 'todas' || estadoFiltroCita(hora) === citasPacienteFiltro;
+    });
+
+    var etiquetas = {
+        todas: 'Todas las citas',
+        reservadas: 'Horas que necesitan tu confirmación',
+        confirmadas: 'Horas confirmadas',
+        otras: 'Horas rechazadas, anuladas u otros estados'
+    };
+
+    $('#citas-filtro-resumen').text(
+        etiquetas[citasPacienteFiltro] + ' · ' + registros.length + ' resultado(s)'
+    );
+
+    if (!registros.length) {
+        $('#lista-horas').html(`
+            <div class="citas-vacio">
+                <span class="citas-vacio-icono">⌕</span>
+                <strong>No hay citas en este filtro</strong>
+                <p>Prueba seleccionando otra categoría.</p>
+            </div>
+        `);
+        return;
+    }
+
+    let htmlHoras = '';
+
+    registros.forEach(hora => {
+        const fecha = fechaEsp(hora.fecha_consulta);
+        const horaInicio = hora.hora_inicio || 'No especificada';
+        const horaTermino = hora.hora_termino || 'No especificada';
+        const medico = hora ? `${hora.nombre_profesional} ${hora.apellido_uno_profesional}` : 'No asignado';
+        const especialidad = hora && hora.nombre_especialidad ? hora.nombre_especialidad : 'No especificada';
+        const tipo_especialidad = hora && hora.nombre_tipo_especialidad ? hora.nombre_tipo_especialidad : 'No especificada';
+        const sub_tipo_especialidad = hora && hora.nombre_sub_tipo_especialidad ? hora.nombre_sub_tipo_especialidad : '';
+        const estado = Number(hora.id_estado);
+        const estadoHora = estado === 1
+            ? 'Reservada'
+            : (estado === 2 ? 'Confirmada' : (hora.estado || 'Rechazada'));
+
+        const estadoClase = estado === 1
+            ? 'reservada'
+            : (estado === 2 ? 'confirmada' : 'otra');
+
+        const botonesHtml = estado === 1 ? `
+            <div class="cita-acciones">
+                <button type="button" data-role="none" class="cita-btn confirmar"
+                        onclick="confirmarHoraMedicaAgendada(${hora.id})">
+                    <span>✓</span> Confirmar hora
+                </button>
+                <button type="button" data-role="none" class="cita-btn anular"
+                        onclick="cancelarHoraMedica(${hora.id})">
+                    Anular hora
+                </button>
+            </div>
+        ` : '';
+
+        const botonAnularHtml = estado === 2 ? `
+            <div class="cita-acciones una">
+                <button type="button" data-role="none" class="cita-btn anular"
+                        onclick="cancelarHoraMedica(${hora.id})">
+                    Anular hora
+                </button>
+            </div>
+        ` : '';
+
+        const botonVideoHtml = hora.es_telemedicina ? (
+            hora.puede_conectarse && hora.video_url ? `
+                <button type="button" data-role="none" class="cita-btn videollamada"
+                        onclick="abrirVideollamadaApp('${hora.video_url}')">
+                    Iniciar videollamada
+                </button>
+            ` : `
+                <div class="cita-telemedicina-estado">Telemedicina: ${hora.estado || estadoHora}</div>
+            `
+        ) : '';
+
+        let imagenMedico = '';
+        if (hora.foto_perfil && hora.foto_perfil !== '') {
+            imagenMedico = 'https://med-sdi.cl/storage/' + hora.foto_perfil;
+        } else {
+            imagenMedico = hora.sexo === "M"
+                ? 'src/images/ejemplo_dr.jpg'
+                : 'src/images/ejemplo_dra.jpg';
+        }
+
+        htmlHoras += `
+            <article class="cita-paciente-card">
+                <div class="cita-paciente-header">
+                    <img class="cita-paciente-avatar" src="${imagenMedico}" alt="Foto perfil">
+                    <div>
+                        <h3>${escaparTextoConsentimiento(medico)}</h3>
+                        <p>${escaparTextoConsentimiento(especialidad)}${tipo_especialidad ? ' · ' + escaparTextoConsentimiento(tipo_especialidad) : ''}</p>
+                        ${sub_tipo_especialidad ? `<small>${escaparTextoConsentimiento(sub_tipo_especialidad)}</small>` : ''}
+                    </div>
+                    <span class="cita-estado ${estadoClase}">${escaparTextoConsentimiento(estadoHora)}</span>
+                </div>
+
+                <div class="cita-paciente-datos">
+                    <div><img src="src/images/calendario.svg" alt=""><span>${fecha}</span></div>
+                    <div><img src="src/images/hora.svg" alt=""><span>${horaInicio} - ${horaTermino}</span></div>
+                    <div class="ancho"><img src="src/images/ubicacion.svg" alt=""><span>${escaparTextoConsentimiento(hora.nombre_lugar_atencion || 'Sin lugar')}</span></div>
+                    ${hora.direccion_lugar_atencion ? `<p>${escaparTextoConsentimiento(hora.direccion_lugar_atencion)} ${escaparTextoConsentimiento(hora.numero_dir_lugar_atencion || '')}</p>` : ''}
+                </div>
+
+                ${botonesHtml}
+                ${botonAnularHtml}
+                ${botonVideoHtml}
+            </article>
+        `;
+    });
+
+    $('#lista-horas').html(htmlHoras);
+};
+
+const solicitarMisHorasMedicas = (forzar) => {
     var datos = {};
     datos.id_paciente = _SESSION('id_usuario');
+
     cargando(1);
+
     var api = new Api("paciente", "agenda");
     api.request(
         datos,
         function (resp) {
-            LOG('mis horas estado:'+resp.estado);
-            console.log(resp);
-            if (resp.estado == 1 && resp.horas && resp.horas.length > 0) {
-                let htmlHoras = '';
-                resp.horas.forEach(hora => {
-                    const fecha = fechaEsp(hora.fecha_consulta);
-                    const horaInicio = hora.hora_inicio || 'No especificada';
-                    const horaTermino = hora.hora_termino || 'No especificada';
-                    const medico = hora ? `${hora.nombre_profesional} ${hora.apellido_uno_profesional}` : 'No asignado';
-                    const especialidad = hora && hora.nombre_especialidad ? hora.nombre_especialidad : 'No especificada';
-                    const tipo_especialidad = hora && hora.nombre_tipo_especialidad ? hora.nombre_tipo_especialidad : 'No especificada';
-                    const sub_tipo_especialidad = hora && hora.nombre_sub_tipo_especialidad ? hora.nombre_sub_tipo_especialidad : '';
-                    const estadoHora = hora.id_estado === 1 ? 'Reservada' : (hora.id_estado === 2 ? 'Confirmada' : 'Rechazada');
+            LOG('mis horas estado:' + resp.estado);
 
-                    // Generar botones solo si el estado es 1 (Pendiente)
-                    const botonesHtml = hora.id_estado === 1 ? `
-                        <div class="col-xs-6 text-center">
-                            <div class="btn-app8 mt20 mb10" onclick="confirmarHoraMedicaAgendada(${hora.id})">
-                                Confirmar hora
-                            </div>
-                        </div>
-                        <div class="col-xs-6 text-center">
-                            <div class="btn-anular-hora mt20 mb10" onclick="cancelarHoraMedica(${hora.id})">
-                                Anular hora
-                            </div>
-                        </div>
-                    ` : '';
+            citasPacienteRegistros = resp.estado == 1 && Array.isArray(resp.horas)
+                ? resp.horas
+                : [];
 
-                    const botonAnularHtml = hora.id_estado === 2 ? `
-                        <div class="col-xs-12 text-center">
-                            <div class="btn-anular-hora mt20 mb10" onclick="cancelarHoraMedica(${hora.id})">
-                                Anular hora
-                            </div>
-                        </div>
-                    ` : '';
-                    const botonVideoHtml = hora.es_telemedicina ? (
-                        hora.puede_conectarse && hora.video_url ? `
-                        <div class="col-xs-12 text-center">
-                            <div class="btn-app7 mt10 mb10" onclick="abrirVideollamadaApp('${hora.video_url}')">
-                                Conectarse a videollamada
-                            </div>
-                        </div>` : `
-                        <div class="col-xs-12 text-center">
-                            <div class="btn-app8 mt10 mb10">Telemedicina: ${hora.estado}</div>
-                        </div>`
-                    ) : '';
-
-                    if(hora.foto_perfil && hora.foto_perfil!='')
-                    {
-                        var imagenMedico = 'https://med-sdi.cl/storage/'+hora.foto_perfil;
-                    }else{
-                        if(hora.sexo == "M"){
-                            var imagenMedico = 'src/images/ejemplo_dr.jpg';
-                        }else{
-                            var imagenMedico = 'src/images/ejemplo_dra.jpg';
-                        }
-                    }
-
-                    htmlHoras += `
-                    <div class="card-button-dos mb20">
-                        <div class="row">
-                            <div class="col-xs-12  text-center">
-                                <img class="img-circulo text-center"  width="50"  src="${imagenMedico}" alt="Foto perfil">
-                                <p class="size14 color-azul">${medico}</p>
-                                <p class="letra-small">${especialidad} - ${tipo_especialidad} - ${sub_tipo_especialidad}</p>
-                                <hr class="mt10">
-                           </div>
-                           <div class="col-xs-6 text-left">
-                                <p class="d-inline"><img class="mr10" width="20" src="src/images/calendario.svg">${fecha}</p>
-                            </div>
-                            <div class="col-xs-6 text-left">
-                                <p class="d-inline"><img  class="mr10" width="20" src="src/images/hora.svg">${horaInicio} - ${horaTermino}</p>
-                            </div>
-                            <div class="col-xs-12 text-left mt10">
-                                <p><img class="mr10" width="20" src="src/images/ubicacion.svg">${hora.nombre_lugar_atencion}</p>
-                                <p class="pl30 letra-small">${hora.direccion_lugar_atencion} ${hora.numero_dir_lugar_atencion ? hora.numero_dir_lugar_atencion : ''}</p>
-                                <p class="pl30 letra-small">${estadoHora}</p>
-                            </div>
-                            ${botonesHtml}
-                            ${botonAnularHtml}
-                            ${botonVideoHtml}
-                        </div>
-                    </div>
-                    `;
-                });
-
-                $('#lista-horas').html(htmlHoras);
-            } else {
-                $('#lista-horas').html(`
-                    <div class="card-button-dos mb20">
-                        <div class="row">
-                            <div class="col-xs-12 text-center pt20 pb20">
-                                <p class="size18 color-azul">No hay horas médicas agendadas</p>
-                                <p class="size14">Contacte a su centro médico para agendar una hora</p>
-                            </div>
-                        </div>
-                    </div>
-                `);
-            }
+            actualizarContadoresCitas();
+            renderizarCitasPaciente();
             cargando(0);
         },
         function (resp) {
@@ -1553,17 +1935,16 @@ const solicitarMisHorasMedicas = () => {
             cargando(0);
             msg('Horas Médicas', 'Error al cargar horas médicas', 'error');
             $('#lista-horas').html(`
-                <div class="card-button-dos mb20">
-                    <div class="row">
-                        <div class="col-xs-12 text-center pt20 pb20">
-                            <p class="size18 color-rojo">Error al cargar horas médicas</p>
-                            <div class="btn-app4 mt10" onclick="solicitarMisHorasMedicas()">Reintentar</div>
-                        </div>
-                    </div>
+                <div class="citas-vacio error">
+                    <strong>No fue posible cargar tus citas</strong>
+                    <button type="button" data-role="none" onclick="solicitarMisHorasMedicas(true)">Reintentar</button>
                 </div>
             `);
         },
-        "GET");
+        "GET",
+        null,
+        forzar === true ? {cacheTtl: 0} : undefined
+    );
 }
 
 const guardarAtencion = () => {
@@ -2328,14 +2709,50 @@ const aplicarFormatoRut = () => {
     });
 }
 
-const cancelarHoraMedica = (idHora) => {
+const cancelarHoraMedica = async (idHora) => {
     if (!idHora) {
         msg('Anular Hora', 'ID de hora inválido', 'warning');
         return;
     }
 
-    // Confirmación antes de cancelar
-    if (!confirm('¿Está seguro que desea anular esta hora médica?')) {
+    const confirmado = await confirmarMedsdi(
+        '¿Anular esta hora?',
+        'La cita será anulada y dejará de aparecer como una hora activa.',
+        {
+            icon: 'warning',
+            confirmButtonText: 'Sí, continuar',
+            cancelButtonText: 'Volver',
+            confirmButtonColor: '#c94755'
+        }
+    );
+
+    if (!confirmado) {
+        return;
+    }
+
+    if (typeof confirmarBiometriaAccionApp !== 'function') {
+        await swalMedsdi(
+            'Confirmación biométrica',
+            'No fue posible iniciar la validación biométrica.',
+            'error'
+        );
+        return;
+    }
+
+    const validacionBiometrica = await confirmarBiometriaAccionApp(
+        'Confirma tu huella para anular esta hora médica.'
+    );
+
+    if (!validacionBiometrica.ok) {
+        const mensaje = validacionBiometrica.motivo === 'no_habilitada'
+            ? 'Activa primero la huella desde Mi perfil → Seguridad.'
+            : (validacionBiometrica.mensaje || 'No fue posible validar tu identidad.');
+
+        await swalMedsdi(
+            'Hora no anulada',
+            mensaje,
+            validacionBiometrica.motivo === 'cancelada' ? 'info' : 'warning'
+        );
         return;
     }
 
@@ -2350,12 +2767,13 @@ const cancelarHoraMedica = (idHora) => {
     api.request(
         datos,
         function (resp) {
-            console.log('Respuesta anular hora:', resp);
-
             if (resp.estado == 1) {
-                msg('Hora Anulada', 'La hora ha sido anulada correctamente', 'success');
-
-                solicitarMisHorasMedicas();
+                swalMedsdi(
+                    'Hora anulada',
+                    'La hora médica fue anulada correctamente.',
+                    'success'
+                );
+                solicitarMisHorasMedicas(true);
             } else {
                 msg('Error', resp.msj || 'Error al anular la hora', 'error');
             }
@@ -2366,13 +2784,51 @@ const cancelarHoraMedica = (idHora) => {
             cargando(0);
             msg('Error', 'Error de conexión al anular la hora', 'error');
         },
-        "POST");
+        "POST"
+    );
 }
 
-const confirmarHoraMedica = (idHora, fecha, hora) => {
+const confirmarHoraMedica = async (idHora, fecha, hora) => {
 
-    // confirmar que se quiere agendar la hora
-    if (!confirm(`¿Está seguro que desea agendar la hora médica el ${fecha} a las ${hora}?`)) {
+    const confirmado = await confirmarMedsdi(
+        'Confirmar reserva',
+        `¿Deseas agendar esta hora médica para el ${fecha} a las ${hora}?`,
+        {
+            icon: 'question',
+            confirmButtonText: 'Sí, continuar',
+            cancelButtonText: 'Elegir otra hora',
+            confirmButtonColor: '#1450bd'
+        }
+    );
+
+    if (!confirmado) {
+        return;
+    }
+
+    // Segundo factor antes de enviar la reserva al servidor.
+    if (typeof confirmarBiometriaAccionApp !== 'function') {
+        await swalMedsdi(
+            'Confirmación biométrica',
+            'No fue posible iniciar la validación biométrica. Actualiza la aplicación e inténtalo nuevamente.',
+            'error'
+        );
+        return;
+    }
+
+    const validacionBiometrica = await confirmarBiometriaAccionApp(
+        `Confirma tu huella para reservar la hora del ${fecha} a las ${hora}.`
+    );
+
+    if (!validacionBiometrica.ok) {
+        const mensaje = validacionBiometrica.motivo === 'no_habilitada'
+            ? 'Activa primero la huella desde Mi perfil → Seguridad para poder confirmar reservas.'
+            : (validacionBiometrica.mensaje || 'No fue posible validar tu identidad.');
+
+        await swalMedsdi(
+            'Reserva no confirmada',
+            mensaje,
+            validacionBiometrica.motivo === 'cancelada' ? 'info' : 'warning'
+        );
         return;
     }
 
@@ -2417,28 +2873,71 @@ const confirmarHoraMedica = (idHora, fecha, hora) => {
         "POST");
 }
 
-const confirmarHoraMedicaAgendada = (idHora) => {
+const confirmarHoraMedicaAgendada = async (idHora) => {
     if (!idHora) {
         msg('Confirmar Hora', 'ID de hora inválido', 'warning');
         return;
     }
-    // Confirmación antes de confirmar
-    if (!confirm('¿Está seguro que desea confirmar esta hora médica?')) {
+
+    const confirmado = await confirmarMedsdi(
+        'Confirmar asistencia',
+        '¿Deseas confirmar esta hora médica?',
+        {
+            icon: 'question',
+            confirmButtonText: 'Sí, continuar',
+            cancelButtonText: 'Ahora no',
+            confirmButtonColor: '#18a36f'
+        }
+    );
+
+    if (!confirmado) {
         return;
     }
+
+    if (typeof confirmarBiometriaAccionApp !== 'function') {
+        await swalMedsdi(
+            'Confirmación biométrica',
+            'No fue posible iniciar la validación biométrica.',
+            'error'
+        );
+        return;
+    }
+
+    const validacionBiometrica = await confirmarBiometriaAccionApp(
+        'Confirma tu huella para confirmar esta hora médica.'
+    );
+
+    if (!validacionBiometrica.ok) {
+        const mensaje = validacionBiometrica.motivo === 'no_habilitada'
+            ? 'Activa primero la huella desde Mi perfil → Seguridad.'
+            : (validacionBiometrica.mensaje || 'No fue posible validar tu identidad.');
+
+        await swalMedsdi(
+            'Hora no confirmada',
+            mensaje,
+            validacionBiometrica.motivo === 'cancelada' ? 'info' : 'warning'
+        );
+        return;
+    }
+
     const datos = {
         id_hora: idHora,
         token: "mobile-original-" + Date.now()
     };
+
     cargando(1);
+
     var api = new Api("paciente", "confirmar_hora_medica");
     api.request(
         datos,
         function (resp) {
-            console.log('Respuesta confirmar hora:', resp);
             if (resp.estado == 1) {
-                msg('Hora Confirmada', 'La hora ha sido confirmada correctamente', 'success');
-                solicitarMisHorasMedicas();
+                swalMedsdi(
+                    'Hora confirmada',
+                    'Tu asistencia quedó confirmada correctamente.',
+                    'success'
+                );
+                solicitarMisHorasMedicas(true);
             } else {
                 msg('Error', resp.msj || 'Error al confirmar la hora', 'error');
             }
@@ -2449,7 +2948,8 @@ const confirmarHoraMedicaAgendada = (idHora) => {
             cargando(0);
             msg('Error', 'Error de conexión al confirmar la hora', 'error');
         },
-        "POST");
+        "POST"
+    );
 }
 
 const dameRegiones = (select) => {
@@ -2652,59 +3152,283 @@ const buscarProfesionales = () => {
 }
 
 var listLogDeviceRequestId = 0;
+var autorizacionesRegistros = [];
+var autorizacionesFiltroActivo = 'pendientes';
 
-const list_log_device = ()=>{
+const textoEstadoAutorizacion = (reg) => {
+    if (!reg) {
+        return '';
+    }
 
-    var estructura_html = '';
+    const candidatos = [
+        reg.estado_texto,
+        reg.estado_nombre,
+        reg.nombre_estado,
+        reg.status,
+        reg.decision,
+        reg.resultado,
+        reg.respuesta
+    ];
+
+    // Si "estado" ya viene como texto descriptivo, también lo consideramos.
+    if (typeof reg.estado === 'string') {
+        candidatos.push(reg.estado);
+    }
+
+    candidatos.push(
+        $('<div>').html(reg.msg_html || '').text()
+    );
+
+    return candidatos
+        .filter(function(valor) {
+            return valor !== null && typeof valor !== 'undefined' && String(valor).trim() !== '';
+        })
+        .join(' ')
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
+};
+
+const obtenerEstadoAutorizacion = (reg) => {
+    const texto = textoEstadoAutorizacion(reg);
+
+    // Primero detectar estados definitivos.
+    if (
+        texto.indexOf('rechazad') !== -1 ||
+        texto.indexOf('denegad') !== -1 ||
+        texto.indexOf('rechazo') !== -1
+    ) {
+        return 'rechazadas';
+    }
+
+    if (
+        texto.indexOf('aprobada') !== -1 ||
+        texto.indexOf('aprobado') !== -1 ||
+        texto.indexOf('aceptada') !== -1 ||
+        texto.indexOf('aceptado') !== -1 ||
+        texto.indexOf('autorizada') !== -1 ||
+        texto.indexOf('autorizado') !== -1
+    ) {
+        return 'aprobadas';
+    }
+
+    if (
+        texto.indexOf('pendiente') !== -1 ||
+        texto.indexOf('por responder') !== -1 ||
+        texto.indexOf('esperando respuesta') !== -1
+    ) {
+        return 'pendientes';
+    }
+
+    /*
+     * Compatibilidad con registros antiguos:
+     * si el backend no entrega un nombre de estado explícito, estas entradas
+     * corresponden a solicitudes que todavía requieren acción del usuario.
+     */
+    return 'pendientes';
+};
+
+const actualizarContadoresAutorizaciones = () => {
+    const contadores = {
+        todas: autorizacionesRegistros.length,
+        pendientes: 0,
+        aprobadas: 0,
+        rechazadas: 0
+    };
+
+    autorizacionesRegistros.forEach(function(reg) {
+        const estado = obtenerEstadoAutorizacion(reg);
+        if (Object.prototype.hasOwnProperty.call(contadores, estado)) {
+            contadores[estado]++;
+        }
+    });
+
+    $('#autorizaciones_count_todas').text(contadores.todas);
+    $('#autorizaciones_count_pendientes').text(contadores.pendientes);
+    $('#autorizaciones_count_aprobadas').text(contadores.aprobadas);
+    $('#autorizaciones_count_rechazadas').text(contadores.rechazadas);
+
+    return contadores;
+};
+
+const renderizarAutorizaciones = () => {
+    const $lista = $('#list_log_reg');
+    const filtro = autorizacionesFiltroActivo || 'pendientes';
+
+    const registrosFiltrados = autorizacionesRegistros.filter(function(reg) {
+        return filtro === 'todas' || obtenerEstadoAutorizacion(reg) === filtro;
+    });
+
+    // Construimos un solo bloque HTML. Evita múltiples append/reflows en Android WebView.
+    var html = registrosFiltrados.map(function(reg) {
+        var estado = obtenerEstadoAutorizacion(reg);
+        var contenido = String(reg.msg_html || '').trim();
+        if (!contenido) return '';
+
+        // El backend ya entrega el HTML de cada tarjeta. Envolvemos una sola vez
+        // para conservar el estado requerido por los filtros sin crear objetos jQuery.
+        return '<div class="autorizacion-render-item" data-estado-autorizacion="' +
+            escaparTextoConsentimiento(estado) + '">' + contenido + '</div>';
+    }).join('');
+
+    if (!html) {
+        const etiquetasVacias = {
+            todas: 'todas las autorizaciones',
+            pendientes: 'autorizaciones pendientes',
+            aprobadas: 'autorizaciones aprobadas',
+            rechazadas: 'autorizaciones rechazadas'
+        };
+        html = '<li class="autorizaciones-vacio">No hay ' + etiquetasVacias[filtro] + ' para mostrar.</li>';
+    }
+
+    $lista.html(html);
+
+    const etiquetas = {
+        todas: 'todas las autorizaciones',
+        pendientes: 'autorizaciones pendientes',
+        aprobadas: 'autorizaciones aprobadas',
+        rechazadas: 'autorizaciones rechazadas'
+    };
+
+    $('#autorizaciones_filtro_resumen').text(
+        registrosFiltrados.length + ' ' +
+        (registrosFiltrados.length === 1 ? 'registro' : 'registros') +
+        ' · ' + etiquetas[filtro]
+    );
+};
+
+const filtrarAutorizaciones = (filtro) => {
+    const filtrosPermitidos = ['todas', 'pendientes', 'aprobadas', 'rechazadas'];
+
+    if (filtrosPermitidos.indexOf(filtro) === -1) {
+        filtro = 'pendientes';
+    }
+
+    autorizacionesFiltroActivo = filtro;
+
+    $('#autorizaciones_sdi .autorizaciones-filtro')
+        .removeClass('active')
+        .filter('[data-filtro="' + filtro + '"]')
+        .addClass('active');
+
+    renderizarAutorizaciones();
+};
+
+var listLogDeviceEnCurso = false;
+var listLogDeviceUltimaCarga = 0;
+var listLogDeviceCacheMs = 10000;
+
+const list_log_device = (forzar) => {
+
+    var ahora = Date.now();
+    forzar = forzar === true;
+
+    // Evitar solicitudes simultáneas.
+    if (listLogDeviceEnCurso) {
+        console.log('[MED-SDI] list_log_device ya está en ejecución.');
+        return;
+    }
+
+    // Evitar recargas repetidas durante navegación normal.
+    if (
+        !forzar &&
+        listLogDeviceUltimaCarga &&
+        (ahora - listLogDeviceUltimaCarga) < listLogDeviceCacheMs
+    ) {
+        console.log('[MED-SDI] Se omite recarga repetida de autorizaciones.');
+        renderizarAutorizaciones();
+        return;
+    }
+
+    listLogDeviceEnCurso = true;
     var requestId = ++listLogDeviceRequestId;
-    $('#list_log_reg').html('');
-    $('#log_reg_autorizacion').html('');
-
-    var datos = {};
 
     $('#list_log_reg').html(
         '<p class="text-center color-gris mt20">Cargando autorizaciones...</p>'
     );
+    $('#autorizaciones_filtro_resumen').text('Actualizando autorizaciones...');
 
     var api = new Api("mobile-authorization", "requests");
 
     api.request(
-        datos,
+        {},
         function (resp) {
+            listLogDeviceEnCurso = false;
+
             if (requestId !== listLogDeviceRequestId) {
                 return;
             }
+
+            listLogDeviceUltimaCarga = Date.now();
 
             LOG('list log device:' + resp.estado);
+            console.log('[MED-SDI] Autorizaciones respuesta:', resp);
 
-            $('#list_log_reg').html('');
-            $('#log_reg_autorizacion').html('');
+            autorizacionesRegistros = (
+                resp.estado == 1 && Array.isArray(resp.registros)
+            ) ? resp.registros : [];
 
-            if (resp.estado == 1) {
-
-                resp.registros.forEach(reg => {
-                    $('#list_log_reg').append(reg.msg_html);
-                });
-
-            } else {
-                $('#list_log_reg').append('<li class="mt10">- No se encontraron Registros</li>');
-            }
-
+            actualizarContadoresAutorizaciones();
+            filtrarAutorizaciones(autorizacionesFiltroActivo);
         },
-        function (resp) {
+        function (xhr, status, error) {
+            listLogDeviceEnCurso = false;
+
             if (requestId !== listLogDeviceRequestId) {
                 return;
             }
 
-            $('#list_log_reg').html(
-                '<p class="text-center color-rojo mt20">No fue posible cargar las autorizaciones.</p>'
+            console.error('[MED-SDI] AUTORIZACIONES ERROR', {
+                status: xhr ? xhr.status : null,
+                responseText: xhr ? xhr.responseText : null,
+                responseJSON: xhr ? xhr.responseJSON : null,
+                ajaxStatus: status,
+                error: error,
+                api: typeof MEDSDI_API_URL !== 'undefined' ? MEDSDI_API_URL : ''
+            });
+
+            var mensaje = 'No fue posible cargar las autorizaciones.';
+
+            if (xhr && xhr.status === 429) {
+                listLogDeviceUltimaCarga = Date.now();
+                mensaje = 'Se realizaron demasiadas solicitudes. Espera unos segundos antes de volver a actualizar.';
+            } else if (xhr && xhr.status === 401) {
+                mensaje = 'Tu sesión expiró. Inicia sesión nuevamente.';
+            } else if (xhr && xhr.responseJSON && xhr.responseJSON.message) {
+                mensaje = xhr.responseJSON.message;
+            } else if (xhr && xhr.status) {
+                mensaje += ' HTTP ' + xhr.status;
+            } else {
+                mensaje += ' El servidor no respondió.';
+            }
+
+            // No borramos autorizaciones ya cargadas por un error temporal.
+            if (!autorizacionesRegistros.length) {
+                actualizarContadoresAutorizaciones();
+
+                $('#autorizaciones_filtro_resumen').text('');
+                $('#list_log_reg').html(
+                    '<li class="autorizaciones-vacio color-rojo">' +
+                        escaparTextoConsentimiento(mensaje) +
+                    '</li>'
+                );
+            } else {
+                $('#autorizaciones_filtro_resumen').text(
+                    'No se pudo actualizar. Mostrando la última información disponible.'
+                );
+                renderizarAutorizaciones();
+            }
+
+            msg(
+                'Mis autorizaciones',
+                mensaje,
+                xhr && xhr.status === 429 ? 'warning' : 'error'
             );
-            msg('Lista log eventos', 'Error de lista de eventos', 'error');
         },
         "GET"
     );
+};
 
-}
 
 const getSession = (key) => {
     return localStorage.getItem(key) || sessionStorage.getItem(key);
@@ -2718,11 +3442,18 @@ function abrir_autorizacion_log(id_log, accion, btn) {
     let msg = $(btn)
         .closest('.log-card')
         .find('.msg_estado_log')
-        .html();
+        .html() || '';
 
-    $('#id_log').val(id_log);
-    $('#log_reg_autorizacion').html(msg);
-    $('#password_').val('');
+    // El detalle, el ID y el PIN pertenecen exclusivamente a #autorizacion.
+    // Antes se reutilizaban IDs presentes en otras páginas y el .html(msg)
+    // podía eliminar el input del PIN por la estructura HTML mal cerrada.
+    $('#autorizacion #id_log_autorizacion').val(id_log);
+    $('#autorizacion #log_reg_autorizacion_detalle').html(msg);
+    $('#autorizacion #password_').val('');
 
-    vista('autorizacion');
+    vista('autorizacion', 'fade');
+
+    setTimeout(function () {
+        $('#autorizacion #password_').trigger('focus');
+    }, 250);
 }

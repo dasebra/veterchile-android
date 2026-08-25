@@ -5,32 +5,55 @@ const mobileTwoFactorRequest = (path, method, data, success, errorCallback) => {
         return;
     }
 
-    $.ajax({
-        url: MEDSDI_API_URL + '/mobile-2fa/' + path,
-        method: method,
-        data: data ? JSON.stringify(data) : undefined,
-        contentType: data ? 'application/json' : undefined,
-        dataType: 'json',
-        headers: {'Accept': 'application/json', 'X-Auth-Token': token},
-        success: success,
-        error: function (xhr) {
-            if (xhr.status === 401) {
+    var api = new Api('mobile-2fa', path);
+
+    api.request(
+        data || {},
+        success,
+        function (xhr, status, error) {
+            console.error('[MED-SDI] MOBILE 2FA ERROR', {
+                status: xhr ? xhr.status : null,
+                responseText: xhr ? xhr.responseText : null,
+                responseJSON: xhr ? xhr.responseJSON : null,
+                ajaxStatus: status,
+                error: error
+            });
+
+            if (xhr && xhr.status === 401) {
                 localStorage.removeItem('authToken');
                 localStorage.setItem('desafioAccesoPendiente', '1');
                 vista('login', 'fade');
                 msg('Seguridad', 'Tu sesión móvil terminó. Inicia sesión nuevamente.', 'warning');
                 return;
             }
+
             if (typeof errorCallback === 'function') {
-                errorCallback(xhr);
+                errorCallback(xhr, status, error);
                 return;
             }
-            const text = xhr.status === 409
-                ? 'Este acceso ya fue resuelto o expiró.'
-                : 'No fue posible comunicarse con MED-SDI.';
-            msg('Seguridad', text, 'error');
-        }
-    });
+
+            if (xhr && xhr.status === 429) {
+                msg('Seguridad', 'Se realizaron demasiadas solicitudes. Espera unos segundos antes de volver a actualizar.', 'warning');
+                return;
+            }
+
+            if (xhr && xhr.status === 409) {
+                msg('Seguridad', 'Este acceso ya fue resuelto o expiró.', 'warning');
+                return;
+            }
+
+            var mensaje = 'No fue posible comunicarse con MED-SDI.';
+            if (xhr && xhr.responseJSON && xhr.responseJSON.message) {
+                mensaje = xhr.responseJSON.message;
+            } else if (xhr && xhr.status) {
+                mensaje += ' HTTP ' + xhr.status;
+            }
+            msg('Seguridad', mensaje, 'error');
+        },
+        String(method || 'GET').toUpperCase(),
+        false,
+        12000
+    );
 };
 
 const abrirDesafiosAcceso = () => {
@@ -49,18 +72,44 @@ const volverDesdeDesafiosAcceso = () => {
     vista(rolActivo === 'Profesional' ? 'inicio-profesional' : 'index', 'fade');
 };
 
-const cargarDesafiosAcceso = () => {
+let desafiosAccesoCargando = false;
+let desafiosAccesoUltimaCarga = 0;
+const desafiosAccesoCacheMs = 30000;
+
+const cargarDesafiosAcceso = (forzar) => {
+    forzar = forzar === true;
+    const ahora = Date.now();
+
+    if (desafiosAccesoCargando) {
+        console.log('[MED-SDI] Ya hay una carga de desafíos en curso.');
+        return;
+    }
+
+    if (
+        !forzar &&
+        desafiosAccesoUltimaCarga &&
+        (ahora - desafiosAccesoUltimaCarga) < desafiosAccesoCacheMs
+    ) {
+        console.log('[MED-SDI] Se omite carga repetida de desafíos por caché temporal.');
+        return;
+    }
+
+    desafiosAccesoCargando = true;
+
     $('#lista-desafios-acceso').html(
         '<div class="app-estado-carga"><span class="app-spinner"></span><p>Buscando solicitudes seguras…</p></div>'
     );
 
     mobileTwoFactorRequest('challenges', 'GET', null, function (items) {
+        desafiosAccesoCargando = false;
+        desafiosAccesoUltimaCarga = Date.now();
+
         if (!items.length) {
             $('#lista-desafios-acceso').html(
                 '<div class="app-estado-vacio">' +
-                    '<span class="app-estado-vacio-icono">✓</span>' +
-                    '<strong>Todo está en orden</strong>' +
-                    '<p>No tienes solicitudes de acceso pendientes.</p>' +
+                '<span class="app-estado-vacio-icono">✓</span>' +
+                '<strong>Todo está en orden</strong>' +
+                '<p>No tienes solicitudes de acceso pendientes.</p>' +
                 '</div>'
             );
             return;
@@ -69,23 +118,56 @@ const cargarDesafiosAcceso = () => {
         const html = items.map(function (item) {
             return '<article class="desafio-acceso-card">' +
                 '<div class="desafio-acceso-cabecera">' +
-                    '<span class="desafio-acceso-icono">↗</span>' +
-                    '<div><strong>Nuevo acceso a MED-SDI</strong><span>Esperando tu confirmación</span></div>' +
-                    '<span class="desafio-acceso-estado">Pendiente</span>' +
+                '<span class="desafio-acceso-icono">↗</span>' +
+                '<div><strong>Nuevo acceso a MED-SDI</strong><span>Esperando tu confirmación</span></div>' +
+                '<span class="desafio-acceso-estado">Pendiente</span>' +
                 '</div>' +
                 '<div class="desafio-acceso-datos">' +
-                    '<div><span class="desafio-dato-icono">⌖</span><p><small>Ubicación aproximada</small>' +
-                        escaparHtml(item.location || 'No disponible') + '</p></div>' +
-                    '<div><span class="desafio-dato-icono">▣</span><p><small>Dispositivo</small>' +
-                        escaparHtml(nombreDispositivoAcceso(item.device)) + '</p></div>' +
+                '<div><span class="desafio-dato-icono">⌖</span><p><small>Ubicación aproximada</small>' +
+                escaparHtml(item.location || 'No disponible') + '</p></div>' +
+                '<div><span class="desafio-dato-icono">▣</span><p><small>Dispositivo</small>' +
+                escaparHtml(nombreDispositivoAcceso(item.device)) + '</p></div>' +
                 '</div>' +
                 '<div class="desafio-acceso-acciones">' +
-                    '<button type="button" class="desafio-btn rechazar" onclick="confirmarDesafioAcceso(\'' + item.id + '\', \'rejected\')">Rechazar</button>' +
-                    '<button type="button" class="desafio-btn aprobar" onclick="confirmarDesafioAcceso(\'' + item.id + '\', \'approved\')">✓ Aprobar acceso</button>' +
+                '<button type="button" class="desafio-btn rechazar" onclick="confirmarDesafioAcceso(\'' + item.id + '\', \'rejected\')">Rechazar</button>' +
+                '<button type="button" class="desafio-btn aprobar" onclick="confirmarDesafioAcceso(\'' + item.id + '\', \'approved\')">✓ Aprobar acceso</button>' +
                 '</div>' +
-            '</article>';
+                '</article>';
         }).join('');
+
         $('#lista-desafios-acceso').html(html);
+    }, function (xhr) {
+        desafiosAccesoCargando = false;
+
+        const respuesta = xhr && xhr.responseJSON ? xhr.responseJSON : {};
+
+        if (xhr && xhr.status === 429) {
+            desafiosAccesoUltimaCarga = Date.now();
+            $('#lista-desafios-acceso').html(
+                '<div class="app-estado-vacio">' +
+                '<span class="app-estado-vacio-icono">!</span>' +
+                '<strong>Demasiadas solicitudes</strong>' +
+                '<p>Espera unos segundos antes de volver a actualizar.</p>' +
+                '</div>'
+            );
+            msg('Seguridad', 'Se realizaron demasiadas solicitudes. Espera unos segundos.', 'warning');
+            return;
+        }
+
+        var mensaje = respuesta.message || (
+            xhr && xhr.status
+                ? 'No fue posible cargar los accesos. HTTP ' + xhr.status
+                : 'No fue posible comunicarse con MED-SDI.'
+        );
+
+        $('#lista-desafios-acceso').html(
+            '<div class="app-estado-vacio">' +
+            '<span class="app-estado-vacio-icono">!</span>' +
+            '<strong>No fue posible cargar los accesos</strong>' +
+            '<p>' + escaparHtml(mensaje) + '</p>' +
+            '</div>'
+        );
+        msg('Seguridad', mensaje, 'error');
     });
 };
 
@@ -225,7 +307,8 @@ const resolverDesafioAcceso = (id, decision, authMethod, credential) => {
         $('#desafio-confirmar-clave, #desafio-confirmar-huella').prop('disabled', false);
         cerrarConfirmacionDesafio();
         msg('Seguridad', decision === 'approved' ? 'Acceso aprobado.' : 'Acceso rechazado.', 'success');
-        cargarDesafiosAcceso();
+        desafiosAccesoUltimaCarga = 0;
+        cargarDesafiosAcceso(true);
     }, function (xhr) {
         $('#desafio-confirmar-clave, #desafio-confirmar-huella').prop('disabled', false);
         const respuesta = xhr.responseJSON || {};
@@ -244,11 +327,23 @@ const resolverDesafioAcceso = (id, decision, authMethod, credential) => {
         if (xhr.status === 409) {
             cerrarConfirmacionDesafio();
             msg('Seguridad', 'Este acceso ya fue resuelto o expiró.', 'warning');
-            cargarDesafiosAcceso();
+            desafiosAccesoUltimaCarga = 0;
+            cargarDesafiosAcceso(true);
             return;
         }
+
+        if (xhr.status === 429) {
+            $('#desafio-confirmacion-error').text(
+                'Se realizaron demasiadas solicitudes. Espera unos segundos antes de volver a intentar.'
+            );
+            return;
+        }
+
         $('#desafio-confirmacion-error').text(
-            respuesta.message || 'No fue posible comunicarse con MED-SDI.'
+            respuesta.message ||
+            (xhr.status
+                ? 'No fue posible comunicarse con MED-SDI. HTTP ' + xhr.status
+                : 'No fue posible comunicarse con MED-SDI. El servidor no respondió.')
         );
     });
 };
