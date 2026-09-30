@@ -36,12 +36,10 @@ const checkSesionUsuario = () =>{
 }
 
 const checkSesionUsuario2 = () =>{
-    if(_SESSION('user')!=''&&_SESSION('pass')!='')
-    {
-        $('#user').val(_SESSION('email'));
-        $('#pass').val(_SESSION('pass'));
-        ingresarLogin();
-    }
+    // Ya no se reconstruye una sesión usando una contraseña persistida.
+    // Laravel/Sanctum decide si authToken sigue vigente; si expiró, se solicita
+    // un login normal o biométrico.
+    return false;
 }
 
 const loginOut = () =>{
@@ -63,7 +61,7 @@ const loginOut = () =>{
 }
 
 
-const sesionUsuarioInit = (usuario,pass) => {
+const sesionUsuarioInit = (usuario) => {
 
     //console.log(usuario);
 
@@ -77,8 +75,7 @@ const sesionUsuarioInit = (usuario,pass) => {
         'avatar': '',
         // La foto se asigna después, según el rol que el usuario seleccione.
         'foto_perfil': '',
-        'sexo' : usuario.sexo || '',
-        'pass':pass
+        'sexo' : usuario.sexo || ''
     }
            
     localStorage.removeItem('foto_perfil');
@@ -139,7 +136,7 @@ const sesionUsuario = (usuario) => {
 
     //console.log(usuario);
 
-    const {id_usuario,id_persona,id_tipo_usuario,email,nombre,apellido,rut,avatar,foto_perfil,sexo,pass} = usuario;
+    const {id_usuario,id_persona,id_tipo_usuario,email,nombre,apellido,rut,avatar,foto_perfil,sexo} = usuario;
 
     /*
     localStorage.setItem('id_usuario', id_usuario);
@@ -155,8 +152,6 @@ const sesionUsuario = (usuario) => {
    //setSession('id_tipo_usuario', id_tipo_usuario); 
    setSession('email', email); 
    setSession('nombre', nombre); 
-   setSession('pass', pass); 
-
    
    //setSession('apellido', apellido); 
    //setSession('rut', rut);                        
@@ -212,7 +207,7 @@ const actualizarHeaderUsuario = () => {
     } else if (foto_perfil && !/^(https?:|data:|blob:|file:)/i.test(foto_perfil)) {
         var baseWeb = typeof MEDSDI_API_URL !== 'undefined'
             ? MEDSDI_API_URL.replace(/\/api\/?$/, '')
-            : 'https://med-sdi.cl';
+            : (typeof MEDSDI_WEB_URL !== 'undefined' ? MEDSDI_WEB_URL : 'https://medichile.cl');
         foto_perfil = baseWeb + '/storage/' + foto_perfil.replace(/^\/+/, '');
     }
 

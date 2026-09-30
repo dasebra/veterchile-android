@@ -96,12 +96,22 @@ const ingresarLogin = () => {
 
                 // Guardar el token para usarlo en futuras peticiones
                 localStorage.setItem('authToken', resp.token);
+                // El estado del dispositivo y los demás GET autenticados de la
+                // sesión anterior no son válidos para el token recién emitido.
+                if (typeof medsdiClearGetCache === 'function') {
+                    medsdiClearGetCache();
+                }
                 if (resp.device_uuid) {
                     localStorage.setItem('uuid', resp.device_uuid);
                     $('#uuid').val(resp.device_uuid);
                 }
                 inicializarNotificacionesPush();
-                sesionUsuarioInit(resp.user,pass);
+                // La contraseña ya cumplió su propósito y no se conserva en
+                // localStorage. Si el usuario habilita huella, el plugin la
+                // protege dentro de Android Keystore.
+                localStorage.removeItem('pass');
+                sesionUsuarioInit(resp.user);
+                $('#pass').val('');
                 if (typeof restaurarEstadoBiometricoTrasLogin === 'function') {
                     restaurarEstadoBiometricoTrasLogin();
                 }
@@ -143,9 +153,25 @@ const ingresarLogin = () => {
             cargando(0); 
 
         },
-        function (resp) { 
-            cargando(0); 
-            msg('Login', 'Error de conexión', 'error');
+        function (resp, status, error) {
+            cargando(0);
+
+            var httpStatus = resp && typeof resp.status !== 'undefined' ? resp.status : 0;
+            var responseText = resp && resp.responseText ? resp.responseText : '';
+
+            console.error('ERROR LOGIN MEDSDI', {
+                status: httpStatus,
+                responseText: responseText,
+                ajaxStatus: status || '',
+                error: error || '',
+                backend: (typeof MEDSDI_WEB_URL !== 'undefined' ? MEDSDI_WEB_URL : '')
+            });
+
+            var detalle = httpStatus
+                ? 'Error de conexión (HTTP ' + httpStatus + ')'
+                : 'Error de conexión con Cloud. Revisa Internet o la consola de la app.';
+
+            msg('Login', detalle, 'error');
         },
             "POST");
     };

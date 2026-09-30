@@ -115,14 +115,35 @@ const registrarBovedaBiometricaApp = (boveda, descripcion, exito, error) => {
 
 const registrarSecretoBiometricoApp = (pin, exito, error) => {
     var boveda = {pin: String(pin)};
-    if (loginBiometricoHabilitadoApp()) {
-        boveda.user = localStorage.getItem('biometria_login_usuario') || _SESSION('email') || '';
-        boveda.pass = _SESSION('pass') || '';
+    if (!loginBiometricoHabilitadoApp()) {
+        registrarBovedaBiometricaApp(
+            boveda,
+            'Confirma tu huella para proteger la clave SDI.',
+            exito,
+            error
+        );
+        return;
     }
-    registrarBovedaBiometricaApp(
-        boveda,
-        'Confirma tu huella para proteger la clave SDI.',
-        exito,
+
+    // Si la bóveda también contiene el login, recuperamos sus credenciales
+    // desde Android Keystore y solo reemplazamos el PIN. Nunca se leen desde
+    // localStorage.
+    Fingerprint.loadBiometricSecret(
+        opcionesBiometriaApp('Confirma tu huella para actualizar la clave SDI.'),
+        function(secreto) {
+            try {
+                var bovedaActual = decodificarBovedaBiometricaApp(secreto);
+                bovedaActual.pin = String(pin);
+                registrarBovedaBiometricaApp(
+                    bovedaActual,
+                    'Confirma tu huella para guardar la nueva clave SDI.',
+                    exito,
+                    error
+                );
+            } catch (e) {
+                if (typeof error === 'function') error(e);
+            }
+        },
         error
     );
 };
@@ -175,18 +196,12 @@ const actualizarEstadoLoginBiometricoApp = () => {
 const activarLoginBiometricoApp = () => {
     var password = $('#perfil_app_password_login').val();
     var email = _SESSION('email') || '';
-    var passwordSesion = _SESSION('pass') || '';
     var pin = localStorage.getItem('password') || $('#pass_device').val() || '';
 
     if (!password) {
         msg('Ingreso con huella', 'Ingresa la contraseña actual de tu cuenta.', 'error');
         return;
     }
-    if (!passwordSesion || password !== passwordSesion) {
-        msg('Ingreso con huella', 'La contraseña de la cuenta no es correcta.', 'error');
-        return;
-    }
-
     comprobarBiometriaApp(function() {
         registrarBovedaBiometricaApp(
             {pin: pin, user: email, pass: password},

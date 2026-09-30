@@ -1,11 +1,40 @@
 "use strict";
 
-// Cordova Browser se usa para desarrollo contra Laragon. Las compilaciones
-// Android/iOS continúan consumiendo producción.
-var MEDSDI_API_URL = (
+// Backend centralizado. Durante las pruebas se puede alternar desde la consola:
+// medsdiSetBackend('cloud');
+// medsdiSetBackend('legacy');
+var MEDSDI_IS_LOCAL = (
     window.location.protocol === 'http:' &&
     (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-) ? 'http://medsdi.test/api' : 'https://med-sdi.cl/api';
+);
+var MEDSDI_BACKENDS = {
+    local: 'http://medsdi.test',
+    legacy: 'https://med-sdi.cl',
+    cloud: 'https://medichile.cl'
+};
+// En Android / producción se fuerza Cloud para evitar que una instalación
+// anterior conserve "medsdiBackend=legacy" en localStorage.
+var MEDSDI_BACKEND = MEDSDI_IS_LOCAL
+    ? 'local'
+    : 'cloud';
+
+// Limpiar una selección antigua guardada por versiones previas.
+if (!MEDSDI_IS_LOCAL) {
+    localStorage.removeItem('medsdiBackend');
+}
+
+var MEDSDI_WEB_URL = MEDSDI_BACKENDS[MEDSDI_BACKEND];
+var MEDSDI_API_URL = MEDSDI_WEB_URL + '/api';
+
+function medsdiSetBackend(backend) {
+    if (!MEDSDI_BACKENDS[backend] || backend === 'local') {
+        throw new Error('Backend MED-SDI no válido: ' + backend);
+    }
+
+    localStorage.setItem('medsdiBackend', backend);
+    localStorage.removeItem('authToken');
+    location.reload();
+}
 
 /**
  * Created by Paul on 24/09/2018.
@@ -35,7 +64,9 @@ const medsdiGlobalLoadingEnd = () => {
 
 const medsdiCacheTtl = (url) => {
     var path = String(url || '');
-    if (path.indexOf('/mobile-authorization/device') !== -1) return 5 * 60 * 1000;
+    // El estado puede cambiar al aprobar/revocar el equipo; siempre se consulta
+    // al backend para no mantener por minutos un rechazo ya resuelto.
+    if (path.indexOf('/mobile-authorization/device') !== -1) return 0;
     if (path.indexOf('/mobile-2fa/challenges') !== -1) return 30 * 1000;
     if (path.indexOf('/perfil/datos') !== -1) return 60 * 1000;
     if (path.indexOf('/paciente/dame_regiones') !== -1) return 30 * 60 * 1000;
@@ -47,7 +78,15 @@ const medsdiClearGetCache = () => {
     MEDSDI_REQUEST_STATE.cache = {};
 };
 
-const medsdiRequestKey = (method, url) => String(method || 'GET').toUpperCase() + ' ' + url;
+// Las respuestas autenticadas pertenecen a una sesión concreta. Incluir una
+// huella del token evita reutilizar datos de la cuenta anterior en el mismo
+// teléfono (especialmente el estado de mobile-authorization/device).
+const medsdiRequestKey = (method, url, token) => {
+    var sessionKey = token
+        ? String(token).slice(-24)
+        : 'public';
+    return String(method || 'GET').toUpperCase() + ' ' + url + ' session:' + sessionKey;
+};
 
 const medsdiRetryAfterMs = (xhr) => {
     if (!xhr || typeof xhr.getResponseHeader !== 'function') return 60000;
@@ -109,7 +148,7 @@ var Api = /** @class */ (function () {
             processData = false;
         }
 
-        var requestKey = medsdiRequestKey(methodSend, url);
+        var requestKey = medsdiRequestKey(methodSend, url, needsAuth ? token : null);
         var now = Date.now();
 
         if (MEDSDI_REQUEST_STATE.cooldownUntil > now) {
@@ -295,7 +334,7 @@ function testAPI() {
 function testSimple() {
     $.ajax({
         type: 'GET',
-        url: 'https://med-sdi.cl/api/test-simple',
+        url: MEDSDI_API_URL + '/test-simple',
         headers: {
             'Accept': 'application/json'
         },
@@ -321,7 +360,7 @@ async function testAuthWithLocalToken() {
     console.log('👤 Usuario:', localStorage.getItem('nombre'));
 
     try {
-        const response = await fetch('https://med-sdi.cl/api/test-auth', {
+        const response = await fetch(MEDSDI_API_URL + '/test-auth', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -353,9 +392,9 @@ async function testPacienteRoutes() {
     }
 
     const routes = [
-        'https://med-sdi.cl/api/mi_ficha_medica',
-        'https://med-sdi.cl/api/mis_profesionales',
-        'https://med-sdi.cl/api/mis_horas_medicas'
+        MEDSDI_API_URL + '/mi_ficha_medica',
+        MEDSDI_API_URL + '/mis_profesionales',
+        MEDSDI_API_URL + '/mis_horas_medicas'
     ];
 
     for (const route of routes) {
@@ -404,7 +443,7 @@ async function testSanctumOnly() {
 
     try {
         // Probar la ruta estándar /api/user que viene con Sanctum
-        const response = await fetch('https://med-sdi.cl/api/user', {
+        const response = await fetch(MEDSDI_API_URL + '/user', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -440,7 +479,7 @@ async function testPureApiUser() {
     console.log('🧪 Probando /api/user (solo Sanctum, sin middleware personalizado)');
 
     try {
-        const response = await fetch('https://med-sdi.cl/api/user', {
+        const response = await fetch(MEDSDI_API_URL + '/user', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -484,7 +523,7 @@ async function debugTokenIssue() {
         try {
             console.log(`\n🧪 Probando ${test.name}:`);
 
-            const response = await fetch('https://med-sdi.cl/api/user', {
+            const response = await fetch(MEDSDI_API_URL + '/user', {
                 method: 'GET',
                 headers: {
                     'Authorization': test.header,

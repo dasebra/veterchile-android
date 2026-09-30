@@ -63,8 +63,35 @@ const abrirDesafiosAcceso = () => {
         msg('Seguridad', 'Inicia sesión para revisar los accesos.', 'warning');
         return;
     }
+    // La clave SDI pertenece al usuario + dispositivo en el backend. Antes de
+    // mostrar una aprobación forzamos la sincronización para no conservar el PIN
+    // global de otra cuenta o uno anterior al último cambio de clave.
+    if (typeof checkDevice === 'function') {
+        checkDeviceUltimaVerificacion = 0;
+        checkDevice(function (dispositivoActivo) {
+            if (!dispositivoActivo) {
+                msg(
+                    'Seguridad',
+                    'Este dispositivo todavía no está registrado o activo para la cuenta. Regístralo y luego aprueba su acceso desde la web.',
+                    'warning'
+                );
+
+                // checkDevice se invoca con callback desde esta pantalla y no
+                // abre por sí mismo el flujo de registro. Lo iniciamos aquí para
+                // vincular el UUID actual en lugar de dejar al usuario bloqueado.
+                if (typeof registrarPasswordShow === 'function') {
+                    registrarPasswordShow();
+                }
+                return;
+            }
+            vista('desafios-acceso', 'fade');
+            cargarDesafiosAcceso(true);
+        }, true);
+        return;
+    }
+
     vista('desafios-acceso', 'fade');
-    cargarDesafiosAcceso();
+    cargarDesafiosAcceso(true);
 };
 
 const volverDesdeDesafiosAcceso = () => {
@@ -242,6 +269,15 @@ const resolverDesafioConClave = () => {
     if (!/^\d{4}$/.test(credential)) {
         $('#desafio-confirmacion-error').text('Ingresa tu clave SDI de 4 dígitos.');
         $('#desafio_clave_web').focus();
+        return;
+    }
+
+    const claveSincronizada = String(localStorage.getItem('password') || '');
+    if (/^\d{4}$/.test(claveSincronizada) && credential !== claveSincronizada) {
+        $('#desafio-confirmacion-error').text(
+            'La clave ingresada no coincide con la clave SDI vigente de este dispositivo.'
+        );
+        $('#desafio_clave_web').val('').focus();
         return;
     }
     resolverDesafioAcceso(actual.id, actual.decision, 'device_pin', credential);

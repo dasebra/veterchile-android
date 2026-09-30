@@ -89,6 +89,11 @@ const LOG = (text) =>
 }
 
 const initVariablesGlobales = () =>{
+    // Migración automática desde versiones que guardaban la contraseña de la
+    // cuenta en el localStorage del WebView.
+    localStorage.removeItem('pass');
+    localStorage.removeItem('user_password');
+    localStorage.removeItem('login_password');
     
     var variables = `
     <input type="hidden" id="uuid" value="0" />
@@ -123,6 +128,13 @@ const obtenerUuidDispositivo = () => {
     var uuid = String(localStorage.getItem('uuid') || $('#uuid').val() || '');
 
     uuid = $.trim(uuid);
+    // Versiones anteriores llegaron a persistir valores serializados inválidos.
+    // Nunca deben enviarse al backend como identificadores reales.
+    if (/^(null|undefined|0)$/i.test(uuid)) {
+        uuid = '';
+        localStorage.removeItem('uuid');
+        $('#uuid').val('0');
+    }
     var esCordovaBrowser = typeof cordova !== 'undefined' && cordova.platformId === 'browser';
     if ((!uuid || uuid === '0') && esCordovaBrowser) {
         var identificador = typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.medichile.app"
-    version="1.0.3"
-    android-versionCode="10003"
+    version="1.0.6"
+    android-versionCode="10006"
     xmlns="http://www.w3.org/ns/widgets"
     xmlns:cdv="http://cordova.apache.org/ns/1.0">
 
@@ -16,6 +16,10 @@
     </author>
 
     <content src="index.html" />
+
+    <access origin="https://medichile.cl" />
+    <access origin="https://med-sdi.cl" />
+    <access origin="http://medsdi.test" />
 
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />

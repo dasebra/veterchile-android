@@ -1266,7 +1266,7 @@ const solicitarMedicos = () => {
                 resp.medicos.forEach(medico => {
                     let imagenMedico;
                     if(medico.foto_perfil && medico.foto_perfil !== '') {
-                        imagenMedico = 'https://med-sdi.cl/storage/'+medico.foto_perfil;
+                        imagenMedico = MEDSDI_WEB_URL + '/storage/'+medico.foto_perfil;
                     } else {
                         imagenMedico = medico.sexo === "M" ? 'src/images/ejemplo_dr.jpg' : 'src/images/ejemplo_dra.jpg';
                     }
@@ -1378,7 +1378,7 @@ const damePerfilMedico = (idMedico) => {
                 // Determinar imagen del médico
                 let imagenMedico;
                 if(prof.foto_perfil && prof.foto_perfil !== '') {
-                    imagenMedico = 'https://med-sdi.cl/storage/' + prof.foto_perfil;
+                    imagenMedico = MEDSDI_WEB_URL + '/storage/' + prof.foto_perfil;
                 } else {
                     imagenMedico = prof.sexo === "M" ? 'src/images/ejemplo_dr.jpg' : 'src/images/ejemplo_dra.jpg';
                 }
@@ -1694,7 +1694,7 @@ const renderizarFilaOdontogramaFMU = (piezas) => piezas.map(function(pieza) {
     if (estado === 'endodoncia') { carpeta = 'endodoncia/'; prefijo = 'endo'; }
     if (estado === 'implante') { carpeta = 'implante/'; prefijo = 'impl'; }
     if (estado === 'ausente') { carpeta = 'diente-ausente/'; prefijo = 'dau'; }
-    const imagen = 'https://med-sdi.cl/images/dental/dientes/' + carpeta + prefijo + codigoImagen + '.png';
+    const imagen = MEDSDI_WEB_URL + '/images/dental/dientes/' + carpeta + prefijo + codigoImagen + '.png';
     const indicador = historial.length ? '<span class="odontograma-pieza-cantidad">' + historial.length + '</span>' : '';
     return '<button type="button" class="odontograma-pieza estado-' + estado + '" onclick="mostrarHistorialDental(\'' + pieza + '\')">' +
         indicador + '<img src="' + imagen + '" alt="Pieza ' + pieza + '" onerror="this.style.visibility=\'hidden\'">' +
@@ -1874,7 +1874,7 @@ const renderizarCitasPaciente = () => {
 
         let imagenMedico = '';
         if (hora.foto_perfil && hora.foto_perfil !== '') {
-            imagenMedico = 'https://med-sdi.cl/storage/' + hora.foto_perfil;
+            imagenMedico = MEDSDI_WEB_URL + '/storage/' + hora.foto_perfil;
         } else {
             imagenMedico = hora.sexo === "M"
                 ? 'src/images/ejemplo_dr.jpg'
@@ -3075,7 +3075,7 @@ const buscarProfesionales = () => {
                     if (prof.img_profesional) {
                         var fotoPerfil = prof.img_profesional;
                     } else if(prof.foto_perfil && prof.foto_perfil!=''){
-                        var fotoPerfil = 'https://med-sdi.cl/storage/'+prof.foto_perfil;
+                        var fotoPerfil = MEDSDI_WEB_URL + '/storage/'+prof.foto_perfil;
                     }else{
                         if(prof.sexo && prof.sexo=='F'){
                             var fotoPerfil = 'src/images/ejemplo_dra.jpg';
@@ -3190,13 +3190,32 @@ const textoEstadoAutorizacion = (reg) => {
 };
 
 const obtenerEstadoAutorizacion = (reg) => {
+    const estadoNumerico = Number(reg && reg.estado);
+
+    // El backend usa: 0 pendiente, 1 autorizada, 2 rechazada,
+    // 3 cancelada y 4 expirada. Esta fuente es más confiable que inferir el
+    // estado desde el texto HTML de la tarjeta.
+    if (estadoNumerico === 0) {
+        return 'pendientes';
+    }
+
+    if (estadoNumerico === 1) {
+        return 'aprobadas';
+    }
+
+    if ([2, 3, 4].indexOf(estadoNumerico) !== -1) {
+        return 'rechazadas';
+    }
+
     const texto = textoEstadoAutorizacion(reg);
 
     // Primero detectar estados definitivos.
     if (
         texto.indexOf('rechazad') !== -1 ||
         texto.indexOf('denegad') !== -1 ||
-        texto.indexOf('rechazo') !== -1
+        texto.indexOf('rechazo') !== -1 ||
+        texto.indexOf('cancelad') !== -1 ||
+        texto.indexOf('expirad') !== -1
     ) {
         return 'rechazadas';
     }
