@@ -484,15 +484,28 @@ const respuesta = (estado) => {
                 return;
             }
 
+            // Retirar inmediatamente la solicitud procesada. La consulta
+            // posterior confirma el estado definitivo entregado por el API.
+            autorizacionesRegistros = autorizacionesRegistros.filter(function (registro) {
+                return String(registro.id) !== String(id);
+            });
+            actualizarContadoresAutorizaciones();
+            renderizarAutorizaciones();
+            listLogDeviceUltimaCarga = 0;
+
             setTimeout(function () {
                 vista('autorizaciones_sdi', 'fade');
+                list_log_device(true);
             }, 700);
             cargando(0);
 
         },
-        function (resp) { 
-            cargando(0); 
-            msg('Check Device', 'Error de verificación', 'error');
+        function (resp) {
+            cargando(0);
+            var mensaje = resp && resp.responseJSON && (resp.responseJSON.msg || resp.responseJSON.message)
+                ? (resp.responseJSON.msg || resp.responseJSON.message)
+                : 'No fue posible registrar la respuesta.';
+            msg('Autorización', mensaje, 'error');
         },
         "POST");
 
