@@ -809,7 +809,9 @@ const registerDevice = () => {
 
     cargando(1); 
 
-    var api = new Api("user_devices", "registrar");
+    // El alta se realiza con la sesión autenticada. El backend obtiene el
+    // usuario desde el token y no confía en un id_user manipulable.
+    var api = new Api("mobile-authorization", "device");
     api.request(
         datos,
         function (resp) {
@@ -1210,35 +1212,53 @@ const limpiarFmuAntesDeCargar = () => {
 const solicitarFmu = (forzar) => {
     limpiarFmuAntesDeCargar();
 
+    // La FMU abierta por el propio paciente se obtiene directamente con el
+    // token de sesión. No debe crear ni esperar una autorización de Medichile.
+    // El backend obtiene el usuario desde X-Auth-Token, por lo que no enviamos
+    // IDs ni tokens ficticios en la URL.
     var datos = {};
-    datos.id_paciente = _SESSION('id_usuario');
-    datos.token = "mobile-original-" + Date.now()
-    cargando(1);
+    if (forzar && typeof medsdiClearGetCache === 'function') {
+        medsdiClearGetCache();
+    }
 
     var api = new Api("paciente", "mi_ficha_medica");
     api.request(
         datos,
         function (resp) {
-            LOG('fmu_user estado:'+resp.estado);
-            console.log(resp);
+            try {
+                LOG('fmu_user estado:' + resp.estado);
+                console.log(resp);
 
-            if (resp.estado == 1) {
-                const fmu = resp;
-                actualizarTarjetasFMU(fmu);
-                $('#fmu_paciente .cards-grid').removeClass('fmu-datos-pendientes');
-            } else {
+                if (resp && Number(resp.estado) === 1) {
+                    actualizarTarjetasFMU(resp);
+                } else {
+                    mostrarSinDatos();
+                    msg('Formulario FMU', (resp && resp.mensaje) || 'No hay datos de ficha disponibles.', 'warning');
+                }
+            } catch (error) {
+                console.error('[MED-SDI] Error mostrando la FMU:', error, resp);
                 mostrarSinDatos();
+                msg('Formulario FMU', 'No fue posible mostrar los datos recibidos.', 'error');
+            } finally {
                 $('#fmu_paciente .cards-grid').removeClass('fmu-datos-pendientes');
             }
-            cargando(0);
         },
-        function (resp) {
-            console.log(resp);
-            cargando(0);
-            msg('Formulario FMU', 'Error al cargar datos de FMU', 'error');
+        function (xhr) {
+            console.error('[MED-SDI] Error cargando la FMU:', xhr);
             mostrarSinDatos();
+            $('#fmu_paciente .cards-grid').removeClass('fmu-datos-pendientes');
+
+            var mensaje = xhr && xhr.status === 401
+                ? 'Tu sesión expiró. Ingresa nuevamente.'
+                : (xhr && xhr.status === 0
+                    ? 'La consulta tardó demasiado. Revisa tu conexión e intenta nuevamente.'
+                    : 'Error al cargar datos de FMU.');
+            msg('Formulario FMU', mensaje, 'error');
         },
-        "GET");
+        "GET",
+        false,
+        45000
+    );
 }
 
 const textoDatoProfesional = (valor) => {
@@ -1551,14 +1571,30 @@ const actualizarTarjetasFMU = (fmu) => {
     let enfermedades = [];
     let medicamentos = [];
     let cirugias = [];
+    const datoAntecedente = (antecedente, campo, valorPorDefecto) => {
+        let datos = antecedente && antecedente.antecedente_data;
+
+        if (typeof datos === 'string') {
+            try {
+                datos = JSON.parse(datos);
+            } catch (error) {
+                datos = {};
+            }
+        }
+
+        datos = datos && typeof datos === 'object' ? datos : {};
+        return datos[campo] || valorPorDefecto || '';
+    };
+
     antecedentes.forEach(antecedente => {
-        if(antecedente.id_tipo_antecedente === 6) { // Alergia
+        const tipoAntecedente = Number(antecedente.id_tipo_antecedente);
+        if(tipoAntecedente === 6) { // Alergia
             alergias.push(antecedente);
-        } else if (antecedente.id_tipo_antecedente === 1) { // Patología crónica
+        } else if (tipoAntecedente === 1) { // Patología crónica
             enfermedades.push(antecedente);
-        }else if (antecedente.id_tipo_antecedente === 3) { // Cirugía
+        }else if (tipoAntecedente === 3) { // Cirugía
             cirugias.push(antecedente);
-        } else if (antecedente.id_tipo_antecedente === 4) { // Medicamento Crónico
+        } else if (tipoAntecedente === 4) { // Medicamento Crónico
             medicamentos.push(antecedente);
         }
     });
@@ -1576,7 +1612,7 @@ const actualizarTarjetasFMU = (fmu) => {
     if(fmu.ultima_alergia) {
         const fecha = fechaEsp(fmu.ultima_alergia.created_at);
         $tarjetas.eq(1).find('.card-list').html(
-            `<li>${fmu.ultima_alergia.antecedente_data.nombre}<br><span class="fecha-small">${fecha}</span></li>`
+            `<li>${datoAntecedente(fmu.ultima_alergia, 'nombre', 'Alergia sin detalle')}<br><span class="fecha-small">${fecha}</span></li>`
         );
     } else {
         $tarjetas.eq(1).find('.card-list').html('<li>No existen registros</li>');
@@ -1585,7 +1621,7 @@ const actualizarTarjetasFMU = (fmu) => {
     if(enfermedades.length > 0) {
         let htmlEnfermedades = '';
         enfermedades.forEach(enfermedad => {
-            htmlEnfermedades += `<li>${enfermedad.antecedente_data.nombre}</li>`;
+            htmlEnfermedades += `<li>${datoAntecedente(enfermedad, 'nombre', 'Sin detalle')}</li>`;
         });
         $tarjetas.eq(2).find('.card-list').html(htmlEnfermedades);
     } else {
@@ -1633,7 +1669,7 @@ const actualizarTarjetasFMU = (fmu) => {
     if (fmu.ultima_cirugia) {
         const fecha = fechaEsp(fmu.ultima_cirugia.created_at);
         $tarjetas.eq(6).find('.card-list').html(
-            `<li>${fmu.ultima_cirugia.antecedente_data.procedimiento} - ${fmu.ultima_cirugia.comentario}<br><span class="fecha-small">${fecha}</span></li><br><span class="letra-small">${fmu.ultima_cirugia.antecedente_data.profesional || ''}</span>`
+            `<li>${datoAntecedente(fmu.ultima_cirugia, 'procedimiento', 'Cirugía sin detalle')} - ${fmu.ultima_cirugia.comentario || ''}<br><span class="fecha-small">${fecha}</span></li><br><span class="letra-small">${datoAntecedente(fmu.ultima_cirugia, 'profesional', '')}</span>`
         );
     } else {
         $tarjetas.eq(6).find('.card-list').html('<li>No existen registros</li>');
@@ -2597,7 +2633,7 @@ const enviarCorreoValidarEquipo = () => {
     datos.id_user = _SESSION('id_usuario');
     datos.uuid = $('#uuid').val();
         
-    var api = new Api("user_devices", "solicitud_registro_equipo");
+    var api = new Api("mobile-authorization", "device/activation-request");
     api.request(
         datos,
         function (resp) {
@@ -2612,7 +2648,7 @@ const enviarCorreoValidarEquipo = () => {
         function (resp) {             
             msg('Correo de activación', 'Problemas al enviar el correo', 'error');
         },
-        "GET");
+        "POST");
 
 }
 const openReceta = (url) => {
