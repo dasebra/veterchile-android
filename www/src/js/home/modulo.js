@@ -193,9 +193,20 @@ const abrirEditarPerfil = () => {
             $('#perfil_app_telefono_dos').val(perfil.telefono_dos || '');
             $('#perfil_app_email').val(perfil.email || '');
             actualizarNombreHeroPerfil();
+            var perfilLocal = {};
+            try {
+                perfilLocal = JSON.parse(localStorage.getItem(
+                    rol === 'Profesional' ? 'perfilProfesional' : 'perfilPaciente'
+                ) || '{}') || {};
+            } catch (error) {
+                perfilLocal = {};
+            }
+            var rut = perfil.rut || perfilLocal.rut || '';
+            $('#perfil_menu_rut').text(rut).toggle(!!rut);
+            $('#perfil_app_rut').val(rut);
             $('#perfil_app_foto, #perfil_app_foto_camara').val('');
             $('.perfil-app-foto').removeClass('con-nueva-foto');
-            $('#perfil_app_foto_preview').attr(
+            $('#perfil_app_foto_preview, #perfil_menu_foto').attr(
                 'src',
                 perfil.foto_perfil_url || 'src/images/avatar-generico.svg'
             );
@@ -264,7 +275,7 @@ $(document).on('change', '#perfil_app_foto, #perfil_app_foto_camara', function()
 
 const actualizarNombreHeroPerfil = () => {
     var nombre = $.trim($('#perfil_app_nombres').val() + ' ' + $('#perfil_app_apellido_uno').val());
-    $('#perfil_hero_nombre').text(nombre || 'Nombre Apellido');
+    $('#perfil_hero_nombre, #perfil_menu_nombre').text(nombre || 'Nombre Apellido');
 };
 
 $(document).on('input', '#perfil_app_nombres, #perfil_app_apellido_uno', actualizarNombreHeroPerfil);
@@ -398,7 +409,7 @@ const guardarFotoPerfilApp = () => {
         contentType: false,
         processData: false,
         success: function(resp) {
-            $('#perfil_app_foto_preview').attr('src', resp.foto_perfil_url);
+            $('#perfil_app_foto_preview, #perfil_menu_foto').attr('src', resp.foto_perfil_url);
             $('#perfil_app_foto').val('');
             $('.perfil-app-foto').removeClass('con-nueva-foto');
             localStorage.setItem('foto_perfil', resp.foto_perfil || '');
@@ -428,7 +439,7 @@ const guardarFotoPerfilApp = () => {
             // Si falló, vuelve a mostrar la foto que sigue guardada.
             $('#perfil_app_foto').val('');
             $('.perfil-app-foto').removeClass('con-nueva-foto');
-            $('#perfil_app_foto_preview').attr(
+            $('#perfil_app_foto_preview, #perfil_menu_foto').attr(
                 'src',
                 localStorage.getItem('foto_perfil_url') || 'src/images/avatar-generico.svg'
             );

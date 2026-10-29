@@ -2139,6 +2139,13 @@
     <div role="main" class="ui-content perfil-app-form" data-vista="menu">
         <input type="hidden" id="perfil_app_rol">
         <!-- Menú de Mi perfil: cada fila abre su vista -->
+        <div class="perfil-app-tarjeta">
+            <img id="perfil_menu_foto" src="src/images/avatar-generico.svg" alt="Foto de perfil">
+            <div class="perfil-app-tarjeta-datos">
+                <p class="perfil-app-tarjeta-nombre" id="perfil_menu_nombre">Nombre Apellido</p>
+                <p class="perfil-app-tarjeta-rut" id="perfil_menu_rut">RUT</p>
+            </div>
+        </div>
         <nav class="perfil-app-menu" aria-label="Opciones de mi perfil">
             <button type="button" data-role="none" class="perfil-app-fila" onclick="mostrarVistaPerfilApp('datos')">
                 <span class="perfil-app-fila-icono"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span>
@@ -2201,6 +2208,8 @@
         </div>
         <section class="perfil-app-seccion perfil-app-datos" data-panel="datos">
             <h3>Información personal</h3>
+            <label>RUT</label>
+            <input type="text" id="perfil_app_rut" readonly>
             <label>Nombres</label>
             <input type="text" id="perfil_app_nombres">
             <label>Primer apellido</label>
