@@ -2962,14 +2962,19 @@ placeholder{
   .dashboard-topbar {
       position: relative;
       z-index: 4;
-      display: flex;
+      display: grid;
       min-height: 43px;
+      /* logo | espacio | avatar | nombre | menú. El rol ocupa la columna del nombre. */
+      grid-template-columns: auto minmax(0, 1fr) auto minmax(0, max-content) auto;
       align-items: center;
-      gap: 9px;
+      row-gap: 3px;
   }
 
+  /* Logo a la izquierda; a la derecha, el rol (texto) justo sobre el nombre. */
   .dashboard-logo {
-      width: 88px;
+      grid-column: 1;
+      grid-row: 1 / span 2;
+      width: 104px;
       height: auto;
       object-fit: contain;
       filter: brightness(0) invert(1);
@@ -2977,15 +2982,15 @@ placeholder{
 
   .dashboard-role {
       display: inline-flex;
+      grid-column: 4;
+      grid-row: 1;
       align-items: center;
       gap: 5px;
-      margin-right: auto;
-      padding: 5px 9px;
-      border: 1px solid rgba(255,255,255,.18);
-      border-radius: 20px;
-      background: rgba(255,255,255,.1);
-      color: rgba(255,255,255,.9);
-      font-size: 9px;
+      justify-self: start;
+      align-self: end;
+      line-height: 1;
+      color: #31bebe;
+      font-size: 10px;
       font-weight: 800;
       letter-spacing: .2px;
       text-shadow: none;
@@ -2995,28 +3000,22 @@ placeholder{
       width: 5px;
       height: 5px;
       border-radius: 50%;
-      background: #68e0c5;
-      box-shadow: 0 0 0 3px rgba(104,224,197,.13);
+      background: #31bebe;
+      box-shadow: 0 0 0 3px rgba(49,190,190,.18);
   }
 
-  .dashboard-user {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-  }
-
+  /* Los hijos del usuario se colocan directamente en la grilla de la barra. */
+  .dashboard-user,
   .dashboard-user h2 {
-      display: flex;
-      max-width: 105px;
-      align-items: center;
-      gap: 7px;
-      margin: 0;
+      display: contents;
   }
 
   .dashboard-user h2 img {
+      grid-column: 3;
+      grid-row: 1 / span 2;
       width: 34px;
       height: 34px;
-      flex: 0 0 34px;
+      margin-right: 7px;
       object-fit: cover;
       border: 2px solid rgba(255,255,255,.72);
       border-radius: 50%;
@@ -3024,16 +3023,44 @@ placeholder{
   }
 
   .dashboard-user h2 span {
+      grid-column: 4;
+      grid-row: 2;
+      align-self: start;
+      line-height: 1.2;
+      min-width: 0;
       overflow: hidden;
       color: #fff;
-      font-size: 10px;
+      font-size: 13px;
       font-weight: 800;
       text-overflow: ellipsis;
       text-shadow: none;
       white-space: nowrap;
   }
 
+  /* Teléfonos pequeños (≤ 380px, p. ej. 320x568 y 360x740): más compacto, sin cortar el nombre */
+  @media (max-width: 380px) {
+      .dashboard-logo { width: 92px; }
+      .dashboard-user h2 img {
+          width: 30px;
+          height: 30px;
+          margin-right: 5px;
+      }
+
+      .dashboard-user h2 span {
+          font-size: 12px;
+      }
+
+      .dashboard-user .header-menu-puntos {
+          width: 30px;
+          height: 30px;
+          line-height: 26px;
+      }
+  }
+
   .dashboard-user .header-menu-perfil {
+      grid-column: 5;
+      grid-row: 1 / span 2;
+      margin-left: 4px;
       position: relative;
       top: auto;
       right: auto;

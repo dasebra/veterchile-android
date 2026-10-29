@@ -216,6 +216,11 @@ const actualizarHeaderUsuario = () => {
     }
 
     // Mantener sincronizados los encabezados antiguos y los nuevos dashboards.
-    $('.header .row h2 span, .dashboard-user h2 span').text(nombre);
+    // Formato visual: "Nombre I." (primer nombre + inicial del primer apellido).
+    const partes = $.trim(nombre).split(/\s+/);
+    const nombreCorto = partes.length > 1
+        ? partes[0] + ' ' + partes[partes.length - 1].charAt(0).toUpperCase() + '.'
+        : partes[0];
+    $('.header .row h2 span, .dashboard-user h2 span').text(nombreCorto).attr('title', nombre);
     $('.header .row h2 img, .dashboard-user h2 img').attr('src', foto_perfil);
 }
