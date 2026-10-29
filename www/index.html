@@ -798,14 +798,11 @@
 </div>
 <!--CIERRE INICIO PROFESIONAL-->
 <div data-role="page" id="control-reposo-profesional">
-    <div data-role="header" class="header app-page-header">
-        <div class="app-page-header-contenido">
-            <span class="app-page-header-icono">✚</span>
-            <div>
-                <h1>Control de reposo</h1>
-                <p>Seguimiento indicado por el profesional</p>
-            </div>
-        </div>
+    <div data-role="header" class="header">
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('inicio-profesional')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <p class="color-blanco size18 text-center">Control de reposo</p>
+        </div></div>
     </div>
     <div role="main" class="ui-content control-reposo-contenido">
         <div class="reposo-resumen">
@@ -890,12 +887,11 @@
     </div>
 </div>
 <div data-role="page" id="control-reposo-paciente">
-    <div data-role="header" class="header app-page-header">
-        <button type="button" data-role="none" class="reposo-volver-header" onclick="volverInicioSegunRol()" aria-label="Volver al inicio">‹</button>
-        <div class="app-page-header-contenido">
-            <span class="app-page-header-icono">✓</span>
-            <div><h1>Verificación de reposo</h1><p>Comparte evidencia sólo cuando tú lo autorices</p></div>
-        </div>
+    <div data-role="header" class="header">
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="volverInicioSegunRol()" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <p class="color-blanco size18 text-center">Verificación de reposo</p>
+        </div></div>
     </div>
     <div role="main" class="ui-content control-reposo-contenido">
         <div class="sdi-reposo-card">
@@ -925,7 +921,8 @@
 </div>
 <div data-role="page" id="agenda-profesional">
     <div data-role="header" class="header">
-        <div class="row bg-azul pt20"><div class="col-xs-12">
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('inicio-profesional')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
             <p class="color-blanco size18 text-center">Mi agenda profesional</p>
         </div></div>
     </div>
@@ -962,7 +959,8 @@
 
 <div data-role="page" id="mis-pacientes-profesional">
     <div data-role="header" class="header">
-        <div class="row bg-azul pt20"><div class="col-xs-12">
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('inicio-profesional')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
             <p class="color-blanco size18 text-center">Mis pacientes</p>
         </div></div>
     </div>
@@ -1154,11 +1152,11 @@
 </div>
 <!--CIRRE: INICIO-->
 <div data-role="page" id="medico-emergencia-app">
-    <div data-role="header" class="header app-page-header emergency-page-header">
-        <div class="app-page-header-contenido">
-            <span class="app-page-header-icono">♥</span>
-            <div><h1>Contacto médico de emergencia</h1><p>Vínculo voluntario y confirmado</p></div>
-        </div>
+    <div data-role="header" class="header">
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="volverDesdeEmergencia()" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <p class="color-blanco size18 text-center">Contacto médico de emergencia</p>
+        </div></div>
     </div>
     <div role="main" class="ui-content emergency-app-content">
         <div class="emergency-safety-note">
@@ -1192,14 +1190,11 @@
 </div>
 <!--MENSAJES-->
 <div data-role="page" id="mensajes-app">
-    <div data-role="header" class="header app-page-header">
-        <div class="app-page-header-contenido">
-            <span class="app-page-header-icono">✉</span>
-            <div>
-                <h1>Mis mensajes</h1>
-                <p>Comunicaciones y documentos de MED-SDI</p>
-            </div>
-        </div>
+    <div data-role="header" class="header">
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="volverInicioSegunRol()" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <p class="color-blanco size18 text-center">Mis mensajes</p>
+        </div></div>
     </div>
     <div role="main" class="ui-content mensajes-app-contenido">
         <div class="app-page-toolbar">
@@ -1230,21 +1225,18 @@
 <!--FMU-->
 <div data-role="page" id="fmu_paciente">
     <div data-role="header" class="header" id="header_fmu">
-        <div class="row bg-azul">
-            <div class="col-xs-12 mt20">
-                <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/avatar-generico.svg"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
-                <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
-                <div class="col-xs-12 top-titulos">
-                    <p class="letra-bold color-azul-oscuro size20 text-center mt30">Mi Ficha Médica Única</p>
-                    <button type="button"
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('index')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <p class="color-blanco size18 text-center">Mi Ficha Médica Única</p>
+        </div></div>
+        <div class="top-titulos perfil-header-extras">
+            <button type="button"
                             data-role="none"
                             class="fmu-actualizar mt20 mb20"
                             onclick="solicitarFmu(true)">
                         <img src="src/images/sincro.svg" alt="">
                         <span>Actualizar datos</span>
                     </button>
-                </div>
-            </div>
         </div>
     </div>
     <div role="main" class="ui-content">
@@ -1371,17 +1363,10 @@
 <!--RECETA ONLINE-->
 <div data-role="page" id="recetaonline">
     <div data-role="header" class="header" id="header_ind">
-        <div class="row bg-azul pt20">
-            <div class="col-xs-12">
-                <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/avatar-generico.svg"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
-
-                <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
-
-                <div class="col-xs-12 top-titulos">
-                    <p class="letra-bold color-azul-oscuro size18 text-center mt50">Mis Documentos</p>
-                </div>
-            </div>
-        </div>
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('index')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <p class="color-blanco size18 text-center">Mis Documentos</p>
+        </div></div>
     </div>
     <div role="main" class="ui-content pb0">
         <div class="container mt20">
@@ -1431,17 +1416,12 @@
 <!--EXÁMENES / RECETA ONLINE-->
 <div data-role="page" id="examenesro">
     <div data-role="header" class="header" id="header">
-        <div class="row bg-azul">
-            <div class="col-xs-12 mt20">
-                <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/avatar-generico.svg"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
-
-                <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
-
-                <div class="col-xs-12 top-titulos">
-                    <p class="color-azul-oscuro size20 mt30 mb10 text-center">Mis exámenes</p>
-                    <div class="btn-app4 text-center mt20 mb20" onclick="list_examenes_paciente()"><img class="pr10" src="src/images/sincro.svg">Actualizar exámenes</div>
-                </div>
-            </div>
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('recetaonline')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <p class="color-blanco size18 text-center">Mis exámenes</p>
+        </div></div>
+        <div class="top-titulos perfil-header-extras">
+            <div class="btn-app4 text-center mt20 mb20" onclick="list_examenes_paciente()"><img class="pr10" src="src/images/sincro.svg">Actualizar exámenes</div>
         </div>
     </div>
     <div role="main" class="ui-content">
@@ -1472,17 +1452,12 @@
 <!--RECETAS / RECETA ONLINE-->
 <div data-role="page" id="recetasro">
     <div data-role="header" class="header" id="header">
-        <div class="row bg-azul">
-            <div class="col-xs-12 mt20">
-                <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/avatar-generico.svg"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
-
-                <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
-
-                <div class="col-xs-12 top-titulos">
-                    <p class="color-azul-oscuro size20 mt30 mb10 text-center">Mis recetas</p>
-                    <div class="btn-app4 text-center mt20 mb20" onclick="list_recetas_paciente()"><img class="pr10" src="src/images/sincro.svg">Actualizar recetas</div>
-                </div>
-            </div>
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('index')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <p class="color-blanco size18 text-center">Mis recetas</p>
+        </div></div>
+        <div class="top-titulos perfil-header-extras">
+            <div class="btn-app4 text-center mt20 mb20" onclick="list_recetas_paciente()"><img class="pr10" src="src/images/sincro.svg">Actualizar recetas</div>
         </div>
     </div>
     <div role="main" class="ui-content">
@@ -1510,17 +1485,12 @@
 <!--LICENCIAS / RECETA ONLINE
 <div data-role="page" id="licenciasro">
     <div data-role="header" class="header" id="header">
-        <div class="row bg-azul">
-            <div class="col-xs-12 mt20">
-                <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/avatar-generico.svg"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
-
-                <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
-
-                <div class="col-xs-12 top-titulos">
-                    <p class="color-azul-oscuro size20 mt30 mb10 text-center">Mis licencias</p>
-                <div class="btn-app4 text-center mt20 mb20" onclick="list_document_user()"><img class="pr10" src="src/images/sincro.svg">Actualizar licencias</div>
-                </div>
-            </div>
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('recetaonline')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <p class="color-blanco size18 text-center">Mis licencias</p>
+        </div></div>
+        <div class="top-titulos perfil-header-extras">
+            <div class="btn-app4 text-center mt20 mb20" onclick="list_document_user()"><img class="pr10" src="src/images/sincro.svg">Actualizar licencias</div>
         </div>
     </div>
     <div role="main" class="ui-content">
@@ -1563,17 +1533,12 @@
 <!--CONSENTIMIENTOS / RECETA ONLINE-->
 <div data-role="page" id="certificadosro">
     <div data-role="header" class="header" id="header">
-        <div class="row bg-azul">
-            <div class="col-xs-12 mt20">
-                <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/avatar-generico.svg"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
-
-                <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
-
-                <div class="col-xs-12 top-titulos">
-                    <p class="color-azul-oscuro size20 mt30 mb10 text-center">Mis consentimientos </p>
-                    <div class="btn-app4 text-center mt20 mb20" onclick="list_consentimientos()"><img class="pr10" src="src/images/sincro.svg">Actualizar consentimientos</div>
-                </div>
-            </div>
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('recetaonline')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <p class="color-blanco size18 text-center">Mis consentimientos</p>
+        </div></div>
+        <div class="top-titulos perfil-header-extras">
+            <div class="btn-app4 text-center mt20 mb20" onclick="list_consentimientos()"><img class="pr10" src="src/images/sincro.svg">Actualizar consentimientos</div>
         </div>
     </div>
     <div role="main" class="ui-content">
@@ -1604,29 +1569,18 @@
 <!--DOCUMENTOS / RECETA ONLINE-->
 <div data-role="page" id="documentosro">
     <div data-role="header" class="header" id="header">
-        <div class="row bg-azul">
-            <div class="col-xs-12 mt20">
-                <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/avatar-generico.svg"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
-
-                <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
-
-                <div class="col-xs-12 top-titulos">
-                    <p class="color-azul-oscuro size20 mt30 mb10 text-center">Mis documentos</p>
-                    <button type="button"
-                            data-role="none"
-                            class="documentos-volver-hub"
-                            onclick="vista('recetaonline','fade')">
-                        ‹ Volver a documentos
-                    </button>
-                    <button type="button"
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('recetaonline')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <p class="color-blanco size18 text-center">Mis documentos</p>
+        </div></div>
+        <div class="top-titulos perfil-header-extras">
+            <button type="button"
                             data-role="none"
                             class="documentos-actualizar mt20 mb20"
                             onclick="list_document_user()">
                         <img src="src/images/sincro.svg" alt="">
                         <span>Actualizar documentos</span>
                     </button>
-                </div>
-            </div>
         </div>
     </div>
     <div role="main" class="ui-content">
@@ -1670,17 +1624,10 @@
 <!--MEDICO NO INSCRITO-->
 <div data-role="page" id="med_no_insc">
     <div data-role="header" class="header" id="header-ni">
-        <div class="row bg-azul">
-            <div class="col-xs-12 mt20">
-                <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/avatar-generico.svg"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
-
-                <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
-
-                <div class="col-xs-12 top-titulos">
-                    <p class="letra-bold color-azul-oscuro size20 text-center mt50 mb10">Atención por médico no inscrito</p>
-                </div>
-            </div>
-        </div>
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('index')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <p class="color-blanco size18 text-center">Atención por médico no inscrito</p>
+        </div></div>
     </div>
     <div role="main" class="ui-content">
         <div class="row mb60">
@@ -1796,14 +1743,11 @@
 <!--CIERRE: MEDICO NO INSCRITO-->
 <!--LOG APP-->
 <div data-role="page" id="desafios-acceso">
-    <div data-role="header" class="header app-page-header">
-        <div class="app-page-header-contenido">
-            <span class="app-page-header-icono">🔐</span>
-            <div>
-                <h1>Control de accesos</h1>
-                <p>Protege el ingreso a tu cuenta MED-SDI</p>
-            </div>
-        </div>
+    <div data-role="header" class="header">
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="volverDesdeDesafiosAcceso()" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <p class="color-blanco size18 text-center">Control de accesos</p>
+        </div></div>
     </div>
     <div role="main" class="ui-content desafios-app-contenido">
         <div class="seguridad-aviso">
@@ -1870,18 +1814,12 @@
 <!--BUSCADOR DE PROFESIONALES-->
 <div data-role="page" id="pedirhora">
     <div data-role="header" class="header" id="header-mismed">
-        <div class="row bg-azul">
-            <div class="col-xs-12 mt20">
-                <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/avatar-generico.svg"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
-
-                <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
-
-                <div class="col-xs-12 top-titulos">
-                    <p class="letra-bold color-azul-oscuro size20 text-center mt20">Agendar hora</p>
-                    <p class="letra-bold size18 text-center mt20">Seleccione preferencia</p>
-
-                </div>
-            </div>
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('index')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <p class="color-blanco size18 text-center">Agendar hora</p>
+        </div></div>
+        <div class="top-titulos perfil-header-extras">
+            <p class="letra-bold size18 text-center mt20">Seleccione preferencia</p>
         </div>
     </div>
     <div role="main" class="ui-content">
@@ -1922,15 +1860,12 @@
 <!--BUSCADOR POR PROFESIONAL NUEVO-->
 <div data-role="page" id="buscador_profesional">
     <div data-role="header" class="header" id="header-ni">
-        <div class="row bg-azul">
-            <div class="col-xs-12 mt20">
-                <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/avatar-generico.svg"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
-                <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
-                <div class="col-xs-12 top-titulos">
-                    <p class="letra-bold color-azul-oscuro size20 text-center mt50">Buscador de profesionales</p>
-                    <p class="size14 text-center mb10">Ingrese los datos solicitados para buscar horas</p>
-                </div>
-            </div>
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('index')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <p class="color-blanco size18 text-center">Buscador de profesionales</p>
+        </div></div>
+        <div class="top-titulos perfil-header-extras">
+            <p class="size14 text-center mb10">Ingrese los datos solicitados para buscar horas</p>
         </div>
     </div>
     <div role="main" class="ui-content">
@@ -2011,17 +1946,10 @@
 <!--BUSCAR POR MIS PROFESIONALES-->
 <div data-role="page" id="mis_medicos">
     <div data-role="header" class="header" id="header-ni">
-        <div class="row bg-azul">
-            <div class="col-xs-12 mt20">
-                <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/avatar-generico.svg"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
-
-                <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
-
-                <div class="col-xs-12 top-titulos">
-                    <p class="letra-bold color-azul-oscuro size20 text-center mt30">Mis profesionales</p>
-                </div>
-            </div>
-        </div>
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('index')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <p class="color-blanco size18 text-center">Mis profesionales</p>
+        </div></div>
     </div>
     <div role="main" class="ui-content">
         <div class="row mb60">
@@ -2049,23 +1977,14 @@
 <!-- PERFIL DEL PROFESIONAL -->
 <div data-role="page" id="perfil_medico">
     <div data-role="header" class="header" id="header-ni">
-        <div class="row bg-azul">
-            <div class="col-xs-12 mt20">
-                <h2 class="letra-bold size14 color-blanco ml10 d-inline">
-                    <img class="img-circulo" width="35" src="src/images/avatar-generico.svg">
-                    <span class="size11 blanco size13 mr10 ml15">Jaime Kriman</span>
-                </h2>
-                <div class="pt5 pb5 d-inline">
-                    <img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png">
-                </div>
-                <div class="col-xs-12 top-titulos">
-
-                    <p class="letra-bold color-azul-oscuro size20 text-center mt50">Perfil del Profesional</p>
-                    <div class="btn-app4 text-center size14 mb20" onclick="volverDesdePerfilProfesional()">
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="volverDesdePerfilProfesional()" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <p class="color-blanco size18 text-center">Perfil del Profesional</p>
+        </div></div>
+        <div class="top-titulos perfil-header-extras">
+            <div class="btn-app4 text-center size14 mb20" onclick="volverDesdePerfilProfesional()">
                         Volver a mis profesionales
                     </div>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -2101,23 +2020,15 @@
 <!-- MIS MEDICOS BUSCADOS -->
 <div data-role="page" id="mis_medicos_buscados">
     <div data-role="header" class="header" id="header-ni">
-        <div class="row bg-azul">
-            <div class="col-xs-12 mt20">
-                <h2 class="letra-bold size14 color-blanco ml10 d-inline">
-                    <img class="img-circulo" width="35" src="src/images/avatar-generico.svg">
-                    <span class="size11 blanco size13 mr10 ml15">Jaime Kriman</span>
-                </h2>
-                <div class="pt5 pb5 d-inline">
-                    <img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png">
-                </div>
-                <div class="col-xs-12 top-titulos">
-                    <p class="letra-bold color-azul-oscuro size20 text-center mt50">Profesionales encontrados</p>
-                    <p id="resumen-profesionales-encontrados" class="size14 text-center mb10">Seleccione el profesional</p>
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('index')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <p class="color-blanco size18 text-center">Profesionales encontrados</p>
+        </div></div>
+        <div class="top-titulos perfil-header-extras">
+            <p id="resumen-profesionales-encontrados" class="size14 text-center mb10">Seleccione el profesional</p>
                     <div class="btn-app4 text-center size14 mt20 mb20" onclick="vista('buscador_profesional');">
                         <img class="pr10" width="30" src="src/images/lupa.svg">Volver a búsqueda
                     </div>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -2155,15 +2066,12 @@
 <!-- LUGARES DE ATENCION DE PROFESIONAL -->
 <div data-role="page" id="lugares_atencion">
     <div data-role="header" class="header" id="header-ni">
-        <div class="row bg-azul">
-            <div class="col-xs-12 mt20">
-                <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/avatar-generico.svg"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
-                <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
-                <div class="col-xs-12 top-titulos">
-                    <p class="letra-bold color-azul-oscuro size20 text-center mt50">Lugares de atención</p>
-                    <p class="size14 text-center mb10">Seleccione el lugar de atención</p>
-                </div>
-            </div>
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('index')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <p class="color-blanco size18 text-center">Lugares de atención</p>
+        </div></div>
+        <div class="top-titulos perfil-header-extras">
+            <p class="size14 text-center mb10">Seleccione el lugar de atención</p>
         </div>
     </div>
     <div role="main" class="ui-content">
@@ -2191,15 +2099,12 @@
 <!-- seleccionar_fecha_hora -->
 <div data-role="page" id="seleccionar_fecha_hora">
     <div data-role="header" class="header" id="header-ni">
-        <div class="row bg-azul">
-            <div class="col-xs-12 mt20">
-                <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/avatar-generico.svg"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
-                <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
-                <div class="col-xs-12 top-titulos">
-                    <p class="letra-bold color-azul-oscuro size20 text-center mt50">Seleccionar fecha y hora</p>
-                    <p class="size14 text-center mb10">Seleccione la fecha y hora de su cita</p>
-                </div>
-            </div>
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('index')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <p class="color-blanco size18 text-center">Seleccionar fecha y hora</p>
+        </div></div>
+        <div class="top-titulos perfil-header-extras">
+            <p class="size14 text-center mb10">Seleccione la fecha y hora de su cita</p>
         </div>
     </div>
     <div role="main" class="ui-content">
@@ -2226,7 +2131,8 @@
 <!-- CIERRE: seleccionar_fecha_hora -->
 <div data-role="page" id="editar-perfil-app">
     <div data-role="header" class="header">
-        <div class="row bg-azul pt20 pb20"><div class="col-xs-12">
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="volverPerfilApp()" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
             <p class="color-blanco size18 text-center">Mi perfil</p>
         </div></div>
     </div>
@@ -2255,28 +2161,46 @@
                 <svg class="perfil-app-fila-flecha" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
             </button>
         </nav>
-        <section class="perfil-app-seccion" data-panel="datos">
+        <div class="perfil-app-foto" data-panel-zona="datos">
+            <div class="perfil-hero">
+                <button type="button" data-role="none" class="perfil-avatar-btn" onclick="abrirOpcionesFotoPerfil()" aria-label="Cambiar foto de perfil">
+                    <img id="perfil_app_foto_preview" src="src/images/avatar-generico.svg" alt="Foto de perfil">
+                    <span class="perfil-avatar-camara"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></span>
+                </button>
+                <p class="perfil-hero-nombre" id="perfil_hero_nombre">Nombre Apellido</p>
+            </div>
+            <input type="file" id="perfil_app_foto" class="perfil-foto-input" accept="image/jpeg,image/png,image/webp" tabindex="-1">
+            <input type="file" id="perfil_app_foto_camara" class="perfil-foto-input" accept="image/*" capture="user" tabindex="-1">
+
+            <div class="perfil-sheet-fondo" onclick="cerrarOpcionesFotoPerfil()"></div>
+            <div class="perfil-sheet" role="dialog" aria-label="Foto de perfil">
+                <button type="button" data-role="none" class="perfil-sheet-opcion" onclick="elegirOrigenFotoPerfil('perfil_app_foto')">
+                    <span class="perfil-sheet-icono"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.8"/><path d="M21 16l-5-5-8 9"/></svg></span>
+                    <span class="perfil-sheet-texto"><strong>Seleccionar foto de perfil</strong><small>JPG, PNG o WEBP · Máx 5 MB</small></span>
+                </button>
+                <button type="button" data-role="none" class="perfil-sheet-opcion" onclick="elegirOrigenFotoPerfil('perfil_app_foto_camara')">
+                    <span class="perfil-sheet-icono"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></span>
+                    <span class="perfil-sheet-texto"><strong>Tomar foto con la cámara</strong></span>
+                </button>
+            </div>
+
+            <div class="perfil-ajuste">
+                <div class="perfil-ajuste-caja">
+                    <p class="perfil-ajuste-titulo">Ajusta tu foto</p>
+                    <div class="perfil-foto-marco" id="perfil_foto_marco">
+                        <img id="perfil_foto_editor" alt="" draggable="false">
+                    </div>
+                    <p class="perfil-foto-texto">Arrastra la foto y ajusta el zoom para encuadrarla</p>
+                    <div class="perfil-foto-zoom">
+                        <input type="range" data-role="none" id="perfil_foto_zoom" min="100" max="300" value="100" aria-label="Zoom de la foto">
+                    </div>
+                    <div class="btn-app7 perfil-foto-guardar" onclick="guardarFotoAjustada()">Guardar foto</div>
+                    <div class="perfil-foto-cancelar" onclick="cancelarFotoAjustada()">Cancelar</div>
+                </div>
+            </div>
+        </div>
+        <section class="perfil-app-seccion perfil-app-datos" data-panel="datos">
             <h3>Información personal</h3>
-            <div class="perfil-app-foto">
-            <div class="perfil-foto-marco" id="perfil_foto_marco">
-                <img id="perfil_app_foto_preview" src="src/images/avatar-generico.svg" alt="Foto de perfil">
-                <img id="perfil_foto_editor" alt="" draggable="false">
-            </div>
-            <input type="file" id="perfil_app_foto" class="perfil-foto-input" accept="image/jpeg,image/png,image/webp">
-            <p class="perfil-foto-texto perfil-foto-texto-ver">Elige una foto para tu perfil</p>
-            <p class="perfil-foto-texto perfil-foto-texto-editar">Arrastra la foto y ajusta el zoom para encuadrarla</p>
-            <div class="perfil-foto-zoom">
-                <input type="range" id="perfil_foto_zoom" min="100" max="300" value="100" aria-label="Zoom de la foto">
-            </div>
-            <small class="perfil-foto-ayuda">JPG, PNG o WEBP · máximo 5 MB</small>
-            <label for="perfil_app_foto" class="perfil-foto-cambiar">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-                Cambiar foto
-            </label>
-            <div class="btn-app7 perfil-foto-guardar" onclick="guardarFotoAjustada()">Guardar foto</div>
-            <div class="perfil-foto-cancelar" onclick="cancelarFotoAjustada()">Cancelar</div>
-            </div>
-            <div class="perfil-app-separador-foto"></div>
             <label>Nombres</label>
             <input type="text" id="perfil_app_nombres">
             <label>Primer apellido</label>
@@ -2331,17 +2255,10 @@
 <!--MIS CITAS MEDICAS AGENDADAS-->
 <div data-role="page" id="citas">
     <div data-role="header" class="header" id="header-ni">
-        <div class="row bg-azul">
-            <div class="col-xs-12 mt20">
-                <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/avatar-generico.svg"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
-
-                <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
-
-                <div class="col-xs-12 top-titulos">
-                    <p class="letra-bold color-azul-oscuro size20 text-center mt30">Mis citas agendadas</p>
-                </div>
-            </div>
-        </div>
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('index')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <p class="color-blanco size18 text-center">Mis citas agendadas</p>
+        </div></div>
     </div>
     <div role="main" class="ui-content citas-contenido">
         <div class="citas-filtros-wrap">
@@ -2395,31 +2312,20 @@
 <!--CLAVE DESBLOQUEO-->
 <div data-role="page" id="clave_desbloqueo">
     <div data-role="header" class="header" id="header-d">
-        <div class="row">
-            <div class="col-xs-12 bg-azul pt20 pb20"><p class="color-blanco text-center size20">CLAVE DESBLOQUEO</p></div>
-        </div>
-        <div class="row">
-            <div class="col-xs-12">
-                <img class="img-responsive" src="src/images/home/bg.jpg">
-            </div>
-        </div>
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('login','fade')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <p class="color-blanco size18 text-center">Clave de desbloqueo</p>
+        </div></div>
     </div>
-    <div role="main" class="ui-content autorizacion-segura-contenido">
-        <div class="autorizacion-segura-card">
-            <div class="autorizacion-segura-icono">✓</div>
-            <div class="autorizacion-segura-cuerpo">
-                <input type="hidden" id="id_log">
-                <p class="text-center mt10 mb10" id="log_reg_autorizacion">
-                <p class="color-azul size20 mt10 mb10 text-center">INGRESE UN CLAVE PARA DESBLOQUEO</p>
-                <p class="size14 mt10 mb10 text-center">Para registrar un equipo debe ingresar una clave de 4 dígitos, con esto podrá desbloquear y validar las peticiones.</p>
-                <input type="password" id="password_desbloqueo" class="input-app center-block text-center color-azul mt10 mb10" value="" placeholder="">
-            </div>
-        </div>
-    </div>
-
-    <div data-role="footer" class="footer menu-inferior" id="footer-reg">
-        <div class="row">
-            <div class="col-xs-12 bg-azul pt20 pb20 color-blanco text-uppercase text-center pointer txt_bold size20" onclick="registrarPassword()">Registrar equipo</div>
+    <div role="main" class="ui-content clave-desbloqueo-contenido">
+        <div class="clave-card">
+            <div class="clave-icono"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><circle cx="12" cy="15.5" r="1.2"/></svg></div>
+            <h2 class="clave-titulo">Crea tu clave de desbloqueo</h2>
+            <p class="clave-texto">Para registrar este equipo define una clave de 4 dígitos. Con ella podrás desbloquear la app y validar tus solicitudes.</p>
+            <label for="password_desbloqueo">Clave de 4 dígitos</label>
+            <input type="password" data-role="none" id="password_desbloqueo" class="clave-input" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="new-password" placeholder="••••">
+            <small class="clave-ayuda">Usa solo números y evita fechas de nacimiento o secuencias como 1234.</small>
+            <div class="btn-app7" onclick="registrarPassword()">Registrar equipo</div>
         </div>
     </div>
 </div>
@@ -2444,17 +2350,10 @@
 
 <div data-role="page" id="autorizaciones_sdi">
     <div data-role="header" class="header" id="header-ni">
-        <div class="row bg-azul">
-            <div class="col-xs-12 mt20">
-                <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/avatar-generico.svg"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
-
-                <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
-
-                <div class="col-xs-12 top-titulos">
-                    <p class="letra-bold color-azul-oscuro size20 text-center mt30">Mis autorizaciones</p>
-                </div>
-            </div>
-        </div>
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="volverInicioSegunRol()" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <p class="color-blanco size18 text-center">Mis autorizaciones</p>
+        </div></div>
     </div>
 
     <div role="main" class="ui-content">
@@ -2541,17 +2440,10 @@
 
 <div data-role="page" id="autorizacion">
     <div data-role="header" class="header" id="header-ni">
-        <div class="row bg-azul">
-            <div class="col-xs-12 mt20">
-                <h2 class="letra-bold size14 color-blanco ml10 d-inline"><img class="img-circulo"  width="35"  src="src/images/avatar-generico.svg"><span class="size11 blanco size13 mr10 ml15">Jaime Kriman </span></h2>
-
-                <div class="pt5 pb5 d-inline"><img alt="logo_ini" class="text-right logo-header" src="src/images/logo.png"></div>
-
-                <div class="col-xs-12 top-titulos">
-                    <p class="letra-bold color-azul-oscuro size20 text-center mt30">Mis autorizaciones</p>
-                </div>
-            </div>
-        </div>
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('index')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <p class="color-blanco size18 text-center">Mis autorizaciones</p>
+        </div></div>
     </div>
 
     <div role="main" class="ui-content">
@@ -2614,60 +2506,36 @@
 
 <div data-role="page" id="autorizado">
     <div data-role="header" class="header" id="header">
-        <div class="row">
-            <div class="col-xs-12 bg-azul pt20 pb20"><p class="color-blanco text-center size20">ACEPTADA</p></div>
-        </div>
-        <div class="row">
-            <div class="col-xs-12">
-                <img class="img-responsive" src="src/images/home/bg.jpg">
-            </div>
-        </div>
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="volverInicioSegunRol()" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <p class="color-blanco size18 text-center">Solicitud aceptada</p>
+        </div></div>
     </div>
 
-    <div role="main" class="ui-content">
-        <div class="row">
-            <div class="col-xs-12">
-                <p class="color-azul size20 mt10 mb10 text-center">SDI</p>
-                <p class="text-center mt10 mb10">Clave <span class="color-verde txt_bold">SDI Autorizada</span>
-                    <span class="msg_estado"></span></p>
-                <img class="center-block mt320 mb20" src="src/images/home/ok.svg" width="100">
-            </div>
-        </div>
-    </div>
-
-    <div data-role="footer" class="footer" id="footer">
-        <div class="row">
-            <div class="col-xs-12 bg-azul pt20 pb20 color-blanco text-uppercase text-center pointer txt_bold size20" onclick="volverInicioSegunRol()">VOLVER</div>
+    <div role="main" class="ui-content resultado-solicitud-contenido">
+        <div class="resultado-solicitud resultado-ok">
+            <div class="resultado-icono"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+            <h2 class="resultado-titulo">Solicitud autorizada</h2>
+            <p class="resultado-texto">La clave SDI fue autorizada correctamente.</p>
+            <div class="btn-app7" onclick="volverInicioSegunRol()">Volver al inicio</div>
         </div>
     </div>
 </div>
 
 <div data-role="page" id="rechazado">
     <div data-role="header" class="header" id="header">
-        <div class="row">
-            <div class="col-xs-12 bg-azul pt20 pb20"><p class="color-blanco text-center size20">RECHAZADA</p></div>
-        </div>
-        <div class="row">
-            <div class="col-xs-12">
-                <img class="img-responsive" src="src/images/home/bg.jpg">
-            </div>
-        </div>
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="volverInicioSegunRol()" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <p class="color-blanco size18 text-center">Solicitud rechazada</p>
+        </div></div>
     </div>
 
-    <div role="main" class="ui-content">
-        <div class="row">
-            <div class="col-xs-12">
-                <p class="color-azul size20 mt10 mb10 text-center">SDI</p>
-                <p class="text-center mt10 mb10">Clave <span class="color-verde txt_bold">SDI Rechazada</span>
-                    <span class="msg_estado"></span></p>
-                <img class="center-block mt320 mb20" src="src/images/home/cancel.svg" width="100">
-            </div>
-        </div>
-    </div>
-
-    <div data-role="footer" class="footer" id="footer">
-        <div class="row">
-            <div class="col-xs-12 bg-azul pt20 pb20 color-blanco text-uppercase text-center pointer txt_bold size20" onclick="volverInicioSegunRol()">VOLVER</div>
+    <div role="main" class="ui-content resultado-solicitud-contenido">
+        <div class="resultado-solicitud resultado-error">
+            <div class="resultado-icono"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17"/></svg></div>
+            <h2 class="resultado-titulo">Solicitud rechazada</h2>
+            <p class="resultado-texto">La clave SDI fue rechazada. No se realizó ninguna acción.</p>
+            <div class="btn-app7" onclick="volverInicioSegunRol()">Volver al inicio</div>
         </div>
     </div>
 </div>

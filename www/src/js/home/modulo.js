@@ -192,7 +192,8 @@ const abrirEditarPerfil = () => {
             $('#perfil_app_telefono_uno').val(perfil.telefono_uno || '');
             $('#perfil_app_telefono_dos').val(perfil.telefono_dos || '');
             $('#perfil_app_email').val(perfil.email || '');
-            $('#perfil_app_foto').val('');
+            actualizarNombreHeroPerfil();
+            $('#perfil_app_foto, #perfil_app_foto_camara').val('');
             $('.perfil-app-foto').removeClass('con-nueva-foto');
             $('#perfil_app_foto_preview').attr(
                 'src',
@@ -233,10 +234,26 @@ const guardarPerfilApp = () => {
     }, 'PUT');
 };
 
-$(document).on('change', '#perfil_app_foto', function() {
+const abrirOpcionesFotoPerfil = () => {
+    $('.perfil-app-foto').addClass('sheet-abierta');
+};
+
+const cerrarOpcionesFotoPerfil = () => {
+    $('.perfil-app-foto').removeClass('sheet-abierta');
+};
+
+const elegirOrigenFotoPerfil = (idInput) => {
+    cerrarOpcionesFotoPerfil();
+    var input = document.getElementById(idInput);
+    input.value = '';
+    input.click();
+};
+
+$(document).on('change', '#perfil_app_foto, #perfil_app_foto_camara', function() {
     var archivo = this.files && this.files[0];
     if (!archivo) return;
-    if (!/^image\/(jpeg|png|webp)$/.test(archivo.type) || archivo.size > 5 * 1024 * 1024) {
+    var maximo = (this.id === 'perfil_app_foto_camara' ? 25 : 5) * 1024 * 1024;
+    if (!/^image\/(jpeg|png|webp)$/.test(archivo.type) || archivo.size > maximo) {
         this.value = '';
         $('.perfil-app-foto').removeClass('con-nueva-foto');
         msg('Foto de perfil', 'Selecciona una imagen JPG, PNG o WEBP de hasta 5 MB.', 'error');
@@ -244,6 +261,13 @@ $(document).on('change', '#perfil_app_foto', function() {
     }
     iniciarEncuadreFotoPerfil(archivo);
 });
+
+const actualizarNombreHeroPerfil = () => {
+    var nombre = $.trim($('#perfil_app_nombres').val() + ' ' + $('#perfil_app_apellido_uno').val());
+    $('#perfil_hero_nombre').text(nombre || 'Nombre Apellido');
+};
+
+$(document).on('input', '#perfil_app_nombres, #perfil_app_apellido_uno', actualizarNombreHeroPerfil);
 
 /*
  * Encuadre visual de la foto de perfil (solo interfaz): se arrastra y se hace
@@ -314,8 +338,8 @@ $(document).on('input', '#perfil_foto_zoom', function() {
 })();
 
 const cancelarFotoAjustada = () => {
-    $('#perfil_app_foto').val('');
-    $('.perfil-app-foto').removeClass('con-nueva-foto');
+    $('#perfil_app_foto, #perfil_app_foto_camara').val('');
+    $('.perfil-app-foto').removeClass('con-nueva-foto sheet-abierta');
     if (encuadreFoto.url) {
         URL.revokeObjectURL(encuadreFoto.url);
         encuadreFoto.url = null;
@@ -851,19 +875,24 @@ const registrarPassword = () => {
 
     var pass = $.trim($('#password_desbloqueo').val());
 
-    if(pass.length>3)
+    if(/^\d{4}$/.test(pass))
     {
         $('#pass_device').val(pass);
-        registerDeviceShow();   
-    }else{                
-        if($('#uuid').val()!=0){
-        navigator.notification.alert('Debe ingresar un password mayor a 3 digitos', ()=>{}, 'Aviso', 'Cerrar');        
-        }else{
-        alert('Debe ingresar un password mayor a 3 digitos');
-        }
+        registerDeviceShow();
+    }else{
+        msg('Clave de desbloqueo', 'La clave debe tener exactamente 4 dígitos numéricos.', 'warning');
+        $('#password_desbloqueo').focus().select();
     }
 
 }
+
+$(document).on('input', '#password_desbloqueo', function() {
+    this.value = this.value.replace(/\D/g, '').slice(0, 4);
+});
+
+$(document).on('keydown', '#password_desbloqueo', function(ev) {
+    if (ev.key === 'Enter') registrarPassword();
+});
 
 /*
 const registrarPassword = (results) => {
@@ -1642,7 +1671,6 @@ const agendarHora = (idMedico, nombreMedico, especialidad) => {
                     : 'Volver a mis profesionales';
 
                 $('#lugares_atencion .top-titulos').html(`
-                    <p class="letra-bold color-azul-oscuro size20 text-center mt50">Lugares de atención</p>
                     <div class="bg-azul-claro p10 mb20 border-radius-5">
                         <p class="size16 color-azul text-center mb5"><strong>${nombreMedico}</strong></p>
                         <p class="size14 text-center mb0">${especialidad}</p>
@@ -2363,7 +2391,7 @@ const mostrarTiposAgendaDisponibles = (modalidades, idLugar, idProfesional, nomb
     }).join('');
 
     $('#seleccionar_fecha_hora .top-titulos').html(`
-        <p class="letra-bold color-azul-oscuro size20 text-center mt50">¿Cómo quieres atenderte?</p>
+        <p class="letra-bold color-azul-oscuro size20 text-center">¿Cómo quieres atenderte?</p>
         <div class="agenda-seleccion-resumen">
             <strong>${escaparTextoAgenda(nombreMedico)}</strong>
             <span>${escaparTextoAgenda(especialidadMedico)}</span>
@@ -2556,8 +2584,6 @@ const cargarFechasAgendaSeleccionada = (idLugar, idProfesional, nombreLugar) => 
                 if (fechasDisponibles.length > 0) {
                     // Actualizar header de la vista con información completa
                     $('#seleccionar_fecha_hora .top-titulos').html(`
-
-                        <p class="letra-bold color-azul-oscuro size20 text-center mt50">Seleccionar fecha y hora</p>
                         <div class="bg-azul-claro p10 mb20 border-radius-5">
                             <p class="size16 color-azul text-center mb5"><strong>${nombreMedico}</strong></p>
                             <p class="size14 text-center mb5">${especialidadMedico}</p>
