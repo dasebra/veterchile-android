@@ -1018,7 +1018,7 @@
     <div role="main" class="ui-content dashboard-content">
         <section class="dashboard-section">
             <div class="dashboard-section-title">
-                <div><span>ACCESOS RÁPIDOS</span><h2>Mi salud</h2></div>
+                <div><span>ACCESOS RÁPIDOS</span></div>
             </div>
             <div class="dashboard-grid dashboard-grid-paciente">
                 <!-- 1. ACCIONES MÁS FRECUENTES -->
@@ -2227,21 +2227,56 @@
 <div data-role="page" id="editar-perfil-app">
     <div data-role="header" class="header">
         <div class="row bg-azul pt20 pb20"><div class="col-xs-12">
-            <p class="color-blanco size18 text-center">Editar mi perfil</p>
+            <p class="color-blanco size18 text-center">Mi perfil</p>
         </div></div>
     </div>
-    <div role="main" class="ui-content perfil-app-form">
+    <div role="main" class="ui-content perfil-app-form" data-vista="menu">
         <input type="hidden" id="perfil_app_rol">
-        <section class="perfil-app-seccion perfil-app-foto">
-            <h3>Foto de perfil</h3>
-            <img id="perfil_app_foto_preview" src="src/images/avatar-generico.svg" alt="Foto de perfil">
-            <label for="perfil_app_foto">Seleccionar una nueva foto</label>
-            <input type="file" id="perfil_app_foto" accept="image/jpeg,image/png,image/webp">
-            <small class="color-gris">Formatos JPG, PNG o WEBP. Tamaño máximo: 5 MB.</small>
-            <div class="btn-app7 mt10" onclick="guardarFotoPerfilApp()">Actualizar foto</div>
-        </section>
-        <section class="perfil-app-seccion">
-            <h3>Datos personales</h3>
+        <!-- Menú de Mi perfil: cada fila abre su vista -->
+        <nav class="perfil-app-menu" aria-label="Opciones de mi perfil">
+            <button type="button" data-role="none" class="perfil-app-fila" onclick="mostrarVistaPerfilApp('datos')">
+                <span class="perfil-app-fila-icono"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg></span>
+                <span class="perfil-app-fila-texto">Información personal</span>
+                <svg class="perfil-app-fila-flecha" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+            </button>
+            <button type="button" data-role="none" class="perfil-app-fila" onclick="mostrarVistaPerfilApp('pin')">
+                <span class="perfil-app-fila-icono"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span>
+                <span class="perfil-app-fila-texto">Cambiar PIN del dispositivo</span>
+                <svg class="perfil-app-fila-flecha" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+            </button>
+            <button type="button" data-role="none" class="perfil-app-fila" onclick="mostrarVistaPerfilApp('huella-documentos')">
+                <span class="perfil-app-fila-icono"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h5a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-5M4 4h6M4 4v16h6"/><path d="M8 12h8M13 9l3 3-3 3"/></svg></span>
+                <span class="perfil-app-fila-texto">Autorización de documentos con huella</span>
+                <svg class="perfil-app-fila-flecha" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+            </button>
+            <button type="button" data-role="none" class="perfil-app-fila" onclick="mostrarVistaPerfilApp('huella-login')">
+                <span class="perfil-app-fila-icono"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 11v3c0 2-1 4-2 5M8 11a4 4 0 0 1 8 0v3c0 3-.8 5-2 7M5 14v-3a7 7 0 0 1 14 0M5 17c.5-1 1-2 1-3"/></svg></span>
+                <span class="perfil-app-fila-texto">Inicio de sesión con huella</span>
+                <svg class="perfil-app-fila-flecha" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+            </button>
+        </nav>
+        <section class="perfil-app-seccion" data-panel="datos">
+            <h3>Información personal</h3>
+            <div class="perfil-app-foto">
+            <div class="perfil-foto-marco" id="perfil_foto_marco">
+                <img id="perfil_app_foto_preview" src="src/images/avatar-generico.svg" alt="Foto de perfil">
+                <img id="perfil_foto_editor" alt="" draggable="false">
+            </div>
+            <input type="file" id="perfil_app_foto" class="perfil-foto-input" accept="image/jpeg,image/png,image/webp">
+            <p class="perfil-foto-texto perfil-foto-texto-ver">Elige una foto para tu perfil</p>
+            <p class="perfil-foto-texto perfil-foto-texto-editar">Arrastra la foto y ajusta el zoom para encuadrarla</p>
+            <div class="perfil-foto-zoom">
+                <input type="range" id="perfil_foto_zoom" min="100" max="300" value="100" aria-label="Zoom de la foto">
+            </div>
+            <small class="perfil-foto-ayuda">JPG, PNG o WEBP · máximo 5 MB</small>
+            <label for="perfil_app_foto" class="perfil-foto-cambiar">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                Cambiar foto
+            </label>
+            <div class="btn-app7 perfil-foto-guardar" onclick="guardarFotoAjustada()">Guardar foto</div>
+            <div class="perfil-foto-cancelar" onclick="cancelarFotoAjustada()">Cancelar</div>
+            </div>
+            <div class="perfil-app-separador-foto"></div>
             <label>Nombres</label>
             <input type="text" id="perfil_app_nombres">
             <label>Primer apellido</label>
@@ -2257,7 +2292,7 @@
             <small class="color-gris">El correo se muestra sólo como referencia.</small>
             <div class="btn-app7 mt20" onclick="guardarPerfilApp()">Guardar cambios</div>
         </section>
-        <section class="perfil-app-seccion perfil-app-seguridad-card">
+        <section class="perfil-app-seccion perfil-app-seguridad-card" data-panel="pin">
             <h3><span class="perfil-app-seguridad-icono">🔐</span>Cambiar PIN del dispositivo</h3>
             <p class="perfil-app-ayuda">La clave es el PIN de 4 dígitos usado para autorizar solicitudes desde este equipo.</p>
             <label>Clave actual</label>
@@ -2268,7 +2303,7 @@
             <input type="password" id="perfil_app_clave_confirmacion" inputmode="numeric" maxlength="4" autocomplete="new-password">
             <div class="btn-app7 mt20" onclick="cambiarClaveDispositivoApp()">Cambiar clave</div>
         </section>
-        <section class="perfil-app-seccion perfil-app-seguridad-card" id="perfil_app_biometria">
+        <section class="perfil-app-seccion perfil-app-seguridad-card" id="perfil_app_biometria" data-panel="huella-documentos">
             <h3><span class="perfil-app-seguridad-icono">☝</span>Huella para autorizar documentos</h3>
             <p id="perfil_app_biometria_estado" class="perfil-app-ayuda">Comprobando disponibilidad biométrica...</p>
             <p class="perfil-app-ayuda">Permite aprobar solicitudes y documentos usando la huella registrada en Android.</p>
@@ -2277,7 +2312,7 @@
             <div id="perfil_app_biometria_activar" class="btn-app7 mt10" onclick="activarBiometriaApp()">Activar huella digital</div>
             <div id="perfil_app_biometria_desactivar" class="btn-app4 mt10" onclick="desactivarBiometriaApp()" style="display:none">Desactivar huella digital</div>
         </section>
-        <section class="perfil-app-seccion perfil-app-seguridad-card">
+        <section class="perfil-app-seccion perfil-app-seguridad-card" data-panel="huella-login">
             <h3><span class="perfil-app-seguridad-icono">👆</span>Inicio de sesión con huella</h3>
             <p id="perfil_app_biometria_login_estado" class="perfil-app-ayuda">El ingreso biométrico está desactivado.</p>
             <label>Contraseña de tu cuenta</label>
@@ -2288,7 +2323,7 @@
     </div>
     <div data-role="footer" class="footer menu-inferior">
         <div class="row bg-azul"><div class="col-xs-12 pt10 pb10 text-center">
-            <p class="color-blanco size13" onclick="volverInicioSegunRol()">Volver</p>
+            <p class="color-blanco size13" onclick="volverPerfilApp()">Volver</p>
         </div></div>
     </div>
 </div>

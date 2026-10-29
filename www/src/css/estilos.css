@@ -335,6 +335,7 @@ p {
 .perfil-app-seccion h3 {
     color: #0f53c7;
     font-size: 17px;
+    font-weight: 800;
     margin: 0 0 15px;
 }
 
@@ -342,16 +343,6 @@ p {
     border: 1px solid #dbe7f7;
     overflow: hidden;
     position: relative;
-}
-
-.perfil-app-seguridad-card::before {
-    background: #1450bd;
-    content: "";
-    height: 4px;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
 }
 
 .perfil-app-seguridad-card h3 {
@@ -374,21 +365,239 @@ p {
     text-align: center;
 }
 
-#perfil_app_foto_preview {
+/* Marco circular: muestra la foto actual o el editor de encuadre. */
+.perfil-foto-marco {
+    --foto: 112px;
     border: 4px solid #dce9ff;
     border-radius: 50%;
-    display: block;
-    height: 112px;
-    margin: 0 auto 15px;
-    object-fit: cover;
-    width: 112px;
+    box-sizing: border-box;
+    height: var(--foto);
+    margin: 4px auto 14px;
+    overflow: hidden;
+    position: relative;
+    width: var(--foto);
+    background: #fff;
 }
+
+.perfil-app-foto.con-nueva-foto .perfil-foto-marco {
+    --foto: 176px;
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+#perfil_app_foto_preview {
+    display: block;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+}
+
+/* La imagen del editor se coloca por JS (arrastre y zoom) */
+#perfil_foto_editor {
+    display: none;
+    left: 0;
+    max-width: none;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    transform-origin: 0 0;
+}
+
+.perfil-app-foto.con-nueva-foto #perfil_app_foto_preview { display: none; }
+.perfil-app-foto.con-nueva-foto #perfil_foto_editor { display: block; }
+
+.perfil-foto-texto {
+    color: #1450bd;
+    font-size: 14px;
+    font-weight: 700;
+    margin: 0 0 12px;
+}
+
+.perfil-app-foto .perfil-foto-texto-editar,
+.perfil-app-foto .perfil-foto-zoom,
+.perfil-app-foto .perfil-foto-guardar,
+.perfil-app-foto .perfil-foto-cancelar { display: none; }
+
+.perfil-app-foto.con-nueva-foto .perfil-foto-texto-ver,
+.perfil-app-foto.con-nueva-foto .perfil-foto-cambiar { display: none; }
+
+.perfil-app-foto.con-nueva-foto .perfil-foto-texto-editar { display: block; }
+.perfil-app-foto.con-nueva-foto .perfil-foto-zoom { display: block; }
+.perfil-app-foto.con-nueva-foto .perfil-foto-guardar { display: flex; }
+.perfil-app-foto.con-nueva-foto .perfil-foto-cancelar { display: block; }
+
+/* Zoom */
+.perfil-app-form .perfil-foto-zoom { margin: 0 6px 14px; }
+
+.perfil-app-form .perfil-foto-zoom input[type="range"] {
+    accent-color: #1450bd;
+    background: transparent;
+    border: 0;
+    height: 32px;
+    padding: 0;
+    width: 100%;
+}
+
+/* Botones de ancho completo */
+.perfil-app-form .perfil-foto-cambiar,
+.perfil-app-foto .perfil-foto-guardar {
+    align-items: center;
+    border-radius: 12px;
+    box-sizing: border-box;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 800;
+    gap: 9px;
+    justify-content: center;
+    margin: 0;
+    min-height: 48px;
+    width: 100%;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.perfil-app-form .perfil-foto-cambiar {
+    display: flex;
+    background: #fff;
+    border: 1.5px solid #1450bd;
+    color: #1450bd;
+}
+
+.perfil-app-form .perfil-foto-cambiar:active { background: #eef4ff; }
+.perfil-app-form .perfil-foto-cambiar svg { stroke: #1450bd; }
+
+.perfil-foto-cancelar {
+    color: #667085;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 14px 0 2px;
+}
+
+/* El input nativo se oculta visualmente; el botón lo abre. */
+.perfil-app-form .perfil-foto-input {
+    border: 0;
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+
+.perfil-foto-ayuda {
+    color: #667085;
+    display: block;
+    font-size: 12px;
+    margin-bottom: 14px;
+    text-wrap: balance;
+}
+
+.perfil-app-foto.con-nueva-foto .perfil-foto-ayuda { display: none; }
 
 .perfil-app-ayuda {
     color: #667085;
     font-size: 13px;
     line-height: 1.45;
     margin-bottom: 14px;
+}
+
+/* Mi perfil: lista de opciones (una fila abre su vista) */
+.perfil-app-menu {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, .08);
+    overflow: hidden;
+}
+
+.perfil-app-form button.perfil-app-fila {
+    -webkit-appearance: none;
+    appearance: none;
+    align-items: center;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    box-sizing: border-box;
+    color: #26374a;
+    cursor: pointer;
+    display: flex;
+    font-family: inherit;
+    gap: 14px;
+    margin: 0;
+    min-height: 64px;
+    padding: 10px 16px;
+    position: relative;
+    text-align: left;
+    -webkit-tap-highlight-color: transparent;
+    width: 100%;
+}
+
+.perfil-app-form button.perfil-app-fila + button.perfil-app-fila::before {
+    background: #e8eef6;
+    content: "";
+    height: 1px;
+    left: 16px;
+    position: absolute;
+    right: 16px;
+    top: 0;
+}
+
+.perfil-app-form button.perfil-app-fila:active {
+    background: #f1f6fd;
+}
+
+.perfil-app-fila-icono {
+    align-items: center;
+    background: #e8f1ff;
+    border-radius: 12px;
+    display: flex;
+    flex: 0 0 40px;
+    height: 40px;
+    justify-content: center;
+}
+
+.perfil-app-fila-icono svg {
+    fill: none;
+    height: 22px;
+    stroke: #1450bd;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.8;
+    width: 22px;
+}
+
+.perfil-app-fila-texto {
+    flex: 1;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.perfil-app-fila-flecha {
+    fill: none;
+    flex: 0 0 20px;
+    height: 20px;
+    stroke: #8a9bb0;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2;
+    width: 20px;
+}
+
+/* Solo se ve el menú, o la vista elegida */
+.perfil-app-form .perfil-app-seccion { display: none; }
+.perfil-app-form:not([data-vista="menu"]) .perfil-app-menu { display: none; }
+.perfil-app-form[data-vista="datos"] [data-panel="datos"],
+.perfil-app-form[data-vista="pin"] [data-panel="pin"],
+.perfil-app-form[data-vista="huella-documentos"] [data-panel="huella-documentos"],
+.perfil-app-form[data-vista="huella-login"] [data-panel="huella-login"] { display: block; }
+
+/* Foto y datos van en una sola tarjeta */
+.perfil-app-separador-foto {
+    background: #e8eef6;
+    height: 1px;
+    margin: 18px 0 4px;
 }
 
 .biometria-autorizacion {
@@ -3444,46 +3653,74 @@ placeholder{
       overflow: visible;
       border: 0;
       background: linear-gradient(135deg, #0e4cb1 0%, #1974c9 72%, #25a8bd 100%);
-      box-shadow: 0 5px 18px rgba(20,80,150,.14);
+      box-shadow: none;
   }
 
   .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .header:not(.app-page-header) > .row {
       min-height: 58px;
       box-sizing: border-box;
       margin: 0;
-      padding: max(13px, env(safe-area-inset-top)) 15px 12px;
+      padding: max(6px, env(safe-area-inset-top)) 15px 12px;
       background: transparent !important;
   }
 
   .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .header:not(.app-page-header) > .row > .col-xs-12 {
       position: relative;
-      min-height: 36px;
-      padding: 0;
+      min-height: 43px;
+      margin-top: 0 !important;
+      padding: 43px 0 0;
   }
 
+  /* Mismo encabezado que el inicio: logo a la izquierda; a la derecha foto y rol sobre el nombre. */
   .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .header:not(.app-page-header) h2 {
-      display: inline-flex !important;
-      max-width: calc(100% - 112px);
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 43px;
+      padding: 0 !important;
+      display: inline-grid !important;
+      max-width: calc(100% - 114px);
+      grid-template-columns: auto minmax(0, 1fr);
+      grid-template-rows: auto auto;
+      align-content: center;
       align-items: center;
-      gap: 8px;
+      column-gap: 8px;
+      row-gap: 3px;
       margin: 0 !important;
       vertical-align: middle;
   }
 
+  .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .header:not(.app-page-header) h2::before {
+      content: "● " attr(data-rol);
+      grid-column: 2;
+      grid-row: 1;
+      align-self: end;
+      color: #31bebe;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .2px;
+      line-height: 1;
+  }
+
   .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .header:not(.app-page-header) h2 .img-circulo {
+      grid-column: 1;
+      grid-row: 1 / span 2;
       width: 34px !important;
       height: 34px;
-      flex: 0 0 34px;
       object-fit: cover;
       border: 2px solid rgba(255,255,255,.72);
       background: #fff;
   }
 
   .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .header:not(.app-page-header) h2 span {
+      grid-column: 2;
+      grid-row: 2;
+      align-self: start;
       overflow: hidden;
       margin: 0 !important;
       color: #fff;
-      font-size: 11px;
+      font-size: 13px;
+      line-height: 1.2;
       font-weight: 800;
       text-overflow: ellipsis;
       text-shadow: none;
@@ -3492,20 +3729,30 @@ placeholder{
 
   .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .header:not(.app-page-header) .logo-header {
       position: absolute;
-      top: 5px;
-      right: 3px;
-      width: 82px;
+      top: 21.5px;
+      left: 0;
+      width: 104px;
       height: auto;
+      transform: translateY(-50%);
       filter: brightness(0) invert(1);
+  }
+
+  @media (max-width: 380px) {
+      .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .header:not(.app-page-header) .logo-header { width: 92px; }
+      .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .header:not(.app-page-header) h2 { max-width: calc(100% - 100px); column-gap: 5px; }
+      .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .header:not(.app-page-header) h2 .img-circulo { width: 30px !important; height: 30px; }
+      .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .header:not(.app-page-header) h2 span { font-size: 12px; }
   }
 
   .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .header:not(.app-page-header) .top-titulos {
       width: calc(100% + 30px);
       min-height: 0;
-      margin: 13px -15px -12px;
+      margin: 12px -15px -12px;
       padding: 13px 18px 14px;
       border-radius: 22px 22px 0 0;
       background: var(--app-bg);
+      /* Sombra solo en el borde superior, sin proyectarse hacia abajo ni a los lados. */
+      box-shadow: 0 -6px 12px -6px rgba(10,40,100,.35);
   }
 
   .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .header:not(.app-page-header) .top-titulos p {
@@ -3627,6 +3874,20 @@ placeholder{
       background: linear-gradient(135deg, var(--app-blue), #2478ce);
       color: #fff;
       box-shadow: 0 7px 16px rgba(20,80,189,.18);
+  }
+
+  /* Mi perfil: botones de ancho completo y sin sombra */
+  #editar-perfil-app .btn-app7:not(.perfil-foto-guardar),
+  #editar-perfil-app .btn-app4 {
+      display: block;
+  }
+
+  #editar-perfil-app .btn-app7,
+  #editar-perfil-app .btn-app4 {
+      width: 100%;
+      box-shadow: none !important;
+      font-size: 14px !important;
+      text-align: center;
   }
 
   .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .menu-inferior {

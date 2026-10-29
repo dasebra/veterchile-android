@@ -159,8 +159,24 @@ $(document).on('click', function() {
     $('.header-menu-perfil').removeClass('abierto');
 });
 
+// Mi perfil: lista de opciones y vistas internas (solo interfaz).
+const mostrarVistaPerfilApp = (vista) => {
+    $('.perfil-app-form').attr('data-vista', vista);
+    window.scrollTo(0, 0);
+};
+
+const volverPerfilApp = () => {
+    if ($('.perfil-app-form').attr('data-vista') !== 'menu') {
+        cancelarFotoAjustada();
+        mostrarVistaPerfilApp('menu');
+        return;
+    }
+    volverInicioSegunRol();
+};
+
 const abrirEditarPerfil = () => {
     $('.header-menu-perfil').removeClass('abierto');
+    $('.perfil-app-form').attr('data-vista', 'menu');
     var rol = localStorage.getItem('rolActivo') === 'Profesional'
         ? 'Profesional'
         : 'Paciente';
@@ -177,6 +193,7 @@ const abrirEditarPerfil = () => {
             $('#perfil_app_telefono_dos').val(perfil.telefono_dos || '');
             $('#perfil_app_email').val(perfil.email || '');
             $('#perfil_app_foto').val('');
+            $('.perfil-app-foto').removeClass('con-nueva-foto');
             $('#perfil_app_foto_preview').attr(
                 'src',
                 perfil.foto_perfil_url || 'src/images/avatar-generico.svg'
@@ -221,11 +238,118 @@ $(document).on('change', '#perfil_app_foto', function() {
     if (!archivo) return;
     if (!/^image\/(jpeg|png|webp)$/.test(archivo.type) || archivo.size > 5 * 1024 * 1024) {
         this.value = '';
+        $('.perfil-app-foto').removeClass('con-nueva-foto');
         msg('Foto de perfil', 'Selecciona una imagen JPG, PNG o WEBP de hasta 5 MB.', 'error');
         return;
     }
-    $('#perfil_app_foto_preview').attr('src', URL.createObjectURL(archivo));
+    iniciarEncuadreFotoPerfil(archivo);
 });
+
+/*
+ * Encuadre visual de la foto de perfil (solo interfaz): se arrastra y se hace
+ * zoom dentro del círculo; al guardar se recorta a un cuadrado y se entrega a
+ * guardarFotoPerfilApp(), que sigue siendo quien sube la foto.
+ */
+var encuadreFoto = { x: 0, y: 0, escala: 1, minimo: 1, ancho: 0, alto: 0, marco: 0, url: null };
+
+const aplicarEncuadreFoto = () => {
+    var e = encuadreFoto;
+    var s = e.minimo * e.escala;
+    e.x = Math.min(0, Math.max(e.marco - e.ancho * s, e.x));
+    e.y = Math.min(0, Math.max(e.marco - e.alto * s, e.y));
+    $('#perfil_foto_editor').css('transform', 'translate(' + e.x + 'px,' + e.y + 'px) scale(' + s + ')');
+};
+
+const iniciarEncuadreFotoPerfil = (archivo) => {
+    if (encuadreFoto.url) URL.revokeObjectURL(encuadreFoto.url);
+    encuadreFoto.url = URL.createObjectURL(archivo);
+
+    var editor = document.getElementById('perfil_foto_editor');
+    editor.onload = function() {
+        var e = encuadreFoto;
+        $('.perfil-app-foto').addClass('con-nueva-foto');
+        e.marco = document.getElementById('perfil_foto_marco').clientWidth; // ya excluye el borde
+        e.ancho = editor.naturalWidth;
+        e.alto = editor.naturalHeight;
+        e.minimo = e.marco / Math.min(e.ancho, e.alto);
+        e.escala = 1;
+        e.x = (e.marco - e.ancho * e.minimo) / 2;
+        e.y = (e.marco - e.alto * e.minimo) / 2;
+        $('#perfil_foto_zoom').val(100);
+        $(editor).css({ width: e.ancho + 'px', height: e.alto + 'px' });
+        aplicarEncuadreFoto();
+    };
+    editor.onerror = function() {
+        cancelarFotoAjustada();
+        msg('Foto de perfil', 'No fue posible leer la imagen. Prueba con otra.', 'error');
+    };
+    editor.src = encuadreFoto.url;
+};
+
+$(document).on('input', '#perfil_foto_zoom', function() {
+    var e = encuadreFoto;
+    var anterior = e.minimo * e.escala;
+    var centroX = (e.marco / 2 - e.x) / anterior;
+    var centroY = (e.marco / 2 - e.y) / anterior;
+    e.escala = this.value / 100;
+    var nueva = e.minimo * e.escala;
+    e.x = e.marco / 2 - centroX * nueva;
+    e.y = e.marco / 2 - centroY * nueva;
+    aplicarEncuadreFoto();
+});
+
+(function() {
+    var arrastre = null;
+    $(document).on('pointerdown', '.perfil-app-foto.con-nueva-foto #perfil_foto_marco', function(ev) {
+        arrastre = { px: ev.originalEvent.clientX, py: ev.originalEvent.clientY, x: encuadreFoto.x, y: encuadreFoto.y };
+        try { this.setPointerCapture(ev.originalEvent.pointerId); } catch (err) {}
+    });
+    $(document).on('pointermove', '#perfil_foto_marco', function(ev) {
+        if (!arrastre) return;
+        encuadreFoto.x = arrastre.x + (ev.originalEvent.clientX - arrastre.px);
+        encuadreFoto.y = arrastre.y + (ev.originalEvent.clientY - arrastre.py);
+        aplicarEncuadreFoto();
+    });
+    $(document).on('pointerup pointercancel', '#perfil_foto_marco', function() { arrastre = null; });
+})();
+
+const cancelarFotoAjustada = () => {
+    $('#perfil_app_foto').val('');
+    $('.perfil-app-foto').removeClass('con-nueva-foto');
+    if (encuadreFoto.url) {
+        URL.revokeObjectURL(encuadreFoto.url);
+        encuadreFoto.url = null;
+    }
+};
+
+// Recorta lo que se ve dentro del círculo y lo sube con la función existente.
+const guardarFotoAjustada = () => {
+    var e = encuadreFoto;
+    var editor = document.getElementById('perfil_foto_editor');
+    if (!editor.naturalWidth) return;
+
+    var s = e.minimo * e.escala;
+    var lado = 512;
+    var lienzo = document.createElement('canvas');
+    lienzo.width = lado;
+    lienzo.height = lado;
+    var ctx = lienzo.getContext('2d');
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, lado, lado);
+    ctx.drawImage(editor, -e.x / s, -e.y / s, e.marco / s, e.marco / s, 0, 0, lado, lado);
+
+    lienzo.toBlob(function(blob) {
+        if (!blob) {
+            msg('Foto de perfil', 'No fue posible preparar la foto.', 'error');
+            return;
+        }
+        var recorte = new File([blob], 'foto-perfil.jpg', { type: 'image/jpeg' });
+        var transferencia = new DataTransfer();
+        transferencia.items.add(recorte);
+        document.getElementById('perfil_app_foto').files = transferencia.files;
+        guardarFotoPerfilApp();
+    }, 'image/jpeg', 0.9);
+};
 
 const guardarFotoPerfilApp = () => {
     var input = document.getElementById('perfil_app_foto');
@@ -252,6 +376,7 @@ const guardarFotoPerfilApp = () => {
         success: function(resp) {
             $('#perfil_app_foto_preview').attr('src', resp.foto_perfil_url);
             $('#perfil_app_foto').val('');
+            $('.perfil-app-foto').removeClass('con-nueva-foto');
             localStorage.setItem('foto_perfil', resp.foto_perfil || '');
             localStorage.setItem('foto_perfil_url', resp.foto_perfil_url || '');
 
@@ -276,6 +401,13 @@ const guardarFotoPerfilApp = () => {
             var mensaje = xhr.responseJSON && xhr.responseJSON.message
                 ? xhr.responseJSON.message
                 : 'No fue posible actualizar la foto.';
+            // Si falló, vuelve a mostrar la foto que sigue guardada.
+            $('#perfil_app_foto').val('');
+            $('.perfil-app-foto').removeClass('con-nueva-foto');
+            $('#perfil_app_foto_preview').attr(
+                'src',
+                localStorage.getItem('foto_perfil_url') || 'src/images/avatar-generico.svg'
+            );
             msg('Foto de perfil', mensaje, 'error');
         }
     });
