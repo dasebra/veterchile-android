@@ -52,7 +52,7 @@ const renderMensajesApp = (mensajes, noLeidos) => {
     $('#mensajes-app-resumen').html(
         noLeidos > 0
             ? '<strong>' + noLeidos + '</strong> mensaje' + (noLeidos === 1 ? '' : 's') + ' sin leer'
-            : 'No tienes mensajes pendientes'
+            : ''
     );
 
     if (!mensajes.length) {

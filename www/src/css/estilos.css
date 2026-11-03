@@ -1,5 +1,39 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
 
+/* Fuentes instaladas en el proyecto: funcionan sin conexión. */
+@font-face {
+    font-family: "Nunito";
+    src: url('../font/Nunito-VariableFont_wght.ttf') format('truetype');
+    font-weight: 200 1000;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "NunitoSans";
+    src: url('../font/NunitoSans-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "NunitoSans";
+    src: url('../font/NunitoSans-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "NunitoSans";
+    src: url('../font/NunitoSans-ExtraBold.ttf') format('truetype');
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}
+
+
 p {
     font-family: "NunitoSans" sans-serif;
 }
@@ -279,6 +313,21 @@ p {
     display: block;
 }
 
+.header-menu-cabecera {
+    padding: 13px 15px;
+    background: #31bebe;
+}
+
+.header-menu-nombre {
+    display: block;
+    overflow: hidden;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 800;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .header-menu-opciones button {
     display: block;
     width: 100%;
@@ -394,7 +443,7 @@ p {
 
 .perfil-header button.perfil-header-volver {
     align-items: center;
-    background: rgba(255, 255, 255, .22);
+    background: transparent;
     border: 0;
     border-radius: 50%;
     cursor: pointer;
@@ -410,12 +459,12 @@ p {
 
 .perfil-header-volver svg {
     fill: none;
-    height: 22px;
+    height: 26px;
     stroke: #fff;
     stroke-linecap: round;
     stroke-linejoin: round;
     stroke-width: 2.6;
-    width: 22px;
+    width: 26px;
 }
 
 .perfil-app-zona-foto,
@@ -3362,7 +3411,7 @@ placeholder{
       font-family: inherit;
       font-size: 15px;
       font-weight: 800;
-      box-shadow: 0 9px 20px rgba(20,80,189,.24);
+      box-shadow: none;
       text-shadow: none;
   }
 
@@ -3700,6 +3749,9 @@ placeholder{
       padding: 22px 4px 7px;
   }
 
+  #index .dashboard-welcome,
+  #inicio-profesional .dashboard-welcome { top: -12px; }
+
   .dashboard-welcome .dashboard-kicker {
       display: block;
       margin-bottom: 5px;
@@ -3713,7 +3765,7 @@ placeholder{
   .dashboard-welcome h1 {
       margin: 0;
       color: #fff;
-      font-size: 24px;
+      font-size: clamp(16px, 5vw, 20px);
       font-weight: 900;
       line-height: 1.15;
       text-shadow: none;
@@ -3748,6 +3800,130 @@ placeholder{
       width: 100%;
       max-width: 680px;
       margin: 0 auto;
+  }
+
+  #index > .dashboard-header,
+  #inicio-profesional > .dashboard-header { z-index: auto; }
+
+  #index > .dashboard-content.ui-content,
+  #inicio-profesional > .dashboard-content.ui-content {
+      position: relative;
+      z-index: 3;
+      margin-top: -34px;
+      padding-top: 0 !important;
+      background: transparent !important;
+      justify-content: flex-start;
+  }
+
+  .home-resumen {
+      position: relative;
+      margin: 0 0 12px;
+      padding: 12px 14px 9px;
+      overflow: hidden;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #d3f4f4 0%, #e8f9f9 60%, #f3fcfc 100%);
+      box-shadow: 0 10px 28px rgba(49, 190, 190, .22);
+  }
+
+  .home-resumen-pista {
+      position: relative;
+      display: grid;
+  }
+
+  .home-resumen-slide {
+      grid-area: 1 / 1;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      visibility: hidden;
+      opacity: 0;
+      transform: translateX(18px);
+      pointer-events: none;
+      transition: opacity .5s ease, transform .5s ease, visibility 0s .5s;
+  }
+
+  .home-resumen-slide.activo {
+      visibility: visible;
+      opacity: 1;
+      transform: none;
+      pointer-events: auto;
+      transition-delay: 0s;
+  }
+
+  .home-resumen-slide.saliendo {
+      visibility: visible;
+      transform: translateX(-18px);
+  }
+
+  .home-resumen-texto {
+      flex: 1 1 0;
+      min-width: 0;
+  }
+
+  .home-resumen-kicker {
+      display: block;
+      color: #1b8f93;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+  }
+
+  .home-resumen-texto strong {
+      display: block;
+      margin-top: 2px;
+      color: #0c4a52;
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 1.2;
+  }
+
+  .home-resumen-texto p {
+      margin: 2px 0 0;
+      color: #3d6f75;
+      font-size: 12px;
+      line-height: 1.3;
+      text-align: left;
+      text-shadow: none;
+  }
+
+  .home-resumen-accion {
+      flex: none;
+      padding: 8px 14px;
+      border: 0;
+      border-radius: 999px;
+      background: #31bebe;
+      color: #fff;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+  }
+
+  .home-resumen-accion:active { opacity: .85; }
+
+  .home-resumen-puntos {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 8px;
+  }
+
+  .home-resumen-puntos button {
+      width: 7px;
+      height: 7px;
+      padding: 0;
+      border: 0;
+      border-radius: 999px;
+      background: rgba(49, 190, 190, .35);
+      transition: width .3s ease, background .3s ease;
+  }
+
+  .home-resumen-puntos button.activo {
+      width: 18px;
+      background: #31bebe;
   }
 
   .dashboard-section-title {
@@ -5066,25 +5242,8 @@ placeholder{
     text-align: left;
 }
 
-/* Acento superior: alerta clínica para los primeros antecedentes,
-   azul/celeste para información histórica. */
-#fmu_paciente .cards-grid .card-button:nth-child(-n+4)::before,
-#fmu_paciente .cards-grid .card-button:nth-child(n+5)::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    right: 14px;
-    left: 14px;
-    height: 3px;
-    border-radius: 0 0 4px 4px;
-}
-
-#fmu_paciente .cards-grid .card-button:nth-child(-n+4)::before {
-    background: #d95b65;
-}
-
-#fmu_paciente .cards-grid .card-button:nth-child(n+5)::before {
-    background: #31aeb7;
+#fmu_paciente .cards-grid .card-button:first-child {
+    border: 1.5px solid #d95b65 !important;
 }
 
 /* Se neutralizan las antiguas clases color-rojo / color-celeste
@@ -5177,6 +5336,7 @@ placeholder{
     right: 0;
     top: 0;
     width: auto;
+    z-index: 9999;
 }
 
 .ui-loader.ui-loader-verbose h1 {
@@ -5186,55 +5346,41 @@ placeholder{
 
 .medsdi-loader-global {
     position: relative;
-    height: auto;
-    width: auto;
-    min-width: min(168px, 70vw);
-    padding: 24px 28px 20px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 140px;
+    width: 140px;
+    margin: 0;
+    padding: 0;
     border: 0;
-    border-radius: 24px;
-    background: rgba(255,255,255,.96);
-    box-shadow: 0 18px 44px rgba(20,60,120,.22);
-    text-align: center;
-    -webkit-backdrop-filter: blur(8px);
-    backdrop-filter: blur(8px);
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 2px 10px rgba(20, 50, 90, .08), 0 14px 36px rgba(20, 60, 120, .18);
+    overflow: visible;
+    z-index: 9999;
 }
 
 .medsdi-loader-global .medsdi-loader-anillo {
-    display: block;
-    margin: 0 auto 14px;
-    animation: medsdi-loader-giro .9s linear infinite;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 120px;
+    height: 120px;
+    animation: medsdi-loader-giro 1s linear infinite;
 }
 
-.medsdi-loader-global .medsdi-loader-marca {
+.medsdi-loader-global .medsdi-loader-texto {
+    position: relative;
     color: #1450bd;
-    font-size: 19px;
+    font-size: 15px;
     font-weight: 800;
-    letter-spacing: -.01em;
+    letter-spacing: .01em;
     line-height: 1;
 }
 
-.medsdi-loader-global p {
-    margin: 8px 0 0;
-    color: #7a8798;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: .02em;
-    text-shadow: none;
-}
-
-.medsdi-loader-puntos::after {
-    animation: medsdi-loader-puntos 1.2s steps(1, end) infinite;
-    content: "";
-}
-
 @keyframes medsdi-loader-giro { to { transform: rotate(360deg); } }
-
-@keyframes medsdi-loader-puntos {
-    0%   { content: ""; }
-    25%  { content: "."; }
-    50%  { content: ".."; }
-    75%  { content: "..."; }
-}
 
 /* =========================================================
    MED-SDI - Contraste documentos clínicos / Mis exámenes
@@ -5952,3 +6098,1158 @@ placeholder{
     cursor: default;
 }
 
+
+#index .dashboard-grid-paciente > .dashboard-card .dashboard-card-icon {
+    background-color: transparent !important;
+}
+
+#index .dashboard-grid-paciente #boton_citas {
+    background-image: url('../images/citasdos.svg') !important;
+}
+
+.dashboard-card-oculta { display: none !important; }
+
+#inicio-profesional .profesional-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+}
+
+#inicio-profesional .profesional-grid > .dashboard-card {
+    grid-column: auto !important;
+    aspect-ratio: 1 / 1;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 10px 8px !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0 !important;
+    text-align: center;
+}
+
+#inicio-profesional .profesional-grid > .dashboard-card .dashboard-card-icon {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    margin: 0 0 7px 0 !important;
+    border-radius: 10px !important;
+    background-color: transparent !important;
+    background-size: 20px !important;
+}
+
+#inicio-profesional .profesional-grid > .dashboard-card .dashboard-card-icon svg {
+    width: 18px !important;
+    height: 18px !important;
+}
+
+#inicio-profesional .profesional-grid .icon-autorizacion-unificado {
+    color: #5267c9 !important;
+    background: transparent !important;
+}
+
+#inicio-profesional .profesional-grid > .dashboard-card .dashboard-card-copy {
+    flex: 0 0 auto !important;
+    padding: 0 !important;
+    text-align: center !important;
+}
+
+#inicio-profesional .profesional-grid > .dashboard-card .dashboard-card-copy h3 {
+    min-height: 0;
+    margin: 0 !important;
+    color: #24435f !important;
+    font-size: 10.5px !important;
+    font-weight: 900 !important;
+    line-height: 1.2 !important;
+    text-align: center !important;
+}
+
+#inicio-profesional .profesional-grid > .dashboard-card .dashboard-card-copy p,
+#inicio-profesional .profesional-grid > .dashboard-card .dashboard-card-arrow {
+    display: none !important;
+}
+
+@media (max-width: 340px) {
+    #index .dashboard-section .dashboard-grid-paciente,
+    #inicio-profesional .dashboard-section .profesional-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+}
+
+h1, h2, h3, h4,
+.perfil-header p,
+.home-resumen-texto strong,
+.perfil-sheet-texto strong,
+.perfil-app-tarjeta-nombre,
+.perfil-hero-nombre {
+    font-family: "Nunito", "Nunito Sans", sans-serif;
+}
+
+.dashboard-user h2,
+.dashboard-user h2 * {
+    font-family: inherit;
+}
+
+.dashboard-welcome h1 { font-weight: 800; }
+
+#index .dashboard-content .dashboard-section .dashboard-grid-paciente > .dashboard-card .dashboard-card-copy h3,
+#inicio-profesional .dashboard-content .dashboard-section .profesional-grid > .dashboard-card .dashboard-card-copy h3 {
+    font-weight: 800 !important;
+}
+
+/* Cards del home: radio y tipografía según el ancho (celular chico, normal y tablet). */
+#index .dashboard-content .dashboard-section .dashboard-grid-paciente > .dashboard-card,
+#inicio-profesional .dashboard-content .dashboard-section .profesional-grid > .dashboard-card {
+    border-radius: 15px !important;
+}
+
+#index .dashboard-content .dashboard-section .dashboard-grid-paciente > .dashboard-card:not(.emergency-doctor-card) .dashboard-card-copy h3,
+#inicio-profesional .dashboard-content .dashboard-section .profesional-grid > .dashboard-card .dashboard-card-copy h3 {
+    font-size: clamp(12px, 3.35vw, 16px) !important;
+    line-height: 1.25 !important;
+    overflow-wrap: break-word;
+}
+
+#index .dashboard-content .dashboard-section .dashboard-grid-paciente > .dashboard-card:not(.emergency-doctor-card) .dashboard-card-icon,
+#inicio-profesional .dashboard-content .dashboard-section .profesional-grid > .dashboard-card .dashboard-card-icon {
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    margin-bottom: 8px !important;
+    background-size: 62% !important;
+}
+
+#index .dashboard-content .dashboard-section .dashboard-grid-paciente > .dashboard-card:not(.emergency-doctor-card) .dashboard-card-icon svg,
+#inicio-profesional .dashboard-content .dashboard-section .profesional-grid > .dashboard-card .dashboard-card-icon svg {
+    width: 58% !important;
+    height: 58% !important;
+}
+
+#index .dashboard-content .dashboard-section .dashboard-grid-paciente > .emergency-doctor-card .dashboard-card-copy h3 {
+    font-size: clamp(14px, 4vw, 17px) !important;
+}
+
+#index .dashboard-content .dashboard-section .dashboard-grid-paciente > .emergency-doctor-card .dashboard-card-copy p {
+    font-size: clamp(11.5px, 3.2vw, 14px) !important;
+}
+
+#index .home-resumen,
+#inicio-profesional .home-resumen {
+    border-radius: 15px;
+}
+
+.home-resumen-kicker { font-size: clamp(10.5px, 2.9vw, 12.5px); }
+.home-resumen-texto strong { font-size: clamp(15px, 4.3vw, 19px); }
+.home-resumen-texto p { font-size: clamp(12px, 3.3vw, 14px); }
+.home-resumen-accion { font-size: clamp(13px, 3.5vw, 15px); }
+
+@media (max-width: 360px) {
+    #index .dashboard-content .dashboard-section .dashboard-grid-paciente > .dashboard-card:not(.emergency-doctor-card),
+    #inicio-profesional .dashboard-content .dashboard-section .profesional-grid > .dashboard-card {
+        padding-right: 6px !important;
+        padding-left: 6px !important;
+    }
+}
+
+@media (max-width: 340px) {
+    #index .dashboard-content .dashboard-section .dashboard-grid-paciente > .dashboard-card:not(.emergency-doctor-card) .dashboard-card-copy h3,
+    #inicio-profesional .dashboard-content .dashboard-section .profesional-grid > .dashboard-card .dashboard-card-copy h3 {
+        font-size: 14px !important;
+    }
+
+    #index .dashboard-content .dashboard-section .dashboard-grid-paciente > .dashboard-card:not(.emergency-doctor-card) .dashboard-card-icon,
+    #inicio-profesional .dashboard-content .dashboard-section .profesional-grid > .dashboard-card .dashboard-card-icon {
+        width: 38px !important;
+        height: 38px !important;
+        min-width: 38px !important;
+    }
+}
+
+@media (min-width: 600px) {
+    #index .dashboard-content .dashboard-section .dashboard-grid-paciente > .dashboard-card:not(.emergency-doctor-card) .dashboard-card-icon,
+    #inicio-profesional .dashboard-content .dashboard-section .profesional-grid > .dashboard-card .dashboard-card-icon {
+        width: 46px !important;
+        height: 46px !important;
+        min-width: 46px !important;
+        margin-bottom: 10px !important;
+    }
+}
+
+/* Barra azul: flecha pegada al borde y título proporcional al ancho. */
+.perfil-header button.perfil-header-volver { left: -15px; }
+
+.row.bg-azul.perfil-header .col-xs-12 p {
+    max-width: calc(100% - 104px);
+    font-size: clamp(15px, 4.6vw, 20px) !important;
+    line-height: 1.2;
+    overflow-wrap: break-word;
+}
+
+@media (max-width: 360px) {
+    .perfil-header button.perfil-header-volver {
+        width: 36px;
+        height: 36px;
+    }
+
+    .perfil-header-volver svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    .row.bg-azul.perfil-header .col-xs-12 p { max-width: calc(100% - 96px); }
+}
+
+/* Labels de formularios: tamaño proporcional al ancho y un solo grosor. */
+#login label,
+#editar-perfil-app label,
+#clave_desbloqueo label,
+#med_no_insc label,
+#buscador_profesional label,
+#agenda-profesional label,
+#mis-pacientes-profesional label {
+    font-size: clamp(12.5px, 3.4vw, 15px) !important;
+    font-weight: 700 !important;
+    line-height: 1.3;
+}
+
+/* Sin círculos decorativos sobre el fondo azul (home, login y selección de perfil). */
+.dashboard-orbe,
+#login .login-hero-orbe,
+#seleccionar-rol .selector-rol-orbe {
+    display: none !important;
+}
+
+/* Iconos del home del profesional. */
+.dashboard-card .icon-prof-autorizacion { background-image: url('../images/autorizacion.svg') !important; }
+.dashboard-card .icon-prof-agenda { background-image: url('../images/citasdos.svg') !important; }
+.dashboard-card .icon-prof-pacientes { background-image: url('../images/pacientes.svg') !important; }
+.dashboard-card .icon-prof-reposo { background-image: url('../images/inspeccion_reposo.png') !important; }
+.dashboard-card .icon-prof-emergencia { background-image: url('../images/emergencia.png') !important; }
+
+#inicio-profesional .profesional-grid > .dashboard-card .icon-prof-autorizacion,
+#inicio-profesional .profesional-grid > .dashboard-card .icon-prof-agenda,
+#inicio-profesional .profesional-grid > .dashboard-card .icon-prof-pacientes,
+#inicio-profesional .profesional-grid > .dashboard-card .icon-prof-reposo,
+#inicio-profesional .profesional-grid > .dashboard-card .icon-prof-emergencia {
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Sombra única de todas las cards: pegada y tenue. */
+:root { --sombra-card: 0 2px 10px rgba(20, 50, 90, .08); }
+
+.dashboard-card,
+.home-resumen,
+.card-button,
+.card-button-dos,
+.box-documento,
+.inicio-profesional-card,
+.selector-rol-card,
+.perfil-app-tarjeta,
+.perfil-app-menu,
+.perfil-app-seccion,
+.mensaje-app-card,
+.mis-paciente-card,
+.cita-paciente-card,
+.desafio-acceso-card,
+.autorizacion-segura-card,
+.autorizacion-pin-card,
+.modalidades-agenda-contenedor,
+.sdi-reposo-card,
+.reposo-resumen,
+.emergency-search-card,
+.emergency-link-card,
+.emergency-result,
+.odontograma-fmu-card,
+.app-estado-carga,
+.app-estado-vacio,
+#login .login-panel.ui-content {
+    box-shadow: var(--sombra-card) !important;
+}
+
+/* Cards del home (paciente y profesional): mismo aspecto, sin borde. */
+#index .dashboard-content .dashboard-section .dashboard-grid-paciente > .dashboard-card,
+#inicio-profesional .dashboard-content .dashboard-section .profesional-grid > .dashboard-card {
+    border: 0 !important;
+}
+
+/* Cards sin borde gris (se conservan los bordes de color de la ficha médica). */
+.dashboard-card,
+.home-resumen,
+.card-button,
+.card-button-dos,
+.box-documento,
+.inicio-profesional-card,
+.selector-rol-card,
+.perfil-app-tarjeta,
+.perfil-app-menu,
+.perfil-app-seccion,
+.mensaje-app-card,
+.mis-paciente-card,
+.cita-paciente-card,
+.desafio-acceso-card,
+.autorizacion-segura-card,
+.autorizacion-pin-card,
+.modalidades-agenda-contenedor,
+.sdi-reposo-card,
+.reposo-resumen,
+.emergency-search-card,
+.emergency-link-card,
+.emergency-result,
+.odontograma-fmu-card,
+.app-estado-carga,
+.app-estado-vacio,
+#login .login-panel.ui-content {
+    border-color: transparent !important;
+}
+
+#fmu_paciente .ui-content > .row:last-of-type .card-button {
+    border-left-color: #d95b65 !important;
+}
+
+/* Botón "Hoy" de la agenda: sin sombra ni borde. */
+#agenda-profesional .agenda-profesional-hoy {
+    border: 0 !important;
+    box-shadow: none !important;
+}
+
+/* Flechas del calendario de la agenda: sin sombra y con la flecha más grande. */
+#agenda-profesional .agenda-profesional-flecha {
+    align-items: center;
+    box-shadow: none !important;
+    display: flex !important;
+    font-size: 36px !important;
+    font-weight: 700 !important;
+    justify-content: center;
+    line-height: 1 !important;
+    padding: 0 !important;
+}
+
+#agenda-profesional .agenda-profesional-flecha svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: #fff;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2.8;
+}
+
+/* Título largo de "Contacto médico de emergencia": más chico para que quepa en una línea. */
+#medico-emergencia-app .row.bg-azul.perfil-header .col-xs-12 p {
+    font-size: clamp(12.5px, 3.9vw, 17px) !important;
+    letter-spacing: -.01em;
+}
+
+/* Médico no inscrito: sin cards, fondo blanco, menos margen lateral y labels sobre el campo. */
+#med_no_insc,
+#med_no_insc > .ui-content {
+    background: #fff !important;
+}
+
+#med_no_insc > .ui-content {
+    padding: 8px 10px 92px !important;
+}
+
+#med_no_insc .row {
+    margin-right: 0;
+    margin-left: 0;
+}
+
+#med_no_insc [class*="col-"] {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+#med_no_insc .card-button-dos {
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+#med_no_insc label {
+    position: static !important;
+    display: block;
+    margin: 14px 0 6px !important;
+    padding: 0 !important;
+    background: transparent !important;
+    color: #38546e !important;
+}
+
+#med_no_insc .form-row[style*="margin-left"] {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+}
+
+#med_no_insc .row.bg-azul.perfil-header .col-xs-12 p {
+    font-size: clamp(12px, 3.6vw, 17px) !important;
+}
+
+#med_no_insc label {
+    text-align: left !important;
+}
+
+#med_no_insc .form-group,
+#med_no_insc .form-row {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Mis Documentos: cards con la misma estética del home. */
+#recetaonline #boton_examenesro,
+#recetaonline #boton_recetasro,
+#recetaonline #boton_certificadosro,
+#recetaonline #boton_documentosro {
+    height: auto !important;
+    min-height: 112px;
+    margin-bottom: 0 !important;
+    padding: 14px 10px !important;
+    border: 0 !important;
+    border-radius: 15px !important;
+    box-shadow: var(--sombra-card) !important;
+}
+
+#recetaonline #boton_examenesro .icono,
+#recetaonline #boton_recetasro .icono,
+#recetaonline #boton_certificadosro .icono,
+#recetaonline #boton_documentosro .icono {
+    width: 38px !important;
+    height: 38px !important;
+    margin-bottom: 8px !important;
+    background-size: 38px 38px !important;
+}
+
+#recetaonline #boton_examenesro .texto,
+#recetaonline #boton_recetasro .texto,
+#recetaonline #boton_certificadosro .texto,
+#recetaonline #boton_documentosro .texto {
+    color: #24435f !important;
+    font-size: clamp(13px, 3.6vw, 16px) !important;
+    font-weight: 800 !important;
+    line-height: 1.25;
+}
+
+#recetaonline .container > .row > [class*="col-xs-"] {
+    margin-bottom: 20px;
+}
+
+/* Nunito en toda la app (los iconos de Glyphicons conservan su propia fuente). */
+html,
+body,
+body *:not(.glyphicon) {
+    font-family: "Nunito", "Nunito Sans", sans-serif !important;
+}
+
+/* Home del paciente: el título va bajo la tarjeta de avisos. */
+.dashboard-pregunta {
+    margin: 18px 2px 12px;
+    color: #14213d;
+    font-size: clamp(17px, 5.4vw, 22px);
+    font-weight: 800;
+    line-height: 1.2;
+    text-align: left;
+}
+
+#index > .dashboard-header,
+#inicio-profesional > .dashboard-header {
+    padding-bottom: 64px;
+}
+
+/* Iconos más grandes en las cards del home del profesional. */
+#inicio-profesional .dashboard-content .dashboard-section .profesional-grid > .dashboard-card .dashboard-card-icon {
+    width: 46px !important;
+    height: 46px !important;
+    min-width: 46px !important;
+    margin-bottom: 6px !important;
+    background-size: 66% !important;
+}
+
+#inicio-profesional .dashboard-content .dashboard-section .profesional-grid > .dashboard-card .dashboard-card-icon svg {
+    width: 60% !important;
+    height: 60% !important;
+}
+
+@media (max-width: 340px) {
+    #inicio-profesional .dashboard-content .dashboard-section .profesional-grid > .dashboard-card .dashboard-card-icon {
+        width: 52px !important;
+        height: 52px !important;
+        min-width: 52px !important;
+    }
+}
+
+@media (min-width: 600px) {
+    #inicio-profesional .dashboard-content .dashboard-section .profesional-grid > .dashboard-card .dashboard-card-icon {
+        width: 62px !important;
+        height: 62px !important;
+        min-width: 62px !important;
+        margin-bottom: 10px !important;
+    }
+}
+
+/* ===== Control de reposo (profesional y paciente) ===== */
+.sdi-reposo-card {
+    margin-bottom: 14px !important;
+    padding: 18px 16px !important;
+    border-radius: 15px !important;
+}
+
+#control-reposo-paciente .sdi-reposo-card { margin: 0 0 14px !important; }
+.reposo-controles-card { margin-top: 0 !important; }
+
+/* Resumen con la estética turquesa del home */
+#control-reposo-profesional .reposo-resumen {
+    margin: 0 0 14px;
+    padding: 0 !important;
+    overflow: hidden;
+    border: 0 !important;
+    border-radius: 15px !important;
+    background: linear-gradient(135deg, #d3f4f4 0%, #e8f9f9 60%, #f3fcfc 100%) !important;
+}
+
+#control-reposo-profesional .reposo-resumen-header {
+    padding: 14px 16px 6px;
+    border-bottom: 0;
+    color: #1b8f93;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.reposo-resumen .reposo-item {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 2px;
+    padding: 8px 16px;
+    border-bottom: 1px solid rgba(49, 190, 190, .2);
+}
+
+.reposo-resumen .reposo-item:last-child { padding-bottom: 14px; border-bottom: 0; }
+
+#control-reposo-profesional .reposo-label {
+    color: #3d6f75;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+#control-reposo-profesional .reposo-value {
+    color: #0c4a52;
+    font-size: clamp(14px, 4.2vw, 16px);
+    font-weight: 800;
+    line-height: 1.25;
+}
+
+.reposo-resumen .reposo-badge,
+.reposo-estado-chip {
+    padding: 4px 12px;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.reposo-resumen .reposo-badge.activo { background: #fff; color: #1b8f93; }
+
+/* Encabezados de cada card */
+.sdi-reposo-card .reposo-form-encabezado > span,
+.reposo-solicitud-linea > span:first-child {
+    color: #1b8f93;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.sdi-reposo-card .reposo-form-encabezado h2 {
+    margin: 4px 0 6px;
+    color: #14213d;
+    font-size: clamp(17px, 5vw, 20px);
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.sdi-reposo-card .reposo-form-encabezado p {
+    color: #667085;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.45;
+}
+
+/* Secciones del formulario */
+.reposo-seccion {
+    margin: 22px 0 0;
+    padding-top: 16px;
+    border-top: 1px solid #e7eef3;
+    color: #14213d;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+}
+
+.reposo-form-encabezado + .reposo-seccion {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+}
+
+.reposo-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 12px;
+}
+
+.reposo-grid-2 > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-width: 0;
+}
+
+@media (max-width: 340px) {
+    .reposo-grid-2 { grid-template-columns: 1fr; }
+}
+
+/* Labels e inputs: una sola escala */
+.sdi-label {
+    margin: 14px 0 6px;
+    color: #38546e;
+    font-size: clamp(12.5px, 3.4vw, 15px);
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.sdi-reposo-card input:not([type="checkbox"]):not([type="hidden"]),
+.sdi-reposo-card select,
+.sdi-reposo-card textarea {
+    min-height: 48px;
+    padding: 10px 14px;
+    border: 1px solid #d6e3ee;
+    border-radius: 12px !important;
+    background: #f7fafc;
+    color: #14213d;
+    font-size: clamp(14px, 3.9vw, 16px);
+    font-weight: 600;
+    text-transform: none;
+}
+
+.sdi-reposo-card textarea {
+    min-height: 84px;
+    line-height: 1.4;
+}
+
+.sdi-reposo-card input:not([type="checkbox"]):focus,
+.sdi-reposo-card select:focus,
+.sdi-reposo-card textarea:focus {
+    border-color: #31bebe;
+    outline: 0;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(49, 190, 190, .18);
+}
+
+.sdi-input-group span {
+    min-width: 30px;
+    color: #38546e;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+/* Botones: los verdes pasan a #31bebe */
+.sdi-btn-autorizar,
+.reposo-enviar,
+.autorizacion-segura-acciones .autorizar,
+.desafio-btn.aprobar {
+    background: #31bebe !important;
+    box-shadow: none !important;
+    color: #fff !important;
+}
+
+.sdi-input-group .sdi-btn {
+    height: 48px;
+    margin: 0;
+    padding: 0 18px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.sdi-reposo-actions {
+    flex-direction: column;
+    gap: 10px;
+    margin: 22px 0 4px;
+}
+
+.sdi-reposo-actions .sdi-btn {
+    height: 48px;
+    margin: 0;
+    border-radius: 12px;
+    box-shadow: none;
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.sdi-reposo-actions .sdi-btn-rechazar {
+    border: 1.5px solid #31bebe !important;
+    background: #fff !important;
+    color: #1b8f93 !important;
+}
+
+.reposo-enviar {
+    border-radius: 12px !important;
+    font-size: 15px !important;
+    font-weight: 800 !important;
+}
+
+/* Textos de apoyo con tamaños legibles */
+.reposo-paciente-opcion strong { font-size: 14px; font-weight: 800; }
+.reposo-paciente-opcion span { font-size: 12px; }
+.reposo-aviso { font-size: 13px; line-height: 1.45; }
+.reposo-control-cabecera strong { font-size: 14px; font-weight: 800; }
+.reposo-control-item small { font-size: 12px; }
+.reposo-control-item p { font-size: 13px; }
+.reposo-consentimiento { font-size: 13px; }
+.reposo-foto-boton strong { font-size: 14px; }
+.reposo-foto-boton small { font-size: 11px; }
+#control-reposo-paciente .reposo-label { font-size: 12px; font-weight: 700; }
+#control-reposo-paciente .reposo-value { font-size: 14px; font-weight: 800; }
+
+/* Refuerzo: las reglas globales de pantallas interiores tienen más especificidad. */
+.sdi-reposo-card label.sdi-label {
+    margin: 14px 0 6px !important;
+    color: #38546e !important;
+    font-size: clamp(12.5px, 3.4vw, 15px) !important;
+    font-weight: 700 !important;
+    line-height: 1.3;
+}
+
+.sdi-reposo-card .reposo-seccion + label.sdi-label,
+.sdi-reposo-card .reposo-grid-2 label.sdi-label:first-child { margin-top: 12px !important; }
+
+.sdi-reposo-card input:not([type="checkbox"]):not([type="hidden"]),
+.sdi-reposo-card select,
+.sdi-reposo-card textarea {
+    min-height: 48px !important;
+    height: auto;
+    background: #f7fafc !important;
+    color: #14213d !important;
+    font-size: clamp(14px, 3.9vw, 16px) !important;
+    font-weight: 600 !important;
+}
+
+.sdi-reposo-card select { height: 48px; }
+.sdi-reposo-card textarea { min-height: 84px !important; }
+
+.sdi-reposo-card input:not([type="checkbox"]):focus,
+.sdi-reposo-card select:focus,
+.sdi-reposo-card textarea:focus { background: #fff !important; }
+
+.sdi-reposo-actions .sdi-btn,
+.sdi-input-group .sdi-btn {
+    height: 48px !important;
+    min-height: 48px !important;
+    line-height: 1.2;
+}
+
+/* Navegación de la agenda: flechas, fecha y "Hoy" en una sola fila, mismo alto, fondo blanco e íconos azules. */
+#agenda-profesional .agenda-profesional-navegacion {
+    align-items: stretch;
+    display: flex !important;
+    gap: 8px;
+    margin: 0 0 6px !important;
+}
+
+#agenda-profesional .agenda-profesional-navegacion .agenda-profesional-fecha {
+    border: 1px solid #d5dfec !important;
+    border-radius: 12px !important;
+    flex: 1 1 auto;
+    height: 44px !important;
+    min-width: 0;
+    width: auto !important;
+}
+
+#agenda-profesional .agenda-profesional-navegacion .agenda-profesional-boton {
+    background: #fff !important;
+    border: 1px solid #d5dfec !important;
+    border-radius: 12px !important;
+    box-shadow: none !important;
+    color: #1450bd !important;
+    flex: none;
+    height: 44px !important;
+    width: 44px !important;
+}
+
+#agenda-profesional .agenda-profesional-navegacion .agenda-profesional-boton:active {
+    background: #eef3fb !important;
+}
+
+#agenda-profesional .agenda-profesional-navegacion .agenda-profesional-hoy {
+    align-items: center;
+    display: flex !important;
+    font-size: 14px !important;
+    font-weight: 800 !important;
+    justify-content: center;
+    line-height: 1 !important;
+    padding: 0 !important;
+    width: 64px !important;
+}
+
+#agenda-profesional .agenda-profesional-navegacion .agenda-profesional-flecha svg {
+    stroke: #1450bd !important;
+}
+
+/* El selector de lugar toma el mismo alto, radio y borde que la fila de navegación. */
+#agenda-profesional .agenda-profesional-select {
+    border: 1px solid #d5dfec !important;
+    border-radius: 12px !important;
+    height: 44px !important;
+    min-height: 44px !important;
+}
+
+/* Botón de los 3 puntos del menú de perfil: sin recuadro circular. */
+.header-menu-puntos,
+.header-menu-puntos:hover,
+.header-menu-puntos:focus,
+.header-menu-puntos:active {
+    background: transparent !important;
+    box-shadow: none !important;
+    outline: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Campana de notificaciones: a la izquierda de los 3 puntos, en paciente y profesional. */
+.dashboard-topbar {
+    grid-template-columns: auto minmax(0, 1fr) auto minmax(0, max-content) auto auto;
+}
+
+.dashboard-topbar .dashboard-user .header-notificaciones {
+    align-items: center;
+    background: transparent !important;
+    border: 0;
+    box-shadow: none !important;
+    display: flex;
+    grid-column: 5;
+    grid-row: 1 / span 2;
+    height: 34px;
+    justify-content: center;
+    margin: 0;
+    outline: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+    width: 30px;
+}
+
+.dashboard-topbar .dashboard-user .header-notificaciones svg {
+    fill: none;
+    height: 22px;
+    stroke: #fff;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.9;
+    width: 22px;
+}
+
+.dashboard-topbar .dashboard-user .header-menu-perfil {
+    grid-column: 6;
+    margin-left: 0;
+}
+
+/* Íconos del home del paciente: mismo tamaño que los del profesional. */
+#index .dashboard-content .dashboard-section .dashboard-grid-paciente > .dashboard-card:not(.emergency-doctor-card) .dashboard-card-icon {
+    width: 46px !important;
+    height: 46px !important;
+    min-width: 46px !important;
+    margin-bottom: 6px !important;
+    background-size: 66% !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+}
+
+@media (min-width: 600px) {
+    #index .dashboard-content .dashboard-section .dashboard-grid-paciente > .dashboard-card:not(.emergency-doctor-card) .dashboard-card-icon {
+        width: 62px !important;
+        height: 62px !important;
+        min-width: 62px !important;
+        margin-bottom: 10px !important;
+    }
+}
+
+/* Tarjeta "Mi médico de emergencia" del paciente: ícono con emergencia.png. */
+#index .dashboard-grid-paciente > .emergency-doctor-card .dashboard-card-icon.icon-emergencia-img {
+    background: transparent url('../images/emergencia.png') center / 66% auto no-repeat !important;
+    height: 46px !important;
+    min-width: 46px !important;
+    width: 46px !important;
+}
+
+/* Panel de notificaciones (por ahora siempre vacío). */
+.dashboard-topbar .dashboard-user .header-notificaciones-caja {
+    grid-column: 5;
+    grid-row: 1 / span 2;
+    height: 34px;
+    position: relative;
+    width: 30px;
+}
+
+.header-notificaciones-panel {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(24, 52, 90, .25);
+    display: none;
+    overflow: hidden;
+    position: absolute;
+    right: -34px;
+    top: 44px;
+    width: min(240px, calc(100vw - 36px));
+    z-index: 1200;
+}
+
+.header-notificaciones-caja.abierto .header-notificaciones-panel {
+    display: block;
+}
+
+.header-notificaciones-vacio {
+    color: #7a8798;
+    font-size: 14px;
+    font-weight: 700;
+    margin: 0;
+    padding: 26px 15px;
+    text-align: center;
+    text-shadow: none;
+}
+
+/* Iconos de ingreso por rol: imagen completa, sin círculo de fondo. */
+#seleccionar-rol .selector-rol-icono {
+    background: transparent !important;
+    border-radius: 0;
+    height: 60px;
+    width: 60px;
+}
+
+#seleccionar-rol .selector-rol-icono img {
+    display: block;
+    height: 100%;
+    object-fit: contain;
+    width: 100%;
+}
+
+@media (max-height: 620px) {
+    #seleccionar-rol .selector-rol-icono { height: 50px; width: 50px; }
+}
+
+/* Título único de la selección de perfil: proporcional al ancho y en dos líneas parejas. */
+#seleccionar-rol .selector-rol-titulo-pantalla {
+    font-size: clamp(18px, 5.6vw, 26px) !important;
+    margin: clamp(14px, 3.5vh, 30px) auto 0 !important;
+    max-width: 320px;
+    padding: 0 12px;
+    text-wrap: balance;
+}
+
+/* Médico no inscrito: exámenes y medicamentos como área de texto. */
+#med_no_insc textarea.form-control {
+    line-height: 1.4;
+    min-height: 84px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    resize: vertical;
+}
+
+#med_no_insc .form-row[style*="margin-left"] {
+    margin-top: 16px !important;
+}
+
+/* Las filas flotan sus columnas: se contienen para que los márgenes entre campos y botones se respeten. */
+#med_no_insc .form-row {
+    display: flow-root;
+}
+
+#med_no_insc .form-row[style*="margin-left"] {
+    margin-top: 18px !important;
+}
+
+/* Médico no inscrito: escala de campos legible (misma que Control de reposo). */
+#med_no_insc .form-control,
+#med_no_insc select.form-control,
+#med_no_insc textarea.form-control {
+    background-color: #f7fafc !important;
+    border-radius: 12px !important;
+    color: #26374a !important;
+    font-family: "Nunito", sans-serif !important;
+    font-size: clamp(14px, 3.9vw, 16px) !important;
+    font-weight: 600 !important;
+    min-height: 48px !important;
+}
+
+#med_no_insc textarea.form-control {
+    min-height: 96px !important;
+}
+
+#med_no_insc .form-control::placeholder {
+    color: #8a99ab;
+    font-weight: 600;
+}
+
+#med_no_insc .form-control:focus {
+    border-color: #31bebe !important;
+    box-shadow: 0 0 0 3px rgba(49, 190, 190, .18) !important;
+    outline: 0;
+}
+
+#med_no_insc .form-row[style*="margin-left"] > div {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    min-height: 48px;
+    padding: 0 !important;
+}
+
+#med_no_insc .form-row[style*="margin-left"] > div p {
+    font-family: "Nunito", sans-serif !important;
+    font-size: clamp(14px, 3.9vw, 16px) !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+    margin: 0 !important;
+}
+
+#med_no_insc .form-row[style*="margin-left"] > .bg-info {
+    background: #31bebe !important;
+}
+
+/* Botón "Actualizar": mismo estilo azul con borde en profesional y paciente, con tamaño legible. */
+.app-refresh-button,
+#citas .citas-actualizar {
+    background: #edf5ff !important;
+    border: 1px solid #bdd7fa !important;
+    border-radius: 11px !important;
+    box-shadow: none !important;
+    color: #1450bd !important;
+    font-family: "Nunito", sans-serif !important;
+    font-size: clamp(12.5px, 3.5vw, 14px) !important;
+    font-weight: 800 !important;
+    min-height: 40px !important;
+    padding: 8px 14px !important;
+    text-shadow: none !important;
+}
+
+.app-refresh-button:active,
+#citas .citas-actualizar:active {
+    background: #dcecff !important;
+}
+
+#citas .citas-filtros-cabecera h2 {
+    font-size: clamp(16px, 4.8vw, 20px);
+    font-weight: 800;
+    margin: 0;
+}
+
+/* Pantallas que reciben el menú inferior por JS: espacio para que no tape el contenido. */
+.con-menu-inferior > .ui-content { padding-bottom: 90px !important; }
+.con-menu-inferior .reposo-footer { display: none; }
+
+/* ===== Paciente: escala tipográfica legible en celular, tablet y pantallas pequeñas ===== */
+
+/* Menú inferior */
+.ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .menu-inferior p {
+    font-size: clamp(10.5px, 3vw, 12.5px) !important;
+    font-weight: 800 !important;
+    line-height: 1.2;
+}
+
+.ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .menu-inferior img {
+    width: clamp(19px, 5.4vw, 23px) !important;
+    max-height: 24px !important;
+}
+
+/* Encabezados del inicio */
+.dashboard-role { font-size: clamp(10.5px, 2.9vw, 12px) !important; }
+.dashboard-footer button { font-size: clamp(12px, 3.3vw, 14px) !important; font-weight: 800 !important; }
+.home-resumen-kicker { font-size: clamp(11px, 3vw, 13px) !important; }
+
+/* Mis citas */
+#citas .citas-filtros-cabecera span {
+    color: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    letter-spacing: 0;
+}
+
+#citas .citas-filtro {
+    font-size: clamp(11.5px, 3.2vw, 13.5px) !important;
+    min-height: 38px;
+    padding: 8px 12px;
+}
+
+#citas .citas-filtro-contador {
+    font-size: clamp(10.5px, 2.9vw, 12px) !important;
+    height: 20px;
+    min-width: 21px;
+}
+
+#citas .citas-filtro-resumen { font-size: clamp(11.5px, 3.2vw, 13.5px); }
+
+/* Botones "Actualizar" de Ficha médica y Mis documentos: mismo estilo azul con borde. */
+.fmu-actualizar,
+.documentos-actualizar {
+    background: #edf5ff !important;
+    border: 1px solid #bdd7fa !important;
+    border-radius: 11px !important;
+    box-shadow: none !important;
+    color: #1450bd !important;
+    font-family: "Nunito", sans-serif !important;
+    min-height: 44px !important;
+}
+
+.fmu-actualizar span,
+.documentos-actualizar span {
+    color: #1450bd !important;
+    font-size: clamp(13px, 3.6vw, 15px) !important;
+    font-weight: 800 !important;
+}
+
+/* Médico de emergencia */
+.emergency-safety-note strong { font-size: clamp(12.5px, 3.5vw, 14.5px); font-weight: 800; }
+.emergency-safety-note p { font-size: clamp(12px, 3.3vw, 14px); font-weight: 600; }
+
+/* Autorizaciones */
+.autorizaciones-listado-ayuda { font-size: clamp(11.5px, 3.2vw, 13.5px) !important; }
+.autorizaciones-filtro { font-size: clamp(11.5px, 3.2vw, 13.5px) !important; }
+.autorizaciones-filtro-contador { font-size: clamp(10.5px, 2.9vw, 12px) !important; }
+#autorizaciones_sdi .sdi-btn small,
+#autorizaciones_sdi button small { font-size: clamp(11px, 3vw, 12.5px) !important; }
+#autorizaciones_sdi button strong { font-weight: 800 !important; }
+
+/* Ficha médica */
+#fmu_paciente .odontograma-maxilar { font-size: clamp(11.5px, 3.1vw, 13px); }
+
+/* Títulos de los pasos de Agendar hora: un solo grosor */
+#pedirhora .letra-bold,
+#buscador_profesional .size14,
+#lugares_atencion .size14,
+#seleccionar_fecha_hora .size14 {
+    font-weight: 800 !important;
+}
+
+#pedirhora .letra-bold { font-size: clamp(16px, 4.8vw, 20px) !important; }
+#buscador_profesional .size14,
+#lugares_atencion .size14,
+#seleccionar_fecha_hora .size14 { font-size: clamp(14px, 4vw, 17px) !important; }
+
+/* Verificación de reposo (paciente) */
+.reposo-estado-chip { font-size: clamp(11px, 3vw, 12.5px) !important; }
+
+/* Textos de apoyo de desafíos de acceso */
+#desafios-acceso p { font-size: clamp(12px, 3.3vw, 14px); }
+
+/* Ficha médica: tarjetas sin datos ocultas y "No disponible" discreto en Grupo sanguíneo. */
+#fmu_paciente .cards-grid .card-button.fmu-card-sin-datos {
+    display: none !important;
+}
+
+#fmu_paciente .cards-grid .fmu-valor-grupo.fmu-valor-vacio {
+    color: #8a99ab !important;
+    font-size: clamp(11.5px, 3.2vw, 13.5px) !important;
+    font-weight: 700 !important;
+    letter-spacing: 0;
+    margin-top: 4px;
+}

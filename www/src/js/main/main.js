@@ -278,21 +278,11 @@ const cargando = (estado) => {
             theme: 'z',
             html: `
             <div class="cont_cargando medsdi-loader-global" role="status" aria-live="polite">
-                <svg class="medsdi-loader-anillo" xmlns="http://www.w3.org/2000/svg"
-                     width="56" height="56" viewBox="0 0 50 50" aria-hidden="true">
-                    <defs>
-                        <linearGradient id="medsdiLoaderDegradado" x1="0" y1="0" x2="1" y2="1">
-                            <stop offset="0" stop-color="#1450bd"/>
-                            <stop offset="1" stop-color="#31aeb7"/>
-                        </linearGradient>
-                    </defs>
-                    <circle cx="25" cy="25" r="20" fill="none" stroke="#e4edf8" stroke-width="5"/>
-                    <circle class="medsdi-loader-arco" cx="25" cy="25" r="20" fill="none"
-                            stroke="url(#medsdiLoaderDegradado)" stroke-width="5"
-                            stroke-linecap="round" stroke-dasharray="34 92"/>
+                <svg class="medsdi-loader-anillo" xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" aria-hidden="true">
+                    <circle cx="60" cy="60" r="52" fill="none" stroke="#e3f6f6" stroke-width="8"/>
+                    <circle class="medsdi-loader-arco" cx="60" cy="60" r="52" fill="none" stroke="#31bebe" stroke-width="8" stroke-linecap="round" stroke-dasharray="90 237"/>
                 </svg>
-                <div class="medsdi-loader-marca">Medichile</div>
-                <p>Cargando<span class="medsdi-loader-puntos"></span></p>
+                <span class="medsdi-loader-texto">Cargando</span>
             </div>`
         });
         return;
