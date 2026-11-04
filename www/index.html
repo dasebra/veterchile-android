@@ -597,6 +597,57 @@
         }
     </style>
 
+    <style>
+        /* Accesos del paciente: 3 columnas x 2 filas, tarjetas cuadradas, sin subtítulo gris */
+        #index .dashboard-grid-paciente {
+            grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+            gap: 10px !important;
+        }
+
+        #index .dashboard-grid-paciente > .dashboard-card:not(.emergency-doctor-card),
+        #index .dashboard-grid-paciente #contenedor-citas {
+            aspect-ratio: 1 / 1;
+            height: auto !important;
+            min-height: 0 !important;
+            padding: 10px 8px !important;
+            align-items: center !important;
+            justify-content: center !important;
+            text-align: center;
+        }
+
+        #index .dashboard-grid-paciente > .dashboard-card:not(.emergency-doctor-card) .dashboard-card-icon {
+            width: 32px !important;
+            height: 32px !important;
+            min-width: 32px !important;
+            margin: 0 0 7px 0 !important;
+            border-radius: 10px !important;
+            background-size: 20px !important;
+        }
+
+        #index .dashboard-grid-paciente > .dashboard-card:not(.emergency-doctor-card) .dashboard-card-icon svg {
+            width: 18px !important;
+            height: 18px !important;
+        }
+
+        #index .dashboard-grid-paciente > .dashboard-card:not(.emergency-doctor-card) .dashboard-card-copy {
+            flex: 0 0 auto !important;
+            padding: 0 !important;
+            text-align: center !important;
+        }
+
+        #index .dashboard-grid-paciente > .dashboard-card:not(.emergency-doctor-card) .dashboard-card-copy h3 {
+            min-height: 0;
+            margin: 0 !important;
+            font-size: 10.5px !important;
+            text-align: center !important;
+        }
+
+        #index .dashboard-grid-paciente > .dashboard-card:not(.emergency-doctor-card) .dashboard-card-copy p,
+        #index .dashboard-grid-paciente > .dashboard-card:not(.emergency-doctor-card) .dashboard-card-arrow {
+            display: none !important;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -612,7 +663,7 @@
     </div>
     <div role="main" class="ui-content login-panel">
         <div class="login-panel-contenido" id="cont_i_login">
-            <h1 class="login-titulo">Ingresa a tu cuenta Medichile</h1>
+            <h1 class="login-titulo">Ingresa a tu cuenta</h1>
             <div class="login-campo">
                 <label for="user">Correo electrónico</label>
                 <div class="login-input-contenedor">
@@ -666,8 +717,7 @@
         <span class="selector-rol-orbe selector-rol-orbe-uno" aria-hidden="true"></span>
         <span class="selector-rol-orbe selector-rol-orbe-dos" aria-hidden="true"></span>
         <img class="selector-rol-logo" src="src/images/logo.svg" alt="MED-SDI">
-        <h1 class="selector-rol-titulo-pantalla">Selecciona tu perfil</h1>
-        <p class="selector-rol-sub">La cuenta tiene más de un perfil disponible.</p>
+        <h1 class="selector-rol-titulo-pantalla">Elige el perfil con el que quieres ingresar</h1>
     </div>
     <div role="main" class="ui-content selector-rol-contenido">
         <div id="roles-disponibles" class="selector-rol-grid"></div>
@@ -691,9 +741,17 @@
                     <img class="img-circulo" src="src/images/avatar-generico.svg" alt="Foto de perfil">
                     <span>Profesional</span>
                 </h2>
+                <div class="header-notificaciones-caja">
+                    <button type="button" class="header-notificaciones" onclick="toggleNotificaciones(event)" aria-label="Notificaciones" aria-haspopup="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9a6 6 0 0 1 12 0c0 6 2.5 7.5 2.5 7.5h-17S6 15 6 9z"/><path d="M10 20a2.2 2.2 0 0 0 4 0"/></svg></button>
+                    <div class="header-notificaciones-panel" role="dialog" aria-label="Notificaciones" onclick="event.stopPropagation()">
+                        <div class="header-menu-cabecera"><span class="header-menu-nombre">Notificaciones</span></div>
+                        <p class="header-notificaciones-vacio">Sin notificaciones</p>
+                    </div>
+                </div>
                 <div class="header-menu-perfil">
                     <button type="button" class="header-menu-puntos" onclick="toggleMenuPerfil(event)" aria-label="Abrir menú de perfil">⋮</button>
                     <div class="header-menu-opciones">
+                        <div class="header-menu-cabecera"><span class="header-menu-nombre">Usuario</span></div>
                         <button type="button" onclick="abrirMensajesApp()">Mensajes</button>
                         <button type="button" onclick="abrirEditarPerfil()">Editar perfil</button>
                         <button type="button" class="selector-multiple-roles" onclick="volverASeleccionRoles()">Cambiar perfil</button>
@@ -702,30 +760,25 @@
                 </div>
             </div>
         </div>
-        <div class="dashboard-welcome">
-            <span class="dashboard-kicker">Tu espacio de trabajo</span>
-            <h1>¿Qué necesitas gestionar?</h1>
-            <p>Accede rápidamente a tus herramientas MED-SDI.</p>
-        </div>
     </div>
     <div role="main" class="ui-content dashboard-content">
         <section class="dashboard-section">
-            <div class="dashboard-section-title">
-                <div><span>ACCESOS RÁPIDOS</span><h2>Gestión profesional</h2></div>
+            <div class="home-resumen" role="region" aria-label="Resumen del día" aria-live="polite">
+                <div class="home-resumen-pista"></div>
+                <div class="home-resumen-puntos"></div>
             </div>
+            <h1 class="dashboard-pregunta">¿Qué necesitas gestionar?</h1>
             <div class="dashboard-grid profesional-grid">
-                <div class="dashboard-card dashboard-card-featured" onclick="vista('autorizaciones_sdi')" role="button" tabindex="0">
-                    <span class="dashboard-card-icon icon-autorizacion"></span>
+                <div class="dashboard-card" onclick="vista('autorizaciones_sdi')" role="button" tabindex="0">
+                    <span class="dashboard-card-icon icon-prof-autorizacion"></span>
                     <div class="dashboard-card-copy">
-                        <h3>Mi autorización</h3>
+                        <h3>Mis autorizaciones</h3>
                         <p>Revisa solicitudes pendientes</p>
                     </div>
                     <span class="dashboard-card-arrow">›</span>
                 </div>
                 <div class="dashboard-card" onclick="vista('agenda-profesional'); cargarAgendaProfesional()" role="button" tabindex="0">
-                            <span class="dashboard-card-icon icon-agenda">
-                                <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18M8 14h3M8 17h6"/></svg>
-                            </span>
+                            <span class="dashboard-card-icon icon-prof-agenda"></span>
                     <div class="dashboard-card-copy">
                         <h3>Mi agenda</h3>
                         <p>Citas y telemedicina</p>
@@ -733,9 +786,7 @@
                     <span class="dashboard-card-arrow">›</span>
                 </div>
                 <div class="dashboard-card" onclick="abrirMisPacientesProfesional()" role="button" tabindex="0">
-                            <span class="dashboard-card-icon icon-pacientes">
-                                <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20v-2a6 6 0 0 1 12 0v2M16 11a3 3 0 0 1 0-6M17 14a5 5 0 0 1 4 5v1"/></svg>
-                            </span>
+                            <span class="dashboard-card-icon icon-prof-pacientes"></span>
                     <div class="dashboard-card-copy">
                         <h3>Mis pacientes</h3>
                         <p>Busca pacientes que has atendido</p>
@@ -743,9 +794,7 @@
                     <span class="dashboard-card-arrow">›</span>
                 </div>
                 <div class="dashboard-card" onclick="abrirControlReposoProfesional()" role="button" tabindex="0">
-                            <span class="dashboard-card-icon icon-reposo">
-                                <svg viewBox="0 0 24 24"><path d="M4 13h16v7H4zM6 13V9a3 3 0 0 1 3-3h2v7M4 17h16M7 20v2M17 20v2"/><path d="M14 7h5M16.5 4.5v5"/></svg>
-                            </span>
+                            <span class="dashboard-card-icon icon-prof-reposo"></span>
                     <div class="dashboard-card-copy">
                         <h3>Control de reposo</h3>
                         <p>Configura seguimiento y verificaciones</p>
@@ -753,16 +802,14 @@
                     <span class="dashboard-card-arrow">›</span>
                 </div>
                 <div class="dashboard-card" onclick="abrirMedicoEmergencia()" role="button" tabindex="0">
-                            <span class="dashboard-card-icon icon-emergencia">
-                                <svg viewBox="0 0 24 24"><path d="M12 21s-8-4.5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6.5-8 11-8 11z"/><path d="M8 12h2l1-2 2 4 1-2h2"/></svg>
-                            </span>
+                            <span class="dashboard-card-icon icon-prof-emergencia"></span>
                     <div class="dashboard-card-copy">
                         <h3>Pacientes de emergencia</h3>
                         <p>Solicitudes y vínculos activos</p>
                     </div>
                     <span class="dashboard-card-arrow">›</span>
                 </div>
-                <div class="dashboard-card" onclick="abrirMensajesApp()" role="button" tabindex="0">
+                <div class="dashboard-card dashboard-card-oculta" onclick="abrirMensajesApp()" role="button" tabindex="0">
                             <span class="dashboard-card-icon icon-mensajes">
                                 <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>
                             </span>
@@ -772,7 +819,7 @@
                     </div>
                     <span class="dashboard-card-arrow">›</span>
                 </div>
-                <div id="boton_desafios_profesional" class="dashboard-card" onclick="abrirDesafiosAcceso()" role="button" tabindex="0">
+                <div id="boton_desafios_profesional" class="dashboard-card dashboard-card-oculta" onclick="abrirDesafiosAcceso()" role="button" tabindex="0">
                             <span class="dashboard-card-icon icon-seguridad">
                                 <svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 5 3 8 7 10 4-2 7-5 7-10V6z"/><rect x="9" y="10" width="6" height="5" rx="1"/><path d="M10.5 10V8.5a1.5 1.5 0 0 1 3 0V10"/></svg>
                             </span>
@@ -784,10 +831,6 @@
                 </div>
             </div>
         </section>
-        <button type="button" class="dashboard-switch selector-multiple-roles" onclick="volverASeleccionRoles()">
-            <svg viewBox="0 0 24 24"><path d="M16 3h5v5M21 3l-6 6M8 21H3v-5M3 21l6-6"/></svg>
-            Cambiar perfil
-        </button>
     </div>
     <div data-role="footer" class="footer dashboard-footer" id="footer-profesional">
         <button type="button" onclick="cerrarSesion()">
@@ -827,43 +870,60 @@
                 <h2>Parámetros de seguimiento</h2>
                 <p>Define las verificaciones que realizará el paciente durante su reposo.</p>
             </div>
-            <label class="sdi-label">Buscar paciente con licencia</label>
+            <div class="reposo-seccion">Paciente</div>
+            <label class="sdi-label" for="reposo_buscar_paciente">Buscar paciente con licencia</label>
             <div class="sdi-input-group">
                 <input type="search" id="reposo_buscar_paciente" class="input-app" placeholder="Nombre, apellido o RUT">
                 <button type="button" class="sdi-btn sdi-btn-autorizar" onclick="buscar_pacientes_reposo()">Buscar</button>
             </div>
             <div id="reposo_resultados_pacientes" class="reposo-resultados"></div>
             <input type="hidden" id="reposo_licencia_id">
-            <label class="sdi-label">Activar control de reposo</label>
-            <select id="reposo_activo" class="input-app">
-                <option value="0">No</option>
-                <option value="1">Sí</option>
-            </select>
-            <label class="sdi-label mt10">Radio de movilidad permitido</label>
+
+            <div class="reposo-seccion">Reglas del control</div>
+            <div class="reposo-grid-2">
+                <div>
+                    <label class="sdi-label" for="reposo_activo">Activar control</label>
+                    <select id="reposo_activo" class="input-app">
+                        <option value="0">No</option>
+                        <option value="1">Sí</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="sdi-label" for="reposo_frecuencia">Frecuencia</label>
+                    <select id="reposo_frecuencia" class="input-app">
+                        <option value="1">Cada 1 hora</option>
+                        <option value="2">Cada 2 horas</option>
+                        <option value="4">Cada 4 horas</option>
+                        <option value="8">Cada 8 horas</option>
+                    </select>
+                </div>
+            </div>
+            <label class="sdi-label" for="reposo_radio_km">Radio de movilidad permitido</label>
             <div class="sdi-input-group">
                 <input type="number" id="reposo_radio_km" class="input-app" value="1" min="0.1" step="0.1">
                 <span>Km</span>
             </div>
-            <label class="sdi-label mt10">Frecuencia de verificación</label>
-            <select id="reposo_frecuencia" class="input-app">
-                <option value="1">Cada 1 hora</option>
-                <option value="2">Cada 2 horas</option>
-                <option value="4">Cada 4 horas</option>
-                <option value="8">Cada 8 horas</option>
-            </select>
-            <label class="sdi-label mt10">Verificar medicamentos por cámara</label>
-            <select id="reposo_control_medicamentos" class="input-app">
-                <option value="1">Sí</option>
-                <option value="0">No</option>
-            </select>
-            <label class="sdi-label mt10">Verificar ubicación del paciente</label>
-            <select id="reposo_control_ubicacion" class="input-app">
-                <option value="1">Sí</option>
-                <option value="0">No</option>
-            </select>
-            <label class="sdi-label mt10">Dirección base del reposo</label>
+            <div class="reposo-grid-2">
+                <div>
+                    <label class="sdi-label" for="reposo_control_medicamentos">Medicamentos por cámara</label>
+                    <select id="reposo_control_medicamentos" class="input-app">
+                        <option value="1">Sí</option>
+                        <option value="0">No</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="sdi-label" for="reposo_control_ubicacion">Ubicación del paciente</label>
+                    <select id="reposo_control_ubicacion" class="input-app">
+                        <option value="1">Sí</option>
+                        <option value="0">No</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="reposo-seccion">Detalles</div>
+            <label class="sdi-label" for="reposo_direccion">Dirección base del reposo</label>
             <textarea id="reposo_direccion" class="input-app" rows="2" placeholder="Ej: Av. Balmaceda 1234, La Serena"></textarea>
-            <label class="sdi-label mt10">Observaciones</label>
+            <label class="sdi-label" for="reposo_observaciones">Observaciones</label>
             <textarea id="reposo_observaciones" class="input-app" rows="3" placeholder="Indicaciones adicionales para el paciente"></textarea>
             <div class="sdi-reposo-actions mt20">
                 <button type="button" class="sdi-btn sdi-btn-autorizar" onclick="guardar_config_reposo()">Guardar configuración</button>
@@ -928,24 +988,15 @@
     </div>
     <div role="main" class="ui-content agenda-profesional-contenido">
         <div class="agenda-profesional-filtros">
-            <label for="agenda_profesional_lugar">Lugar de atención</label>
-            <select id="agenda_profesional_lugar" class="agenda-profesional-select" onchange="cargarAgendaProfesional(this.value)">
-                <option value="">Todos los lugares</option>
+            <select id="agenda_profesional_lugar" class="agenda-profesional-select" aria-label="Lugar de atención" onchange="cargarAgendaProfesional(this.value)">
+                <option value="">Seleccione lugar de atención</option>
             </select>
         </div>
-        <div class="row agenda-profesional-navegacion">
-            <div class="col-xs-2">
-                <button type="button" data-role="none" class="agenda-profesional-boton agenda-profesional-flecha" onclick="cambiarDiaAgendaProfesional(-1)" aria-label="Día anterior">‹</button>
-            </div>
-            <div class="col-xs-8">
-                <input type="date" id="agenda_profesional_fecha" class="agenda-profesional-fecha" onchange="cargarAgendaProfesional()">
-            </div>
-            <div class="col-xs-2">
-                <button type="button" data-role="none" class="agenda-profesional-boton agenda-profesional-flecha" onclick="cambiarDiaAgendaProfesional(1)" aria-label="Día siguiente">›</button>
-            </div>
-            <div class="col-xs-12 mt10">
-                <button type="button" data-role="none" class="agenda-profesional-boton agenda-profesional-hoy" onclick="irHoyAgendaProfesional()">Hoy</button>
-            </div>
+        <div class="agenda-profesional-navegacion">
+            <button type="button" data-role="none" class="agenda-profesional-boton agenda-profesional-hoy" onclick="irHoyAgendaProfesional()">Hoy</button>
+            <button type="button" data-role="none" class="agenda-profesional-boton agenda-profesional-flecha" onclick="cambiarDiaAgendaProfesional(-1)" aria-label="Día anterior"><svg viewBox="-0.5 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <input type="date" id="agenda_profesional_fecha" class="agenda-profesional-fecha" onchange="cargarAgendaProfesional()">
+            <button type="button" data-role="none" class="agenda-profesional-boton agenda-profesional-flecha" onclick="cambiarDiaAgendaProfesional(1)" aria-label="Día siguiente"><svg viewBox="0.5 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
         </div>
         <p id="agenda_profesional_dia_label" class="agenda-profesional-dia"></p>
         <div id="lista-agenda-profesional" class="mt20 mb60"></div>
@@ -996,9 +1047,17 @@
                     <img class="img-circulo" src="src/images/avatar-generico.svg" alt="Foto de perfil">
                     <span>Usuario</span>
                 </h2>
+                <div class="header-notificaciones-caja">
+                    <button type="button" class="header-notificaciones" onclick="toggleNotificaciones(event)" aria-label="Notificaciones" aria-haspopup="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9a6 6 0 0 1 12 0c0 6 2.5 7.5 2.5 7.5h-17S6 15 6 9z"/><path d="M10 20a2.2 2.2 0 0 0 4 0"/></svg></button>
+                    <div class="header-notificaciones-panel" role="dialog" aria-label="Notificaciones" onclick="event.stopPropagation()">
+                        <div class="header-menu-cabecera"><span class="header-menu-nombre">Notificaciones</span></div>
+                        <p class="header-notificaciones-vacio">Sin notificaciones</p>
+                    </div>
+                </div>
                 <div class="header-menu-perfil">
                     <button type="button" class="header-menu-puntos" onclick="toggleMenuPerfil(event)" aria-label="Abrir menú de perfil">⋮</button>
                     <div class="header-menu-opciones">
+                        <div class="header-menu-cabecera"><span class="header-menu-nombre">Usuario</span></div>
                         <button type="button" onclick="abrirMensajesApp()">Mensajes</button>
                         <button type="button" onclick="abrirEditarPerfil()">Editar perfil</button>
                         <button type="button" class="selector-multiple-roles" onclick="volverASeleccionRoles()">Cambiar perfil</button>
@@ -1007,17 +1066,14 @@
                 </div>
             </div>
         </div>
-        <div class="dashboard-welcome">
-            <span class="dashboard-kicker">Tu salud, siempre contigo</span>
-            <h1>¿Qué necesitas hoy?</h1>
-            <p>Gestiona tu información de salud en un solo lugar.</p>
-        </div>
     </div>
     <div role="main" class="ui-content dashboard-content">
         <section class="dashboard-section">
-            <div class="dashboard-section-title">
-                <div><span>ACCESOS RÁPIDOS</span></div>
+            <div class="home-resumen" id="home_resumen" role="region" aria-label="Resumen del día" aria-live="polite">
+                <div class="home-resumen-pista" id="home_resumen_pista"></div>
+                <div class="home-resumen-puntos" id="home_resumen_puntos"></div>
             </div>
+            <h1 class="dashboard-pregunta">¿Qué necesitas hoy?</h1>
             <div class="dashboard-grid dashboard-grid-paciente">
                 <!-- 1. ACCIONES MÁS FRECUENTES -->
                 <div id="boton_pedir_hora" class="dashboard-card" onclick="vista('pedirhora')" role="button" tabindex="0">
@@ -1067,10 +1123,17 @@
                     <span class="dashboard-card-arrow">›</span>
                 </div>
 
+                <div id="boton_autorizaciones" class="dashboard-card" onclick="vista('autorizaciones_sdi')" role="button" tabindex="0">
+                    <span class="dashboard-card-icon icon-autorizacion"></span>
+                    <div class="dashboard-card-copy">
+                        <h3>Mis autorizaciones</h3>
+                        <p>Solicitudes y permisos</p>
+                    </div>
+                    <span class="dashboard-card-arrow">›</span>
+                </div>
+
                 <div id="tarjeta-medico-emergencia" class="dashboard-card dashboard-card-featured emergency-doctor-card" onclick="abrirMedicoEmergencia()" role="button" tabindex="0">
-                    <span class="dashboard-card-icon icon-emergencia">
-                        <svg viewBox="0 0 24 24"><path d="M12 21s-8-4.5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6.5-8 11-8 11z"/><path d="M8 12h2l1-2 2 4 1-2h2"/></svg>
-                    </span>
+                    <span class="dashboard-card-icon icon-emergencia icon-emergencia-img"></span>
                     <div class="dashboard-card-copy">
                         <h3>Mi médico de emergencia</h3>
                         <p id="medico-emergencia-resumen">Configura un contacto médico</p>
@@ -1084,64 +1147,8 @@
                     <span><strong>Mantén presionado</strong><small>Alertar y llamar a mi médico</small></span>
                 </button>
 
-                <!-- 4. SEGURIDAD Y CUENTA -->
-                <div id="boton_autorizaciones" class="dashboard-card" onclick="vista('autorizaciones_sdi')" role="button" tabindex="0">
-                    <span class="dashboard-card-icon icon-autorizacion icon-autorizacion-unificado">
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M12 3 5 6v5c0 4.6 2.7 7.8 7 10 4.3-2.2 7-5.4 7-10V6z"/>
-                            <path d="M9 12.2l2 2 4.2-4.2"/>
-                        </svg>
-                    </span>
-                    <div class="dashboard-card-copy">
-                        <h3>Mis autorizaciones</h3>
-                        <p>Solicitudes y permisos</p>
-                    </div>
-                    <span class="dashboard-card-arrow">›</span>
-                </div>
-
-                <div id="boton_desafios" class="dashboard-card" onclick="abrirDesafiosAcceso()" role="button" tabindex="0">
-                    <span class="dashboard-card-icon icon-seguridad">
-                        <svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 5 3 8 7 10 4-2 7-5 7-10V6z"/><rect x="9" y="10" width="6" height="5" rx="1"/><path d="M10.5 10V8.5a1.5 1.5 0 0 1 3 0V10"/></svg>
-                    </span>
-                    <div class="dashboard-card-copy">
-                        <h3>Control de acceso</h3>
-                        <p>Seguridad</p>
-                    </div>
-                    <span class="dashboard-card-arrow">›</span>
-                </div>
-
-                <div id="boton_mensajes" class="dashboard-card" onclick="abrirMensajesApp()" role="button" tabindex="0">
-                    <span class="dashboard-card-icon icon-mensajes">
-                        <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>
-                    </span>
-                    <div class="dashboard-card-copy">
-                        <h3>Mis mensajes <span class="mensajes-badge" style="display:none">0</span></h3>
-                        <p>Comunicaciones</p>
-                    </div>
-                    <span class="dashboard-card-arrow">›</span>
-                </div>
-
-                <div id="boton_configuracion_perfil" class="dashboard-card" onclick="abrirEditarPerfil()" role="button" tabindex="0">
-                    <span class="dashboard-card-icon icon-perfil-config">
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <circle cx="12" cy="8" r="4"/>
-                            <path d="M4.5 20v-1.5A6.5 6.5 0 0 1 11 12h2a6.5 6.5 0 0 1 6.5 6.5V20"/>
-                            <circle cx="18" cy="6" r="2.2"/>
-                            <path d="M18 2.7v1M18 8.3v1M14.7 6h1M20.3 6h1"/>
-                        </svg>
-                    </span>
-                    <div class="dashboard-card-copy">
-                        <h3>Mi perfil</h3>
-                        <p>Datos y configuración</p>
-                    </div>
-                    <span class="dashboard-card-arrow">›</span>
-                </div>
             </div>
         </section>
-        <button type="button" class="dashboard-switch selector-multiple-roles" onclick="volverASeleccionRoles()">
-            <svg viewBox="0 0 24 24"><path d="M16 3h5v5M21 3l-6 6M8 21H3v-5M3 21l6-6"/></svg>
-            Cambiar perfil
-        </button>
     </div>
     <div data-role="footer" class="footer dashboard-footer" id="footer-ph">
         <button type="button" onclick="cerrarSesion()">
@@ -1700,13 +1707,13 @@
                                     </div>
                                     <div class="form-group col-xs-12">
                                         <label class="floating-label-activo">Exámenes solicitados</label>
-                                        <input type="text" class="form-control form-control-sm"
-                                               name="examenes" id="examenes">
+                                        <textarea class="form-control form-control-sm" rows="3"
+                                               name="examenes" id="examenes"></textarea>
                                     </div>
                                     <div class="form-group col-xs-12">
                                         <label class="floating-label-activo">Medicamentos</label>
-                                        <input type="text" class="form-control form-control-sm"
-                                               name="medicamentos" id="medicamentos">
+                                        <textarea class="form-control form-control-sm" rows="3"
+                                               name="medicamentos" id="medicamentos"></textarea>
                                     </div>
                                 </div>
                                 <div class="form-row hidden" id="div_paciente_dependiente" >
@@ -2272,10 +2279,7 @@
     <div role="main" class="ui-content citas-contenido">
         <div class="citas-filtros-wrap">
             <div class="citas-filtros-cabecera">
-                <div>
-                    <span>FILTRAR CITAS</span>
-                    <h2>Mis horas médicas</h2>
-                </div>
+                <h2>Mis horas médicas</h2>
                 <button type="button" data-role="none" class="citas-actualizar" onclick="solicitarMisHorasMedicas(true)">
                     ↻ <span>Actualizar</span>
                 </button>
@@ -2368,7 +2372,6 @@
     <div role="main" class="ui-content">
         <div class="row">
             <div class="col-xs-12">
-                <p class="color-azul size20 mt10 mb10 text-center">SDI <span class="color-azul-oscuro size20">PASS</span></p>
                 <button type="button" class="autorizaciones-actualizar" onclick="list_log_device()">
                     <span class="autorizaciones-actualizar-icono">↻</span>
                     <span><strong>Actualizar peticiones</strong><small>Buscar nuevas solicitudes</small></span>

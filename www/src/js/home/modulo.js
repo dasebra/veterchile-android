@@ -94,6 +94,257 @@ $(document).on('pageshow', '#index, #inicio-profesional', function () {
     }, true);
 });
 
+var homeResumenTimer = null;
+
+const fechaIsoCita = (hora) => String(hora && hora.fecha_consulta || '').slice(0, 10);
+
+const fechaCortaHome = (iso) => {
+    var p = String(iso).split('-');
+    return p.length === 3 ? p[2] + '/' + p[1] + '/' + p[0] : iso;
+};
+
+const construirSlidesHome = (horas) => {
+    var hoy = new Date();
+    var hoyIso = hoy.getFullYear() + '-' + ('0' + (hoy.getMonth() + 1)).slice(-2) + '-' + ('0' + hoy.getDate()).slice(-2);
+
+    var vigentes = (horas || []).filter(function(h) {
+        return [1, 2].indexOf(Number(h.id_estado)) !== -1 && fechaIsoCita(h) >= hoyIso;
+    }).sort(function(a, b) {
+        return (fechaIsoCita(a) + (a.hora_inicio || '')).localeCompare(fechaIsoCita(b) + (b.hora_inicio || ''));
+    });
+
+    var deHoy = vigentes.filter(function(h) { return fechaIsoCita(h) === hoyIso; });
+    var porConfirmar = vigentes.filter(function(h) { return Number(h.id_estado) === 1; });
+    var proxima = vigentes.filter(function(h) { return Number(h.id_estado) === 2; })[0];
+    var profesional = function(h) {
+        return escaparTextoConsentimiento(((h.nombre_profesional || '') + ' ' + (h.apellido_uno_profesional || '')).trim());
+    };
+
+    var slideHoy = {
+        kicker: 'Hoy · ' + fechaCortaHome(hoyIso),
+        titulo: 'No tienes citas agendadas',
+        accion: { texto: 'Agendar', onclick: "vista('pedirhora')" }
+    };
+    if (deHoy.length === 1) {
+        slideHoy.titulo = 'Tienes una cita hoy';
+        slideHoy.texto = (deHoy[0].hora_inicio || '') + (profesional(deHoy[0]) ? ' · ' + profesional(deHoy[0]) : '');
+        slideHoy.accion = { texto: 'Ver', onclick: "vista('citas'); solicitarMisHorasMedicas();" };
+    } else if (deHoy.length > 1) {
+        slideHoy.titulo = 'Tienes ' + deHoy.length + ' citas hoy';
+        slideHoy.texto = 'La primera es a las ' + (deHoy[0].hora_inicio || '');
+        slideHoy.accion = { texto: 'Ver', onclick: "vista('citas'); solicitarMisHorasMedicas();" };
+    }
+
+    var slideConfirmar;
+    if (porConfirmar.length) {
+        slideConfirmar = {
+            kicker: 'Por confirmar · ' + fechaCortaHome(fechaIsoCita(porConfirmar[0])) + ' · ' + (porConfirmar[0].hora_inicio || ''),
+            titulo: porConfirmar.length === 1
+                ? 'Tienes una hora agendada, confírmala'
+                : 'Tienes ' + porConfirmar.length + ' horas agendadas, confírmalas',
+            accion: { texto: 'Confirmar', onclick: "vista('citas'); solicitarMisHorasMedicas();" }
+        };
+    } else if (proxima) {
+        slideConfirmar = {
+            kicker: 'Tu próxima cita',
+            titulo: fechaCortaHome(fechaIsoCita(proxima)) + ' · ' + (proxima.hora_inicio || ''),
+            texto: profesional(proxima),
+            accion: { texto: 'Ver', onclick: "vista('citas'); solicitarMisHorasMedicas();" }
+        };
+    } else {
+        slideConfirmar = {
+            kicker: 'Tu próxima cita',
+            titulo: 'Agenda tu próxima hora',
+            accion: { texto: 'Agendar', onclick: "vista('pedirhora')" }
+        };
+    }
+
+    var slideInfo = {
+        kicker: 'Para ti',
+        titulo: 'Tu ficha médica al día',
+        accion: { texto: 'Ver ficha', onclick: "vista('fmu_paciente'); solicitarFmu()" }
+    };
+
+    return [slideHoy, slideConfirmar, slideInfo];
+};
+
+const hoyIsoHome = () => {
+    var d = new Date();
+    return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+};
+
+const construirSlidesProfesional = (agenda, pendientes) => {
+    var hoyIso = hoyIsoHome();
+    var ahora = new Date();
+    var horaActual = ('0' + ahora.getHours()).slice(-2) + ':' + ('0' + ahora.getMinutes()).slice(-2);
+
+    var atenciones = (agenda || []).filter(function(h) {
+        return !/anulad|cancelad|rechazad/i.test(String(h.estado || ''));
+    }).sort(function(a, b) {
+        return String(a.hora_inicio || '').localeCompare(String(b.hora_inicio || ''));
+    });
+    var proxima = atenciones.filter(function(h) {
+        return String(h.hora_inicio || '').slice(0, 5) >= horaActual;
+    })[0];
+    var telemedicina = atenciones.filter(function(h) { return h.es_telemedicina; }).length;
+
+    var slideHoy = {
+        kicker: 'Hoy · ' + fechaCortaHome(hoyIso),
+        titulo: 'No tienes atenciones hoy',
+        accion: { texto: 'Ver agenda', onclick: "vista('agenda-profesional'); cargarAgendaProfesional()" }
+    };
+    if (proxima) {
+        slideHoy.titulo = 'Próxima atención ' + escaparTextoConsentimiento(String(proxima.hora_inicio).slice(0, 5)) +
+            (proxima.lugar ? ' en ' + escaparTextoConsentimiento(proxima.lugar) : '');
+    } else if (atenciones.length) {
+        slideHoy.titulo = 'No te quedan más atenciones hoy';
+    }
+
+    var slideSolicitudes = {
+        kicker: 'Solicitudes',
+        titulo: 'Tienes ' + pendientes + (pendientes === 1 ? ' solicitud' : ' solicitudes') + ' por aprobar',
+        accion: { texto: 'Revisar', onclick: "vista('autorizaciones_sdi')" }
+    };
+
+    var slideAgenda = {
+        kicker: 'Tu agenda de hoy',
+        titulo: atenciones.length === 1 ? '1 atención agendada' : atenciones.length + ' atenciones agendadas',
+        accion: { texto: 'Mis pacientes', onclick: 'abrirMisPacientesProfesional()' }
+    };
+    if (telemedicina) {
+        slideAgenda.texto = telemedicina + ' por telemedicina';
+    }
+
+    return [slideHoy, slideSolicitudes, slideAgenda];
+};
+
+const raizResumenActiva = () => $('.ui-page-active .home-resumen').first();
+
+const mostrarSlideHome = (indice, $raiz) => {
+    $raiz = $raiz && $raiz.length ? $raiz : raizResumenActiva();
+    var $slides = $raiz.find('.home-resumen-slide');
+    if (!$slides.length) return;
+    indice = (indice + $slides.length) % $slides.length;
+
+    var $anterior = $slides.filter('.activo');
+    if ($anterior.length && $anterior.index() !== indice) {
+        $anterior.removeClass('activo').addClass('saliendo');
+        setTimeout(function() { $anterior.removeClass('saliendo'); }, 520);
+    }
+    $slides.eq(indice).addClass('activo').removeClass('saliendo');
+    $raiz.find('.home-resumen-puntos button').removeClass('activo').eq(indice).addClass('activo');
+    $raiz.data('indice', indice);
+};
+
+const detenerRotacionHome = () => {
+    if (homeResumenTimer) {
+        clearInterval(homeResumenTimer);
+        homeResumenTimer = null;
+    }
+};
+
+const iniciarRotacionHome = () => {
+    detenerRotacionHome();
+    homeResumenTimer = setInterval(function() {
+        var $raiz = raizResumenActiva();
+        if ($raiz.length) {
+            mostrarSlideHome(($raiz.data('indice') || 0) + 1, $raiz);
+        }
+    }, 5500);
+};
+
+const renderizarResumenHome = (slides, $raiz) => {
+    $raiz.find('.home-resumen-pista').html(slides.map(function(s, i) {
+        return '<article class="home-resumen-slide' + (i === 0 ? ' activo' : '') + '">' +
+            '<div class="home-resumen-texto">' +
+                '<span class="home-resumen-kicker">' + s.kicker + '</span>' +
+                '<strong>' + s.titulo + '</strong>' +
+                (s.texto ? '<p>' + s.texto + '</p>' : '') +
+            '</div>' +
+            (s.accion ? '<button type="button" data-role="none" class="home-resumen-accion" onclick="' + s.accion.onclick + '">' + s.accion.texto + '</button>' : '') +
+            '</article>';
+    }).join(''));
+    $raiz.find('.home-resumen-puntos').html(slides.map(function(s, i) {
+        return '<button type="button" data-role="none" aria-label="Ir al aviso ' + (i + 1) + '" data-indice="' + i + '"' + (i === 0 ? ' class="activo"' : '') + '></button>';
+    }).join(''));
+    $raiz.data('indice', 0);
+    iniciarRotacionHome();
+};
+
+// Se consulta sin el loader global: es información de apoyo del home.
+const consultarSinLoader = (ruta, datos, alExito) => {
+    $.ajax({
+        type: 'GET',
+        url: MEDSDI_API_URL + ruta,
+        data: datos,
+        dataType: 'json',
+        headers: { 'Accept': 'application/json', 'X-Auth-Token': localStorage.getItem('authToken') },
+        timeout: 15000,
+        success: alExito
+    });
+};
+
+const cargarResumenHome = () => {
+    var $raiz = $('#index .home-resumen');
+    renderizarResumenHome(construirSlidesHome([]), $raiz);
+
+    if (!localStorage.getItem('authToken') || localStorage.getItem('rolActivo') === 'Profesional') return;
+
+    consultarSinLoader('/paciente/agenda', { id_paciente: _SESSION('id_usuario') }, function(resp) {
+        if (resp && resp.estado == 1 && Array.isArray(resp.horas)) {
+            renderizarResumenHome(construirSlidesHome(resp.horas), $raiz);
+        }
+    });
+};
+
+const cargarResumenProfesional = () => {
+    var $raiz = $('#inicio-profesional .home-resumen');
+    var datos = { agenda: [], pendientes: 0 };
+    var pintar = function() {
+        renderizarResumenHome(construirSlidesProfesional(datos.agenda, datos.pendientes), $raiz);
+    };
+    pintar();
+
+    if (!localStorage.getItem('authToken') || localStorage.getItem('rolActivo') !== 'Profesional') return;
+
+    consultarSinLoader('/profesional/agenda', { id_lugar_atencion: '', fecha: hoyIsoHome() }, function(resp) {
+        datos.agenda = resp && Array.isArray(resp.registros) ? resp.registros : [];
+        pintar();
+    });
+
+    consultarSinLoader('/mobile-authorization/requests', {}, function(resp) {
+        var registros = resp && resp.estado == 1 && Array.isArray(resp.registros) ? resp.registros : [];
+        datos.pendientes = registros.filter(function(r) { return Number(r.estado) === 0; }).length;
+        pintar();
+    });
+};
+
+$(document).on('pageshow', '#index', cargarResumenHome);
+$(document).on('pageshow', '#inicio-profesional', cargarResumenProfesional);
+$(document).on('pagehide', '#index, #inicio-profesional', detenerRotacionHome);
+
+$(document).on('click', '.home-resumen-puntos button', function() {
+    mostrarSlideHome(Number($(this).data('indice')), $(this).closest('.home-resumen'));
+    iniciarRotacionHome();
+});
+
+(function() {
+    var inicioX = null;
+    $(document).on('touchstart', '.home-resumen', function(ev) {
+        inicioX = ev.originalEvent.touches[0].clientX;
+        detenerRotacionHome();
+    });
+    $(document).on('touchend', '.home-resumen', function(ev) {
+        if (inicioX !== null) {
+            var dx = ev.originalEvent.changedTouches[0].clientX - inicioX;
+            var $raiz = $(this);
+            if (Math.abs(dx) > 40) mostrarSlideHome(($raiz.data('indice') || 0) + (dx < 0 ? 1 : -1), $raiz);
+        }
+        inicioX = null;
+        iniciarRotacionHome();
+    });
+})();
+
 $(document).on('pageshow', '#certificadosro', function() {
     list_consentimientos();
 });
@@ -148,15 +399,55 @@ const volverInicioSegunRol = () => {
     vista(rolActivo === 'Profesional' ? 'inicio-profesional' : 'index', 'fade');
 };
 
+// Menú inferior único de las pantallas interiores, según el rol activo.
+const PAGINAS_SIN_MENU_INFERIOR = ['login', 'seleccionar-rol', 'index', 'inicio-profesional', 'autorizado', 'rechazado', 'log-secundario'];
+
+const menuInferiorHtml = (profesional) => {
+    var item = function(onclick, icono, texto) {
+        return '<div class="col-xs-4 pt10 pb10 text-center">' +
+            '<p class="color-blanco size12" onclick="' + onclick + '"><img class="mb10" width="20" src="src/images/' + icono + '"><br>' + texto + '</p>' +
+            '</div>';
+    };
+    return '<div class="row bg-azul">' +
+        item(profesional ? "vista('inicio-profesional')" : "vista('index')", 'home.svg', 'Inicio') +
+        (profesional
+            ? item("vista('agenda-profesional'); cargarAgendaProfesional()", 'citas.svg', 'Agenda')
+            : item("vista('citas'); solicitarMisHorasMedicas()", 'citas.svg', 'Citas')) +
+        item('cerrarSesion()', 'salir.svg', 'Cerrar sesión') +
+        '</div>';
+};
+
+$(document).on('pagebeforeshow', '[data-role="page"]', function() {
+    var $pagina = $(this);
+    if (PAGINAS_SIN_MENU_INFERIOR.indexOf($pagina.attr('id')) !== -1) return;
+
+    var $menu = $pagina.children('.menu-inferior');
+    if (!$menu.length) {
+        $menu = $('<div class="footer menu-inferior"></div>').appendTo($pagina);
+        $pagina.addClass('con-menu-inferior');
+    }
+    $menu.html(menuInferiorHtml(localStorage.getItem('rolActivo') === 'Profesional'));
+});
+
 const toggleMenuPerfil = (event) => {
     if (event) event.stopPropagation();
+    $('.header-notificaciones-caja').removeClass('abierto');
     var $menu = $(event.currentTarget).closest('.header-menu-perfil');
     $('.header-menu-perfil').not($menu).removeClass('abierto');
     $menu.toggleClass('abierto');
 };
 
+const toggleNotificaciones = (event) => {
+    if (event) event.stopPropagation();
+    var $caja = $(event.currentTarget).closest('.header-notificaciones-caja');
+    $('.header-menu-perfil').removeClass('abierto');
+    $('.header-notificaciones-caja').not($caja).removeClass('abierto');
+    $caja.toggleClass('abierto');
+};
+
 $(document).on('click', function() {
     $('.header-menu-perfil').removeClass('abierto');
+    $('.header-notificaciones-caja').removeClass('abierto');
 });
 
 // Mi perfil: lista de opciones y vistas internas (solo interfaz).
@@ -545,7 +836,7 @@ const cargarAgendaProfesional = (idLugar) => {
         function(resp) {
             var lugares = Array.isArray(resp.lugares) ? resp.lugares : [];
             var actual = String(idLugar || $('#agenda_profesional_lugar').val() || '');
-            var opciones = '<option value="">Todos los lugares</option>';
+            var opciones = '<option value="">Seleccione lugar de atención</option>';
             lugares.forEach(function(lugar) {
                 opciones += '<option value="' + lugar.id + '">' +
                     escaparTextoConsentimiento(lugar.nombre) + '</option>';
@@ -1370,7 +1661,8 @@ const limpiarFmuAntesDeCargar = () => {
     $paginaFmu.find('.cards-grid').addClass('fmu-datos-pendientes');
 
     // Nunca dejamos visibles datos del paciente anterior ni datos demo.
-    $tarjetas.eq(0).find('h2').text('');
+    $tarjetas.removeClass('fmu-card-sin-datos');
+    $tarjetas.eq(0).find('h2').text('').removeClass('fmu-valor-vacio');
     $tarjetas.find('.card-list').empty();
 
     // Contacto de emergencia.
@@ -1771,11 +2063,8 @@ const actualizarTarjetasFMU = (fmu) => {
     });
 
     // Grupo Sanguíneo
-    $tarjetas.eq(0).find('h2').text(
-        fmu.grupo_sanguineo && fmu.grupo_sanguineo.nombre_gs
-            ? fmu.grupo_sanguineo.nombre_gs
-            : 'N/A'
-    );
+    const grupoSanguineo = fmu.grupo_sanguineo && fmu.grupo_sanguineo.nombre_gs ? fmu.grupo_sanguineo.nombre_gs : '';
+    $tarjetas.eq(0).find('h2').text(grupoSanguineo || 'No disponible').toggleClass('fmu-valor-vacio', !grupoSanguineo);
 
     let ultima_alergia = alergias.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
     fmu.ultima_alergia = ultima_alergia || null;
@@ -1946,10 +2235,9 @@ const alternarLeyendaOdontograma = () => $('#odontograma_fmu_leyenda').slideTogg
 const mostrarSinDatos = () => {
     // Mostrar mensajes por defecto cuando no hay datos
     const $paginaFmu = $('#fmu_paciente');
-    $paginaFmu.find('.cards-grid .card-button').eq(0).find('h2').text('No disponible');
-    $paginaFmu.find('.cards-grid .card-button .card-list').each(function() {
-        $(this).html('<li>No hay datos disponibles</li>');
-    });
+    $paginaFmu.find('.cards-grid .card-button').eq(0).find('h2').text('No disponible').addClass('fmu-valor-vacio');
+    // Las tarjetas sin datos no se muestran.
+    $paginaFmu.find('.cards-grid .card-button').has('.card-list').addClass('fmu-card-sin-datos');
     renderizarOdontogramaFMU([]);
 }
 
