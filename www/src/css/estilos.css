@@ -3264,7 +3264,7 @@ placeholder{
       text-align: center;
   }
 
-  #login .login-marca img {
+  #login .login-marca img, #login .login-marca .logo-animado {
       display: block;
       width: min(52vw, 198px);
       height: auto;
@@ -3497,9 +3497,9 @@ placeholder{
   }
 
   @keyframes loginMarcaEntra {
-      0%   { opacity: 0; transform: translateY(34vh) scale(1.14); }
-      12%  { opacity: 1; transform: translateY(34vh) scale(1.14); }
-      44%  { opacity: 1; transform: translateY(34vh) scale(1.14); }
+      0%   { opacity: 0; transform: translateY(34vh) scale(var(--login-logo-escala, 1.8)); }
+      8%   { opacity: 1; transform: translateY(34vh) scale(var(--login-logo-escala, 1.8)); }
+      62%  { opacity: 1; transform: translateY(34vh) scale(var(--login-logo-escala, 1.8)); }
       100% { opacity: 1; transform: translateY(0) scale(1); }
   }
 
@@ -3519,19 +3519,19 @@ placeholder{
   }
 
   #login .login-marca {
-      animation: loginMarcaEntra 2.15s cubic-bezier(.22,.9,.28,1) both;
+      animation: loginMarcaEntra 3.6s cubic-bezier(.22,.9,.28,1) both;
   }
 
   #login .login-panel.ui-content {
-      animation: loginPanelEntra .55s cubic-bezier(.22,.9,.28,1) 1.97s both;
+      animation: loginPanelEntra .55s cubic-bezier(.22,.9,.28,1) 3.4s both;
   }
 
   #login .login-hero-orbe {
-      animation: loginOrbeEntra .7s ease-out 1.85s both;
+      animation: loginOrbeEntra .7s ease-out 3.2s both;
   }
 
   #login .login-hero-cruz {
-      animation: loginCruzEntra .7s ease-out 1.85s both;
+      animation: loginCruzEntra .7s ease-out 3.2s both;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -3549,7 +3549,7 @@ placeholder{
       #login .login-panel-contenido { padding: 24px 18px 18px; }
       #login .login-titulo { font-size: 17px; margin-bottom: 20px; }
       #login .login-marca { padding: calc(30px + env(safe-area-inset-top)) 18px 24px; }
-      #login .login-marca img { width: min(58vw, 176px); }
+      #login .login-marca img, #login .login-marca .logo-animado { width: min(58vw, 176px); }
       #login .login-input-contenedor > svg { left: 13px; }
       #login .login-input-contenedor input.input-app { padding-left: 42px; }
   }
@@ -3557,7 +3557,7 @@ placeholder{
   /* Pantallas bajas */
   @media (max-height: 680px) {
       #login .login-marca { padding: calc(22px + env(safe-area-inset-top)) 24px 18px; }
-      #login .login-marca img { width: min(44vw, 166px); }
+      #login .login-marca img, #login .login-marca .logo-animado { width: min(44vw, 166px); }
       #login .login-panel-contenido { padding-top: 22px; }
       #login .login-titulo { margin-bottom: 17px; }
   }
@@ -3565,7 +3565,7 @@ placeholder{
   /* Landscape de teléfono: prioriza el formulario sobre la marca */
   @media (max-height: 500px) {
       #login .login-marca { padding: calc(14px + env(safe-area-inset-top)) 24px 10px; }
-      #login .login-marca img { width: min(34vw, 132px); }
+      #login .login-marca img, #login .login-marca .logo-animado { width: min(34vw, 132px); }
       #login .login-campo { margin-bottom: 12px; }
       #login .login-titulo { margin-bottom: 14px; }
       #login .login-panel.ui-content { margin-bottom: calc(18px + env(safe-area-inset-bottom)); }
@@ -5385,7 +5385,7 @@ placeholder{
 /* =========================================================
    MED-SDI - Contraste documentos clínicos / Mis exámenes
    ========================================================= */
-#examenesro .top-titulos .btn-app4,
+#examenesro .top-titulos .btn-app4, #recetasro .top-titulos .btn-app4, #certificadosro .top-titulos .btn-app4,
 #recetasro .top-titulos .btn-app4,
 #certificadosro .top-titulos .btn-app4,
 #examenesro #list_examenes .btn-app7,
@@ -7231,6 +7231,107 @@ body *:not(.glyphicon) {
 }
 
 #pedirhora .letra-bold { font-size: clamp(16px, 4.8vw, 20px) !important; }
+
+/* Sin línea bajo la franja de título (todas las vistas). El degradado azul del encabezado
+   asomaba en el borde inferior (medio píxel); una franja del mismo fondo lo tapa. */
+[data-role="page"] > .header .top-titulos {
+    position: relative;
+}
+
+[data-role="page"] > .header .top-titulos::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -2px;
+    height: 4px;
+    background: inherit;
+    pointer-events: none;
+}
+
+/* Agendar hora: título algo más abajo de la barra azul... */
+#pedirhora > .header .top-titulos {
+    padding-top: 26px !important;
+}
+
+/* ...y las tarjetas más cerca del título. */
+#pedirhora > .ui-content {
+    padding-top: 8px !important;
+}
+
+#pedirhora > .ui-content > .row.mt20 {
+    margin-top: 0 !important;
+}
+
+/* Agendar hora → ¿Con quién deseas agendar?
+   Móvil (col-xs-12): tarjeta horizontal, icono a la izquierda, título + bajada y flecha.
+   Tablet (col-sm-6): tarjeta vertical centrada, como antes, con la bajada debajo. */
+#pedirhora .agendar-opcion {
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 14px;
+    height: auto !important;
+    min-height: 84px;
+    margin-bottom: 12px !important;
+    padding: 14px 16px !important;
+    text-align: left;
+}
+
+#pedirhora .agendar-opcion .icono {
+    flex: 0 0 auto;
+    margin: 0 !important;
+}
+
+#pedirhora .agendar-opcion-texto {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+#pedirhora .agendar-opcion-titulo {
+    margin: 0 0 3px !important;
+    color: #24435f;
+    font-size: clamp(15px, 4.2vw, 17px) !important;
+    font-weight: 800 !important;
+    line-height: 1.2;
+}
+
+#pedirhora .agendar-opcion-bajada {
+    margin: 0 !important;
+    color: #7b8fa1;
+    font-size: clamp(11.5px, 3.2vw, 13px) !important;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+#pedirhora .agendar-opcion-flecha {
+    flex: 0 0 auto;
+    color: #16a0a7;
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+@media (min-width: 768px) {
+    /* El .container de Bootstrap mide 750px fijo y se salía por la derecha. */
+    #pedirhora .ui-content .container {
+        width: auto;
+        max-width: 100%;
+    }
+
+    #pedirhora .agendar-opcion {
+        flex-direction: column !important;
+        justify-content: center !important;
+        gap: 10px;
+        min-height: 170px;
+        padding: 20px 18px !important;
+        text-align: center;
+    }
+
+    #pedirhora .agendar-opcion-flecha {
+        display: none;
+    }
+}
 #buscador_profesional .size14,
 #lugares_atencion .size14,
 #seleccionar_fecha_hora .size14 { font-size: clamp(14px, 4vw, 17px) !important; }
@@ -7241,9 +7342,47 @@ body *:not(.glyphicon) {
 /* Textos de apoyo de desafíos de acceso */
 #desafios-acceso p { font-size: clamp(12px, 3.3vw, 14px); }
 
-/* Ficha médica: tarjetas sin datos ocultas y "No disponible" discreto en Grupo sanguíneo. */
-#fmu_paciente .cards-grid .card-button.fmu-card-sin-datos {
-    display: none !important;
+/* Ficha médica: los datos van como lista simple, separados por una línea fina (sin borde ni sombra). */
+#fmu_paciente .cards-grid .card-list li {
+    margin: 0 !important;
+    padding: 5px 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    line-height: 1.3 !important;
+}
+
+/* Cada registro comienza con mayúscula, aunque venga en minúscula desde el servidor. */
+#fmu_paciente .cards-grid .card-list li::first-letter,
+#fmu_paciente .cards-grid .fmu-valor-grupo::first-letter {
+    text-transform: uppercase;
+}
+
+#fmu_paciente .cards-grid .card-list li + li {
+    border-top: 1px solid #e6edf3 !important;
+}
+
+#fmu_paciente .cards-grid .card-list li:first-child {
+    padding-top: 0 !important;
+}
+
+#fmu_paciente .cards-grid .card-list li .fecha-small {
+    display: block;
+    margin-top: 1px;
+    font-size: 11px;
+}
+
+/* Ficha médica: los datos vacíos dicen "Sin Registro" en gris discreto, sin ocultar la tarjeta. */
+#fmu_paciente .cards-grid .card-list li.fmu-sin-registro {
+    color: #8a99ab !important;
+    font-size: clamp(11.5px, 3.2vw, 13.5px) !important;
+    font-weight: 700 !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
 }
 
 #fmu_paciente .cards-grid .fmu-valor-grupo.fmu-valor-vacio {
@@ -7252,4 +7391,657 @@ body *:not(.glyphicon) {
     font-weight: 700 !important;
     letter-spacing: 0;
     margin-top: 4px;
+}
+
+/* Login compacto: el logo cerca del borde superior y todo el formulario en una sola pantalla, sin scroll. */
+#login .login-marca {
+    padding: calc(14px + env(safe-area-inset-top)) 24px 14px;
+}
+
+#login .login-marca img, #login .login-marca .logo-animado {
+    width: min(46vw, 170px);
+}
+
+#login .login-panel.ui-content {
+    margin-bottom: calc(14px + env(safe-area-inset-bottom));
+}
+
+#login .login-panel-contenido { padding: 22px 22px 16px; }
+#login .login-titulo { margin-bottom: 18px; }
+#login .login-campo { margin-bottom: 12px; }
+
+@media (max-height: 700px) {
+    #login .login-marca { padding: calc(10px + env(safe-area-inset-top)) 24px 10px; }
+    #login .login-marca img, #login .login-marca .logo-animado { width: min(40vw, 140px); }
+    #login .login-panel.ui-content { margin-bottom: calc(10px + env(safe-area-inset-bottom)); }
+    #login .login-panel-contenido { padding: 16px 18px 12px; }
+    #login .login-titulo { font-size: 17px; margin-bottom: 12px; }
+    #login .login-campo { margin-bottom: 9px; }
+}
+
+@media (max-height: 600px) {
+    #login .login-marca { padding: calc(8px + env(safe-area-inset-top)) 24px 8px; }
+    #login .login-marca img, #login .login-marca .logo-animado { width: min(34vw, 116px); }
+    #login .login-panel-contenido { padding: 12px 16px 10px; }
+    #login .login-titulo { margin-bottom: 8px; }
+    #login .login-campo { margin-bottom: 6px; }
+}
+
+@media (min-width: 600px) {
+    #login .login-marca { padding-top: 24px; }
+}
+
+/* ===== Menú inferior: siempre pegado al borde, con medida exacta ===== */
+.ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .menu-inferior {
+    background: #fff !important;
+    bottom: 0 !important;
+    box-sizing: border-box;
+    height: calc(56px + env(safe-area-inset-bottom));
+    left: 0 !important;
+    margin: 0 !important;
+    min-height: 0;
+    padding: 0 0 env(safe-area-inset-bottom) !important;
+    position: fixed !important;
+    right: 0 !important;
+    transform: none !important;
+    width: 100%;
+}
+
+.ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .menu-inferior > .row {
+    align-items: stretch;
+    display: flex !important;
+    height: 56px;
+    margin: 0 !important;
+}
+
+.ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .menu-inferior > .row::before,
+.ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .menu-inferior > .row::after {
+    display: none !important;
+}
+
+.ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .menu-inferior > .row > [class*="col-xs-"] {
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    float: none;
+    justify-content: center;
+    margin: 0;
+    min-height: 0 !important;
+    padding: 0 !important;
+    width: auto;
+}
+
+.ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .menu-inferior > .row > [class*="col-xs-"] p {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    justify-content: center;
+    margin: 0 !important;
+}
+
+.ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .menu-inferior > .row > [class*="col-xs-"] p img {
+    margin: 0 !important;
+}
+
+.ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .menu-inferior > .row > [class*="col-xs-"] p br {
+    display: none;
+}
+
+/* El contenido deja libre justo el alto del menú y las pantallas de fondo blanco no dejan franjas grises. */
+.ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .ui-content {
+    padding-bottom: calc(76px + env(safe-area-inset-bottom)) !important;
+}
+
+#med_no_insc.ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol),
+#clave_desbloqueo.ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) {
+    background: #fff !important;
+}
+
+body.teclado-abierto .ui-page > .menu-inferior { display: none !important; }
+
+/* =========================================================
+   Mis exámenes y Mis autorizaciones: misma línea que el resto
+   (tarjetas blancas, texto navy/gris, botones planos sin degradado)
+   ========================================================= */
+
+/* Botones "Actualizar": color plano, sin degradado */
+#examenesro .top-titulos .btn-app4, #recetasro .top-titulos .btn-app4, #certificadosro .top-titulos .btn-app4,
+#autorizaciones_sdi .autorizaciones-actualizar {
+    border: 0 !important;
+    background: #1450bd !important;
+    box-shadow: 0 4px 12px rgba(20, 80, 189, .16) !important;
+    border-radius: 14px !important;
+}
+
+#examenesro .top-titulos .btn-app4:active, #recetasro .top-titulos .btn-app4:active, #certificadosro .top-titulos .btn-app4:active,
+#autorizaciones_sdi .autorizaciones-actualizar:active {
+    background: #0f44a3 !important;
+}
+
+/* --- Mis exámenes --- */
+.examenes-cabecera {
+    margin: 6px 0 12px;
+    text-align: left;
+}
+
+.examenes-titulo {
+    margin: 0;
+    color: #20466f;
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.examenes-ayuda {
+    display: block;
+    margin-top: 3px;
+    color: #718096;
+    font-size: clamp(11.5px, 3.2vw, 13px);
+}
+
+#list_examenes, #list_recetas, #list_consentimientos {
+    padding: 0;
+}
+
+.examen-card {
+    margin: 0 0 12px;
+    padding: 14px 16px;
+    border: 1px solid #e3ebf2;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 4px 14px rgba(37, 72, 108, .07);
+    text-align: left;
+}
+
+.examen-card-cabecera {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.examen-card-nombre {
+    margin: 0;
+    color: #24435f;
+    font-size: 15px;
+    font-weight: 800;
+    line-height: 1.25;
+}
+
+.examen-estado {
+    flex: 0 0 auto;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 800;
+    line-height: 1.3;
+    white-space: nowrap;
+}
+
+.examen-estado-ok { background: #e3f6f6; color: #1b8f93; }
+.examen-estado-revisado { background: #edf2f7; color: #5b6f84; }
+.examen-estado-rechazado { background: #fdecec; color: #c43d3d; }
+.examen-estado-pendiente { background: #fff4dd; color: #a8740b; }
+
+.examen-card-datos {
+    display: grid;
+    gap: 6px;
+    margin: 0;
+    padding-top: 10px;
+    border-top: 1px solid #eef2f6;
+}
+
+.examen-card-datos > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 13px;
+    line-height: 1.3;
+}
+
+.examen-card-datos dt {
+    flex: 0 0 auto;
+    color: #7b8fa1;
+    font-weight: 600;
+}
+
+.examen-card-datos dd {
+    margin: 0;
+    color: #24435f;
+    font-weight: 700;
+    text-align: right;
+}
+
+.examen-card-acciones {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.examen-btn {
+    flex: 1 1 0;
+    height: 42px;
+    border: 0;
+    border-radius: 12px;
+    background: #31bebe;
+    color: #fff;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 800;
+    box-shadow: none;
+}
+
+.examen-btn:active { background: #27a7a7; }
+
+.examen-vacio {
+    margin: 0;
+    padding: 18px 16px;
+    border: 1px solid #e3ebf2;
+    border-radius: 16px;
+    background: #fff;
+    color: #7b8fa1;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* --- Mis autorizaciones --- */
+#autorizaciones_sdi .autorizaciones-filtro.active {
+    border-color: #1450bd;
+    background: #1450bd;
+}
+
+#autorizaciones_sdi .sdi-log-row {
+    display: block;
+    box-sizing: border-box;
+    margin-bottom: 12px;
+    padding: 14px 16px;
+    border: 1px solid #e3ebf2;
+    border-left: 4px solid #cfd9e3;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 4px 14px rgba(37, 72, 108, .07);
+}
+
+#autorizaciones_sdi .sdi-log-pendiente  { border-left-color: #f2b632; }
+#autorizaciones_sdi .sdi-log-autorizado { border-left-color: #31bebe; }
+#autorizaciones_sdi .sdi-log-rechazado,
+#autorizaciones_sdi .sdi-log-cancelado  { border-left-color: #e05757; }
+#autorizaciones_sdi .sdi-log-expirado   { border-left-color: #f29a38; }
+
+#autorizaciones_sdi .sdi-log-title {
+    margin-bottom: 6px;
+    color: #7b8fa1;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .04em;
+}
+
+#autorizaciones_sdi .sdi-log-msg {
+    color: #24435f;
+    font-size: 13.5px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+#autorizaciones_sdi .sdi-log-msg p { margin: 0; }
+#autorizaciones_sdi .sdi-log-msg > br,
+#autorizaciones_sdi .sdi-log-msg p + br { display: none; }
+
+/* Estados del mensaje del servidor con los colores de la app */
+#autorizaciones_sdi .sdi-log-msg .color-verde { color: #1b8f93 !important; }
+#autorizaciones_sdi .sdi-log-msg .color-rojo  { color: #d64545 !important; }
+#autorizaciones_sdi .sdi-log-msg .color-azul  { color: #24435f !important; }
+
+#autorizaciones_sdi .sdi-log-actions {
+    display: flex;
+    gap: 8px;
+    width: auto;
+    margin-top: 12px;
+    text-align: left;
+}
+
+#autorizaciones_sdi .sdi-log-actions .sdi-btn {
+    flex: 1 1 0;
+    height: 42px;
+    margin: 0;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 800;
+    box-shadow: none !important;
+}
+
+#autorizaciones_sdi .sdi-log-actions .sdi-btn-autorizar {
+    border: 0;
+    background: #31bebe !important;
+    color: #fff !important;
+}
+
+#autorizaciones_sdi .sdi-log-actions .sdi-btn-rechazar {
+    border: 1.5px solid #e05757;
+    background: #fff !important;
+    color: #d64545 !important;
+}
+
+/* =========================================================
+   Mis mensajes: botón "Actualizar mensajes" a todo el ancho
+   (como en Mis exámenes) y tarjetas en la línea de la app
+   ========================================================= */
+#mensajes-app .top-titulos .btn-app4 {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 100% !important;
+    min-height: 50px;
+    box-sizing: border-box;
+    border: 0 !important;
+    border-radius: 14px !important;
+    background: #1450bd !important;
+    box-shadow: 0 4px 12px rgba(20, 80, 189, .16) !important;
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
+    font-weight: 800 !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+}
+
+#mensajes-app .top-titulos .btn-app4:active { background: #0f44a3 !important; }
+
+#mensajes-app .top-titulos .btn-app4 img {
+    filter: brightness(0) invert(1);
+}
+
+#mensajes-app .mensajes-app-resumen:empty { display: none; }
+
+#mensajes-app .mensaje-app-card {
+    padding: 14px 16px;
+    border: 1px solid #e3ebf2;
+    border-left: 4px solid #cfd9e3;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 4px 14px rgba(37, 72, 108, .07);
+}
+
+#mensajes-app .mensaje-app-card.no-leido {
+    border-left-color: #1450bd;
+    background: #fff;
+}
+
+#mensajes-app .mensaje-app-card-layout {
+    grid-template-columns: 42px minmax(0, 1fr);
+    gap: 12px;
+}
+
+/* Icono de sobre en azul */
+#mensajes-app .mensaje-app-card-icono,
+#mensajes-app .mensaje-app-card.no-leido .mensaje-app-card-icono {
+    position: relative;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: #e8effb;
+    color: #1450bd;
+}
+
+#mensajes-app .mensaje-app-card-icono svg {
+    width: 22px;
+    height: 22px;
+}
+
+/* Punto azul en el sobre cuando el mensaje no se ha leído */
+#mensajes-app .mensaje-app-card.no-leido .mensaje-app-card-icono::after {
+    content: "";
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    width: 9px;
+    height: 9px;
+    border: 2px solid #e8effb;
+    border-radius: 50%;
+    background: #1450bd;
+}
+
+#mensajes-app .mensaje-app-asunto {
+    color: #24435f;
+    font-size: 14.5px;
+    font-weight: 800;
+    line-height: 1.25;
+}
+
+#mensajes-app .mensaje-app-nuevo {
+    flex: 0 0 auto;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: #e8effb;
+    color: #1450bd;
+    font-size: 10.5px;
+    font-weight: 800;
+}
+
+#mensajes-app .mensaje-app-emisor {
+    margin-top: 3px;
+    color: #7b8fa1;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+#mensajes-app .mensaje-app-preview {
+    margin-top: 7px;
+    color: #3d5670;
+    font-size: 13px;
+}
+
+#mensajes-app .mensaje-app-card-pie {
+    margin-top: 8px;
+}
+
+#mensajes-app .mensaje-app-fecha {
+    margin-top: 0;
+    color: #7b8fa1;
+    font-size: 11.5px;
+}
+
+#mensajes-app .mensaje-app-clip {
+    margin-top: 0;
+    background: #edf2f7;
+    color: #5b6f84;
+    font-weight: 700;
+}
+
+#mensajes-app .mensajes-app-vacio {
+    border: 1px solid #e3ebf2;
+    border-radius: 16px;
+    color: #7b8fa1;
+    font-weight: 600;
+}
+
+/* =========================================================
+   Inicio (paciente y profesional): buzón de mensajes junto a la campana
+   ========================================================= */
+.dashboard-topbar .dashboard-user .header-notificaciones-caja {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    width: auto;
+}
+
+.dashboard-topbar .dashboard-user .header-mensajes {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 34px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    background: transparent !important;
+    box-shadow: none !important;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.dashboard-topbar .dashboard-user .header-mensajes svg {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: #fff;
+    stroke-width: 1.9;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.dashboard-topbar .dashboard-user .header-mensajes:active { opacity: .7; }
+
+/* Contador de mensajes sin leer sobre el buzón */
+.dashboard-topbar .dashboard-user .header-mensajes-badge {
+    position: absolute;
+    top: 2px;
+    right: -3px;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    background: #31bebe;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 800;
+    line-height: 16px;
+    text-align: center;
+}
+
+/* Tarjetas ocultas del escritorio: gana sobre las reglas de grilla con id */
+#index .dashboard-grid-paciente > .dashboard-card.dashboard-card-oculta,
+#index .dashboard-grid-paciente > #boton_mensajes.dashboard-card.dashboard-card-oculta,
+#inicio-profesional .dashboard-card.dashboard-card-oculta {
+    display: none !important;
+}
+
+/* Detalle del mensaje: título azul más chico y grueso, separado de la info */
+#mensajes-app .mensaje-app-detalle h3 {
+    margin: 0 0 12px !important;
+    color: #1450bd !important;
+    font-size: 17px !important;
+    font-weight: 900 !important;
+    line-height: 1.3;
+}
+
+#mensajes-app .mensaje-app-detalle-meta {
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #eef2f6;
+    color: #7b8fa1;
+    font-size: 12.5px;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+#mensajes-app .mensaje-app-cuerpo {
+    color: #24435f;
+    font-size: 14px;
+}
+
+#mensajes-app .mensaje-app-adjuntos strong {
+    color: #24435f;
+    font-size: 13px;
+}
+
+#mensajes-app .mensaje-app-adjunto {
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: #e8effb;
+    font-weight: 700;
+}
+
+#mensajes-app .mensaje-app-cerrar {
+    min-height: 46px;
+    border-radius: 12px;
+}
+
+/* Paciente: Control de reposo usa el mismo icono que en profesional */
+#index .dashboard-grid-paciente #boton_control_reposo .icon-prof-reposo {
+    background-color: transparent !important;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Logo del encabezado de inicio: mismo SVG del login (nítido), con sus colores */
+.dashboard-topbar .dashboard-logo {
+    filter: none !important;
+    width: 104px;
+    height: auto;
+}
+
+@media (max-width: 360px) {
+    .dashboard-topbar .dashboard-logo { width: 92px; }
+}
+
+/* Contador de mensajes sin leer en rojo */
+.dashboard-topbar .dashboard-user .header-mensajes-badge {
+    background: #e53935 !important;
+    color: #fff !important;
+}
+
+.logo-animado .st0{fill:#FFFFFF}.logo-animado .st1{fill:#8DBA3B}.logo-animado .st2{fill:#CA312B}
+.logo-animado .st3{fill:#EEA759}.logo-animado .st4{fill:#794C85}.logo-animado .st5{fill:#B12470}.logo-animado .st6{fill:#FEEB13}
+#login .logo-animado{display:block;width:min(52vw,198px);height:auto;margin:0 auto;overflow:visible;filter:drop-shadow(0 5px 14px rgba(0,34,89,.2))}
+.logo-animado .figura{transform-box:fill-box;transform-origin:50% 100%;animation:logoCrece .9s cubic-bezier(.2,.8,.2,1) both}
+.logo-animado .p{transform-box:fill-box;transform-origin:50% 50%;opacity:0;
+    animation:logoBrota .65s cubic-bezier(.34,1.56,.64,1) both, logoMece 4.5s ease-in-out infinite;
+    animation-delay:calc(.35s + var(--i)*.04s), calc(2.8s + var(--i)*.12s)}
+.logo-animado .l{transform-box:fill-box;transform-origin:50% 100%;opacity:0;
+    animation:logoLetra .55s cubic-bezier(.2,.9,.3,1.2) both;animation-delay:calc(1s + var(--i)*.08s)}
+@keyframes logoCrece{from{opacity:0;transform:translateY(5px) scale(.55)}to{opacity:1;transform:none}}
+@keyframes logoBrota{0%{opacity:0;transform:scale(0) rotate(-70deg)}100%{opacity:1;transform:none}}
+@keyframes logoMece{0%,100%{transform:rotate(0) scale(1)}50%{transform:rotate(9deg) scale(1.12)}}
+@keyframes logoLetra{from{opacity:0;transform:translateY(7px) scale(.8)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.logo-animado .figura,.logo-animado .p,.logo-animado .l{animation:none!important;opacity:1!important}}
+
+#login .login-marca { --login-logo-escala: 1.8; }
+@media (max-height: 700px) { #login .login-marca { --login-logo-escala: 1.9; } }
+@media (max-height: 600px) { #login .login-marca { --login-logo-escala: 2.2; } }
+@media (min-width: 600px) and (min-height: 701px) { #login .login-marca { --login-logo-escala: 2.5; } }
+@media (min-width: 900px) and (min-height: 701px) { #login .login-marca { --login-logo-escala: 2.8; } }
+
+#index > .dashboard-content.ui-content,
+#inicio-profesional > .dashboard-content.ui-content {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden !important;
+    padding-bottom: 0 !important;
+}
+
+#index > .dashboard-content .dashboard-section,
+#inicio-profesional > .dashboard-content .dashboard-section {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-height: 0;
+}
+
+#index .home-resumen,
+#inicio-profesional .home-resumen {
+    flex: none;
+}
+
+#index .dashboard-scroll,
+#inicio-profesional .dashboard-scroll {
+    flex: 1 1 auto;
+    min-height: 0;
+    margin: 0 -8px;
+    padding: 0 8px 18px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+}
+
+.dashboard-card .icon-seguridad {
+    background-image: url('../images/control-acceso.png') !important;
+    background-position: center;
+    background-repeat: no-repeat;
 }

@@ -99,6 +99,9 @@ const manejarNotificacionPush = (mensaje) => {
         cargarMedicoEmergencia();
     } else if (esMensajeDirecto && $.mobile && $.mobile.activePage && $.mobile.activePage.attr('id') === 'mensajes-app') {
         cargarMensajesApp(true);
+    } else if (esMensajeDirecto) {
+        // Llegó un mensaje nuevo: se actualiza el número de la carta junto a la campana.
+        if (typeof actualizarContadorMensajes === 'function') actualizarContadorMensajes();
     } else if (esAutorizacion && $.mobile && $.mobile.activePage && $.mobile.activePage.attr('id') === 'autorizaciones_sdi') {
         list_log_device();
     } else if (!esAutorizacion && $.mobile && $.mobile.activePage && $.mobile.activePage.attr('id') === 'desafios-acceso') {

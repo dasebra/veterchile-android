@@ -5,6 +5,17 @@ var mensajesAppCacheMs = 15000;
 
 const escaparTextoMensaje = (valor) => $('<div>').text(valor == null ? '' : String(valor)).html();
 
+// Icono de sobre (línea), en azul vía CSS (currentColor).
+const ICONO_MENSAJE_APP =
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' +
+        '<rect x="3" y="5" width="18" height="14" rx="3"/>' +
+        '<path d="m4 7.5 7.1 5.1a1.6 1.6 0 0 0 1.8 0L20 7.5"/>' +
+    '</svg>';
+
+// Fecha del mensaje con la hora sin segundos.
+const fechaMensajeApp = (fecha) =>
+    typeof horaSinSegundos === 'function' ? horaSinSegundos(fecha || '') : (fecha || '');
+
 const abrirMensajesApp = () => {
     $('.header-menu-perfil').removeClass('abierto');
     vista('mensajes-app', 'fade');
@@ -67,7 +78,7 @@ const renderMensajesApp = (mensajes, noLeidos) => {
         return '<button type="button" class="mensaje-app-card ' + (mensaje.leido ? '' : 'no-leido') +
             '" onclick="abrirDetalleMensajeApp(' + Number(mensaje.id) + ')">' +
                 '<div class="mensaje-app-card-layout">' +
-                    '<span class="mensaje-app-card-icono">' + (mensaje.leido ? '✉' : '●') + '</span>' +
+                    '<span class="mensaje-app-card-icono" aria-hidden="true">' + ICONO_MENSAJE_APP + '</span>' +
                     '<div class="mensaje-app-card-contenido">' +
                         '<div class="mensaje-app-card-cabecera">' +
                             '<span class="mensaje-app-asunto">' + escaparTextoMensaje(mensaje.asunto) + '</span>' +
@@ -76,7 +87,7 @@ const renderMensajesApp = (mensajes, noLeidos) => {
                         '<div class="mensaje-app-emisor">De: ' + escaparTextoMensaje(mensaje.emisor) + '</div>' +
                         '<div class="mensaje-app-preview">' + escaparTextoMensaje(mensaje.mensaje) + '</div>' +
                         '<div class="mensaje-app-card-pie">' +
-                            '<span class="mensaje-app-fecha">' + escaparTextoMensaje(mensaje.fecha_envio) + '</span>' +
+                            '<span class="mensaje-app-fecha">' + escaparTextoMensaje(fechaMensajeApp(mensaje.fecha_envio)) + '</span>' +
                             (cantidadAdjuntos ? '<span class="mensaje-app-clip">📎 ' + cantidadAdjuntos + '</span>' : '') +
                         '</div>' +
                     '</div>' +
@@ -101,7 +112,7 @@ const abrirDetalleMensajeApp = (id) => {
         '<div class="mensaje-app-detalle">' +
             '<h3>' + escaparTextoMensaje(mensaje.asunto) + '</h3>' +
             '<div class="mensaje-app-detalle-meta">De: ' + escaparTextoMensaje(mensaje.emisor) +
-                '<br>' + escaparTextoMensaje(mensaje.fecha_envio) + '</div>' +
+                '<br>' + escaparTextoMensaje(fechaMensajeApp(mensaje.fecha_envio)) + '</div>' +
             '<div class="mensaje-app-cuerpo">' + escaparTextoMensaje(mensaje.mensaje).replace(/\n/g, '<br>') + '</div>' +
             (adjuntos ? '<div class="mensaje-app-adjuntos"><strong>Adjuntos</strong>' + adjuntos + '</div>' : '') +
         '</div>';
@@ -143,3 +154,31 @@ const abrirAdjuntoMensajeApp = (mensajeId, indice) => {
 $(document).on('pageshow', '#mensajes-app', function() {
     cargarMensajesApp();
 });
+
+// Contador de no leídos en la carta junto a la campana (inicio paciente y profesional).
+var contadorMensajesConsultando = false;
+const actualizarContadorMensajes = () => {
+    if (contadorMensajesConsultando || mensajesAppCargando || !localStorage.getItem('authToken')) return;
+    contadorMensajesConsultando = true;
+    var rol = localStorage.getItem('rolActivo') === 'Profesional' ? 'Profesional' : 'Paciente';
+    var api = new Api('mensajes', '');
+    api.request({rol: rol}, function(resp) {
+        contadorMensajesConsultando = false;
+        mensajesAppCache = resp.registros || [];
+        mensajesAppUltimaCarga = Date.now();
+        var noLeidos = Number(resp.no_leidos || 0);
+        $('.mensajes-badge').text(noLeidos > 99 ? '99+' : noLeidos).toggle(noLeidos > 0);
+    }, function() {
+        contadorMensajesConsultando = false;
+    }, 'GET');
+};
+
+$(document).on('pageshow', '#index, #inicio-profesional', function() {
+    actualizarContadorMensajes();
+});
+
+// Al volver a la app (desde segundo plano) se refresca el contador.
+document.addEventListener('resume', function() {
+    var pagina = $.mobile && $.mobile.activePage ? $.mobile.activePage.attr('id') : '';
+    if (pagina === 'index' || pagina === 'inicio-profesional') actualizarContadorMensajes();
+}, false);

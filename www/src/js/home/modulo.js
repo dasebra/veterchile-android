@@ -429,6 +429,15 @@ $(document).on('pagebeforeshow', '[data-role="page"]', function() {
     $menu.html(menuInferiorHtml(localStorage.getItem('rolActivo') === 'Profesional'));
 });
 
+// Con el teclado abierto el menú inferior se oculta: así no queda flotando sobre el teclado ni deja huecos.
+$(document).on('focusin', 'input:not([type=checkbox]):not([type=radio]):not([type=button]), textarea', function() {
+    $('body').addClass('teclado-abierto');
+});
+
+$(document).on('focusout', 'input, textarea', function() {
+    $('body').removeClass('teclado-abierto');
+});
+
 const toggleMenuPerfil = (event) => {
     if (event) event.stopPropagation();
     $('.header-notificaciones-caja').removeClass('abierto');
@@ -1407,6 +1416,34 @@ const abrirConsentimiento = (url) => {
     abrirDocumentoClinico(url, 'documento');
 };
 
+// Tarjeta común de Mis exámenes, Mis recetas y Mis consentimientos.
+// Todos los textos de "o" deben venir ya escapados.
+const tarjetaDocumentoClinico = (o) =>
+    '<article class="examen-card">' +
+        '<div class="examen-card-cabecera">' +
+            '<h3 class="examen-card-nombre">' + o.titulo + '</h3>' +
+            (o.estado ? '<span class="examen-estado ' + (o.estadoClase || 'examen-estado-pendiente') + '">' + o.estado + '</span>' : '') +
+        '</div>' +
+        '<dl class="examen-card-datos">' +
+            (o.datos || []).map(function(d) {
+                return '<div><dt>' + d[0] + '</dt><dd>' + (d[1] || '—') + '</dd></div>';
+            }).join('') +
+        '</dl>' +
+        (o.boton ? '<div class="examen-card-acciones">' + o.boton + '</div>' : '') +
+    '</article>';
+
+// Color de la etiqueta según el texto del estado.
+const claseEstadoDocumento = (estado) => {
+    var t = String(estado || '').toLowerCase();
+    if (/(disponible|firmado|aceptado|autorizado|aprobado|vigente)/.test(t)) return 'examen-estado-ok';
+    if (/(rechaz|revoc|cancel|anulad)/.test(t)) return 'examen-estado-rechazado';
+    if (t.indexOf('revisado') !== -1) return 'examen-estado-revisado';
+    return 'examen-estado-pendiente';
+};
+
+const mensajeDocumentoClinico = (texto) =>
+    '<p class="examen-vacio">' + escaparTextoConsentimiento(texto) + '</p>';
+
 const list_consentimientos = () => {
     var $contenedor = $('#list_consentimientos');
     $contenedor.html('<p class="text-center color-azul">Cargando consentimientos...</p>');
@@ -1419,11 +1456,7 @@ const list_consentimientos = () => {
             var registros = Array.isArray(resp.registros) ? resp.registros : [];
 
             if (resp.estado != 1 || registros.length === 0) {
-                $contenedor.html(
-                    '<div class="card-button-dos mb20">' +
-                        '<p class="text-center color-azul">No tienes consentimientos informados registrados.</p>' +
-                    '</div>'
-                );
+                $contenedor.html(mensajeDocumentoClinico('No tienes consentimientos informados registrados.'));
                 cargando(0);
                 return;
             }
@@ -1438,22 +1471,16 @@ const list_consentimientos = () => {
                     : 'Sin fecha';
                 var pdfUrl = escaparTextoConsentimiento(registro.pdf_url || '');
 
-                html +=
-                    '<div class="card-button-dos mb20">' +
-                        '<div class="row">' +
-                            '<div class="col-xs-12 text-left">' +
-                                '<p class="letra-small mb5 color-azul"><b>Tipo:</b> ' + tipo + '</p>' +
-                                '<p class="letra-small mb5 color-azul"><b>Fecha emisión:</b> ' + fecha + '</p>' +
-                                '<p class="letra-small mb5 color-azul"><b>Profesional:</b> ' + profesional + '</p>' +
-                                '<p class="letra-small mb5 color-azul"><b>Estado:</b> ' + estado + '</p>' +
-                                (pdfUrl
-                                    ? '<div class="btn-app7 js-ver-consentimiento" ' +
-                                        'data-consentimiento-url="' + pdfUrl + '" ' +
-                                        'style="width: 55%; padding-left: 10px;">Ver consentimiento</div>'
-                                    : '') +
-                            '</div>' +
-                        '</div>' +
-                    '</div>';
+                html += tarjetaDocumentoClinico({
+                    titulo: tipo,
+                    estado: estado,
+                    estadoClase: claseEstadoDocumento(registro.estado_consentimiento),
+                    datos: [['Fecha emisión', fecha], ['Profesional', profesional]],
+                    boton: pdfUrl
+                        ? '<button type="button" data-role="none" class="examen-btn js-ver-consentimiento" ' +
+                            'data-consentimiento-url="' + pdfUrl + '">Ver consentimiento</button>'
+                        : ''
+                });
             });
 
             $contenedor.html(html);
@@ -1464,11 +1491,7 @@ const list_consentimientos = () => {
                 ? 'Tu sesión expiró. Ingresa nuevamente.'
                 : 'No fue posible cargar tus consentimientos.';
 
-            $contenedor.html(
-                '<div class="card-button-dos mb20">' +
-                    '<p class="text-center color-azul">' + escaparTextoConsentimiento(mensaje) + '</p>' +
-                '</div>'
-            );
+            $contenedor.html(mensajeDocumentoClinico(mensaje));
             cargando(0);
         },
         'GET'
@@ -1487,11 +1510,7 @@ const list_recetas_paciente = () => {
             var registros = Array.isArray(resp.registros) ? resp.registros : [];
 
             if (resp.estado != 1 || registros.length === 0) {
-                $contenedor.html(
-                    '<div class="card-button-dos mb20">' +
-                        '<p class="text-center color-azul">No tienes recetas registradas.</p>' +
-                    '</div>'
-                );
+                $contenedor.html(mensajeDocumentoClinico('No tienes recetas registradas.'));
                 cargando(0);
                 return;
             }
@@ -1511,23 +1530,16 @@ const list_recetas_paciente = () => {
                 var cantidad = Number(receta.cantidad_medicamentos || 0);
                 var pdfUrl = escaparTextoConsentimiento(receta.pdf_url || '');
 
-                html +=
-                    '<div class="card-button-dos mb20">' +
-                        '<div class="row">' +
-                            '<div class="col-xs-12 text-left">' +
-                                '<p class="letra-small mb5 color-azul"><b>Fecha emisión:</b> ' + fecha + '</p>' +
-                                '<p class="letra-small mb5 color-azul"><b>Tipo:</b> ' + tipo + '</p>' +
-                                '<p class="letra-small mb5 color-azul"><b>Diagnóstico:</b> ' + diagnostico + '</p>' +
-                                '<p class="letra-small mb5 color-azul"><b>Profesional:</b> ' + profesional + '</p>' +
-                                '<p class="letra-small mb5 color-azul"><b>Medicamentos:</b> ' + cantidad + '</p>' +
-                                (pdfUrl
-                                    ? '<div class="btn-app7 js-ver-receta" ' +
-                                        'data-receta-url="' + pdfUrl + '" ' +
-                                        'style="width: 55%; padding-left: 10px;">Ver receta</div>'
-                                    : '') +
-                            '</div>' +
-                        '</div>' +
-                    '</div>';
+                html += tarjetaDocumentoClinico({
+                    titulo: tipo,
+                    estado: cantidad + (cantidad === 1 ? ' medicamento' : ' medicamentos'),
+                    estadoClase: 'examen-estado-revisado',
+                    datos: [['Fecha emisión', fecha], ['Diagnóstico', diagnostico], ['Profesional', profesional]],
+                    boton: pdfUrl
+                        ? '<button type="button" data-role="none" class="examen-btn js-ver-receta" ' +
+                            'data-receta-url="' + pdfUrl + '">Ver receta</button>'
+                        : ''
+                });
             });
 
             $contenedor.html(html);
@@ -1538,13 +1550,7 @@ const list_recetas_paciente = () => {
                 ? 'Tu sesión expiró. Ingresa nuevamente.'
                 : 'No fue posible cargar tus recetas.';
 
-            $contenedor.html(
-                '<div class="card-button-dos mb20">' +
-                    '<p class="text-center color-azul">' +
-                        escaparTextoConsentimiento(mensaje) +
-                    '</p>' +
-                '</div>'
-            );
+            $contenedor.html(mensajeDocumentoClinico(mensaje));
             cargando(0);
         },
         'GET'
@@ -1564,9 +1570,7 @@ const list_examenes_paciente = () => {
 
             if (resp.estado != 1 || registros.length === 0) {
                 $contenedor.html(
-                    '<div class="card-button-dos mb20">' +
-                        '<p class="text-center color-azul">No tienes órdenes ni resultados de exámenes.</p>' +
-                    '</div>'
+                    '<p class="examen-vacio">No tienes órdenes ni resultados de exámenes.</p>'
                 );
                 cargando(0);
                 return;
@@ -1575,7 +1579,7 @@ const list_examenes_paciente = () => {
             var html = '';
             registros.forEach(function(examen) {
                 var fecha = examen.fecha
-                    ? escaparTextoConsentimiento(fechaEsp(examen.fecha))
+                    ? escaparTextoConsentimiento(fechaHoraEsp(examen.fecha))
                     : 'Sin fecha';
                 var nombre = escaparTextoConsentimiento(
                     examen.nombre || 'Examen sin nombre'
@@ -1602,34 +1606,32 @@ const list_examenes_paciente = () => {
 
                     if (url) {
                         botones +=
-                            '<div class="btn-app7 js-ver-examen mb5" ' +
-                                'data-examen-url="' + url + '" ' +
-                                'style="width: 55%; padding-left: 10px;">' +
+                            '<button type="button" data-role="none" class="examen-btn js-ver-examen" ' +
+                                'data-examen-url="' + url + '">' +
                                 escaparTextoConsentimiento(etiqueta) +
-                            '</div>';
+                            '</button>';
                     }
                 });
 
-                if (!botones) {
-                    botones =
-                        '<div class="btn-app8" style="width: 55%; padding-left: 10px;">' +
-                            estado +
-                        '</div>';
-                }
+                // Color del estado: disponible (verde agua), revisado (gris azulado), resto (pendiente, ámbar).
+                var estadoTexto = String(examen.estado_examen || '').toLowerCase();
+                var estadoClase = estadoTexto.indexOf('disponible') !== -1
+                    ? 'examen-estado-ok'
+                    : (estadoTexto.indexOf('revisado') !== -1 ? 'examen-estado-revisado' : 'examen-estado-pendiente');
 
                 html +=
-                    '<div class="card-button-dos mb20">' +
-                        '<div class="row">' +
-                            '<div class="col-xs-12 text-left">' +
-                                '<p class="letra-small mb5 color-azul"><b>Fecha:</b> ' + fecha + '</p>' +
-                                '<p class="letra-small mb5 color-azul"><b>Nº registro:</b> ' + numeroOrden + '</p>' +
-                                '<p class="letra-small mb5 color-azul"><b>Examen:</b> ' + nombre + '</p>' +
-                                '<p class="letra-small mb5 color-azul"><b>Profesional:</b> ' + profesional + '</p>' +
-                                '<p class="letra-small mb5 color-azul"><b>Estado:</b> ' + estado + '</p>' +
-                                botones +
-                            '</div>' +
+                    '<article class="examen-card">' +
+                        '<div class="examen-card-cabecera">' +
+                            '<h3 class="examen-card-nombre">' + nombre + '</h3>' +
+                            '<span class="examen-estado ' + estadoClase + '">' + estado + '</span>' +
                         '</div>' +
-                    '</div>';
+                        '<dl class="examen-card-datos">' +
+                            '<div><dt>Fecha</dt><dd>' + fecha + '</dd></div>' +
+                            '<div><dt>Nº registro</dt><dd>' + (numeroOrden || '—') + '</dd></div>' +
+                            '<div><dt>Profesional</dt><dd>' + profesional + '</dd></div>' +
+                        '</dl>' +
+                        (botones ? '<div class="examen-card-acciones">' + botones + '</div>' : '') +
+                    '</article>';
             });
 
             $contenedor.html(html);
@@ -1640,19 +1642,16 @@ const list_examenes_paciente = () => {
                 ? 'Tu sesión expiró. Ingresa nuevamente.'
                 : 'No fue posible cargar tus exámenes.';
 
-            $contenedor.html(
-                '<div class="card-button-dos mb20">' +
-                    '<p class="text-center color-azul">' +
-                        escaparTextoConsentimiento(mensaje) +
-                    '</p>' +
-                '</div>'
-            );
+            $contenedor.html(mensajeDocumentoClinico(mensaje));
             cargando(0);
         },
         'GET'
     );
 };
 
+// Texto único para cualquier dato vacío de la Ficha Médica Única.
+const FMU_SIN_REGISTRO = 'Sin Registro';
+const FMU_SIN_REGISTRO_HTML = '<li class="fmu-sin-registro">' + FMU_SIN_REGISTRO + '</li>';
 
 const limpiarFmuAntesDeCargar = () => {
     const $paginaFmu = $('#fmu_paciente');
@@ -2064,7 +2063,7 @@ const actualizarTarjetasFMU = (fmu) => {
 
     // Grupo Sanguíneo
     const grupoSanguineo = fmu.grupo_sanguineo && fmu.grupo_sanguineo.nombre_gs ? fmu.grupo_sanguineo.nombre_gs : '';
-    $tarjetas.eq(0).find('h2').text(grupoSanguineo || 'No disponible').toggleClass('fmu-valor-vacio', !grupoSanguineo);
+    $tarjetas.eq(0).find('h2').text(grupoSanguineo || FMU_SIN_REGISTRO).toggleClass('fmu-valor-vacio', !grupoSanguineo);
 
     let ultima_alergia = alergias.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
     fmu.ultima_alergia = ultima_alergia || null;
@@ -2075,7 +2074,7 @@ const actualizarTarjetasFMU = (fmu) => {
             `<li>${datoAntecedente(fmu.ultima_alergia, 'nombre', 'Alergia sin detalle')}<br><span class="fecha-small">${fecha}</span></li>`
         );
     } else {
-        $tarjetas.eq(1).find('.card-list').html('<li>No existen registros</li>');
+        $tarjetas.eq(1).find('.card-list').html(FMU_SIN_REGISTRO_HTML);
     }
 
     if(enfermedades.length > 0) {
@@ -2085,7 +2084,7 @@ const actualizarTarjetasFMU = (fmu) => {
         });
         $tarjetas.eq(2).find('.card-list').html(htmlEnfermedades);
     } else {
-        $tarjetas.eq(2).find('.card-list').html('<li>No hay enfermedades crónicas</li>');
+        $tarjetas.eq(2).find('.card-list').html(FMU_SIN_REGISTRO_HTML);
     }
 
     // Medicamentos Crónicos
@@ -2096,7 +2095,7 @@ const actualizarTarjetasFMU = (fmu) => {
         });
         $tarjetas.eq(3).find('.card-list').html(htmlMedicamentosCronicos);
     } else {
-        $tarjetas.eq(3).find('.card-list').html('<li>No hay medicamentos crónicos</li>');
+        $tarjetas.eq(3).find('.card-list').html(FMU_SIN_REGISTRO_HTML);
     }
 
     // Últimos Medicamentos
@@ -2108,7 +2107,7 @@ const actualizarTarjetasFMU = (fmu) => {
         });
         $tarjetas.eq(4).find('.card-list').html(htmlUltimosMeds);
     } else {
-        $tarjetas.eq(4).find('.card-list').html('<li>No hay medicamentos recientes</li>');
+        $tarjetas.eq(4).find('.card-list').html(FMU_SIN_REGISTRO_HTML);
     }
 
     // Último Diagnóstico
@@ -2119,7 +2118,7 @@ const actualizarTarjetasFMU = (fmu) => {
         const diagnostico = `<li>${ultimaFicha.hipotesis_diagnostico}<br><span class="fecha-small">${fecha}</span></li>`;
         $tarjetas.eq(5).find('.card-list').html(diagnostico);
     } else {
-        $tarjetas.eq(5).find('.card-list').html('<li>No hay diagnósticos recientes</li>');
+        $tarjetas.eq(5).find('.card-list').html(FMU_SIN_REGISTRO_HTML);
     }
 
     let ultima_cirugia = cirugias.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0];
@@ -2132,7 +2131,7 @@ const actualizarTarjetasFMU = (fmu) => {
             `<li>${datoAntecedente(fmu.ultima_cirugia, 'procedimiento', 'Cirugía sin detalle')} - ${fmu.ultima_cirugia.comentario || ''}<br><span class="fecha-small">${fecha}</span></li><br><span class="letra-small">${datoAntecedente(fmu.ultima_cirugia, 'profesional', '')}</span>`
         );
     } else {
-        $tarjetas.eq(6).find('.card-list').html('<li>No existen registros</li>');
+        $tarjetas.eq(6).find('.card-list').html(FMU_SIN_REGISTRO_HTML);
     }
 
     // Prótesis y Ortesis
@@ -2143,7 +2142,7 @@ const actualizarTarjetasFMU = (fmu) => {
         });
         $tarjetas.eq(7).find('.card-list').html(htmlProtesis);
     } else {
-        $tarjetas.eq(7).find('.card-list').html('<li>No existen registros</li>');
+        $tarjetas.eq(7).find('.card-list').html(FMU_SIN_REGISTRO_HTML);
     }
 
     // Contacto de Emergencia
@@ -2235,9 +2234,9 @@ const alternarLeyendaOdontograma = () => $('#odontograma_fmu_leyenda').slideTogg
 const mostrarSinDatos = () => {
     // Mostrar mensajes por defecto cuando no hay datos
     const $paginaFmu = $('#fmu_paciente');
-    $paginaFmu.find('.cards-grid .card-button').eq(0).find('h2').text('No disponible').addClass('fmu-valor-vacio');
-    // Las tarjetas sin datos no se muestran.
-    $paginaFmu.find('.cards-grid .card-button').has('.card-list').addClass('fmu-card-sin-datos');
+    $paginaFmu.find('.cards-grid .card-button').eq(0).find('h2').text(FMU_SIN_REGISTRO).addClass('fmu-valor-vacio');
+    // Las tarjetas sin datos se siguen mostrando, con "Sin Registro".
+    $paginaFmu.find('.cards-grid .card-button .card-list').html(FMU_SIN_REGISTRO_HTML);
     renderizarOdontogramaFMU([]);
 }
 
@@ -3077,11 +3076,22 @@ const limpiarFormularioBusquedaMedico = () => {
     $('#ciudad').html('<option value="">Seleccione región primero</option>');
 }
 
+// "2026-05-14", "2026-05-14T20:26:38" o "2026-05-14 20:26:38" → "14-05-2026".
 const fechaEsp = (fecha) =>{
-    var fecha_ = fecha.split('T');
+    var fecha_ = String(fecha).trim().split(/[T ]/);
     fecha_ = fecha_[0].split('-');
     return fecha_[2]+'-'+fecha_[1]+'-'+fecha_[0];
 }
+
+// Igual que fechaEsp, pero agrega la hora sin segundos: "14-05-2026 20:26".
+const fechaHoraEsp = (fecha) => {
+    var partes = String(fecha).trim().split(/[T ]/);
+    var hora = (partes[1] || '').match(/^(\d{1,2}):(\d{2})/);
+    return fechaEsp(fecha) + (hora ? ' ' + ('0' + hora[1]).slice(-2) + ':' + hora[2] : '');
+}
+
+// Quita los segundos de cualquier hora "HH:MM:SS" dentro de un texto → "HH:MM".
+const horaSinSegundos = (texto) => String(texto).replace(/\b(\d{1,2}:\d{2}):\d{2}\b/g, '$1');
 
 const enviarCorreoValidarEquipo = () => {
 
@@ -3774,7 +3784,8 @@ const renderizarAutorizaciones = () => {
     // Construimos un solo bloque HTML. Evita múltiples append/reflows en Android WebView.
     var html = registrosFiltrados.map(function(reg) {
         var estado = obtenerEstadoAutorizacion(reg);
-        var contenido = String(reg.msg_html || '').trim();
+        // Las horas se muestran como HH:MM, sin segundos.
+        var contenido = horaSinSegundos(String(reg.msg_html || '').trim());
         if (!contenido) return '';
 
         // El backend ya entrega el HTML de cada tarjeta. Envolvemos una sola vez
@@ -3969,3 +3980,11 @@ function abrir_autorizacion_log(id_log, accion, btn) {
         $('#autorizacion #password_').trigger('focus');
     }, 250);
 }
+
+document.addEventListener('error', function(ev) {
+    var img = ev.target;
+    if (!img || img.tagName !== 'IMG' || img.dataset.avatarRespaldo) return;
+    if (!img.matches('.dashboard-user img, #perfil_menu_foto, #perfil_app_foto_preview')) return;
+    img.dataset.avatarRespaldo = '1';
+    img.src = 'src/images/avatar-generico.svg';
+}, true);
