@@ -417,7 +417,7 @@ p {
 .row.bg-azul.perfil-header {
     min-height: 0 !important;
     padding-bottom: 12px !important;
-    padding-top: max(12px, env(safe-area-inset-top)) !important;
+    padding-top: calc(12px + env(safe-area-inset-top)) !important;
 }
 
 .perfil-header .col-xs-12 {
@@ -627,7 +627,7 @@ p {
     box-shadow: 0 -6px 24px rgba(0, 0, 0, .15);
     box-sizing: border-box;
     left: 0;
-    padding: 14px 18px calc(24px + env(safe-area-inset-bottom));
+    padding: 14px 18px calc(24px + 0px);
     position: fixed;
     right: 0;
     text-align: left;
@@ -1717,7 +1717,7 @@ placeholder{
   width: 100%;
   max-width: 440px;
   box-sizing: border-box;
-  padding: 22px 19px calc(17px + env(safe-area-inset-bottom));
+  padding: 22px 19px calc(17px + 0px);
   border-radius: 23px 23px 17px 17px;
   background: #fff;
   box-shadow: 0 22px 55px rgba(8, 27, 48, .34);
@@ -2867,7 +2867,7 @@ placeholder{
 }
 
 #seleccionar-rol .selector-rol-footer {
-    padding: 10px 20px calc(22px + env(safe-area-inset-bottom));
+    padding: 10px 20px calc(22px + 0px);
 }
 
 #seleccionar-rol .selector-rol-salir {
@@ -3278,7 +3278,7 @@ placeholder{
       width: calc(100% - 32px);
       max-width: 420px;
       box-sizing: border-box;
-      margin: 0 auto calc(30px + env(safe-area-inset-bottom));
+      margin: 0 auto calc(30px + 0px);
       padding: 0 !important;
       border-radius: 24px;
       background: #fff;
@@ -3568,7 +3568,7 @@ placeholder{
       #login .login-marca img, #login .login-marca .logo-animado { width: min(34vw, 132px); }
       #login .login-campo { margin-bottom: 12px; }
       #login .login-titulo { margin-bottom: 14px; }
-      #login .login-panel.ui-content { margin-bottom: calc(18px + env(safe-area-inset-bottom)); }
+      #login .login-panel.ui-content { margin-bottom: calc(18px + 0px); }
   }
 
   /* Teléfonos grandes, tablets y navegador: centrado vertical */
@@ -4176,7 +4176,7 @@ placeholder{
       z-index: 3;
       flex: 0 0 auto;
       box-sizing: border-box;
-      padding: 7px 16px calc(7px + env(safe-area-inset-bottom));
+      padding: 7px 16px calc(7px + 0px);
       border-top: 1px solid #e1eaf1;
       background: rgba(255,255,255,.97);
   }
@@ -4487,7 +4487,7 @@ placeholder{
       bottom: 0;
       left: 0;
       box-sizing: border-box;
-      padding-bottom: env(safe-area-inset-bottom);
+      padding-bottom: 0px;
       border: 0;
       border-top: 1px solid #dce7ef;
       background: rgba(255,255,255,.97);
@@ -5001,7 +5001,7 @@ placeholder{
 .sdi-reposo-card .reposo-consentimiento input:checked { border-color: #25aeb8; background: #25aeb8; box-shadow: inset 0 0 0 4px #fff; }
 .reposo-enviar { width: 100%; min-height: 48px; margin: 0; border: 0; border-radius: 13px; background: linear-gradient(135deg,#22ad70,#31bd75); color: #fff; font-size: 12px; font-weight: 900; box-shadow: 0 6px 14px rgba(36,172,109,.22); text-shadow: none; }
 .reposo-enviar span { margin-right: 5px; }
-.reposo-footer { position: fixed; right: 0; bottom: 0; left: 0; z-index: 20; box-sizing: border-box; padding: 8px 14px calc(8px + env(safe-area-inset-bottom)); background: rgba(255,255,255,.98); border-top: 1px solid #dce6ed; }
+.reposo-footer { position: fixed; right: 0; bottom: 0; left: 0; z-index: 20; box-sizing: border-box; padding: 8px 14px calc(8px + 0px); background: rgba(255,255,255,.98); border-top: 1px solid #dce6ed; }
 .reposo-footer button { width: 100%; min-height: 42px; border: 1px solid #b9cad6; border-radius: 12px; background: #fff; color: #31556f; font-weight: 800; box-shadow: none; text-shadow: none; }
 
 /* Médico de emergencia y alerta SOS */
@@ -5077,8 +5077,8 @@ placeholder{
 .emergency-link-actions button { min-height: 35px; padding: 0 10px; border: 0; border-radius: 10px; background: #28ad73; color: #fff; font-size: 9px; font-weight: 850; }
 .emergency-link-actions button.reject { border: 1px solid #efc8cc; background: #fff4f5; color: #d33e4a; }
 .emergency-empty { padding: 24px 15px; border: 1px dashed #ccdbe5; border-radius: 16px; color: #71869a; text-align: center; }
-.emergency-empty strong { color: #38546e; font-size: 12px; }
-.emergency-empty p { margin: 5px 0 0; font-size: 9px; text-align: center; }
+.emergency-empty strong { color: #38546e; font-size: clamp(15px, 4.4vw, 17px); }
+.emergency-empty p { margin: 6px 0 0; font-size: clamp(13px, 3.8vw, 15px); line-height: 1.4; text-align: center; }
 
 /* FIN - PROYECTO */
 .odontograma-fmu-card { display:block; width:100%; padding:16px; text-align:left; }
@@ -7117,8 +7117,7 @@ body *:not(.glyphicon) {
 }
 
 /* Botón "Actualizar": mismo estilo azul con borde en profesional y paciente, con tamaño legible. */
-.app-refresh-button,
-#citas .citas-actualizar {
+.app-refresh-button {
     background: #edf5ff !important;
     border: 1px solid #bdd7fa !important;
     border-radius: 11px !important;
@@ -7132,9 +7131,46 @@ body *:not(.glyphicon) {
     text-shadow: none !important;
 }
 
-.app-refresh-button:active,
-#citas .citas-actualizar:active {
+/* Control de accesos y Contacto médico de emergencia: mismo tamaño y forma, pero azul con letras blancas. */
+#desafios-acceso .app-refresh-button,
+#medico-emergencia-app .app-refresh-button {
+    background: #1450bd !important;
+    border-color: #1450bd !important;
+    color: #fff !important;
+}
+
+#desafios-acceso .app-refresh-button:active,
+#medico-emergencia-app .app-refresh-button:active {
+    background: #0f3f97 !important;
+}
+
+#citas .citas-actualizar {
+    background: #1450bd !important;
+    border: 1px solid #1450bd !important;
+    border-radius: 11px !important;
+    box-shadow: 0 5px 12px rgba(20, 80, 189, .2) !important;
+    color: #fff !important;
+    display: block;
+    font-family: "Nunito", sans-serif !important;
+    font-size: clamp(12.5px, 3.5vw, 14px) !important;
+    font-weight: 800 !important;
+    min-height: 44px !important;
+    padding: 10px 14px !important;
+    text-align: center;
+    text-shadow: none !important;
+    width: 100%;
+}
+
+.app-refresh-button:active {
     background: #dcecff !important;
+}
+
+#citas .citas-actualizar:active {
+    background: #0f3f97 !important;
+}
+
+#citas .citas-filtros-cabecera {
+    display: block;
 }
 
 #citas .citas-filtros-cabecera h2 {
@@ -7403,7 +7439,7 @@ body *:not(.glyphicon) {
 }
 
 #login .login-panel.ui-content {
-    margin-bottom: calc(14px + env(safe-area-inset-bottom));
+    margin-bottom: calc(14px + 0px);
 }
 
 #login .login-panel-contenido { padding: 22px 22px 16px; }
@@ -7413,7 +7449,7 @@ body *:not(.glyphicon) {
 @media (max-height: 700px) {
     #login .login-marca { padding: calc(10px + env(safe-area-inset-top)) 24px 10px; }
     #login .login-marca img, #login .login-marca .logo-animado { width: min(40vw, 140px); }
-    #login .login-panel.ui-content { margin-bottom: calc(10px + env(safe-area-inset-bottom)); }
+    #login .login-panel.ui-content { margin-bottom: calc(10px + 0px); }
     #login .login-panel-contenido { padding: 16px 18px 12px; }
     #login .login-titulo { font-size: 17px; margin-bottom: 12px; }
     #login .login-campo { margin-bottom: 9px; }
@@ -7436,11 +7472,11 @@ body *:not(.glyphicon) {
     background: #fff !important;
     bottom: 0 !important;
     box-sizing: border-box;
-    height: calc(56px + env(safe-area-inset-bottom));
+    height: calc(56px + 0px);
     left: 0 !important;
     margin: 0 !important;
     min-height: 0;
-    padding: 0 0 env(safe-area-inset-bottom) !important;
+    padding: 0 0 0px !important;
     position: fixed !important;
     right: 0 !important;
     transform: none !important;
@@ -7492,7 +7528,7 @@ body *:not(.glyphicon) {
 
 /* El contenido deja libre justo el alto del menú y las pantallas de fondo blanco no dejan franjas grises. */
 .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .ui-content {
-    padding-bottom: calc(76px + env(safe-area-inset-bottom)) !important;
+    padding-bottom: calc(76px + 0px) !important;
 }
 
 #med_no_insc.ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol),
@@ -8045,3 +8081,275 @@ body.teclado-abierto .ui-page > .menu-inferior { display: none !important; }
     background-position: center;
     background-repeat: no-repeat;
 }
+
+
+/* =========================================================
+   Seleccionar fecha y hora: card del profesional, calendario y horarios
+   ========================================================= */
+.agenda-profesional-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    margin: 4px 0 14px;
+    padding: 16px 14px 14px;
+    border: 1px solid #e0e8f0;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 6px 18px rgba(30, 62, 91, .08);
+    text-align: center;
+}
+
+
+.agenda-profesional-nombre {
+    color: #1450bd;
+    font-size: clamp(15px, 4.4vw, 17px);
+    font-weight: 800;
+}
+
+.agenda-profesional-especialidad {
+    color: #29445f;
+    font-size: clamp(12.5px, 3.6vw, 14px);
+}
+
+.agenda-profesional-lugar {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: #607087;
+    font-size: clamp(12px, 3.4vw, 13px);
+}
+
+.agenda-profesional-badges {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 4px;
+}
+
+.agenda-profesional-badges .agenda-modalidad-seleccionada {
+    margin: 0;
+    font-size: 11.5px;
+}
+
+#seleccionar_fecha_hora .agenda-paso-card {
+    margin-bottom: 16px;
+    padding: 16px 14px;
+    border: 1px solid #e0e8f0;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 6px 18px rgba(30, 62, 91, .08);
+}
+
+#seleccionar_fecha_hora .agenda-paso-titulo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 12px;
+    color: #24435f;
+    font-size: clamp(14px, 4vw, 16px);
+    font-weight: 800;
+}
+
+#seleccionar_fecha_hora .agenda-paso-titulo span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #1450bd;
+    color: #fff;
+    font-size: 12px;
+}
+
+#seleccionar_fecha_hora .agenda-fecha-elegida {
+    margin: 12px 0 0;
+    color: #607087;
+    font-size: 13px;
+    text-align: center;
+}
+
+#seleccionar_fecha_hora .agenda-fecha-elegida strong { color: #1450bd; }
+
+/* Calendario */
+#seleccionar_fecha_hora .agenda-cal-cabecera {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+#seleccionar_fecha_hora .agenda-cal-cabecera strong {
+    color: #24435f;
+    font-size: 15px;
+    font-weight: 800;
+}
+
+#seleccionar_fecha_hora .agenda-cal-nav {
+    width: 36px;
+    height: 36px;
+    border: 1px solid #d4e1ed;
+    border-radius: 10px;
+    background: #fff;
+    color: #1450bd;
+    font-size: 22px;
+    line-height: 1;
+}
+
+#seleccionar_fecha_hora .agenda-cal-nav:disabled { opacity: .35; }
+
+#seleccionar_fecha_hora .agenda-cal-semana,
+#seleccionar_fecha_hora .agenda-cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 5px;
+}
+
+#seleccionar_fecha_hora .agenda-cal-semana span {
+    padding: 4px 0;
+    color: #8296a8;
+    font-size: 11px;
+    font-weight: 800;
+    text-align: center;
+}
+
+#seleccionar_fecha_hora .agenda-cal-dia {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1 / 1;
+    min-height: 36px;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    background: transparent;
+    color: #b6c2cd;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+#seleccionar_fecha_hora .agenda-cal-dia.hoy { text-decoration: underline; }
+
+#seleccionar_fecha_hora .agenda-cal-dia.disponible {
+    border-color: #1450bd;
+    background: #fff;
+    color: #1450bd;
+    font-weight: 800;
+}
+
+#seleccionar_fecha_hora .agenda-cal-dia.seleccionado {
+    background: #1450bd;
+    color: #fff;
+}
+
+#seleccionar_fecha_hora .agenda-cal-leyenda {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 10px;
+    color: #607087;
+    font-size: 11.5px;
+}
+
+#seleccionar_fecha_hora .agenda-cal-leyenda span { display: inline-flex; align-items: center; gap: 5px; }
+
+#seleccionar_fecha_hora .agenda-cal-leyenda i {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: 1px solid #1450bd;
+    border-radius: 4px;
+    background: #fff;
+}
+
+#seleccionar_fecha_hora .agenda-cal-leyenda i.seleccionado { background: #1450bd; }
+
+/* Horarios: fondo blanco, borde y números azules; seleccionado azul completo con números blancos. */
+#seleccionar_fecha_hora .agenda-horas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(78px, 1fr));
+    gap: 8px;
+}
+
+#seleccionar_fecha_hora .agenda-horas-grid .btn-hora-disponible {
+    min-width: 0;
+    min-height: 42px;
+    margin: 0 !important;
+    padding: 8px 6px !important;
+    border: 1.5px solid #1450bd !important;
+    border-radius: 10px !important;
+    background: #fff !important;
+    box-shadow: none !important;
+    color: #1450bd !important;
+    -webkit-text-fill-color: #1450bd !important;
+    font-size: 15px;
+    font-weight: 800 !important;
+}
+
+#seleccionar_fecha_hora .agenda-horas-grid .btn-hora-disponible:hover,
+#seleccionar_fecha_hora .agenda-horas-grid .btn-hora-disponible:focus,
+#seleccionar_fecha_hora .agenda-horas-grid .btn-hora-disponible:active {
+    background: #fff !important;
+    border-color: #1450bd !important;
+    color: #1450bd !important;
+    -webkit-text-fill-color: #1450bd !important;
+}
+
+#seleccionar_fecha_hora .agenda-horas-grid .btn-hora-disponible.seleccionada,
+#seleccionar_fecha_hora .agenda-horas-grid .btn-hora-disponible.seleccionada:focus {
+    background: #1450bd !important;
+    border-color: #1450bd !important;
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
+}
+
+#seleccionar_fecha_hora .agenda-reservar-btn {
+    width: 100%;
+    min-height: 46px;
+    margin-top: 14px;
+    border: 0;
+    border-radius: 12px;
+    background: #1450bd;
+    color: #fff;
+    font-family: "Nunito", sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+}
+
+#seleccionar_fecha_hora .agenda-reservar-btn:disabled {
+    background: #c9d5e2;
+    color: #fff;
+}
+
+/* Botón para tomar o agendar horas: mismo diseño que "Ver consentimiento" (.examen-btn). */
+.btn-agendar-hora,
+.ui-page .btn-agendar-hora,
+#lugares_atencion #lista-lugares .btn-agendar-hora.btn-agendar-hora,
+#mis_medicos_buscados #lista-medicos-buscados .btn-agendar-hora.btn-agendar-hora,
+#mis_medicos #lista-medicos .btn-agendar-hora.btn-agendar-hora,
+#perfil_medico #perfil-medico-content .btn-agendar-hora.btn-agendar-hora {
+    display: block !important;
+    width: 100% !important;
+    height: 42px !important;
+    margin-top: 8px !important;
+    padding: 0 12px !important;
+    border: 0 !important;
+    border-radius: 12px !important;
+    background: #31bebe !important;
+    color: #fff !important;
+    font-family: inherit !important;
+    font-size: 14px !important;
+    font-weight: 800 !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+    -webkit-text-fill-color: #fff !important;
+}
+
+.btn-agendar-hora:active,
+.ui-page .btn-agendar-hora:active,
+#lugares_atencion #lista-lugares .btn-agendar-hora.btn-agendar-hora:active,
+#mis_medicos_buscados #lista-medicos-buscados .btn-agendar-hora.btn-agendar-hora:active,
+#mis_medicos #lista-medicos .btn-agendar-hora.btn-agendar-hora:active,
+#perfil_medico #perfil-medico-content .btn-agendar-hora.btn-agendar-hora:active { background: #27a7a7 !important; }

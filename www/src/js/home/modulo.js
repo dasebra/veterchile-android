@@ -1732,6 +1732,12 @@ const textoDatoProfesional = (valor) => {
     return String(valor);
 };
 
+// Primera letra en mayúscula sin alterar el resto (respeta siglas como "UCI").
+const primeraMayuscula = (texto) => {
+    const valor = String(texto || '').trim();
+    return valor ? valor.charAt(0).toLocaleUpperCase('es') + valor.slice(1) : valor;
+};
+
 const solicitarMedicos = () => {
     var datos = {};
     datos.id_paciente = _SESSION('id_usuario');
@@ -1785,9 +1791,7 @@ const solicitarMedicos = () => {
                                     <p class="size16 color-azul mb5">${nombreEscapado}</p>
                                     <p class="letra-small mb5">${especialidadEscapada}</p>
                                     <p class="letra-small mb5"><img class="mr10" width="15" src="src/images/ubicacion.svg">${lugarAtencion}</p>
-                                    <div class="btn-app7" style="width: 100%;" onclick="agendarHora(${medico.id}, '${nombreEscapado}', '${especialidadEscapada}')">
-                                        Agendar Hora
-                                    </div>
+                                    <button type="button" data-role="none" class="btn-agendar-hora" onclick="agendarHora(${medico.id}, '${nombreEscapado}', '${especialidadEscapada}')">Agendar hora</button>
                                 </div>
                             </div>
                         </div>
@@ -1920,9 +1924,7 @@ const damePerfilMedico = (idMedico) => {
                     <div class="card-button-dos mb20">
                         <div class="row">
                             <div class="col-xs-12">
-                                <div class="btn-app7" style="width: 100%;" onclick="agendarHora(${prof.id},'${nombreEscapado}','${especialidadEscapada}')">
-                                    <img src="src/images/calendarioblanco.svg" class="ml20 mr10 wid10" alt="Agendar"> Agendar hora
-                                </div>
+                                <button type="button" data-role="none" class="btn-agendar-hora" onclick="agendarHora(${prof.id},'${nombreEscapado}','${especialidadEscapada}')">Agendar hora</button>
                             </div>
                         </div>
                     </div>
@@ -1973,10 +1975,7 @@ const agendarHora = (idMedico, nombreMedico, especialidad) => {
                     : 'Volver a mis profesionales';
 
                 $('#lugares_atencion .top-titulos').html(`
-                    <div class="bg-azul-claro p10 mb20 border-radius-5">
-                        <p class="size16 color-azul text-center mb5"><strong>${nombreMedico}</strong></p>
-                        <p class="size14 text-center mb0">${especialidad}</p>
-                    </div>
+                    ${htmlCardProfesionalAgenda(nombreMedico, especialidad)}
                     <div class="btn-app4 text-center size14 mb20" onclick="vista('${vistaRetorno}');">
                          ${textoRetorno}
                     </div>
@@ -1996,9 +1995,7 @@ const agendarHora = (idMedico, nombreMedico, especialidad) => {
                                         <p class="size14 color-azul">${lugar.nombre}</p>
                                         <p class="size13"><img class="mr10" width="20" src="src/images/ubicacion.svg">  ${lugar.direccion} - ${lugar.ciudad}</p>
 
-                                        <div class="btn-app7" style="width: 100%" onclick="seleccionarLugarAtencion(${lugar.id},${idMedico},'${lugar.nombre}')">
-                                            <img src="src/images/calendarioblanco.svg" class="ml20 mr10 wid10" alt="Agendar">  Seleccionar
-                                        </div>
+                                        <button type="button" data-role="none" class="btn-agendar-hora" onclick="seleccionarLugarAtencion(${lugar.id},${idMedico},'${lugar.nombre}')">Seleccionar</button>
                                     </div>
                                 </div>
                             </div>
@@ -2318,8 +2315,12 @@ const renderizarCitasPaciente = () => {
 
     registros.forEach(hora => {
         const fecha = fechaEsp(hora.fecha_consulta);
-        const horaInicio = hora.hora_inicio || 'No especificada';
-        const horaTermino = hora.hora_termino || 'No especificada';
+        const soloHoraMinutos = (valor) => {
+            const coincide = String(valor || '').match(/(\d{1,2}):(\d{2})/);
+            return coincide ? coincide[1].padStart(2, '0') + ':' + coincide[2] : '';
+        };
+        const horaInicio = soloHoraMinutos(hora.hora_inicio) || 'No especificada';
+        const horaTermino = soloHoraMinutos(hora.hora_termino) || 'No especificada';
         const medico = hora ? `${hora.nombre_profesional} ${hora.apellido_uno_profesional}` : 'No asignado';
         const especialidad = hora && hora.nombre_especialidad ? hora.nombre_especialidad : 'No especificada';
         const tipo_especialidad = hora && hora.nombre_tipo_especialidad ? hora.nombre_tipo_especialidad : 'No especificada';
@@ -2665,6 +2666,10 @@ const seleccionarLugarAtencion = (idLugar, idProfesional, nombreLugar) => {
     );
 };
 
+// Íconos de modalidad: cruz de salud (presencial) y filmadora (telemedicina).
+const iconoModalidadPresencial = '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M9 3.5h6V9h5.5v6H15v5.5H9V15H3.5V9H9z"/></svg>';
+const iconoModalidadVideo = '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6" width="13" height="12" rx="2.5"/><path d="M15.5 10.2l5-3v9.6l-5-3z"/></svg>';
+
 const mostrarTiposAgendaDisponibles = (modalidades, idLugar, idProfesional, nombreLugar) => {
     const nombreMedico = getSession('nombre_medico_seleccionado');
     const especialidadMedico = getSession('especialidad_medico_seleccionado');
@@ -2679,7 +2684,7 @@ const mostrarTiposAgendaDisponibles = (modalidades, idLugar, idProfesional, nomb
         return `
             <button type="button" class="modalidad-agenda-card"
                 onclick="seleccionarModalidadAgendaPorIndice(${indice})">
-                <span class="modalidad-agenda-icono">${esTelemedicina ? '▣' : '⌖'}</span>
+                <span class="modalidad-agenda-icono">${esTelemedicina ? iconoModalidadVideo : iconoModalidadPresencial}</span>
                 <span class="modalidad-agenda-texto">
                     <strong>${escaparTextoAgenda(modalidad.nombre)}</strong>
                     <small>${escaparTextoAgenda(modalidad.descripcion)}</small>
@@ -2690,11 +2695,7 @@ const mostrarTiposAgendaDisponibles = (modalidades, idLugar, idProfesional, nomb
 
     $('#seleccionar_fecha_hora .top-titulos').html(`
         <p class="letra-bold color-azul-oscuro size20 text-center">¿Cómo quieres atenderte?</p>
-        <div class="agenda-seleccion-resumen">
-            <strong>${escaparTextoAgenda(nombreMedico)}</strong>
-            <span>${escaparTextoAgenda(especialidadMedico)}</span>
-            <small>⌖ ${escaparTextoAgenda(nombreLugar)}</small>
-        </div>
+        ${htmlCardProfesionalAgenda(nombreMedico, especialidadMedico, nombreLugar)}
         <div class="btn-app4 text-center size14 mb20" onclick="vista('lugares_atencion');">Volver a lugares</div>
     `);
     $('#lista-fechas').html(`
@@ -2845,6 +2846,18 @@ const volverDesdeFechasAgenda = () => {
 
 const escaparTextoAgenda = (valor) => $('<div>').text(valor == null ? '' : String(valor)).html();
 
+// Card del profesional usada en todos los pasos de Agendar hora (lugar y badges son opcionales).
+const htmlCardProfesionalAgenda = (nombre, especialidad, lugar, badges) => {
+    const listaBadges = (badges || []).filter(Boolean);
+    return `
+        <div class="agenda-profesional-card">
+            <strong class="agenda-profesional-nombre">${escaparTextoAgenda(nombre)}</strong>
+            <span class="agenda-profesional-especialidad">${escaparTextoAgenda(especialidad)}</span>
+            ${lugar ? `<span class="agenda-profesional-lugar"><img width="12" src="src/images/ubicacion.svg" alt="">${escaparTextoAgenda(lugar)}</span>` : ''}
+            ${listaBadges.length ? `<div class="agenda-profesional-badges">${listaBadges.map(b => `<span class="agenda-modalidad-seleccionada">${escaparTextoAgenda(b)}</span>`).join('')}</div>` : ''}
+        </div>`;
+};
+
 const cargarFechasAgendaSeleccionada = (idLugar, idProfesional, nombreLugar) => {
     console.log('Lugar de atención seleccionado ID:', idLugar);
 
@@ -2880,17 +2893,11 @@ const cargarFechasAgendaSeleccionada = (idLugar, idProfesional, nombreLugar) => 
                 const fechasDisponibles = generarFechasDisponibles(diasLaborales, 30);
 
                 if (fechasDisponibles.length > 0) {
-                    // Actualizar header de la vista con información completa
+                    // Card del profesional con la modalidad (y prestación, si aplica) como badges centrados.
+                    const nombreProcedimiento = getSession('nombre_procedimiento_seleccionado');
                     $('#seleccionar_fecha_hora .top-titulos').html(`
-                        <div class="bg-azul-claro p10 mb20 border-radius-5">
-                            <p class="size16 color-azul text-center mb5"><strong>${nombreMedico}</strong></p>
-                            <p class="size14 text-center mb5">${especialidadMedico}</p>
-                            <p class="size13 text-center mb0"><img class="mr5" width="12" src="src/images/ubicacion.svg">${nombreLugar}</p>
-                            <span class="agenda-modalidad-seleccionada">${getSession('nombre_modalidad_seleccionada')}</span>
-                            ${getSession('nombre_procedimiento_seleccionado')
-                                ? `<span class="agenda-modalidad-seleccionada">${escaparTextoAgenda(getSession('nombre_procedimiento_seleccionado'))}</span>`
-                                : ''}
-                        </div>
+                        ${htmlCardProfesionalAgenda(nombreMedico, especialidadMedico, nombreLugar,
+                            [getSession('nombre_modalidad_seleccionada'), nombreProcedimiento])}
                         <div class="btn-app4 text-center size14 mb20" onclick="volverDesdeFechasAgenda();">
                             ${getSession('tipo_hora_medica_seleccionado') === 'E'
                                 ? 'Volver a prestaciones'
@@ -2898,40 +2905,18 @@ const cargarFechasAgendaSeleccionada = (idLugar, idProfesional, nombreLugar) => 
                         </div>
                     `);
 
-                    let htmlSelect = '<select id="fecha_seleccionada" class="form-control form-control-sm text-center mb20">';
-                    htmlSelect += '<option value="">Seleccione una fecha</option>';
-
-                    fechasDisponibles.forEach(fecha => {
-                        htmlSelect += `<option value="${fecha.valor}">${fecha.texto}</option>`;
-                    });
-
-                    htmlSelect += '</select>';
-
                     let htmlHoras = `
-                    <div class="card-button-dos mb20">
-                        <div class="row text-center">
-                            <div class="col-xs-12 mb20">
-                                <p class="size14 color-azul mb10">Seleccione fecha disponible:</p>
-                                ${htmlSelect}
-                                <div class="btn-app7 text-center" onclick="cargarHorasDisponibles()" style="display:none; width: 100%;" id="btn-cargar-horas">
-                                    <img src="src/images/lupa.svg" class="ml20 mr10 wid10" alt="Buscar">  Buscar horarios
-                                </div>
-                            </div>
-                        </div>
+                    <div class="agenda-paso-card">
+                        <p class="agenda-paso-titulo"><span>1</span> Selecciona una fecha disponible</p>
+                        <input type="hidden" id="fecha_seleccionada" value="">
+                        <div id="agenda-calendario" class="agenda-calendario"></div>
+                        <p id="agenda-fecha-elegida" class="agenda-fecha-elegida">Toca un día destacado para ver sus horarios.</p>
                     </div>
-                    <div id="horarios-disponibles" class="text-center"></div>
+                    <div id="horarios-disponibles"></div>
                     `;
 
                     $('#lista-fechas').html(htmlHoras);
-
-                    // Evento para mostrar botón cuando se seleccione fecha
-                    $('#fecha_seleccionada').on('change', function() {
-                        if ($(this).val()) {
-                            $('#btn-cargar-horas').show();
-                        } else {
-                            $('#btn-cargar-horas').hide();
-                        }
-                    });
+                    iniciarCalendarioAgenda(fechasDisponibles);
 
                     vista('seleccionar_fecha_hora', 'fade');
                 } else {
@@ -2980,6 +2965,95 @@ const generarFechasDisponibles = (diasLaborales, cantidadDias) => {
     return fechasDisponibles;
 }
 
+// ===== Calendario de fechas disponibles (reemplaza al select) =====
+let agendaCalendario = { disponibles: {}, meses: [], indiceMes: 0 };
+let agendaHoraSeleccionada = null;
+
+const iniciarCalendarioAgenda = (fechasDisponibles) => {
+    const disponibles = {};
+    const meses = [];
+    fechasDisponibles.forEach(fecha => {
+        disponibles[fecha.valor] = fecha.texto;
+        const mes = fecha.valor.slice(0, 7);
+        if (meses.indexOf(mes) === -1) meses.push(mes);
+    });
+    agendaCalendario = { disponibles: disponibles, meses: meses, indiceMes: 0 };
+    agendaHoraSeleccionada = null;
+    renderizarCalendarioAgenda();
+};
+
+const cambiarMesCalendarioAgenda = (paso) => {
+    const nuevo = agendaCalendario.indiceMes + paso;
+    if (nuevo < 0 || nuevo >= agendaCalendario.meses.length) return;
+    agendaCalendario.indiceMes = nuevo;
+    renderizarCalendarioAgenda();
+};
+
+const renderizarCalendarioAgenda = () => {
+    const mesClave = agendaCalendario.meses[agendaCalendario.indiceMes];
+    if (!mesClave) return;
+    const nombresMeses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+    const [anio, mes] = mesClave.split('-').map(Number);
+    const primerDia = new Date(anio, mes - 1, 1);
+    const diasEnMes = new Date(anio, mes, 0).getDate();
+    const desfase = (primerDia.getDay() + 6) % 7; // Semana comienza el lunes
+    const seleccionada = $('#fecha_seleccionada').val();
+    const hoy = new Date();
+    const claveHoy = `${hoy.getFullYear()}-${String(hoy.getMonth() + 1).padStart(2, '0')}-${String(hoy.getDate()).padStart(2, '0')}`;
+
+    let celdas = '';
+    for (let i = 0; i < desfase; i++) celdas += '<span class="agenda-cal-vacio"></span>';
+    for (let dia = 1; dia <= diasEnMes; dia++) {
+        const clave = `${mesClave}-${String(dia).padStart(2, '0')}`;
+        const disponible = Object.prototype.hasOwnProperty.call(agendaCalendario.disponibles, clave);
+        const clases = ['agenda-cal-dia'];
+        if (disponible) clases.push('disponible');
+        if (clave === seleccionada) clases.push('seleccionado');
+        if (clave === claveHoy) clases.push('hoy');
+        celdas += disponible
+            ? `<button type="button" data-role="none" class="${clases.join(' ')}" onclick="seleccionarFechaCalendarioAgenda('${clave}')" aria-label="${escaparTextoAgenda(agendaCalendario.disponibles[clave])}">${dia}</button>`
+            : `<span class="${clases.join(' ')}" aria-disabled="true">${dia}</span>`;
+    }
+
+    const total = agendaCalendario.meses.length;
+    const indice = agendaCalendario.indiceMes;
+    $('#agenda-calendario').html(`
+        <div class="agenda-cal-cabecera">
+            <button type="button" data-role="none" class="agenda-cal-nav" onclick="cambiarMesCalendarioAgenda(-1)" ${indice === 0 ? 'disabled' : ''} aria-label="Mes anterior">‹</button>
+            <strong>${nombresMeses[mes - 1]} ${anio}</strong>
+            <button type="button" data-role="none" class="agenda-cal-nav" onclick="cambiarMesCalendarioAgenda(1)" ${indice >= total - 1 ? 'disabled' : ''} aria-label="Mes siguiente">›</button>
+        </div>
+        <div class="agenda-cal-semana"><span>Lu</span><span>Ma</span><span>Mi</span><span>Ju</span><span>Vi</span><span>Sá</span><span>Do</span></div>
+        <div class="agenda-cal-grid">${celdas}</div>
+        <div class="agenda-cal-leyenda"><span><i class="disponible"></i>Disponible</span><span><i class="seleccionado"></i>Seleccionado</span></div>
+    `);
+};
+
+const seleccionarFechaCalendarioAgenda = (clave) => {
+    $('#fecha_seleccionada').val(clave);
+    agendaHoraSeleccionada = null;
+    renderizarCalendarioAgenda();
+    $('#agenda-fecha-elegida').html(`Fecha elegida: <strong>${escaparTextoAgenda(agendaCalendario.disponibles[clave] || fechaEsp(clave))}</strong>`);
+    cargarHorasDisponibles();
+};
+
+const seleccionarHoraAgenda = (boton) => {
+    $('#horarios-disponibles .btn-hora-disponible').removeClass('seleccionada').attr('aria-pressed', 'false');
+    $(boton).addClass('seleccionada').attr('aria-pressed', 'true');
+    agendaHoraSeleccionada = { id: boton.getAttribute('data-id'), hora: boton.getAttribute('data-hora') };
+    $('#btn-reservar-hora').prop('disabled', false).text(`Reservar hora de las ${agendaHoraSeleccionada.hora}`);
+};
+
+const reservarHoraSeleccionada = () => {
+    const fecha = $('#fecha_seleccionada').val();
+    if (!agendaHoraSeleccionada || !fecha) {
+        msg('Horario', 'Debe seleccionar un horario', 'warning');
+        return;
+    }
+    confirmarHoraMedica(agendaHoraSeleccionada.id, fecha, agendaHoraSeleccionada.hora);
+};
+
 const cargarHorasDisponibles = () => {
     const fechaSeleccionada = $('#fecha_seleccionada').val();
 
@@ -3002,26 +3076,31 @@ const cargarHorasDisponibles = () => {
         datos,
         function (resp) {
             if (resp.estado == 1 && resp.horarios && resp.horarios.length > 0) {
-                let htmlHorarios = '<div class="card-button-dos mb20"><div class="row"><div class="col-xs-12 text-left mb10">';
-                htmlHorarios += '<p class="size14 color-azul mb10 text-center">Horarios disponibles:</p>';
+                agendaHoraSeleccionada = null;
+                const botones = resp.horarios.map((horario, indice) => {
+                    const horaTexto = horaSinSegundos(horario.hora);
+                    return `<button type="button" data-role="none" class="btn-hora-disponible"
+                        data-id="${escaparTextoAgenda(horario.id)}" data-hora="${escaparTextoAgenda(horaTexto)}"
+                        onclick="seleccionarHoraAgenda(this)">${escaparTextoAgenda(horaTexto)}</button>`;
+                }).join('');
 
-                resp.horarios.forEach(horario => {
-                    htmlHorarios += `
-                    <div class="btn-hora-disponible mb10" onclick="confirmarHoraMedica('${horario.id}', '${fechaSeleccionada}', '${horario.hora}')">
-                        ${horario.hora}
-                    </div>`;
-                });
-
-                htmlHorarios += '</div></div></div>';
-                $('#horarios-disponibles').html(htmlHorarios);
+                $('#horarios-disponibles').html(`
+                    <div class="agenda-paso-card">
+                        <p class="agenda-paso-titulo"><span>2</span> Elige un horario</p>
+                        <div class="agenda-horas-grid">${botones}</div>
+                        <button type="button" data-role="none" id="btn-reservar-hora" class="agenda-reservar-btn" disabled
+                            onclick="reservarHoraSeleccionada()">Selecciona un horario</button>
+                    </div>
+                `);
+                const tarjetaHoras = document.getElementById('horarios-disponibles');
+                if (tarjetaHoras && tarjetaHoras.scrollIntoView) {
+                    tarjetaHoras.scrollIntoView({behavior: 'smooth', block: 'start'});
+                }
             } else {
                 $('#horarios-disponibles').html(`
-                    <div class="card-button-dos mb20">
-                        <div class="row">
-                            <div class="col-xs-12 text-center pt20 pb20">
-                                <p class="size16 color-azul">No hay horarios disponibles para esta fecha</p>
-                            </div>
-                        </div>
+                    <div class="agenda-paso-card text-center">
+                        <p class="size16 color-azul mb0">No hay horarios disponibles para esta fecha</p>
+                        <p class="agenda-fecha-elegida">Prueba con otro día del calendario.</p>
                     </div>
                 `);
             }
@@ -3602,6 +3681,14 @@ const buscarProfesionales = () => {
                         || textoDatoProfesional(prof.lugar_atencion)
                         || textoDatoProfesional(prof.direccion)
                         || 'Lugar de atención por confirmar';
+                    // Todo lo que aparece en la card comienza con mayúscula (nombre y apellidos por palabra).
+                    const nombreCard = escaparTextoConsentimiento(
+                        nombreCompleto.toLowerCase().replace(/(^|[\s'-])(\p{L})/gu, (m, sep, letra) => sep + letra.toUpperCase())
+                    );
+                    const especialidadCard = escaparTextoConsentimiento(
+                        especialidadCompleta.split(' - ').map(primeraMayuscula).join(' - ')
+                    );
+                    const lugarCard = escaparTextoConsentimiento(primeraMayuscula(lugarAtencion));
 
                     htmlProfesionales += `
                     <div class="card-button-dos mb20">
@@ -3610,12 +3697,10 @@ const buscarProfesionales = () => {
                                 <a href="javascript:void(0)" onclick="damePerfilMedico(${prof.id})"> <img class="img-circulo" width="70" src="${fotoPerfil}" alt="Foto perfil"> </a>
                             </div>
                             <div class="col-xs-9">
-                                <p class="size16 color-azul mb5">${nombreCompleto}</p>
-                                <p class="letra-small mb5">${especialidadCompleta}</p>
-                                <p class="letra-small mb5"><img class="mr10" width="15" src="src/images/ubicacion.svg">${lugarAtencion}</p>
-                                <div class="btn-app7" style="width: 100%;" onclick="agendarProfesionalDesdeBusqueda(${indiceProfesional})">
-                                    Agendar Hora
-                                </div>
+                                <p class="size16 color-azul mb5">${nombreCard}</p>
+                                <p class="letra-small mb5">${especialidadCard}</p>
+                                <p class="letra-small mb5"><img class="mr10" width="15" src="src/images/ubicacion.svg">${lugarCard}</p>
+                                <button type="button" data-role="none" class="btn-agendar-hora" onclick="agendarProfesionalDesdeBusqueda(${indiceProfesional})">Agendar hora</button>
                             </div>
                         </div>
                     </div>

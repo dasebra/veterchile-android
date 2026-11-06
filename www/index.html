@@ -603,53 +603,96 @@
     </style>
 
     <style>
-        /* Accesos del paciente: 3 columnas x 2 filas, tarjetas cuadradas, sin subtítulo gris */
-        #index .dashboard-grid-paciente {
-            grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        /* Accesos del paciente: 2 columnas (col-6), ícono a la izquierda y título a la derecha.
+           "Mi médico de emergencia" ocupa la fila completa (col-12).
+           Se usa .dashboard-scroll en el selector para ganar a las reglas de estilos.css. */
+        #index .dashboard-content .dashboard-section .dashboard-scroll .dashboard-grid-paciente {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
             gap: 10px !important;
         }
 
-        #index .dashboard-grid-paciente > .dashboard-card:not(.emergency-doctor-card),
-        #index .dashboard-grid-paciente #contenedor-citas {
-            aspect-ratio: 1 / 1;
+        #index .dashboard-content .dashboard-section .dashboard-scroll .dashboard-grid-paciente > .dashboard-card:not(.emergency-doctor-card),
+        #index .dashboard-content .dashboard-section .dashboard-scroll .dashboard-grid-paciente #contenedor-citas {
+            aspect-ratio: auto !important;
             height: auto !important;
-            min-height: 0 !important;
-            padding: 10px 8px !important;
+            min-height: 68px !important;
+            padding: 10px 12px !important;
+            flex-direction: row !important;
             align-items: center !important;
-            justify-content: center !important;
-            text-align: center;
+            justify-content: flex-start !important;
+            gap: 10px !important;
+            text-align: left !important;
         }
 
-        #index .dashboard-grid-paciente > .dashboard-card:not(.emergency-doctor-card) .dashboard-card-icon {
-            width: 32px !important;
-            height: 32px !important;
-            min-width: 32px !important;
-            margin: 0 0 7px 0 !important;
-            border-radius: 10px !important;
-            background-size: 20px !important;
-        }
-
-        #index .dashboard-grid-paciente > .dashboard-card:not(.emergency-doctor-card) .dashboard-card-icon svg {
-            width: 18px !important;
-            height: 18px !important;
-        }
-
-        #index .dashboard-grid-paciente > .dashboard-card:not(.emergency-doctor-card) .dashboard-card-copy {
-            flex: 0 0 auto !important;
-            padding: 0 !important;
-            text-align: center !important;
-        }
-
-        #index .dashboard-grid-paciente > .dashboard-card:not(.emergency-doctor-card) .dashboard-card-copy h3 {
-            min-height: 0;
+        #index .dashboard-content .dashboard-section .dashboard-scroll .dashboard-grid-paciente > .dashboard-card:not(.emergency-doctor-card) .dashboard-card-icon {
+            flex: 0 0 40px !important;
+            width: 40px !important;
+            height: 40px !important;
+            min-width: 40px !important;
             margin: 0 !important;
-            font-size: 10.5px !important;
-            text-align: center !important;
+            border-radius: 10px !important;
+            background-size: 72% !important;
         }
 
-        #index .dashboard-grid-paciente > .dashboard-card:not(.emergency-doctor-card) .dashboard-card-copy p,
-        #index .dashboard-grid-paciente > .dashboard-card:not(.emergency-doctor-card) .dashboard-card-arrow {
+        #index .dashboard-content .dashboard-section .dashboard-scroll .dashboard-grid-paciente > .dashboard-card:not(.emergency-doctor-card) .dashboard-card-icon svg {
+            width: 22px !important;
+            height: 22px !important;
+        }
+
+        #index .dashboard-content .dashboard-section .dashboard-scroll .dashboard-grid-paciente > .dashboard-card:not(.emergency-doctor-card) .dashboard-card-copy {
+            flex: 1 1 auto !important;
+            width: auto !important;
+            min-width: 0 !important;
+            padding: 0 !important;
+            text-align: left !important;
+        }
+
+        #index .dashboard-content .dashboard-section .dashboard-scroll .dashboard-grid-paciente > .dashboard-card:not(.emergency-doctor-card) .dashboard-card-copy h3 {
+            min-height: 0 !important;
+            margin: 0 !important;
+            font-size: clamp(12.5px, 3.5vw, 15px) !important;
+            line-height: 1.2 !important;
+            text-align: left !important;
+        }
+
+        #index .dashboard-content .dashboard-section .dashboard-scroll .dashboard-grid-paciente > .dashboard-card:not(.emergency-doctor-card) .dashboard-card-copy p,
+        #index .dashboard-content .dashboard-section .dashboard-scroll .dashboard-grid-paciente > .dashboard-card:not(.emergency-doctor-card) .dashboard-card-arrow {
             display: none !important;
+        }
+
+        #index .dashboard-content .dashboard-section .dashboard-scroll .dashboard-grid-paciente > .emergency-doctor-card {
+            grid-column: 1 / -1 !important;
+        }
+
+        /* Celulares muy pequeños: ícono arriba y título abajo, centrados. */
+        @media (max-width: 359px) {
+            #index .dashboard-content .dashboard-section .dashboard-scroll .dashboard-grid-paciente > .dashboard-card:not(.emergency-doctor-card),
+            #index .dashboard-content .dashboard-section .dashboard-scroll .dashboard-grid-paciente #contenedor-citas {
+                min-height: 92px !important;
+                padding: 10px 8px !important;
+                flex-direction: column !important;
+                justify-content: center !important;
+                gap: 6px !important;
+                text-align: center !important;
+            }
+
+            #index .dashboard-content .dashboard-section .dashboard-scroll .dashboard-grid-paciente > .dashboard-card:not(.emergency-doctor-card) .dashboard-card-icon {
+                flex: 0 0 auto !important;
+                width: 36px !important;
+                height: 36px !important;
+                min-width: 36px !important;
+            }
+
+            #index .dashboard-content .dashboard-section .dashboard-scroll .dashboard-grid-paciente > .dashboard-card:not(.emergency-doctor-card) .dashboard-card-copy {
+                flex: 0 0 auto !important;
+                width: 100% !important;
+                text-align: center !important;
+            }
+
+            #index .dashboard-content .dashboard-section .dashboard-scroll .dashboard-grid-paciente > .dashboard-card:not(.emergency-doctor-card) .dashboard-card-copy h3 {
+                font-size: 12.5px !important;
+                text-align: center !important;
+            }
         }
     </style>
 
@@ -1473,10 +1516,6 @@
     <div role="main" class="ui-content">
         <div class="row mb60">
             <div class="col-xs-12">
-                <div class="examenes-cabecera">
-                    <p class="examenes-titulo">Últimos registros de exámenes</p>
-                    <small class="examenes-ayuda">Tus órdenes y resultados más recientes.</small>
-                </div>
                 <div class="col-xs-12 mb60" id="list_examenes"></div>
             </div>
         </div>
@@ -1512,10 +1551,6 @@
     <div role="main" class="ui-content">
         <div class="row mb60">
             <div class="col-xs-12">
-                <div class="examenes-cabecera">
-                    <p class="examenes-titulo">Últimos registros de recetas</p>
-                    <small class="examenes-ayuda">Tus recetas emitidas más recientes.</small>
-                </div>
                 <div class="col-xs-12 mb60" id="list_recetas"></div>
             </div>
         </div>
@@ -1596,10 +1631,6 @@
     <div role="main" class="ui-content">
         <div class="row mb60">
             <div class="col-xs-12">
-                <div class="examenes-cabecera">
-                    <p class="examenes-titulo">Últimos registros de consentimientos</p>
-                    <small class="examenes-ayuda">Tus consentimientos informados y su estado.</small>
-                </div>
                 <div class="col-xs-12 mb60" id="list_consentimientos"></div>
             </div>
         </div>
@@ -1641,15 +1672,14 @@
     <div role="main" class="ui-content">
         <div class="row mb60">
             <div class="col-xs-12">
-                <p class="mt20 text-center size18 color-azul-oscuro mb20">Últimos registros de documentos</p>
                 <div class="col-xs-12 mb60" id="">
                     <div class="card-button-dos mb20">
                         <div class="row">
                             <div class="col-xs-12 text-left">
                                 <p class="letra-small mb5 color-azul">Tipo: <span class="letra-small">Certificado ausencia laboral</span></p>
                                 <p class="letra-small mb5 color-azul">Fecha emisión: <span class="letra-small">11-11-2025</span></p>
-                                <div class="btn-app7" style="width: 40%; padding-left: 10px;">
-                                    Ver Documento
+                                <div class="examen-card-acciones">
+                                    <button type="button" data-role="none" class="examen-btn">Ver documento</button>
                                 </div>
                             </div>
                         </div>
@@ -2335,7 +2365,6 @@
     <div role="main" class="ui-content citas-contenido">
         <div class="citas-filtros-wrap">
             <div class="citas-filtros-cabecera">
-                <h2>Mis horas médicas</h2>
                 <button type="button" data-role="none" class="citas-actualizar" onclick="solicitarMisHorasMedicas(true)">
                     ↻ <span>Actualizar</span>
                 </button>
