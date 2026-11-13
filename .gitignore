@@ -45,3 +45,6 @@ Thumbs.db
 *service-account*.json
 firebase-adminsdk-*.json
 package.json
+
+# Claude Code (local)
+.claude/
