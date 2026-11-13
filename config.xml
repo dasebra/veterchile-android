@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.medichile.app"
+<widget id="cl.veterchile.app"
     version="1.0.10"
     android-versionCode="10010"
     xmlns="http://www.w3.org/ns/widgets"
     xmlns:cdv="http://cordova.apache.org/ns/1.0">
 
-    <name>MED-SDI</name>
+    <name>VeterChile App</name>
 
     <description>
         Aplicación móvil de Salud Digital Integrada
@@ -34,7 +34,7 @@
 
         <preference
             name="AndroidWindowSplashScreenBackground"
-            value="#1450BD"
+            value="#6f42c1"
         />
 
         <resource-file

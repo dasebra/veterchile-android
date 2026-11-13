@@ -1,3 +1,10 @@
+// Nombres y apellidos con la primera letra de cada palabra en mayúscula (el resto en minúscula).
+function nombrePropio(texto) {
+    return String(texto == null ? '' : texto).toLowerCase().replace(/(^|[\s'’-])(\p{L})/gu, function(m, sep, letra) {
+        return sep + letra.toUpperCase();
+    });
+}
+
 
 function actualizarEstado(id_usuario){
 	query('UPDATE usuario SET estado = 1 WHERE id_usuario=?', [id_usuario], 
@@ -222,8 +229,8 @@ const actualizarHeaderUsuario = () => {
         ? partes[0] + ' ' + partes[partes.length - 1].charAt(0).toUpperCase() + '.'
         : partes[0];
     $('.header .row h2 span, .dashboard-user h2 span').text(nombreCorto).attr('title', nombre);
-    $('.header-menu-nombre').text(nombreCorto);
+    // El título del menú de perfil es fijo ("Menú"); ya no muestra el nombre.
     // Rol visible sobre el nombre en los encabezados interiores (se dibuja por CSS).
-    $('.header .row h2').attr('data-rol', localStorage.getItem('rolActivo') === 'Profesional' ? 'Profesional' : 'Paciente');
+    $('.header .row h2').attr('data-rol', localStorage.getItem('rolActivo') === 'Profesional' ? 'Profesional' : 'Tutor');
     $('.header .row h2 img, .dashboard-user h2 img').attr('src', foto_perfil);
 }

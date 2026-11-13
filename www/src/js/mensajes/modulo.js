@@ -68,7 +68,7 @@ const renderMensajesApp = (mensajes, noLeidos) => {
 
     if (!mensajes.length) {
         $('#mensajes-app-lista').html(
-            '<div class="mensajes-app-vacio">Aún no tienes mensajes en esta bandeja.</div>'
+            '<div class="mensajes-app-vacio">No hay registro</div>'
         );
         return;
     }

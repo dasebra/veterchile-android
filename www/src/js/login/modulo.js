@@ -116,6 +116,10 @@ const ingresarLogin = () => {
                     restaurarEstadoBiometricoTrasLogin();
                 }
                 prepararSeleccionRoles(resp);
+                // Ofrece activar el ingreso con huella para la próxima vez (solo una vez por cuenta).
+                if (typeof ofrecerLoginBiometricoApp === 'function') {
+                    setTimeout(function () { ofrecerLoginBiometricoApp(user, pass); }, 900);
+                }
             } else {
                 if (resp.bloqueado) {
                     const segundos = parseInt(resp.segundos_restantes || 900, 10);
@@ -203,7 +207,7 @@ const prepararSeleccionRoles = (respuesta) => {
 
     if (!roles.length) {
         localStorage.removeItem('authToken');
-        msg('Acceso', 'Esta cuenta no posee un perfil Paciente o Profesional habilitado.', 'warning');
+        msg('Acceso', 'Esta cuenta no posee un perfil Tutor o Profesional habilitado.', 'warning');
         return;
     }
 
@@ -220,8 +224,8 @@ const prepararSeleccionRoles = (respuesta) => {
 
 // Iconos de ingreso por rol (imágenes SVG del proyecto).
 const ICONOS_ROL = {
-    Profesional: '<img src="src/images/ingreso/profesional.svg" alt="">',
-    Paciente: '<img src="src/images/ingreso/paciente.svg" alt="">'
+    Profesional: '<img src="src/images/ingreso/profesional.svg?v=20261112c" alt="">',
+    Paciente: '<img src="src/images/ingreso/paciente.svg?v=20261112b" alt="">'
 };
 
 const renderizarSelectorRoles = (roles) => {
@@ -229,7 +233,7 @@ const renderizarSelectorRoles = (roles) => {
         const icono = ICONOS_ROL[rol] || ICONOS_ROL.Paciente;
         return '<button type="button" class="selector-rol-card" onclick="seleccionarRolApp(\'' + rol + '\')">' +
             '<span class="selector-rol-icono">' + icono + '</span>' +
-            '<span class="selector-rol-titulo">Ingresar como ' + rol + '</span>' +
+            '<span class="selector-rol-titulo">Ingresar como ' + (rol === 'Paciente' ? 'Tutor' : rol) + '</span>' +
             '</button>';
     }).join('');
 

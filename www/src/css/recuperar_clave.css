@@ -1,0 +1,180 @@
+/* =========================================================================
+   Recuperar contraseña (#recuperar-clave)
+   Misma línea visual que el login: morado #6f42c1, campos grises claros con
+   halo morado al enfocar. Letra solo con tokens --fs-* (responsive.css).
+   ========================================================================= */
+
+/* Fondo blanco: gana a la regla general de estilos.css que pinta las vistas internas de gris */
+html body .ui-page#recuperar-clave:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol),
+html body .ui-page#recuperar-clave:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol) > .ui-content {
+    --app-bg: #fff;
+    background: #fff !important;
+}
+
+html body #recuperar-clave .rc-contenido {
+    max-width: 460px;
+    margin: 0 auto;
+    padding: 18px 20px calc(28px + env(safe-area-inset-bottom)) !important;
+    box-sizing: border-box;
+}
+
+/* Progreso */
+#recuperar-clave .rc-progreso { display: flex; gap: 6px; margin: 4px 0 8px; }
+#recuperar-clave .rc-progreso-barra { flex: 1; height: 4px; border-radius: 4px; background: #eceef2; transition: background .25s; }
+#recuperar-clave .rc-progreso-barra.hecho { background: #6f42c1; }
+#recuperar-clave .rc-paso-num { margin: 0 0 18px; color: #8a94a3; font-size: var(--fs-xs, 12px); font-weight: 700; letter-spacing: .02em; }
+#recuperar-clave.rc-en-exito .rc-progreso,
+#recuperar-clave.rc-en-exito .rc-paso-num { display: none; }
+
+/* Textos */
+#recuperar-clave .rc-paso { animation: rc-entrar .25s ease-out; }
+@keyframes rc-entrar { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+html body #recuperar-clave .rc-titulo {
+    margin: 0 0 8px; color: #1f2430; font-size: var(--fs-3xl, 22px); font-weight: 800; line-height: 1.25;
+    text-align: left; text-shadow: none;
+}
+html body #recuperar-clave .rc-texto {
+    margin: 0 0 22px; color: #5b6472; font-size: var(--fs-base, 14px); font-weight: 400; line-height: 1.5;
+    text-align: left; text-shadow: none;
+}
+#recuperar-clave .rc-texto strong { color: #1f2430; font-weight: 700; }
+
+/* Opciones de método */
+#recuperar-clave .rc-metodos { display: grid; gap: 10px; margin: 0 0 22px; }
+#recuperar-clave .rc-metodo {
+    display: flex; align-items: center; gap: 12px; width: 100%; margin: 0; padding: 14px;
+    border: 1px solid #e3e5ea; border-radius: 16px; background: #fff;
+    font-family: inherit; text-align: left; cursor: pointer; box-shadow: none;
+    transition: border-color .15s, background .15s;
+}
+#recuperar-clave .rc-metodo:active { background: #faf8ff; }
+#recuperar-clave .rc-metodo.activo { border-color: #6f42c1; background: #faf8ff; box-shadow: 0 0 0 1px #6f42c1 inset; }
+#recuperar-clave .rc-metodo-icono {
+    display: flex; align-items: center; justify-content: center; flex: 0 0 42px; width: 42px; height: 42px;
+    border-radius: 12px; background: #f4f5f7; transition: background .15s;
+}
+#recuperar-clave .rc-metodo.activo .rc-metodo-icono { background: #efe8fc; }
+#recuperar-clave .rc-metodo-icono svg { width: 22px; height: 22px; fill: none; stroke: #5b6472; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+#recuperar-clave .rc-metodo.activo .rc-metodo-icono svg { stroke: #6f42c1; }
+#recuperar-clave .rc-metodo-texto { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+#recuperar-clave .rc-metodo-texto strong { color: #1f2430; font-size: var(--fs-md, 15px); font-weight: 700; }
+#recuperar-clave .rc-metodo-texto small { color: #6b7686; font-size: var(--fs-sm, 13px); font-weight: 400; line-height: 1.35; }
+#recuperar-clave .rc-metodo-radio {
+    flex: 0 0 20px; width: 20px; height: 20px; border: 2px solid #c8cdd5; border-radius: 50%; box-sizing: border-box;
+    transition: border .15s;
+}
+#recuperar-clave .rc-metodo.activo .rc-metodo-radio { border: 6px solid #6f42c1; }
+
+/* Campos */
+#recuperar-clave .rc-campo { margin: 0 0 16px; }
+html body #recuperar-clave .rc-campo > label {
+    display: block; margin: 0 0 8px 2px; color: #343a40; font-size: var(--fs-sm, 13px); font-weight: 700; text-shadow: none;
+}
+html body #recuperar-clave input.rc-input {
+    display: block; width: 100%; height: 52px; margin: 0; padding: 0 16px; box-sizing: border-box;
+    border: 1px solid #e3e5ea; border-radius: 14px; background: #f7f8fa; color: #1f2430;
+    font-family: inherit; font-size: var(--fs-md, 15px); font-weight: 600; outline: 0; box-shadow: none;
+    -webkit-appearance: none; appearance: none;
+    transition: border-color .15s, box-shadow .15s, background .15s;
+}
+html body #recuperar-clave input.rc-input::placeholder { color: #9aa3b1; font-weight: 500; }
+html body #recuperar-clave input.rc-input:focus {
+    border-color: #6f42c1; background: #fff; box-shadow: 0 0 0 3px rgba(111, 66, 193, .14);
+}
+html body #recuperar-clave input.rc-input.rc-invalido { border-color: #d93a46; background: #fff; box-shadow: 0 0 0 3px rgba(217, 58, 70, .12); }
+
+/* Teléfono con prefijo +56 */
+#recuperar-clave .rc-telefono { position: relative; }
+#recuperar-clave .rc-telefono-prefijo {
+    position: absolute; z-index: 1; top: 50%; left: 16px; transform: translateY(-50%);
+    padding-right: 10px; border-right: 1px solid #dfe2e7; color: #1f2430; font-size: var(--fs-md, 15px); font-weight: 700; line-height: 20px;
+}
+html body #recuperar-clave .rc-telefono input.rc-input { padding-left: 64px; letter-spacing: .02em; }
+
+/* Contraseña con botón ver */
+#recuperar-clave .rc-clave { position: relative; }
+html body #recuperar-clave .rc-clave input.rc-input { padding-right: 52px; }
+#recuperar-clave .rc-ojo {
+    position: absolute; top: 50%; right: 6px; transform: translateY(-50%);
+    display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; margin: 0; padding: 0;
+    border: 0; border-radius: 50%; background: transparent; cursor: pointer; box-shadow: none;
+}
+#recuperar-clave .rc-ojo svg { width: 20px; height: 20px; fill: none; stroke: #8a94a3; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+#recuperar-clave .rc-ojo.activo svg { stroke: #6f42c1; }
+
+/* Código de 6 dígitos */
+#recuperar-clave .rc-icono-grande {
+    display: flex; align-items: center; justify-content: center; width: 56px; height: 56px; margin: 0 0 16px;
+    border-radius: 18px; background: #efe8fc;
+}
+#recuperar-clave .rc-icono-grande svg { width: 28px; height: 28px; fill: none; stroke: #6f42c1; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+#recuperar-clave .rc-codigo { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin: 0 0 8px; }
+html body #recuperar-clave .rc-codigo input {
+    width: 100%; min-width: 0; height: 56px; margin: 0; padding: 0; box-sizing: border-box;
+    border: 1px solid #e3e5ea; border-radius: 14px; background: #f7f8fa; color: #1f2430;
+    font-family: inherit; font-size: var(--fs-4xl, 24px); font-weight: 800; text-align: center; outline: 0; box-shadow: none;
+    caret-color: #6f42c1; -webkit-appearance: none; appearance: none;
+    transition: border-color .15s, box-shadow .15s, background .15s;
+}
+html body #recuperar-clave .rc-codigo input:focus { border-color: #6f42c1; background: #fff; box-shadow: 0 0 0 3px rgba(111, 66, 193, .14); }
+html body #recuperar-clave .rc-codigo.rc-invalido input { border-color: #d93a46; }
+#recuperar-clave .rc-codigo.rc-invalido { animation: rc-temblor .35s; }
+@keyframes rc-temblor { 20%, 60% { transform: translateX(-6px); } 40%, 80% { transform: translateX(6px); } }
+
+#recuperar-clave .rc-reenviar {
+    display: flex; align-items: center; justify-content: center; gap: 4px; margin: 18px 0 4px;
+    color: #6b7686; font-size: var(--fs-sm, 13px); text-align: center;
+}
+#recuperar-clave .rc-enlace {
+    margin: 0; padding: 6px 4px; border: 0; background: none; box-shadow: none;
+    color: #6f42c1; font-family: inherit; font-size: var(--fs-sm, 13px); font-weight: 700; cursor: pointer;
+}
+#recuperar-clave .rc-enlace:disabled { color: #9aa3b1; cursor: default; }
+#recuperar-clave .rc-enlace #rc_contador { font-variant-numeric: tabular-nums; }
+#recuperar-clave .rc-enlace-centro { display: block; margin: 0 auto; }
+
+/* Reglas de la contraseña */
+#recuperar-clave .rc-reglas { display: grid; gap: 8px; margin: 2px 0 8px; padding: 14px 16px; list-style: none; border-radius: 14px; background: #f7f8fa; }
+#recuperar-clave .rc-reglas li {
+    display: flex; align-items: center; gap: 10px; margin: 0; color: #6b7686; font-size: var(--fs-sm, 13px); transition: color .15s;
+}
+#recuperar-clave .rc-reglas li::before {
+    content: ''; flex: 0 0 18px; width: 18px; height: 18px; box-sizing: border-box;
+    border: 2px solid #c8cdd5; border-radius: 50%; transition: background .15s, border-color .15s;
+}
+#recuperar-clave .rc-reglas li.cumple { color: #1f2430; font-weight: 600; }
+#recuperar-clave .rc-reglas li.cumple::before {
+    border-color: #6f42c1;
+    background: #6f42c1 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4 8-9'/%3E%3C/svg%3E") center / 12px no-repeat;
+}
+
+/* Error */
+#recuperar-clave .rc-error { min-height: 0; margin: 0 0 8px 2px; color: #d93a46; font-size: var(--fs-sm, 13px); font-weight: 600; text-align: left; text-shadow: none; }
+#recuperar-clave .rc-error:empty { display: none; }
+
+/* Botón principal */
+html body #recuperar-clave .rc-boton {
+    display: block; width: 100%; height: 52px; margin: 14px 0 0; padding: 0 16px;
+    border: 0; border-radius: 14px; background: #6f42c1; color: #fff;
+    font-family: inherit; font-size: var(--fs-md, 15px); font-weight: 700; cursor: pointer; box-shadow: none; text-shadow: none;
+    transition: background .15s, opacity .15s;
+}
+html body #recuperar-clave .rc-boton:active { background: #5b34a3; }
+html body #recuperar-clave .rc-boton:disabled { background: #e3dcf3; color: #fff; cursor: default; }
+
+/* Paso final */
+#recuperar-clave .rc-exito { padding-top: 48px; text-align: center; }
+#recuperar-clave .rc-exito .rc-titulo,
+#recuperar-clave .rc-exito .rc-texto { text-align: center; }
+#recuperar-clave .rc-exito-icono {
+    display: flex; align-items: center; justify-content: center; width: 76px; height: 76px; margin: 0 auto 20px;
+    border-radius: 50%; background: #efe8fc; animation: rc-aparecer .4s ease-out;
+}
+#recuperar-clave .rc-exito-icono svg { width: 38px; height: 38px; fill: none; stroke: #6f42c1; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+@keyframes rc-aparecer { from { transform: scale(.6); opacity: 0; } to { transform: none; opacity: 1; } }
+
+@media (max-width: 359px) {
+    #recuperar-clave .rc-codigo { gap: 6px; }
+    html body #recuperar-clave .rc-codigo input { height: 50px; }
+}

@@ -51,9 +51,13 @@ const manejarNotificacionPush = (mensaje) => {
     const esAutorizacion = mensaje.type === 'authorization_request';
     const esMensajeDirecto = mensaje.type === 'direct_message';
     const esEmergencia = mensaje.type === 'patient_emergency';
-    const esControlReposo = mensaje.type === 'rest_control_request' || mensaje.type === 'rest_control_reminder';
     const usuarioDestino = String(mensaje.target_user_id || '');
     const usuarioActivo = String(_SESSION('id_usuario') || '');
+
+    // Toda notificación de la cuenta activa queda en el historial de la campana.
+    if (!usuarioDestino || !usuarioActivo || usuarioDestino === usuarioActivo) {
+        registrarNotificacionPush(mensaje);
+    }
 
     if (mensaje.tap === 'background' || mensaje.tap === 'foreground') {
         if (usuarioDestino && usuarioActivo && usuarioDestino !== usuarioActivo) {
@@ -74,9 +78,7 @@ const manejarNotificacionPush = (mensaje) => {
             return;
         }
 
-        if (esControlReposo) {
-            cargar_controles_reposo();
-        } else if (esEmergencia) {
+        if (esEmergencia) {
             abrirMedicoEmergencia();
         } else if (esMensajeDirecto) {
             localStorage.removeItem('mensajePendiente');
@@ -155,18 +157,7 @@ const inicializarNotificacionesPush = (forzar) => {
         const emergencyChannel = {
             id: 'medsdi_emergency',
             name: 'Alertas SOS MED-SDI',
-            description: 'Alertas urgentes de pacientes vinculados',
-            sound: 'default',
-            vibration: true,
-            importance: 'high',
-            visibility: 1,
-            badge: true
-        };
-
-        const restControlChannel = {
-            id: 'medsdi_rest_control',
-            name: 'Control de reposo MED-SDI',
-            description: 'Solicitudes y recordatorios de verificación de reposo',
+            description: 'Alertas urgentes de tutores vinculados',
             sound: 'default',
             vibration: true,
             importance: 'high',
@@ -188,9 +179,6 @@ const inicializarNotificacionesPush = (forzar) => {
         });
         FirebasexMessaging.createChannel(emergencyChannel, function () {}, function (error) {
             console.error('No se pudo crear el canal SOS MED-SDI.', error);
-        });
-        FirebasexMessaging.createChannel(restControlChannel, function () {}, function (error) {
-            console.error('No se pudo crear el canal de control de reposo.', error);
         });
 
         FirebasexMessaging.getToken(registrarTokenPush, function (error) {

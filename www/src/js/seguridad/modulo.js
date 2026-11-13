@@ -134,9 +134,7 @@ const cargarDesafiosAcceso = (forzar) => {
         if (!items.length) {
             $('#lista-desafios-acceso').html(
                 '<div class="app-estado-vacio">' +
-                '<span class="app-estado-vacio-icono">✓</span>' +
-                '<strong>Todo está en orden</strong>' +
-                '<p>No tienes solicitudes de acceso pendientes.</p>' +
+                '<strong>No hay registro</strong>' +
                 '</div>'
             );
             return;

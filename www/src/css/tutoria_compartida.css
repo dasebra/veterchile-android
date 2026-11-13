@@ -1,0 +1,293 @@
+/* =========================================================
+   Tutoría compartida y traspaso de mascota
+   (basado en vetsdi_laravel13: modal_tutoria_compartida,
+   modal_invitar_cotutor y modal_traspasar_mascota)
+   ========================================================= */
+
+/* ---- Sección del inicio: elegir mascota y compartir ---- */
+.home-tutoria {
+    margin: 14px 0 6px;
+    padding: 15px;
+    border: 1px solid #e2ebf2;
+    border-radius: 17px;
+    background: linear-gradient(120deg, #fff 35%, #f4effc 100%);
+    box-shadow: 0 5px 15px rgba(37,72,108,.07);
+}
+.home-tutoria-cabecera { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.home-tutoria-icono {
+    display: flex; align-items: center; justify-content: center; flex: 0 0 42px; width: 42px; height: 42px;
+    border-radius: 13px; background: #f1ebfa;
+}
+.home-tutoria-icono svg, .tc-svg { width: 22px; height: 22px; fill: none; stroke: #6f42c1; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.home-tutoria-copia { flex: 1; min-width: 0; }
+.home-tutoria-copia h3 { margin: 0; color: #26262b; font-size: var(--fs-md, 15px); font-weight: 800; line-height: 1.2; }
+.home-tutoria-copia p { margin: 2px 0 0; color: #6b7686; font-size: var(--fs-xs, 12px); line-height: 1.3; text-shadow: none; }
+.home-tutoria-mascotas {
+    display: flex; gap: 10px; margin: 0 -15px 12px; padding: 2px 15px 4px;
+    overflow-x: auto; scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch;
+}
+.home-tutoria-mascotas::-webkit-scrollbar { display: none; }
+.home-tutoria-mascota {
+    display: flex; flex: 0 0 auto; flex-direction: column; align-items: center; gap: 6px; width: 74px;
+    margin: 0; padding: 9px 4px 8px; border: 1.5px solid #e6dff5; border-radius: 14px; background: #fff;
+    color: #26262b; font-family: inherit; font-size: var(--fs-xs, 12px); font-weight: 700; scroll-snap-align: start;
+    -webkit-tap-highlight-color: transparent;
+}
+.home-tutoria-mascota.activa { border-color: #6f42c1; background: #f7f4fd; color: #6f42c1; }
+.home-tutoria-mascota span:last-child { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tc-avatar {
+    display: flex; align-items: center; justify-content: center; flex: 0 0 auto; width: 44px; height: 44px;
+    overflow: hidden; border-radius: 50%; background: #f1ebfa; color: #6f42c1; font-weight: 800;
+}
+.tc-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.tc-avatar .mascota-card-pata { width: 22px; height: 22px; fill: #6f42c1; }
+.home-tutoria-vacio { margin: 0 0 12px; color: #6b7686; font-size: var(--fs-xs, 12px); text-align: left; text-shadow: none; }
+.home-tutoria-boton {
+    display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 44px; margin: 0;
+    border: 0; border-radius: 12px; background: #6f42c1; color: #fff; font-family: inherit; font-size: var(--fs-base, 14px); font-weight: 800;
+}
+.home-tutoria-boton svg { width: 18px; height: 18px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.home-tutoria-boton:disabled { opacity: .5; }
+
+/* ---- Modales (hoja inferior, igual estilo que los modales de la app) ---- */
+.tc-overlay {
+    position: fixed; inset: 0; z-index: 2000; display: none; align-items: flex-end; padding: 16px;
+    background: rgba(76, 45, 135, .56); backdrop-filter: blur(2px);
+}
+.tc-overlay.visible { display: flex; }
+.tc-modal {
+    display: flex; flex-direction: column; width: 100%; max-height: 88vh; overflow: hidden;
+    border-radius: 20px 20px 15px 15px; background: #fff; box-shadow: 0 18px 45px rgba(76, 45, 135, .3);
+    font-family: inherit; text-align: left;
+}
+.tc-modal-header {
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 15px 17px;
+    background: #6f42c1; color: #fff;
+}
+.tc-modal-header h5 { margin: 0 0 3px; color: #fff; font-size: var(--fs-lg, 16px); font-weight: 800; }
+.tc-modal-header small { display: block; color: rgba(255,255,255,.85); font-size: var(--fs-xs, 12px); line-height: 1.3; }
+.tc-modal-cerrar {
+    flex: 0 0 34px; width: 34px; height: 34px; margin: 0; padding: 0; border: 0; border-radius: 50%;
+    background: rgba(255,255,255,.18); color: #fff; font-size: var(--fs-3xl, 22px); line-height: 32px;
+}
+.tc-modal-body { flex: 1; min-height: 0; overflow-y: auto; padding: 16px 17px; }
+.tc-modal-footer { display: flex; gap: 10px; padding: 12px 17px 16px; border-top: 1px solid #eee8f8; }
+.tc-btn {
+    display: flex; align-items: center; justify-content: center; gap: 6px; flex: 1; min-height: 44px; margin: 0;
+    border-radius: 12px; font-family: inherit; font-size: var(--fs-base, 14px); font-weight: 700;
+}
+.tc-btn svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.tc-btn-secundario { border: 1.5px solid #6f42c1; background: #fff; color: #26262b; }
+.tc-btn-primario { border: 0; background: #6f42c1; color: #fff; }
+.tc-btn:disabled { opacity: .55; }
+.tc-spinner {
+    display: inline-block; width: 14px; height: 14px; border: 2px solid currentColor; border-right-color: transparent;
+    border-radius: 50%; animation: tc-giro .7s linear infinite;
+}
+@keyframes tc-giro { to { transform: rotate(360deg); } }
+
+/* Campos */
+.tc-campo { margin-bottom: 12px; }
+.tc-campo label { display: block; margin: 0 0 5px; color: #6f42c1; font-size: var(--fs-xs, 12px); font-weight: 700; }
+.tc-campo .tc-req { color: #d93a46; }
+.tc-input {
+    display: block; width: 100%; min-height: 42px; box-sizing: border-box; margin: 0; padding: 9px 12px;
+    border: 1.5px solid #e1d8f2; border-radius: 11px; background: #fff; color: #26262b;
+    font-family: inherit; font-size: var(--fs-base, 14px); box-shadow: none; -webkit-appearance: none; appearance: none;
+}
+select.tc-input {
+    padding-right: 34px;
+    background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236f42c1' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 11px center / 16px;
+}
+textarea.tc-input { resize: vertical; }
+/* Selector de mascota en morado */
+html body #tutoria-compartida select#tutoria_mascota_id {
+    border: 1.5px solid #6f42c1 !important; border-radius: 12px !important; background-color: #fff !important;
+    color: #1f2430 !important; font-weight: 600;
+    margin-bottom: 18px !important;
+}
+/* El header blanco de esta vista ahora es global: ver ".header-blanco" en estilos.css */
+html body #modalInvitarCotutorLabel { margin-top: 26px !important; margin-bottom: 12px !important; }
+/* Descripción de cada rol (co-tutor / Cuidador) en peso normal */
+html body .tc-rol-datos > span,
+html body .tc-rol-datos > span span { font-weight: normal !important; }
+html body #tutoria-compartida .tc-intro { font-size: var(--fs-lg, 16px) !important; font-weight: 700 !important; color: #1f2430 !important; line-height: 1.4; }
+html body #tutoria-compartida .tc-subtitulo { color: #1f2430 !important; font-size: var(--fs-lg, 16px) !important; font-weight: 700 !important; border-bottom-color: #e3e5ea !important; }
+html body #tutoria-compartida .tc-subtitulo span { color: inherit !important; font-size: inherit !important; }
+/* Personas con acceso: agrupadas en una card gris clara */
+html body #tutoria-compartida .tc-acceso-card { margin-bottom: 16px; padding: 14px 14px 6px; border-radius: 16px; background: #f4f5f7; }
+html body #tutoria-compartida .tc-acceso-card .tc-subtitulo { margin: 0 0 12px; padding-bottom: 0; border-bottom: 0 !important; }
+html body #tutoria-compartida .tc-acceso-card .tc-persona { border-color: transparent; background: #fff; }
+html body #tutoria-compartida label[for="tutoria_mascota_id"] { margin-bottom: 7px !important; color: #343a40 !important; font-size: var(--fs-base, 14px) !important; font-weight: 700 !important; }
+.tc-input:focus { border-color: #6f42c1; outline: 0; }
+.tc-input.invalido { border-color: #d93a46; }
+.tc-ayuda { display: block; margin: -6px 0 10px; color: #6b7686; font-size: var(--fs-xs, 12px); line-height: 1.35; }
+.tc-error { display: block; margin: -4px 0 10px; color: #d93a46; font-size: var(--fs-xs, 12px); font-weight: 600; }
+.tc-oculto { display: none !important; }
+.tc-texto { margin: 0 0 12px; color: #4b5563; font-size: var(--fs-sm, 13px); line-height: 1.4; text-align: left; text-shadow: none; }
+.tc-subtitulo {
+    margin: 4px 0 10px; padding-bottom: 6px; border-bottom: 2px solid #e6dff5;
+    color: #6f42c1; font-size: var(--fs-xs, 12px); font-weight: 800; letter-spacing: .03em; text-transform: uppercase;
+}
+
+/* Personas con acceso */
+.tc-persona {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 9px; padding: 11px 12px;
+    border: 1px solid #e6dff5; border-radius: 14px; background: #fff;
+}
+.tc-persona .tc-avatar { width: 38px; height: 38px; font-size: var(--fs-md, 15px); }
+.tc-persona .tc-avatar svg { width: 18px; height: 18px; fill: none; stroke: #6f42c1; stroke-width: 2; }
+.tc-persona-datos { flex: 1; min-width: 0; }
+.tc-persona-datos strong { display: block; overflow: hidden; color: #26262b; font-size: var(--fs-base, 14px); text-overflow: ellipsis; white-space: nowrap; }
+.tc-persona-datos span { display: block; color: #6b7686; font-size: var(--fs-xs, 12px); line-height: 1.3; overflow-wrap: anywhere; }
+.tc-badge { flex: 0 0 auto; padding: 4px 8px; border-radius: 20px; font-size: var(--fs-2xs, 11px); font-weight: 800; }
+.tc-badge-titular { background: #f1ebfa; color: #6f42c1; }
+.tc-badge-pendiente { background: #fff4e0; color: #b26a00; }
+.tc-badge-activa { background: #e5f6ec; color: #1b7a43; }
+.tc-badge-expirada { background: #eef0f3; color: #5f6b7a; }
+.tc-badge-rechazada { background: #fde8ea; color: #b4232f; }
+.tc-acciones { display: flex; flex-wrap: wrap; gap: 8px; width: 100%; padding-left: 48px; }
+.tc-accion {
+    display: inline-flex; align-items: center; gap: 4px; margin: 0; padding: 6px 10px; border: 1px solid #e1d8f2;
+    border-radius: 9px; background: #f7f4fd; color: #6f42c1; font-family: inherit; font-size: var(--fs-xs, 12px); font-weight: 700;
+}
+.tc-accion-peligro { border-color: #f6cdd1; background: #fff5f6; color: #c52f3b; }
+.tc-vacio { margin: 4px 0 0; color: #6b7686; font-size: var(--fs-sm, 13px); line-height: 1.4; text-align: left; text-shadow: none; }
+
+/* Roles (co-tutor / cuidador) */
+.tc-roles { display: flex; flex-direction: column; gap: 9px; margin-bottom: 12px; }
+.tc-rol { position: relative; display: block; margin: 0; cursor: pointer; }
+.tc-rol input { position: absolute; opacity: 0; pointer-events: none; }
+.tc-rol-caja {
+    display: flex; align-items: flex-start; gap: 10px; padding: 11px 12px;
+    border: 1.5px solid #e6dff5; border-radius: 14px; background: #fff;
+}
+.tc-rol input:checked + .tc-rol-caja { border-color: #c9b8ec; background: #f7f4fd; }
+.tc-rol-icono { display: flex; align-items: center; justify-content: center; flex: 0 0 34px; height: 34px; border-radius: 10px; background: #f1ebfa; }
+.tc-rol-icono svg { width: 18px; height: 18px; fill: none; stroke: #6f42c1; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.tc-rol-datos { flex: 1; min-width: 0; }
+.tc-rol-datos strong { display: block; color: #26262b; font-size: var(--fs-base, 14px); }
+.tc-rol-datos > span { display: block; color: #6b7686; font-size: var(--fs-xs, 12px); line-height: 1.35; }
+.tc-rol-marca {
+    display: flex; align-items: center; justify-content: center; flex: 0 0 20px; height: 20px;
+    border: 1.5px solid #cfc3ea; border-radius: 50%; color: transparent;
+}
+.tc-rol-marca svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 3; }
+.tc-rol input:checked + .tc-rol-caja .tc-rol-marca { border-color: #6f42c1; background: #6f42c1; color: #fff; }
+
+.tc-aviso {
+    display: flex; align-items: flex-start; gap: 8px; margin: 4px 0 0; padding: 10px 12px;
+    border-radius: 12px; background: #f1ebfa; color: #4c2d87; font-size: var(--fs-xs, 12px); line-height: 1.35;
+}
+.tc-aviso svg { flex: 0 0 16px; width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+.tc-aviso-alerta { background: #fff4e0; color: #8a5300; }
+
+/* ---- Vista: Traspasar mascota ---- */
+html body .ui-page#traspasar-mascota,
+html body .ui-page#traspasar-mascota > .ui-content { background: #fff !important; }
+#traspasar-mascota .traspaso-contenido { padding: 14px 16px 100px !important; }
+.traspaso-pasos { display: flex; gap: 6px; margin: 0 0 16px; padding: 0; list-style: none; }
+.traspaso-paso { flex: 1; }
+.traspaso-paso button {
+    display: flex; flex-direction: column; align-items: center; gap: 4px; width: 100%; margin: 0; padding: 0;
+    border: 0; background: none; color: #9aa3b0; font-family: inherit; font-size: var(--fs-2xs, 11px); font-weight: 700;
+}
+.traspaso-paso button:disabled { opacity: 1; }
+.traspaso-paso-numero {
+    display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%;
+    background: #eef0f3; color: #6b7686; font-size: var(--fs-sm, 13px); font-weight: 800;
+}
+.traspaso-paso-numero svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 3; }
+.traspaso-paso.activo button { color: #6f42c1; }
+.traspaso-paso.activo .traspaso-paso-numero { background: #6f42c1; color: #fff; }
+.traspaso-paso.completado button { color: #1b7a43; }
+.traspaso-paso.completado .traspaso-paso-numero { background: #e5f6ec; color: #1b7a43; }
+.traspaso-panel { display: none; }
+.traspaso-panel.activo { display: block; }
+.traspaso-panel h6 { margin: 0 0 3px; color: #26262b; font-size: var(--fs-lg, 16px); font-weight: 800; }
+.traspaso-panel-encabezado { margin-bottom: 14px; }
+.traspaso-panel-encabezado p { margin: 0; color: #6b7686; font-size: var(--fs-sm, 13px); text-align: left; text-shadow: none; }
+.traspaso-mascota {
+    display: flex; align-items: center; gap: 12px; margin: -2px 0 12px; padding: 11px 12px;
+    border: 1px solid #e6dff5; border-radius: 14px; background: #f7f4fd;
+}
+.traspaso-mascota .tc-avatar { width: 48px; height: 48px; border: 3px solid #fff; }
+.traspaso-mascota strong { display: block; color: #26262b; font-size: var(--fs-md, 15px); }
+.traspaso-mascota span { display: block; color: #6b7686; font-size: var(--fs-xs, 12px); }
+.traspaso-motivos { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; margin: -4px 0 10px; }
+.traspaso-motivos small { width: 100%; color: #6b7686; font-size: var(--fs-xs, 12px); }
+.traspaso-motivo {
+    margin: 0; padding: 6px 11px; border: 1px solid #e1d8f2; border-radius: 20px; background: #fff;
+    color: #6f42c1; font-family: inherit; font-size: var(--fs-xs, 12px); font-weight: 700;
+}
+.traspaso-buscador { display: flex; align-items: flex-end; gap: 8px; }
+.traspaso-buscador .tc-campo { flex: 1; }
+.traspaso-buscador .tc-btn { flex: 0 0 auto; min-height: 42px; margin-bottom: 12px; padding: 0 14px; }
+.traspaso-cambio {
+    display: flex; flex-direction: column; align-items: stretch; gap: 8px; margin-bottom: 14px;
+}
+.traspaso-cambio-tutor { padding: 10px 12px; border: 1px solid #e6dff5; border-radius: 13px; background: #fff; }
+.traspaso-cambio-nuevo { border-color: #6f42c1; background: #f7f4fd; }
+.traspaso-etiqueta { display: block; color: #6b7686; font-size: var(--fs-2xs, 11px); font-weight: 800; letter-spacing: .03em; text-transform: uppercase; }
+.traspaso-cambio-tutor strong { display: block; color: #26262b; font-size: var(--fs-base, 14px); }
+.traspaso-cambio-tutor small { color: #6b7686; font-size: var(--fs-xs, 12px); }
+.traspaso-cambio-mascota { display: flex; align-items: center; justify-content: center; gap: 10px; color: #6f42c1; font-size: var(--fs-sm, 13px); font-weight: 800; }
+.traspaso-cambio-mascota .tc-avatar { width: 36px; height: 36px; }
+.traspaso-cambio-mascota svg.tc-flecha { width: 18px; height: 18px; fill: none; stroke: #6f42c1; stroke-width: 2.5; transform: rotate(90deg); }
+.traspaso-motivo-resumen { margin-bottom: 14px; padding: 10px 12px; border-radius: 13px; background: #f8f9fb; }
+.traspaso-motivo-resumen p { margin: 2px 0 0; color: #26262b; font-size: var(--fs-sm, 13px); text-align: left; text-shadow: none; }
+.traspaso-documentos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+.traspaso-documento { padding: 10px 8px; border: 1px solid #e6dff5; border-radius: 13px; text-align: center; }
+.traspaso-documento strong { display: block; color: #6f42c1; font-size: var(--fs-2xl, 20px); font-weight: 800; }
+.traspaso-documento span { display: block; color: #26262b; font-size: var(--fs-2xs, 11px); font-weight: 700; line-height: 1.2; }
+.traspaso-documento small { display: block; color: #6b7686; font-size: var(--fs-3xs, 10px); line-height: 1.2; }
+.traspaso-acciones { display: flex; gap: 10px; margin-top: 20px; }
+
+/* Botón Traspasar dentro de las acciones de cada mascota */
+.mascota-card-acciones .mascota-btn-traspasar { color: #6f42c1; }
+
+/* Ajustes: etiqueta oscura, subtítulo en minúscula, sin avatares en la lista */
+.tc-campo label { color: #304b63; }
+.tc-intro { margin: 0 0 12px; color: #4b5563; font-size: var(--fs-sm, 13px); line-height: 1.4; text-align: left; text-shadow: none; }
+.tc-subtitulo { text-transform: none; letter-spacing: 0; font-size: var(--fs-base, 14px); }
+.tc-acciones { padding-left: 0; }
+
+/* Pie del modal principal: solo "Invitar co-tutor", centrado */
+#modal_tutoria_compartida .tc-modal-footer { justify-content: center; }
+#modal_tutoria_compartida .tc-modal-footer .tc-btn { flex: 0 1 auto; min-width: 220px; justify-content: center; }
+.tc-intro { font-size: var(--fs-md, 15px); font-weight: 600; color: #304b63; }
+.tc-campo label { font-size: var(--fs-md, 15px); font-weight: 700; }
+
+/* Tutoría compartida como página */
+html body .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol)#tutoria-compartida,
+html body .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol)#tutoria-compartida > .ui-content,
+html body .ui-page:not(#login):not(#index):not(#inicio-profesional):not(#seleccionar-rol)#tutoria-compartida > .header .top-titulos { --app-bg: #fff; background: #fff !important; }
+#tutoria-compartida .tc-pagina-contenido { padding: 16px 16px 96px !important; }
+#tutoria-compartida .tc-pagina-accion { display: flex; justify-content: center; margin-top: 18px; }
+#tutoria-compartida .tc-pagina-accion .tc-btn { min-width: 220px; justify-content: center; }
+#tutoria-compartida .tc-campo label { font-size: var(--fs-xl, 18px); font-weight: 700; margin-bottom: 8px; }
+
+
+/* Invitar en pasos (dentro de la página) */
+.tc-pasos { display: flex; align-items: center; gap: 8px; margin: 2px 0 14px; }
+.tc-paso-item { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 0 0 auto; color: #8a94a3; font-size: var(--fs-2xs, 11px); }
+.tc-paso-item i { display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 2px solid #d9cdef; border-radius: 50%; background: #fff; font-style: normal; font-weight: 800; font-size: var(--fs-sm, 13px); }
+.tc-paso-item b { font-weight: 700; }
+.tc-paso-item.activo { color: #6f42c1; }
+.tc-paso-item.activo i { border-color: #6f42c1; background: #6f42c1; color: #fff; }
+.tc-paso-item.hecho { color: #6f42c1; }
+.tc-paso-item.hecho i { border-color: #6f42c1; background: #efe9fb; color: #6f42c1; }
+.tc-paso-linea { flex: 1 1 auto; height: 2px; margin-bottom: 16px; background: #e6dff5; }
+.tc-paso-titulo { margin: 0 0 4px; color: #304b63; font-size: var(--fs-xl, 18px); font-weight: 700; }
+#tutoria-compartida .tc-texto { margin: 0 0 12px; color: #4b5563; font-size: var(--fs-sm, 13px); text-align: left; text-shadow: none; }
+.tc-paso-botones { display: flex; gap: 10px; margin-top: 18px; }
+.tc-paso-botones .tc-btn { flex: 1; justify-content: center; }
+.tc-resumen { margin-bottom: 12px; padding: 4px 14px; border: 1px solid #e6dff5; border-radius: 14px; background: #fff; }
+.tc-resumen > div { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-top: 1px solid #eef0f3; }
+.tc-resumen > div:first-child { border-top: 0; }
+.tc-resumen small { color: #6b7686; font-size: var(--fs-xs, 12px); }
+.tc-resumen b { color: #26262b; font-size: var(--fs-sm, 13px); font-weight: 600; text-align: right; overflow-wrap: anywhere; }
+
+/* Pasos: borde más fino */
+.tc-paso-item i { border-width: 1px; }
+.tc-paso-linea { height: 1px; }

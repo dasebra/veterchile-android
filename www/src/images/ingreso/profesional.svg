@@ -4,7 +4,7 @@
     <clipPath id="c"><rect x="340" y="240" width="172" height="190"/></clipPath>
   </defs>
   <g transform="translate(0,512) scale(0.1,-0.1)">
-    <use href="#i" fill="#2f3a9e"/>
+    <use href="#i" fill="#6F42C1"/>
   </g>
   <g clip-path="url(#c)">
     <g transform="translate(0,512) scale(0.1,-0.1)"><use href="#i" fill="#31bebe"/></g>

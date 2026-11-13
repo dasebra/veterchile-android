@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>SDI</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 
     <!-- Jquery -->
     <script src="src/js/jquery/jquery.js"></script>
@@ -23,30 +23,35 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.25/dist/sweetalert2.all.min.js"></script>
 
     <!-- Main -->
-    <link rel="stylesheet" href="src/css/estilos.css" />
-    <link rel="stylesheet" href="src/css/colores.css" />
-    <link rel="stylesheet" href="src/css/posicion.css" />
-    <link rel="stylesheet" href="src/css/posicion_celular.css" />
-    <link rel="stylesheet" href="src/css/posicion_tablet.css" />
-    <link rel="stylesheet" href="src/css/textos.css">
-    <link rel="stylesheet" href="src/css/textos_celular.css">
-    <link rel="stylesheet" href="src/css/textos_tablet.css">
-    <link rel="stylesheet" href="src/css/menu.css">
-    <script src="src/js/api/api.js"></script>
+    <link rel="stylesheet" href="src/css/estilos.css?v=20261113l" />
+    <link rel="stylesheet" href="src/css/colores.css?v=20261111" />
+    <link rel="stylesheet" href="src/css/posicion.css?v=20261111" />
+    <link rel="stylesheet" href="src/css/posicion_celular.css?v=20261111" />
+    <link rel="stylesheet" href="src/css/posicion_tablet.css?v=20261111" />
+    <link rel="stylesheet" href="src/css/textos.css?v=20261112a">
+    <link rel="stylesheet" href="src/css/textos_celular.css?v=20261111">
+    <link rel="stylesheet" href="src/css/textos_tablet.css?v=20261111">
+    <link rel="stylesheet" href="src/css/menu.css?v=20261111">
+    <link rel="stylesheet" href="src/css/tutoria_compartida.css?v=20261112a">
+    <link rel="stylesheet" href="src/css/recuperar_clave.css?v=20261112b">
+    <script src="src/js/api/api.js?v=20261111"></script>
 
-    <script src="src/js/db/usuario.js"></script>
-    <script src="src/js/db/db.js"></script>
+    <script src="src/js/db/usuario.js?v=20261113b"></script>
+    <script src="src/js/db/db.js?v=20261111"></script>
 
-    <script src="src/js/main/main.js"></script>
+    <script src="src/js/main/main.js?v=20261111"></script>
 
     <!-- Modulos -->
-    <script src="src/js/login/modulo.js"></script>
-    <script src="src/js/home/modulo.js"></script>
-    <script src="src/js/autorizacion/modulo.js"></script>
-    <script src="src/js/seguridad/modulo.js"></script>
-    <script src="src/js/notificaciones/modulo.js"></script>
-    <script src="src/js/mensajes/modulo.js"></script>
-    <script src="src/js/emergencia/modulo.js"></script>
+    <script src="src/js/login/modulo.js?v=20261112a"></script>
+    <script src="src/js/recuperar_clave/modulo.js?v=20261112a"></script>
+    <script src="src/js/home/modulo.js?v=20261113i"></script>
+    <script src="src/js/autorizacion/modulo.js?v=20261112a"></script>
+    <script src="src/js/seguridad/modulo.js?v=20261112a"></script>
+    <script src="src/js/notificaciones/modulo.js?v=20261112a"></script>
+    <script src="src/js/notificaciones/historial.js?v=20261112a"></script>
+    <script src="src/js/mensajes/modulo.js?v=20261112a"></script>
+    <script src="src/js/emergencia/modulo.js?v=20261112a"></script>
+    <script src="src/js/tutoria_compartida/modulo.js?v=20261111d"></script>
 
     <!-- Menu -->
     <link href="src/css/dcaccordion.css" rel="stylesheet" type="text/css" />
@@ -56,8 +61,8 @@
     <script type='text/javascript' src='src/js/menu/jquery.dcjqaccordion.2.7.min.js'></script>
 
     <!-- MSG -->
-    <link href="src/js/toast-master/css/jquery.toast.css" rel="stylesheet" type="text/css">
-    <script type="text/javascript" src="src/js/toast-master/js/jquery.toast.js"></script>
+    <link href="src/js/toast-master/css/jquery.toast.css?v=20261112d" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="src/js/toast-master/js/jquery.toast.js?v=20261112d"></script>
     <script type="text/javascript" src="src/js/toast-master/js/toastr.js"></script>
 
     <!-- MOMENT -->
@@ -106,8 +111,8 @@
 
         .autorizaciones-listado-titulo {
             margin: 0;
-            color: #20466f;
-            font-size: 15px;
+            color: #4c2d87;
+            font-size: var(--fs-md, 15px);
             font-weight: 800;
         }
 
@@ -115,7 +120,7 @@
             display: block;
             margin-top: 3px;
             color: #718096;
-            font-size: 11px;
+            font-size: var(--fs-2xs, 11px);
         }
 
         .autorizaciones-filtros {
@@ -140,7 +145,7 @@
             border-radius: 18px;
             background: #ffffff;
             color: #49617b;
-            font-size: 11px;
+            font-size: var(--fs-2xs, 11px);
             font-weight: 700;
             line-height: 1;
             box-shadow: none;
@@ -149,8 +154,8 @@
         }
 
         .autorizaciones-filtro.active {
-            border-color: #1b63c6;
-            background: #1b63c6;
+            border-color: #6f42c1;
+            background: #6f42c1;
             color: #ffffff;
         }
 
@@ -165,7 +170,7 @@
             border-radius: 10px;
             background: #edf3f8;
             color: #49617b;
-            font-size: 10px;
+            font-size: var(--fs-3xs, 10px);
             font-weight: 800;
         }
 
@@ -178,7 +183,7 @@
             min-height: 18px;
             margin: 3px 0 10px;
             color: #6b7c8f;
-            font-size: 11px;
+            font-size: var(--fs-2xs, 11px);
         }
 
         #list_log_reg {
@@ -194,7 +199,7 @@
             background: #ffffff;
             color: #6d7d8f;
             text-align: center;
-            font-size: 12px;
+            font-size: var(--fs-xs, 12px);
         }
     </style>
 
@@ -203,9 +208,9 @@
         /* Ajustes de contraste: flujo paciente > profesional > lugares de atención */
         #perfil_medico .top-titulos .btn-app4,
         #mis_medicos_buscados .top-titulos .btn-app4 {
-            background: #1f63c7 !important;
+            background: #6f42c1 !important;
             color: #ffffff !important;
-            border: 1px solid #1f63c7 !important;
+            border: 1px solid #6f42c1 !important;
             text-shadow: none !important;
             font-weight: 800 !important;
             opacity: 1 !important;
@@ -225,9 +230,9 @@
         #lugares_atencion #lista-lugares .btn-app4,
         #lugares_atencion #lista-lugares .btn-app7,
         #lugares_atencion #lista-lugares [class*="btn"] {
-            background: #1f63c7 !important;
+            background: #6f42c1 !important;
             color: #ffffff !important;
-            border-color: #1f63c7 !important;
+            border-color: #6f42c1 !important;
             text-shadow: none !important;
             font-weight: 800 !important;
             opacity: 1 !important;
@@ -263,12 +268,12 @@
            MED-SDI - Detalle de autorización / PIN
            ===================================================== */
         #autorizacion {
-            background: #f4f8fc;
+            background: #f1ebfa;
         }
 
         #autorizacion > .ui-content {
             padding: 18px 16px 90px;
-            background: #f4f8fc;
+            background: #f1ebfa;
         }
 
         #autorizacion > .ui-content > .row {
@@ -286,8 +291,8 @@
 
         #autorizacion .autorizacion-sdi-marca {
             margin: 2px 0 14px;
-            color: #1450bd;
-            font-size: 18px;
+            color: #6f42c1;
+            font-size: var(--fs-xl, 18px);
             font-weight: 900;
             text-align: center;
             letter-spacing: .02em;
@@ -296,7 +301,7 @@
         #autorizacion #log_reg_autorizacion_detalle {
             margin: 0 0 14px;
             color: #40566e;
-            font-size: 13px;
+            font-size: var(--fs-sm, 13px);
             line-height: 1.45;
             text-align: center;
         }
@@ -306,7 +311,7 @@
             border: 1px solid #dce7f2;
             border-radius: 16px;
             background: #ffffff;
-            box-shadow: 0 6px 18px rgba(31, 63, 101, .08);
+            box-shadow: 0 6px 18px rgba(76, 45, 135, .08);
         }
 
         #autorizacion .autorizacion-pin-bloque {
@@ -317,7 +322,7 @@
             display: block;
             margin: 0 0 9px;
             color: #38506a;
-            font-size: 12px;
+            font-size: var(--fs-xs, 12px);
             font-weight: 800;
             text-align: center;
         }
@@ -333,18 +338,18 @@
             border: 1px solid #cbd9e7;
             border-radius: 13px;
             background: #fdfefe;
-            color: #173b67 !important;
-            font-size: 21px;
+            color: #4c2d87 !important;
+            font-size: var(--fs-2xl, 20px);
             font-weight: 900;
             letter-spacing: 10px;
             text-align: center;
             outline: none;
-            box-shadow: inset 0 1px 2px rgba(31, 63, 101, .04);
+            box-shadow: inset 0 1px 2px rgba(76, 45, 135, .04);
         }
 
         #autorizacion #password_:focus {
-            border-color: #2d7bd4;
-            box-shadow: 0 0 0 3px rgba(45, 123, 212, .12);
+            border-color: #6f42c1;
+            box-shadow: 0 0 0 3px rgba(111, 66, 193, .12);
         }
 
         #autorizacion .biometria-autorizacion {
@@ -365,7 +370,7 @@
             min-height: 46px;
             margin: 0;
             border-radius: 12px;
-            font-size: 12px;
+            font-size: var(--fs-xs, 12px);
             font-weight: 900;
             text-shadow: none;
             box-shadow: none;
@@ -422,7 +427,7 @@
             right: 13px;
             bottom: 12px;
             color: #1598a4;
-            font-size: 20px;
+            font-size: var(--fs-2xl, 20px);
             font-weight: 700;
             line-height: 1;
         }
@@ -434,25 +439,20 @@
 
         #index .dashboard-grid-paciente #boton_fmu .dashboard-card-icon,
         #index .dashboard-grid-paciente #boton_documentos .dashboard-card-icon {
-            background-color: #edf3ff;
+            background-color: #f1ebfa;
         }
 
         #index .dashboard-grid-paciente #boton_autorizaciones .dashboard-card-icon,
         #index .dashboard-grid-paciente #boton_desafios .dashboard-card-icon {
-            background-color: #eef0ff;
+            background-color: #f1ebfa;
         }
 
         #index .dashboard-grid-paciente #boton_mensajes .dashboard-card-icon {
             background-color: #fff0f2;
         }
 
-        #index .dashboard-grid-paciente #boton_control_reposo .dashboard-card-icon {
-            color: #1598a4;
-            background-color: #e8f7f7;
-        }
-
         #index .dashboard-grid-paciente #boton_configuracion_perfil .dashboard-card-icon {
-            background-color: #eaf6ff;
+            background-color: #f1ebfa;
         }
     </style>
 
@@ -530,8 +530,8 @@
         }
 
         #index .dashboard-grid-paciente .icon-autorizacion-unificado {
-            color: #5267c9 !important;
-            background: #eef0ff !important;
+            color: #6f42c1 !important;
+            background: #f1ebfa !important;
         }
 
         /* Copy: título arriba y subtítulo debajo, siempre alineados. */
@@ -549,7 +549,7 @@
             min-height: 19px;
             margin: 0 0 5px !important;
             color: #24435f !important;
-            font-size: 13px !important;
+            font-size: var(--fs-sm, 13px) !important;
             font-weight: 900 !important;
             line-height: 1.2 !important;
             text-align: left !important;
@@ -558,7 +558,7 @@
         #index .dashboard-grid-paciente > .dashboard-card:not(.emergency-doctor-card) .dashboard-card-copy p {
             margin: 0 !important;
             color: #8090a0 !important;
-            font-size: 9.5px !important;
+            font-size: var(--fs-3xs, 10px) !important;
             font-weight: 600 !important;
             line-height: 1.25 !important;
             text-align: left !important;
@@ -571,7 +571,7 @@
             bottom: 11px !important;
             margin: 0 !important;
             color: #16a0a7 !important;
-            font-size: 18px !important;
+            font-size: var(--fs-xl, 18px) !important;
             font-weight: 800 !important;
             line-height: 1 !important;
         }
@@ -593,11 +593,11 @@
             }
 
             #index .dashboard-grid-paciente > .dashboard-card:not(.emergency-doctor-card) .dashboard-card-copy h3 {
-                font-size: 12px !important;
+                font-size: var(--fs-xs, 12px) !important;
             }
 
             #index .dashboard-grid-paciente > .dashboard-card:not(.emergency-doctor-card) .dashboard-card-copy p {
-                font-size: 9px !important;
+                font-size: var(--fs-3xs, 10px) !important;
             }
         }
     </style>
@@ -650,7 +650,7 @@
         #index .dashboard-content .dashboard-section .dashboard-scroll .dashboard-grid-paciente > .dashboard-card:not(.emergency-doctor-card) .dashboard-card-copy h3 {
             min-height: 0 !important;
             margin: 0 !important;
-            font-size: clamp(12.5px, 3.5vw, 15px) !important;
+            font-size: var(--fs-base, 14px) !important;
             line-height: 1.2 !important;
             text-align: left !important;
         }
@@ -690,11 +690,14 @@
             }
 
             #index .dashboard-content .dashboard-section .dashboard-scroll .dashboard-grid-paciente > .dashboard-card:not(.emergency-doctor-card) .dashboard-card-copy h3 {
-                font-size: 12.5px !important;
+                font-size: var(--fs-sm, 13px) !important;
                 text-align: center !important;
             }
         }
     </style>
+
+    <!-- Responsive y escala tipográfica: siempre al final -->
+    <link rel="stylesheet" href="src/css/responsive.css?v=20261112a">
 
 </head>
 
@@ -706,7 +709,37 @@
         <span class="login-hero-orbe login-hero-orbe-dos"></span>
         <span class="login-hero-cruz" aria-hidden="true"></span>
         <div class="login-marca">
-            <svg class="logo-animado" viewBox="0 0 136.4 46.7" role="img" aria-label="MED-SDI" xmlns="http://www.w3.org/2000/svg"><g> <g class="figura"> <ellipse class="st0" cx="18.5" cy="18" rx="2.1" ry="2.8"/> <path class="st0" d="M11.5,34.5c0,0,0.9-2.8,2.3-5.6c1.2-2.4,2.9-4.5,4.9-6.2c2.6-2.1,7-6.2,7.6-8.9c0,0,0.8,4.5-3.2,9.6 c-0.4,0.5-0.6,1-0.5,1.6c0.5,3.1,1.7,13.4-1.9,18.1c0,0,1.5-6.6-0.4-9.1c0,0-4,9.4-7,10.3c0,0,5.3-7.7,4-15.1 c-0.1-0.4-0.4-0.6-0.7-0.4C15.8,29.3,14,30.5,11.5,34.5z"/> </g> <path class="p st1" style="--i:0" d="M1.7,19.7c0,0,3.1-3.8,6.7,0C8.4,19.7,5.2,23.3,1.7,19.7z"/> <path class="p st2" style="--i:1" d="M5.7,24.8c0,0,0.9-4.1,4.9-2.3C10.6,22.4,9.6,26.3,5.7,24.8z"/> <path class="p st3" style="--i:2" d="M6.2,13c0,0,3.9-1.1,4.2,3.1C10.4,16,6.6,17,6.2,13z"/> <path class="p st2" style="--i:3" d="M14.1,6.2c0,0,3.7,1.6,1.3,5.1C15.4,11.2,11.9,9.6,14.1,6.2z"/> <path class="p st3" style="--i:4" d="M25.1,6.1c0,0,1.9,3.6-2.2,4.7C22.8,10.8,21.1,7.3,25.1,6.1z"/> <path class="p st4" style="--i:5" d="M25.1,13.5c0,0,0.6,2.8-2.4,2.8C22.7,16.2,22.2,13.6,25.1,13.5z"/> <path class="p st4" style="--i:6" d="M35.8,14.8c0,0-0.4,2.1-2.5,1.3C33.4,16.1,33.8,14.1,35.8,14.8z"/> <path class="p st5" style="--i:7" d="M28.2,4.9c0,0,0.7,2-1.5,2.3C26.7,7.2,26.1,5.3,28.2,4.9z"/> <path class="p st3" style="--i:8" d="M23.4,3c0,0,1.2,1.7-0.8,2.6C22.5,5.6,21.4,3.9,23.4,3z"/> <path class="p st4" style="--i:9" d="M15.3,3.1c0,0,2,0.6,1,2.6C16.3,5.6,14.3,5,15.3,3.1z"/> <path class="p st3" style="--i:10" d="M10.5,5c0,0,2.1-0.1,1.7,2.1C12.2,7.2,10.1,7.1,10.5,5z"/> <path class="p st1" style="--i:11" d="M4.8,9.9c0,0,2-0.8,2.4,1.4C7.1,11.3,5.2,12,4.8,9.9z"/> <path class="p st4" style="--i:12" d="M2.7,15c0,0,1.8-1.1,2.5,1.1C5.2,16,3.4,17,2.7,15z"/> <path class="p st5" style="--i:13" d="M33.5,10c0,0-0.2,1.8-2,1.2C31.6,11.2,31.8,9.5,33.5,10z"/> <path class="p st5" style="--i:14" d="M4.6,22.6c0,0-0.5,1.7-2.1,0.9C2.5,23.6,2.9,21.9,4.6,22.6z"/> <path class="p st4" style="--i:15" d="M15.8,23c0,0,0.1,1.8-1.8,1.5C14,24.5,14,22.7,15.8,23z"/> <path class="p st2" style="--i:16" d="M11.5,32c0,0,0.1,1.8-1.8,1.5C9.7,33.4,9.7,31.8,11.5,32z"/> <path class="p st4" style="--i:17" d="M6.5,27c0,0-0.2,2-2.2,1.4C4.3,28.4,4.5,26.5,6.5,27z"/> <path class="p st5" style="--i:18" d="M34.2,28.2c0,0-1.7,0.6-1.9-1.3C32.3,27,33.9,26.4,34.2,28.2z"/> <path class="p st5" style="--i:19" d="M28.1,34.1c0,0-2.1,0.4-2-1.9C26.1,32.2,28.1,32,28.1,34.1z"/> <path class="p st2" style="--i:20" d="M28.5,21.2c0,0-1.7,0.7-2-1.2C26.4,20,28.1,19.4,28.5,21.2z"/> <path class="p st5" style="--i:21" d="M15.7,16.1c0,0-2.8,0.3-2.5-2.7C13.3,13.5,16,13.3,15.7,16.1z"/> <path class="p st4" style="--i:22" d="M11.3,20.6c0,0,1.5-2.6,3.9-0.6C15.1,20.2,13.7,22.6,11.3,20.6z"/> <path class="p st1" style="--i:23" d="M19.5,13.6c0,0-2.1-2.1,0.6-3.9C20,9.8,22,11.8,19.5,13.6z"/> <path class="p st6" style="--i:24" d="M7.4,6.7c0,0,5-0.4,4.6,4.9C12,11.6,7.2,11.8,7.4,6.7z"/> <g> <path class="p st6" style="--i:25" d="M6.7,31.7c0,0-0.7-4.7,4.3-4.4C11,27.3,11.6,31.8,6.7,31.7z"/> <path class="p st6" style="--i:26" d="M35.9,23.3c0,0-1.5,0.9-2.2-0.8C33.8,22.4,35.2,21.6,35.9,23.3z"/> <path class="p st6" style="--i:27" d="M25.5,26.4c0,0-1.7,0.6-1.9-1.3C23.6,25.2,25.2,24.7,25.5,26.4z"/> <path class="p st6" style="--i:28" d="M19.1,2.3c0,0,3.6,3.1-0.2,6.4C18.9,8.7,15.6,5.6,19.1,2.3z"/> </g> <path class="p st1" style="--i:29" d="M36.6,19.4c0,0-2.9,3.8-6.4,0.3C30.2,19.6,33,16.1,36.6,19.4z"/> <path class="p st6" style="--i:30" d="M32.1,31.8c0,0-4.7,0.6-4.7-4.3C27.5,27.5,32,27,32.1,31.8z"/> <path class="p st3" style="--i:31" d="M32.3,24.5c0,0-3.1,1.4-4.1-2.1C28.3,22.4,31.3,21.2,32.3,24.5z"/> <path class="p st2" style="--i:32" d="M32.1,12.8c0,0-0.2,4-4.4,3.2C27.7,16.1,28.1,12.3,32.1,12.8z"/> <path class="p st1" style="--i:33" d="M31.2,6.9c0,0,0.8,4.6-4.2,4.8C27,11.6,26.4,7.2,31.2,6.9z"/> <g> <path class="l st0" style="--i:0" d="M42.3,31c-0.2,0-0.3-0.1-0.4-0.2c-0.1-0.1-0.2-0.2-0.2-0.4V16.9c0-0.2,0.1-0.3,0.2-0.4 c0.1-0.1,0.2-0.2,0.4-0.2H44c0.2,0,0.4,0.1,0.5,0.2c0.1,0.1,0.2,0.2,0.2,0.3l4,7.5l4.1-7.5c0.1-0.1,0.1-0.2,0.2-0.3 c0.1-0.1,0.3-0.2,0.5-0.2H55c0.2,0,0.3,0.1,0.4,0.2c0.1,0.1,0.2,0.2,0.2,0.4v13.6c0,0.2-0.1,0.3-0.2,0.4C55.2,30.9,55.1,31,55,31 h-1.8c-0.2,0-0.3-0.1-0.4-0.2c-0.1-0.1-0.2-0.2-0.2-0.4v-9L49.8,27c-0.1,0.1-0.2,0.3-0.3,0.3c-0.1,0.1-0.3,0.2-0.5,0.2h-0.9 c-0.2,0-0.4-0.1-0.5-0.2c-0.1-0.1-0.2-0.2-0.3-0.3l-2.9-5.6v9c0,0.2-0.1,0.3-0.2,0.4c-0.1,0.1-0.2,0.2-0.4,0.2H42.3z"/> <path class="l st0" style="--i:1" d="M63.2,31.2c-1.6,0-2.8-0.5-3.7-1.4c-0.9-0.9-1.4-2.2-1.5-3.8c0-0.2,0-0.3,0-0.6c0-0.2,0-0.4,0-0.5 c0.1-1.1,0.3-2,0.7-2.7c0.4-0.8,1-1.4,1.8-1.8c0.8-0.4,1.7-0.6,2.7-0.6c1.1,0,2.1,0.3,2.9,0.7c0.8,0.5,1.4,1.1,1.8,2 c0.4,0.9,0.6,1.8,0.6,2.9v0.5c0,0.2-0.1,0.3-0.2,0.4c-0.1,0.1-0.2,0.2-0.4,0.2H61c0,0.1,0,0.2,0,0.2c0,0.5,0.1,1,0.3,1.4 c0.2,0.4,0.5,0.8,0.8,1c0.4,0.3,0.8,0.4,1.2,0.4c0.4,0,0.7-0.1,1-0.2c0.3-0.1,0.5-0.3,0.7-0.4c0.2-0.2,0.3-0.3,0.4-0.4 c0.1-0.2,0.3-0.3,0.3-0.3c0.1-0.1,0.2-0.1,0.4-0.1h1.8c0.2,0,0.3,0.1,0.4,0.1c0.1,0.1,0.2,0.2,0.1,0.3c0,0.2-0.2,0.5-0.4,0.8 c-0.2,0.3-0.5,0.7-1,1c-0.4,0.3-0.9,0.6-1.5,0.8C64.6,31.1,63.9,31.2,63.2,31.2z M60.9,24.6h4.6v-0.1c0-0.6-0.1-1-0.3-1.4 c-0.2-0.4-0.5-0.7-0.8-1s-0.8-0.4-1.3-0.4s-0.9,0.1-1.3,0.4c-0.4,0.3-0.6,0.6-0.8,1C61,23.6,60.9,24,60.9,24.6L60.9,24.6 L60.9,24.6z"/> <path class="l st0" style="--i:2" d="M74.5,31.2c-0.7,0-1.4-0.1-1.9-0.4c-0.6-0.3-1-0.6-1.4-1.1c-0.4-0.5-0.7-1-0.9-1.6c-0.2-0.6-0.3-1.3-0.4-2 c0-0.3,0-0.5,0-0.7c0-0.2,0-0.5,0-0.7c0.1-0.7,0.2-1.4,0.3-2c0.2-0.6,0.5-1.1,0.9-1.6c0.4-0.5,0.9-0.8,1.4-1.1 c0.6-0.3,1.2-0.4,1.9-0.4c0.8,0,1.4,0.2,1.9,0.4s1,0.6,1.3,1v-4.6c0-0.2,0.1-0.3,0.2-0.4c0.1-0.1,0.2-0.2,0.4-0.2h1.8 c0.2,0,0.3,0.1,0.4,0.2c0.1,0.1,0.2,0.2,0.2,0.4v13.8c0,0.2-0.1,0.3-0.2,0.4C80.2,31,80.1,31,79.9,31h-1.7c-0.2,0-0.3-0.1-0.4-0.2 c-0.1-0.1-0.2-0.2-0.2-0.4v-0.8c-0.4,0.5-0.8,0.8-1.3,1.1C76,31.1,75.3,31.2,74.5,31.2z M75.3,29c0.6,0,1.1-0.2,1.4-0.4 s0.6-0.6,0.8-1c0.2-0.4,0.3-0.9,0.3-1.3c0-0.3,0-0.5,0-0.8c0-0.3,0-0.6,0-0.8c0-0.4-0.1-0.8-0.3-1.2c-0.2-0.4-0.5-0.7-0.8-1 c-0.4-0.3-0.8-0.4-1.4-0.4c-0.6,0-1.1,0.2-1.4,0.4s-0.6,0.6-0.8,1c-0.2,0.4-0.3,0.9-0.3,1.4c0,0.4,0,0.9,0,1.3 c0.1,0.5,0.1,1,0.3,1.4c0.2,0.4,0.4,0.8,0.8,1C74.2,28.8,74.7,29,75.3,29z"/> <path class="l st0" style="--i:3" d="M83.7,18.3c-0.2,0-0.3-0.1-0.4-0.2s-0.2-0.2-0.2-0.4v-1.5c0-0.2,0.1-0.3,0.2-0.4s0.2-0.2,0.4-0.2h1.9 c0.2,0,0.3,0.1,0.4,0.2c0.1,0.1,0.2,0.2,0.2,0.4v1.5c0,0.2-0.1,0.3-0.2,0.4s-0.2,0.2-0.4,0.2H83.7z M83.8,31 c-0.2,0-0.3-0.1-0.4-0.2c-0.1-0.1-0.2-0.2-0.2-0.4v-9.8c0-0.2,0.1-0.3,0.2-0.4s0.2-0.2,0.4-0.2h1.8c0.2,0,0.3,0.1,0.4,0.2 s0.2,0.2,0.2,0.4v9.9c0,0.2-0.1,0.3-0.2,0.4S85.7,31,85.6,31L83.8,31L83.8,31z"/> <path class="l st0" style="--i:4" d="M93.5,31.2c-1,0-1.9-0.2-2.7-0.6c-0.8-0.4-1.4-0.9-1.8-1.7c-0.4-0.7-0.7-1.6-0.7-2.6c0-0.2,0-0.5,0-0.8 c0-0.4,0-0.6,0-0.9c0.1-1,0.3-1.9,0.7-2.6c0.4-0.7,1-1.3,1.8-1.7c0.8-0.4,1.7-0.6,2.7-0.6c0.9,0,1.7,0.1,2.3,0.4 c0.6,0.3,1.2,0.6,1.6,1c0.4,0.4,0.7,0.8,0.9,1.2c0.2,0.4,0.3,0.8,0.3,1.1c0,0.2-0.1,0.3-0.2,0.4C98.2,24,98.1,24,98,24h-1.9 c-0.2,0-0.3-0.1-0.3-0.1c-0.1-0.1-0.2-0.2-0.2-0.3c-0.2-0.6-0.5-1-0.8-1.2c-0.4-0.3-0.8-0.4-1.3-0.4c-0.7,0-1.3,0.2-1.7,0.7 c-0.4,0.5-0.7,1.2-0.7,2.1c-0.1,0.6-0.1,1,0,1.5c0.1,1,0.3,1.7,0.7,2.1c0.4,0.5,1,0.7,1.7,0.7c0.6,0,1-0.1,1.3-0.4 c0.4-0.3,0.6-0.6,0.8-1.2c0.1-0.2,0.2-0.3,0.2-0.3c0.1-0.1,0.2-0.1,0.3-0.1H98c0.2,0,0.3,0.1,0.4,0.2s0.2,0.2,0.2,0.4 c0,0.3-0.1,0.6-0.2,0.9s-0.3,0.7-0.6,1c-0.3,0.4-0.6,0.6-1,0.9c-0.4,0.3-0.9,0.5-1.4,0.7C94.9,31.1,94.2,31.2,93.5,31.2z"/> <path class="l st0" style="--i:5" d="M101.2,31c-0.2,0-0.3-0.1-0.4-0.2c-0.1-0.1-0.2-0.2-0.2-0.4V16.7c0-0.2,0.1-0.3,0.2-0.4 c0.1-0.1,0.2-0.2,0.4-0.2h1.9c0.2,0,0.3,0.1,0.4,0.2c0.1,0.1,0.2,0.2,0.2,0.4v4.8c0.4-0.5,0.9-0.8,1.4-1.1c0.6-0.3,1.2-0.4,2-0.4 c0.9,0,1.6,0.2,2.2,0.6c0.7,0.4,1.1,0.9,1.5,1.6c0.4,0.7,0.5,1.6,0.5,2.5v5.9c0,0.2-0.1,0.3-0.2,0.4c-0.1,0.1-0.2,0.2-0.4,0.2 h-1.9c-0.2,0-0.3-0.1-0.4-0.2c-0.1-0.1-0.2-0.2-0.2-0.4v-5.7c0-0.8-0.2-1.5-0.6-1.9c-0.4-0.5-1-0.7-1.7-0.7 c-0.7,0-1.3,0.3-1.8,0.7s-0.7,1.1-0.7,1.9v5.7c0,0.2-0.1,0.3-0.2,0.4c-0.1,0.1-0.2,0.2-0.4,0.2H101.2z"/> <path class="l st0" style="--i:6" d="M114.3,18.3c-0.2,0-0.3-0.1-0.4-0.2c-0.1-0.1-0.2-0.2-0.2-0.4v-1.5c0-0.2,0.1-0.3,0.2-0.4 c0.1-0.1,0.2-0.2,0.4-0.2h1.9c0.2,0,0.3,0.1,0.4,0.2c0.1,0.1,0.2,0.2,0.2,0.4v1.5c0,0.2-0.1,0.3-0.2,0.4s-0.2,0.2-0.4,0.2H114.3z M114.3,31c-0.2,0-0.3-0.1-0.4-0.2c-0.1-0.1-0.2-0.2-0.2-0.4v-9.8c0-0.2,0.1-0.3,0.2-0.4c0.1-0.1,0.2-0.2,0.4-0.2h1.8 c0.2,0,0.3,0.1,0.4,0.2c0.1,0.1,0.2,0.2,0.2,0.4v9.9c0,0.2-0.1,0.3-0.2,0.4c-0.1,0.1-0.2,0.2-0.4,0.2L114.3,31L114.3,31z"/> <path class="l st0" style="--i:7" d="M119.9,31c-0.2,0-0.3-0.1-0.4-0.2c-0.1-0.1-0.2-0.2-0.2-0.4V16.7c0-0.2,0.1-0.3,0.2-0.4s0.2-0.2,0.4-0.2h1.8 c0.2,0,0.3,0.1,0.4,0.2s0.2,0.2,0.2,0.4v13.8c0,0.2-0.1,0.3-0.2,0.4s-0.2,0.2-0.4,0.2L119.9,31L119.9,31z"/> <path class="l st0" style="--i:8" d="M129.5,31.2c-1.6,0-2.8-0.5-3.7-1.4c-0.9-0.9-1.4-2.2-1.5-3.8c0-0.2,0-0.3,0-0.6c0-0.2,0-0.4,0-0.5 c0.1-1.1,0.3-2,0.7-2.7s1-1.4,1.8-1.8c0.8-0.4,1.7-0.6,2.7-0.6c1.1,0,2.1,0.3,2.9,0.7c0.8,0.5,1.4,1.1,1.8,2 c0.4,0.9,0.6,1.8,0.6,2.9v0.5c0,0.2-0.1,0.3-0.2,0.4c-0.1,0.1-0.2,0.2-0.4,0.2h-6.9c0,0.1,0,0.2,0,0.2c0,0.5,0.1,1,0.3,1.4 c0.2,0.4,0.5,0.8,0.8,1c0.4,0.3,0.8,0.4,1.2,0.4c0.4,0,0.7-0.1,1-0.2c0.3-0.1,0.5-0.3,0.7-0.4c0.2-0.2,0.3-0.3,0.4-0.4 c0.1-0.2,0.3-0.3,0.3-0.3c0.1-0.1,0.2-0.1,0.4-0.1h1.8c0.2,0,0.3,0.1,0.4,0.1c0.1,0.1,0.2,0.2,0.1,0.3c0,0.2-0.2,0.5-0.4,0.8 c-0.2,0.3-0.5,0.7-1,1c-0.4,0.3-0.9,0.6-1.5,0.8C131,31.1,130.3,31.2,129.5,31.2z M127.2,24.6h4.6v-0.1c0-0.6-0.1-1-0.3-1.4 c-0.2-0.4-0.5-0.7-0.8-1s-0.8-0.4-1.3-0.4s-0.9,0.1-1.3,0.4c-0.4,0.3-0.6,0.6-0.8,1C127.3,23.6,127.2,24,127.2,24.6L127.2,24.6z" /> </g> </g> </svg>
+            <svg class="logo-animado" viewBox="0 0 290.8 103.1" width="290.8" height="103.1" role="img" aria-label="VeterChile" fill="#fff">
+                <!-- Estetoscopio (la "V") con sus olivas -->
+                <g class="figura">
+                    <path d="M73.7,12.9c-2.4-3-5.8-4.8-10-5.2C62.8,7.7,62,8.3,62,9.2c-0.1,0.9,0.6,1.7,1.5,1.7c3.4,0.3,5.9,1.6,7.8,3.9c4.6,5.8,3.3,16,3.2,16.1c-0.1,0.9,0.5,1.7,1.4,1.8c0.1,0,0.2,0,0.2,0c0.8,0,1.5-0.6,1.6-1.4C77.7,31,79.2,19.8,73.7,12.9z"/>
+                    <path d="M26.9,15.5c-3.9,1.7-6.6,4.3-8,8c-3.1,8.2,1.7,18.4,1.9,18.8c0.3,0.6,0.8,0.9,1.4,0.9c0.2,0,0.5-0.1,0.7-0.2c0.8-0.4,1.1-1.3,0.7-2.1c0-0.1-4.4-9.3-1.8-16.3c1.1-2.8,3.1-4.8,6.2-6.1c0.8-0.3,1.2-1.3,0.9-2.1C28.7,15.5,27.7,15.1,26.9,15.5z"/>
+                    <path d="M123.1,86.2C123.1,86.2,123.1,86.2,123.1,86.2c-0.2-0.7-0.5-1.3-0.9-1.8c-1.9-2.5-5.7-2.6-7.6-2.4c-0.3,0-0.7,0.1-1.1,0.1h0c-1,0.2-1.9,0.7-1.7,1.9c0.2,1.5,1.9,1.1,3.9,1.6c0,0,0.9,0.1,1.3,0.3c2.2,0.7,3,2.4,2.2,4.8c-0.7,2.4-2.8,3.7-4.8,3.1c-1.2-0.4-2.3-1.5-2.8-2.7c-0.1-0.2-0.2-0.4-0.3-0.6c-0.8-2.3-1.8-4.5-2.3-5.7c0,0,0,0,0,0c-1-2.2-2.6-4.8-5-6.9c-6.5-5.4-15.7-4.7-27.6,2.3c-8.1,4.8-14.4,5.1-18.8,0.9c-3.4-3.3-4.7-8.4-5-10.2c2.8-0.5,5.4-1.7,7.6-3.6c4.1-3.6,7.7-8.1,10.8-13.6c4.2-7.5,7.3-16.4,9-26.5c0.4-2.2-1.1-4.2-3.3-4.6c-1-0.2-2,0-2.9,0.6c-1,0.6-1.6,1.6-1.8,2.7c-3.6,21-12.4,31.2-17.2,35.4c-2,1.8-4.8,2.3-7.3,1.3C34,57.3,25.2,35.3,25.2,35.1c-0.4-1.1-1.3-1.9-2.3-2.3c-1-0.4-2-0.4-3,0c-2,0.8-3.1,3.1-2.3,5.2c0.4,1,10,25.5,26.7,32.1c1.7,0.7,3.5,1,5.4,1.1l-0.2,0.1c0,0.4,1.1,9,6.5,14.1c5.2,4.9,12.3,4.8,21.3-0.5c13.7-8.1,21.3-5.9,25.2-2.6c3.4,2.8,4.7,6.8,5.1,8.2c0,0,0,0,0,0c0.1,0.5,0.2,1,0.4,1.4l0,0c0,0,1.1,4.6,5.8,5.8c0.7,0.2,1.4,0.3,2,0.3c0,0,0,0,0,0c3.1,0.1,5-1.8,6.2-3.8c0.7-1.2,1.3-2.6,1.5-4.2c0,0,0,0,0,0l0,0C123.6,88.7,123.5,87.4,123.1,86.2z"/>
+                </g>
+                <circle class="p" style="--i:0" cx="61.7" cy="8.7" r="3.5"/>
+                <circle class="p" style="--i:1" cx="30.3" cy="15.3" r="3.5"/>
+                <!-- Patita (campana del estetoscopio): ondas de latido + dedos -->
+                <circle class="latido" cx="121" cy="85.5" r="10"/>
+                <circle class="latido latido-dos" cx="121" cy="85.5" r="10"/>
+                <g class="patita">
+                    <path class="dedo" style="--d:0" d="M117.9,80.1c1.4-0.6,2.3-2.3,2-3.9c-0.2-1.5-1.6-2.1-2.9-1.3c-1.4,0.9-2,2.6-1.6,4C115.8,80.1,116.8,80.7,117.9,80.1z"/>
+                    <path class="dedo" style="--d:1" d="M126.9,78.8c0.3-1.7-1.2-3-2.8-2.5c-1.5,0.5-2.5,1.5-3.1,3.2c-0.2,0.7-0.2,1.5,0.5,2.2c0.7,0.7,1.6,0.8,2.5,0.4C125.6,81.6,126.6,80.5,126.9,78.8z"/>
+                    <path class="dedo" style="--d:2" d="M126,87.7c1.6,0.7,3.7,0.2,4.9-1.2c1.1-1.3,0.6-3-1.1-3.5c-1.8-0.5-3.7,0.2-4.7,1.6C124.4,85.8,124.7,87.1,126,87.7z"/>
+                    <path class="dedo" style="--d:3" d="M129.9,89.6c-1.5-0.7-3.3-0.3-4.3,0.8c-0.8,0.9-0.7,2.1,0.4,2.8c1.3,0.8,3.2,0.6,4.4-0.4C131.5,91.8,131.3,90.3,129.9,89.6z"/>
+                </g>
+                <!-- Letras "eter" -->
+                <path class="l" style="--i:0" d="M102.1,58.1c0.5-0.3,0.7-0.8,0.7-1.5c0-2.1-0.3-3.9-0.8-5.5c-0.6-1.6-1.4-3-2.4-4.2c-1.1-1.2-2.3-2-3.8-2.6c-1.5-0.6-3.2-0.9-5.1-0.9c-2.6,0-4.8,0.6-6.8,1.8c-2,1.2-3.6,2.8-4.7,4.8c-1.1,2.1-1.7,4.5-1.7,7.2c0,2.8,0.6,5.2,1.8,7.3c1.2,2.1,2.8,3.6,5,4.8c2.2,1.1,4.7,1.7,7.7,1.7c1.4,0,2.9-0.2,4.6-0.6c1.6-0.4,3.1-1,4.4-1.8c0.6-0.4,1.1-0.9,1.4-1.4c0.3-0.5,0.4-1.1,0.3-1.6c-0.1-0.5-0.3-1-0.6-1.3c-0.3-0.4-0.8-0.6-1.4-0.6c-0.6-0.1-1.2,0.1-2,0.6c-1,0.6-2.2,1-3.3,1.2c-1.2,0.2-2.2,0.4-3.2,0.4c-2.7,0-4.8-0.7-6.1-2.2c-1.1-1.2-1.8-2.8-2-4.9h16.3C101,58.6,101.7,58.5,102.1,58.1z M87,49c1.1-0.7,2.4-1.1,3.9-1.1c1.4,0,2.5,0.3,3.4,0.9c0.9,0.6,1.6,1.5,2.1,2.6c0.4,0.9,0.6,2,0.7,3.4H83.9c0.1-1,0.4-2,0.7-2.8C85.2,50.7,86,49.7,87,49z"/>
+                <path class="l" style="--i:1" d="M122.1,64.9c-0.4,0-0.8,0.1-1.2,0.2c-0.5,0.1-1,0.2-1.6,0.2c-1.7,0-2.9-0.4-3.7-1.3c-0.8-0.9-1.1-2.2-1.1-3.9V49h5.7c0.9,0,1.5-0.2,2-0.7c0.5-0.5,0.7-1.1,0.7-1.9c0-0.8-0.2-1.5-0.7-1.9c-0.5-0.4-1.1-0.6-2-0.6h-5.7V39c0-1.1-0.3-2-0.9-2.5c-0.6-0.6-1.4-0.9-2.5-0.9c-1.1,0-1.9,0.3-2.5,0.9c-0.6,0.6-0.9,1.4-0.9,2.5v4.9h-2.8c-0.9,0-1.5,0.2-2,0.6c-0.5,0.4-0.7,1.1-0.7,1.9c0,0.8,0.2,1.4,0.7,1.9c0.5,0.5,1.1,0.7,2,0.7h2.8v11.5c0,2.3,0.4,4.2,1.1,5.7c0.8,1.5,1.9,2.7,3.5,3.5c1.6,0.8,3.5,1.2,5.9,1.2c0.6,0,1.2-0.1,2-0.2c0.8-0.1,1.4-0.3,1.8-0.4c0.6-0.2,1-0.6,1.3-1.2c0.2-0.6,0.4-1.2,0.4-1.9c0-0.9-0.1-1.6-0.4-1.9C122.9,65,122.5,64.9,122.1,64.9z"/>
+                <path class="l" style="--i:2" d="M147.6,58.1c0.5-0.3,0.7-0.8,0.7-1.5c0-2.1-0.3-3.9-0.8-5.5c-0.6-1.6-1.4-3-2.4-4.2c-1.1-1.2-2.3-2-3.8-2.6c-1.5-0.6-3.2-0.9-5.1-0.9c-2.6,0-4.8,0.6-6.8,1.8c-2,1.2-3.6,2.8-4.7,4.8s-1.7,4.5-1.7,7.2c0,2.8,0.6,5.2,1.8,7.3c1.2,2.1,2.8,3.6,5,4.8c2.2,1.1,4.7,1.7,7.7,1.7c1.4,0,2.9-0.2,4.6-0.6c1.6-0.4,3.1-1,4.4-1.8c0.6-0.4,1.1-0.9,1.4-1.4c0.3-0.5,0.4-1.1,0.3-1.6c-0.1-0.5-0.3-1-0.6-1.3c-0.3-0.4-0.8-0.6-1.4-0.6c-0.6-0.1-1.2,0.1-2,0.6c-1,0.6-2.2,1-3.3,1.2c-1.2,0.2-2.2,0.4-3.2,0.4c-2.7,0-4.8-0.7-6.1-2.2c-1.1-1.2-1.8-2.8-2-4.9h16.3C146.6,58.6,147.2,58.5,147.6,58.1z M132.6,49c1.1-0.7,2.4-1.1,3.9-1.1c1.4,0,2.5,0.3,3.4,0.9c0.9,0.6,1.6,1.5,2.1,2.6c0.4,0.9,0.6,2,0.7,3.4h-13.3c0.1-1,0.4-2,0.7-2.8C130.7,50.7,131.5,49.7,132.6,49z"/>
+                <path class="l" style="--i:3" d="M169,46c-0.1-0.9-0.3-1.6-0.8-2.1c-0.5-0.5-1.1-0.6-1.8-0.6c-2.5,0.2-4.4,0.9-5.9,2c-1.1,0.8-1.9,1.9-2.4,3.2v-1.7c0-1.1-0.3-2-0.9-2.5c-0.6-0.6-1.4-0.9-2.4-0.9c-1,0-1.9,0.3-2.4,0.9c-0.6,0.6-0.9,1.4-0.9,2.5v20.4c0,1.1,0.3,2,0.9,2.6c0.6,0.6,1.5,0.9,2.6,0.9c1.1,0,2-0.3,2.5-0.9c0.6-0.6,0.9-1.5,0.9-2.6V56.1c0-2.1,0.6-3.6,1.7-4.8c1.1-1.1,2.8-1.8,5-2l1.2-0.1c1-0.1,1.7-0.4,2.2-1C168.9,47.6,169.1,46.9,169,46z"/>
+                <!-- Letras "chile" -->
+                <path class="l" style="--i:4" d="M190.3,45.4c-1.2-0.8-2.5-1.3-3.9-1.6c-1.4-0.3-2.7-0.5-3.9-0.5c-2.1,0-4,0.3-5.7,0.9c-1.7,0.6-3.1,1.5-4.3,2.7c-1.2,1.2-2.1,2.6-2.7,4.3c-0.6,1.7-0.9,3.6-0.9,5.7c0,2.8,0.6,5.3,1.7,7.4c1.1,2.1,2.7,3.7,4.8,4.8s4.5,1.7,7.2,1.7c1.2,0,2.5-0.2,3.8-0.5c1.3-0.3,2.6-0.8,3.8-1.6c0.5-0.3,0.9-0.7,1.1-1.2c0.2-0.5,0.3-1,0.2-1.5c-0.1-0.5-0.3-1-0.6-1.4c-0.3-0.4-0.7-0.6-1.2-0.7c-0.5-0.1-1,0-1.6,0.3c-0.8,0.5-1.6,0.8-2.5,1c-0.8,0.2-1.6,0.3-2.4,0.3c-2.3,0-4.2-0.8-5.4-2.3c-1.3-1.5-1.9-3.6-1.9-6.3c0-1.4,0.2-2.6,0.5-3.6c0.3-1,0.8-1.9,1.4-2.6c0.6-0.7,1.4-1.2,2.3-1.6c0.9-0.4,1.9-0.6,3.1-0.6c0.8,0,1.5,0.1,2.4,0.4c0.8,0.2,1.6,0.6,2.4,1.1c0.6,0.3,1.2,0.4,1.7,0.4c0.5-0.1,0.9-0.3,1.3-0.7c0.3-0.4,0.6-0.8,0.7-1.4c0.1-0.5,0.1-1-0.1-1.5C191.2,46.2,190.9,45.8,190.3,45.4z"/>
+                <path class="l" style="--i:5" d="M214.3,44.5c-1.4-0.8-3.1-1.2-5.2-1.2c-2.1,0-4,0.5-5.7,1.5c-1.2,0.7-2.2,1.7-2.9,2.9V35.2c0-1.1-0.3-2-0.9-2.5c-0.6-0.6-1.4-0.9-2.5-0.9c-1.1,0-1.9,0.3-2.5,0.9c-0.6,0.6-0.9,1.4-0.9,2.5v32.1c0,1.1,0.3,2,0.9,2.6c0.6,0.6,1.4,0.9,2.5,0.9c2.3,0,3.4-1.2,3.4-3.5V55.5c0-2.1,0.6-3.7,1.8-4.9c1.2-1.2,2.7-1.9,4.7-1.9c1.6,0,2.8,0.5,3.6,1.4c0.8,0.9,1.2,2.4,1.2,4.5v12.8c0,1.1,0.3,2,0.9,2.6c0.6,0.6,1.4,0.9,2.5,0.9c1.1,0,1.9-0.3,2.5-0.9c0.6-0.6,0.9-1.5,0.9-2.6V54.2c0-2.5-0.3-4.5-1-6.1C216.7,46.5,215.7,45.3,214.3,44.5z"/>
+                <path class="l" style="--i:6" d="M226.5,43.5c-1.1,0-1.9,0.3-2.5,0.9c-0.6,0.6-0.9,1.5-0.9,2.7V67c0,1.2,0.3,2.1,0.9,2.7c0.6,0.6,1.4,1,2.5,1c1.1,0,2-0.3,2.5-1c0.6-0.6,0.9-1.5,0.9-2.7V47.2c0-1.2-0.3-2.1-0.9-2.7C228.4,43.8,227.5,43.5,226.5,43.5z"/>
+                <path class="p punto-i" style="--i:6" d="M226.5,31.3c-1.3,0-2.2,0.3-2.9,0.9c-0.7,0.6-1.1,1.5-1.1,2.6c0,1.1,0.4,2,1.1,2.6c0.7,0.6,1.7,0.9,2.9,0.9c1.3,0,2.3-0.3,3-0.9c0.7-0.6,1-1.5,1-2.6c0-1.2-0.3-2-1-2.6C228.7,31.6,227.8,31.3,226.5,31.3z"/>
+                <path class="l" style="--i:7" d="M247.1,65.2c-0.3,0-0.5,0.1-0.8,0.1c-0.3,0-0.5,0-0.8,0c-1.3,0-2.3-0.4-3-1.2c-0.7-0.8-1.1-2-1.1-3.7V35.2c0-1.1-0.3-2-0.9-2.5c-0.6-0.6-1.4-0.9-2.5-0.9c-1.1,0-1.9,0.3-2.5,0.9c-0.6,0.6-0.9,1.4-0.9,2.5v25.6c0,3.3,0.8,5.8,2.3,7.5c1.5,1.7,3.8,2.6,6.8,2.6c0.4,0,0.8,0,1.2-0.1c0.4,0,0.8-0.1,1.1-0.1c0.8-0.1,1.4-0.4,1.8-0.9c0.4-0.5,0.5-1.2,0.5-2.1c0-1-0.1-1.7-0.3-2.1C248,65.2,247.6,65.1,247.1,65.2z"/>
+                <path class="l" style="--i:8" d="M272.6,64.2c-0.3-0.4-0.8-0.6-1.4-0.6c-0.6-0.1-1.2,0.1-2,0.6c-1,0.6-2.2,1-3.3,1.2c-1.2,0.2-2.2,0.4-3.2,0.4c-2.7,0-4.8-0.7-6.1-2.2c-1.1-1.2-1.8-2.8-2-4.9h16.3c0.8,0,1.5-0.2,1.9-0.5c0.5-0.3,0.7-0.8,0.7-1.5c0-2.1-0.3-3.9-0.8-5.5c-0.6-1.6-1.4-3-2.4-4.2c-1.1-1.2-2.3-2-3.8-2.6c-1.5-0.6-3.2-0.9-5.1-0.9c-2.6,0-4.8,0.6-6.8,1.8c-2,1.2-3.6,2.8-4.7,4.8s-1.7,4.5-1.7,7.2c0,2.8,0.6,5.2,1.8,7.3c1.2,2.1,2.8,3.6,5,4.8c2.2,1.1,4.7,1.7,7.7,1.7c1.4,0,2.9-0.2,4.6-0.6c1.6-0.4,3.1-1,4.4-1.8c0.6-0.4,1.1-0.9,1.4-1.4c0.3-0.5,0.4-1.1,0.3-1.6C273.1,65,272.9,64.6,272.6,64.2z M257.7,49c1.1-0.7,2.4-1.1,3.9-1.1c1.4,0,2.5,0.3,3.4,0.9c0.9,0.6,1.6,1.5,2.1,2.6c0.4,0.9,0.6,2,0.7,3.4h-13.3c0.1-1,0.4-2,0.7-2.8C255.9,50.7,256.7,49.7,257.7,49z"/>
+            </svg>
         </div>
     </div>
     <div role="main" class="ui-content login-panel">
@@ -726,7 +759,7 @@
                     <input type="password" class="input-app" placeholder="Ingresa tu contraseña" id="pass" value="" autocomplete="current-password">
                 </div>
             </div>
-            <a class="login-recuperar">¿Olvidaste tu contraseña?</a>
+            <a class="login-recuperar" href="#" role="button" onclick="abrirRecuperarClave(); return false;">¿Olvidaste tu contraseña?</a>
             <button type="button" class="login-boton-principal" onclick="ingresarLogin()">
                 <span>Ingresar</span>
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M14 7l5 5-5 5"/></svg>
@@ -742,7 +775,7 @@
                                     <path d="M17 36c0 9-2 13-5 18M29 29c0 14-2 21-8 29M35 29c0 15 2 20 7 27M47 35c0 8 1 13 5 18"/>
                                 </svg>
                             </span>
-                    <span class="login-biometria-texto"><strong>Ingresar con huella</strong><small>Acceso rápido y seguro</small></span>
+                    <span class="login-biometria-texto"><strong>Ingresar con huella</strong><small id="login_biometria_cuenta">Acceso rápido y seguro</small></span>
                 </div>
             </div>
             <p class="login-seguridad">
@@ -759,12 +792,126 @@
     </div>
 </div>
 <!--CIERRE LOGIN-->
+<!--RECUPERAR CONTRASEÑA-->
+<div data-role="page" id="recuperar-clave">
+    <div data-role="header" class="header header-blanco">
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="rcVolver()" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <p class="color-blanco size18 text-center">Recuperar contraseña</p>
+        </div></div>
+    </div>
+    <div role="main" class="ui-content rc-contenido">
+        <div class="rc-progreso" id="rc_progreso" aria-hidden="true">
+            <span class="rc-progreso-barra"></span><span class="rc-progreso-barra"></span><span class="rc-progreso-barra"></span>
+        </div>
+        <p class="rc-paso-num" id="rc_paso_num">Paso 1 de 3</p>
+
+        <!-- Paso 1: elegir por dónde recibir el código -->
+        <section class="rc-paso" data-paso="1">
+            <h1 class="rc-titulo">¿Cómo quieres recuperar tu cuenta?</h1>
+            <p class="rc-texto">Te enviaremos un código de 6 dígitos para confirmar que eres tú.</p>
+
+            <div class="rc-metodos" role="radiogroup" aria-label="Método de recuperación">
+                <button type="button" data-role="none" class="rc-metodo activo" data-metodo="email" role="radio" aria-checked="true" onclick="rcElegirMetodo('email')">
+                    <span class="rc-metodo-icono"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M4 7.5l8 6 8-6"/></svg></span>
+                    <span class="rc-metodo-texto"><strong>Correo electrónico</strong><small>Al correo con el que te registraste</small></span>
+                    <span class="rc-metodo-radio" aria-hidden="true"></span>
+                </button>
+                <button type="button" data-role="none" class="rc-metodo" data-metodo="telefono" role="radio" aria-checked="false" onclick="rcElegirMetodo('telefono')">
+                    <span class="rc-metodo-icono"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><path d="M10.5 18.5h3"/></svg></span>
+                    <span class="rc-metodo-texto"><strong>Teléfono</strong><small>Por SMS al número enlazado a tu cuenta</small></span>
+                    <span class="rc-metodo-radio" aria-hidden="true"></span>
+                </button>
+            </div>
+
+            <div class="rc-campo" id="rc_campo_email">
+                <label for="rc_email">Correo electrónico</label>
+                <input type="email" data-role="none" class="rc-input" id="rc_email" placeholder="nombre@correo.cl" autocomplete="email" inputmode="email">
+            </div>
+            <div class="rc-campo" id="rc_campo_telefono" style="display:none">
+                <label for="rc_telefono">Teléfono</label>
+                <div class="rc-telefono">
+                    <span class="rc-telefono-prefijo">+56</span>
+                    <input type="tel" data-role="none" class="rc-input" id="rc_telefono" placeholder="9 1234 5678" autocomplete="tel-national" inputmode="numeric" maxlength="11">
+                </div>
+            </div>
+            <p class="rc-error" id="rc_error_1" role="alert"></p>
+
+            <button type="button" data-role="none" class="rc-boton" onclick="rcEnviarCodigo()">Enviar código</button>
+        </section>
+
+        <!-- Paso 2: ingresar el código recibido -->
+        <section class="rc-paso" data-paso="2" style="display:none">
+            <span class="rc-icono-grande" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><path d="M12 14.5v2.5"/></svg></span>
+            <h1 class="rc-titulo">Ingresa el código</h1>
+            <p class="rc-texto">Enviamos un código de 6 dígitos <span id="rc_destino_texto">a tu correo</span>.</p>
+
+            <div class="rc-codigo" id="rc_codigo">
+                <input type="text" data-role="none" inputmode="numeric" maxlength="1" autocomplete="one-time-code" aria-label="Dígito 1">
+                <input type="text" data-role="none" inputmode="numeric" maxlength="1" aria-label="Dígito 2">
+                <input type="text" data-role="none" inputmode="numeric" maxlength="1" aria-label="Dígito 3">
+                <input type="text" data-role="none" inputmode="numeric" maxlength="1" aria-label="Dígito 4">
+                <input type="text" data-role="none" inputmode="numeric" maxlength="1" aria-label="Dígito 5">
+                <input type="text" data-role="none" inputmode="numeric" maxlength="1" aria-label="Dígito 6">
+            </div>
+            <p class="rc-error" id="rc_error_2" role="alert"></p>
+
+            <button type="button" data-role="none" class="rc-boton" id="rc_boton_verificar" onclick="rcVerificarCodigo()" disabled>Verificar código</button>
+
+            <p class="rc-reenviar">
+                ¿No te llegó?
+                <button type="button" data-role="none" class="rc-enlace" id="rc_boton_reenviar" onclick="rcReenviarCodigo()" disabled>Reenviar en <span id="rc_contador">00:60</span></button>
+            </p>
+            <button type="button" data-role="none" class="rc-enlace rc-enlace-centro" onclick="rcIrPaso(1)">Usar otro método</button>
+        </section>
+
+        <!-- Paso 3: nueva contraseña -->
+        <section class="rc-paso" data-paso="3" style="display:none">
+            <h1 class="rc-titulo">Crea tu nueva contraseña</h1>
+            <p class="rc-texto">Usa una contraseña que no hayas usado antes.</p>
+
+            <div class="rc-campo">
+                <label for="rc_clave">Nueva contraseña</label>
+                <div class="rc-clave">
+                    <input type="password" data-role="none" class="rc-input" id="rc_clave" placeholder="Escribe tu nueva contraseña" autocomplete="new-password" oninput="rcValidarClave()">
+                    <button type="button" data-role="none" class="rc-ojo" onclick="rcVerClave('rc_clave', this)" aria-label="Mostrar contraseña"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                </div>
+            </div>
+            <div class="rc-campo">
+                <label for="rc_clave2">Repite la contraseña</label>
+                <div class="rc-clave">
+                    <input type="password" data-role="none" class="rc-input" id="rc_clave2" placeholder="Vuelve a escribirla" autocomplete="new-password" oninput="rcValidarClave()">
+                    <button type="button" data-role="none" class="rc-ojo" onclick="rcVerClave('rc_clave2', this)" aria-label="Mostrar contraseña"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                </div>
+            </div>
+
+            <ul class="rc-reglas" id="rc_reglas">
+                <li data-regla="largo">Al menos 8 caracteres</li>
+                <li data-regla="mayuscula">Una letra mayúscula</li>
+                <li data-regla="numero">Un número</li>
+                <li data-regla="igual">Las contraseñas coinciden</li>
+            </ul>
+            <p class="rc-error" id="rc_error_3" role="alert"></p>
+
+            <button type="button" data-role="none" class="rc-boton" id="rc_boton_guardar" onclick="rcGuardarClave()" disabled>Guardar contraseña</button>
+        </section>
+
+        <!-- Paso 4: listo -->
+        <section class="rc-paso rc-exito" data-paso="4" style="display:none">
+            <span class="rc-exito-icono" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 12.5l4 4 8-9"/></svg></span>
+            <h1 class="rc-titulo">¡Contraseña actualizada!</h1>
+            <p class="rc-texto">Ya puedes ingresar a VeterChile con tu nueva contraseña.</p>
+            <button type="button" data-role="none" class="rc-boton" onclick="rcIrALogin()">Ir a iniciar sesión</button>
+        </section>
+    </div>
+</div>
+<!--CIERRE RECUPERAR CONTRASEÑA-->
 <!--SELECCIÓN DE ROL-->
 <div data-role="page" id="seleccionar-rol">
     <div data-role="header" class="header selector-rol-header">
         <span class="selector-rol-orbe selector-rol-orbe-uno" aria-hidden="true"></span>
         <span class="selector-rol-orbe selector-rol-orbe-dos" aria-hidden="true"></span>
-        <img class="selector-rol-logo" src="src/images/logo.svg" alt="MED-SDI">
+        <img class="selector-rol-logo" src="src/images/vet-white-h.svg" alt="VeterChile">
         <h1 class="selector-rol-titulo-pantalla">Elige el perfil con el que quieres ingresar</h1>
     </div>
     <div role="main" class="ui-content selector-rol-contenido">
@@ -782,8 +929,8 @@
         <span class="dashboard-orbe dashboard-orbe-uno"></span>
         <span class="dashboard-orbe dashboard-orbe-dos"></span>
         <div class="dashboard-topbar">
-            <img alt="Medichile" class="dashboard-logo" src="src/images/logo.svg">
-            <span class="dashboard-role"><i></i> Profesional</span>
+            <img alt="VeterChile" class="dashboard-logo" src="src/images/vet-white-h.svg">
+            <span class="dashboard-role">Profesional</span>
             <div class="dashboard-user">
                 <h2>
                     <img class="img-circulo" src="src/images/avatar-generico.svg" alt="Foto de perfil">
@@ -800,11 +947,11 @@
                 <div class="header-menu-perfil">
                     <button type="button" class="header-menu-puntos" onclick="toggleMenuPerfil(event)" aria-label="Abrir menú de perfil">⋮</button>
                     <div class="header-menu-opciones">
-                        <div class="header-menu-cabecera"><span class="header-menu-nombre">Usuario</span></div>
-                        <button type="button" onclick="abrirMensajesApp()">Mensajes</button>
-                        <button type="button" onclick="abrirEditarPerfil()">Editar perfil</button>
-                        <button type="button" class="selector-multiple-roles" onclick="volverASeleccionRoles()">Cambiar perfil</button>
-                        <button type="button" onclick="cerrarSesion()">Cerrar sesión</button>
+                        <div class="header-menu-cabecera"><span class="header-menu-nombre">Menú</span></div>
+                        <button type="button" onclick="abrirMensajesApp()"><svg class="menu-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="m3.8 7 7.1 5.4a1.8 1.8 0 0 0 2.2 0L20.2 7"/></svg><span>Mensajes</span></button>
+                        <button type="button" onclick="abrirEditarPerfil()"><svg class="menu-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9a2.1 2.1 0 0 0-4-4L4 16v4z"/><path d="m13.5 6.5 4 4"/></svg><span>Editar perfil</span></button>
+                        <button type="button" class="selector-multiple-roles" onclick="volverASeleccionRoles()"><svg class="menu-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h13m-3-3 3 3-3 3"/><path d="M19 16H6m3-3-3 3 3 3"/></svg><span>Cambiar usuario</span></button>
+                        <button type="button" onclick="cerrarSesion()"><svg class="menu-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h4"/><path d="m15 8 4 4-4 4M19 12H9"/></svg><span>Cerrar sesión</span></button>
                     </div>
                 </div>
             </div>
@@ -838,23 +985,15 @@
                 <div class="dashboard-card" onclick="abrirMisPacientesProfesional()" role="button" tabindex="0">
                             <span class="dashboard-card-icon icon-prof-pacientes"></span>
                     <div class="dashboard-card-copy">
-                        <h3>Mis pacientes</h3>
-                        <p>Busca pacientes que has atendido</p>
-                    </div>
-                    <span class="dashboard-card-arrow">›</span>
-                </div>
-                <div class="dashboard-card" onclick="abrirControlReposoProfesional()" role="button" tabindex="0">
-                            <span class="dashboard-card-icon icon-prof-reposo"></span>
-                    <div class="dashboard-card-copy">
-                        <h3>Control de reposo</h3>
-                        <p>Configura seguimiento y verificaciones</p>
+                        <h3>Tutores y mascotas</h3>
+                        <p>Busca tutores y mascotas que has atendido</p>
                     </div>
                     <span class="dashboard-card-arrow">›</span>
                 </div>
                 <div class="dashboard-card" onclick="abrirMedicoEmergencia()" role="button" tabindex="0">
                             <span class="dashboard-card-icon icon-prof-emergencia"></span>
                     <div class="dashboard-card-copy">
-                        <h3>Pacientes de emergencia</h3>
+                        <h3>Tutores de emergencia</h3>
                         <p>Solicitudes y vínculos activos</p>
                     </div>
                     <span class="dashboard-card-arrow">›</span>
@@ -889,147 +1028,8 @@
     </div>
 </div>
 <!--CIERRE INICIO PROFESIONAL-->
-<div data-role="page" id="control-reposo-profesional">
-    <div data-role="header" class="header">
-        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
-            <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('inicio-profesional')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
-            <p class="color-blanco size18 text-center">Control de reposo</p>
-        </div></div>
-    </div>
-    <div role="main" class="ui-content control-reposo-contenido">
-        <div class="reposo-resumen">
-            <div class="reposo-resumen-header">
-                <span>Resumen del reposo</span>
-                <span class="reposo-badge activo">ACTIVO</span>
-            </div>
-            <div class="reposo-resumen-body">
-                <div class="reposo-item">
-                    <span class="reposo-label">Paciente</span>
-                    <span class="reposo-value" id="reposo_paciente_resumen">Selecciona un paciente con licencia</span>
-                </div>
-                <div class="reposo-item">
-                    <span class="reposo-label">Reposo hasta</span>
-                    <span class="reposo-value" id="reposo_fecha_resumen">Sin fecha configurada</span>
-                </div>
-            </div>
-        </div>
-        <div class="sdi-reposo-card">
-            <div class="reposo-form-encabezado">
-                <span>CONFIGURACIÓN</span>
-                <h2>Parámetros de seguimiento</h2>
-                <p>Define las verificaciones que realizará el paciente durante su reposo.</p>
-            </div>
-            <div class="reposo-seccion">Paciente</div>
-            <label class="sdi-label" for="reposo_buscar_paciente">Buscar paciente con licencia</label>
-            <div class="sdi-input-group">
-                <input type="search" id="reposo_buscar_paciente" class="input-app" placeholder="Nombre, apellido o RUT">
-                <button type="button" class="sdi-btn sdi-btn-autorizar" onclick="buscar_pacientes_reposo()">Buscar</button>
-            </div>
-            <div id="reposo_resultados_pacientes" class="reposo-resultados"></div>
-            <input type="hidden" id="reposo_licencia_id">
-
-            <div class="reposo-seccion">Reglas del control</div>
-            <div class="reposo-grid-2">
-                <div>
-                    <label class="sdi-label" for="reposo_activo">Activar control</label>
-                    <select id="reposo_activo" class="input-app">
-                        <option value="0">No</option>
-                        <option value="1">Sí</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="sdi-label" for="reposo_frecuencia">Frecuencia</label>
-                    <select id="reposo_frecuencia" class="input-app">
-                        <option value="1">Cada 1 hora</option>
-                        <option value="2">Cada 2 horas</option>
-                        <option value="4">Cada 4 horas</option>
-                        <option value="8">Cada 8 horas</option>
-                    </select>
-                </div>
-            </div>
-            <label class="sdi-label" for="reposo_radio_km">Radio de movilidad permitido</label>
-            <div class="sdi-input-group">
-                <input type="number" id="reposo_radio_km" class="input-app" value="1" min="0.1" step="0.1">
-                <span>Km</span>
-            </div>
-            <div class="reposo-grid-2">
-                <div>
-                    <label class="sdi-label" for="reposo_control_medicamentos">Medicamentos por cámara</label>
-                    <select id="reposo_control_medicamentos" class="input-app">
-                        <option value="1">Sí</option>
-                        <option value="0">No</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="sdi-label" for="reposo_control_ubicacion">Ubicación del paciente</label>
-                    <select id="reposo_control_ubicacion" class="input-app">
-                        <option value="1">Sí</option>
-                        <option value="0">No</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="reposo-seccion">Detalles</div>
-            <label class="sdi-label" for="reposo_direccion">Dirección base del reposo</label>
-            <textarea id="reposo_direccion" class="input-app" rows="2" placeholder="Ej: Av. Balmaceda 1234, La Serena"></textarea>
-            <label class="sdi-label" for="reposo_observaciones">Observaciones</label>
-            <textarea id="reposo_observaciones" class="input-app" rows="3" placeholder="Indicaciones adicionales para el paciente"></textarea>
-            <div class="sdi-reposo-actions mt20">
-                <button type="button" class="sdi-btn sdi-btn-autorizar" onclick="guardar_config_reposo()">Guardar configuración</button>
-                <button type="button" class="sdi-btn sdi-btn-rechazar" onclick="cargar_controles_reposo()">Actualizar</button>
-            </div>
-            <div id="reposo_estado_guardado" class="mt10"></div>
-        </div>
-        <div class="sdi-reposo-card reposo-controles-card">
-            <div class="reposo-form-encabezado">
-                <span>SEGUIMIENTO</span>
-                <h2>Controles enviados</h2>
-                <p>Revisa la aceptación y las verificaciones realizadas por tus pacientes.</p>
-            </div>
-            <div id="reposo_controles_lista"><p class="reposo-aviso">Aún no hay controles configurados.</p></div>
-        </div>
-    </div>
-    <div data-role="footer" class="footer menu-inferior">
-        <div class="row bg-azul"><div class="col-xs-12 pt10 pb10 text-center">
-            <p class="color-blanco size13" onclick="vista('inicio-profesional')">Volver al inicio profesional</p>
-        </div></div>
-    </div>
-</div>
-<div data-role="page" id="control-reposo-paciente">
-    <div data-role="header" class="header">
-        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
-            <button type="button" data-role="none" class="perfil-header-volver" onclick="volverInicioSegunRol()" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
-            <p class="color-blanco size18 text-center">Verificación de reposo</p>
-        </div></div>
-    </div>
-    <div role="main" class="ui-content control-reposo-contenido">
-        <div class="sdi-reposo-card">
-            <div class="reposo-form-encabezado">
-                <div class="reposo-solicitud-linea"><span>SOLICITUD DEL PROFESIONAL</span><span id="reposo_paciente_estado" class="reposo-estado-chip">PENDIENTE</span></div>
-                <h2 id="reposo_paciente_profesional">Control de reposo</h2>
-                <p id="reposo_paciente_indicaciones">Revisa las condiciones antes de aceptar.</p>
-            </div>
-            <div id="reposo_paciente_detalle"></div>
-            <div class="sdi-reposo-actions mt20" id="reposo_decision_acciones">
-                <button type="button" class="sdi-btn sdi-btn-autorizar" onclick="decidir_control_reposo('accept')">Aceptar control</button>
-                <button type="button" class="sdi-btn sdi-btn-rechazar" onclick="decidir_control_reposo('reject')">Rechazar</button>
-            </div>
-            <div id="reposo_checkin_panel" style="display:none">
-                <h3 class="reposo-evidencia-titulo">Enviar comprobación</h3>
-                <p class="reposo-aviso-privacidad">La cámara y ubicación se usarán sólo para esta comprobación. Nada se captura sin presionar el botón.</p>
-                <input type="file" data-role="none" id="reposo_foto" accept="image/*" capture="environment" class="reposo-foto-input">
-                <label for="reposo_foto" id="reposo_foto_boton" class="reposo-foto-boton"><span class="reposo-foto-icono">▣</span><span><strong>Tomar fotografía</strong><small id="reposo_foto_nombre">Usar la cámara del teléfono</small></span></label>
-                <img id="reposo_foto_preview" alt="Vista previa" style="display:none;max-width:100%;margin-top:10px;border-radius:12px">
-                <label class="reposo-consentimiento mt10"><input type="checkbox" data-role="none" id="reposo_consentimiento"><span>Autorizo enviar esta foto y mi ubicación actual.</span></label>
-                <button type="button" data-role="none" class="sdi-btn sdi-btn-autorizar reposo-enviar" onclick="enviar_verificacion_reposo()"><span>✓</span> Enviar verificación</button>
-            </div>
-            <div id="reposo_paciente_resultado" class="mt10"></div>
-        </div>
-    </div>
-    <div class="reposo-footer"><button type="button" data-role="none" onclick="volverInicioSegunRol()">⌂ Volver al inicio</button></div>
-</div>
 <div data-role="page" id="agenda-profesional">
-    <div data-role="header" class="header">
+    <div data-role="header" class="header header-blanco">
         <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
             <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('inicio-profesional')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
             <p class="color-blanco size18 text-center">Mi agenda profesional</p>
@@ -1057,19 +1057,777 @@
     </div>
 </div>
 
+<div data-role="page" id="mis-mascotas">
+    <div data-role="header" class="header header-blanco">
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('index')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <p class="color-blanco size18 text-center">Mis mascotas</p>
+        </div></div>
+    </div>
+    <div role="main" class="ui-content mis-pacientes-contenido">
+        <div id="boton_anadir_mascota" class="anadir-card" onclick="anadirMascota()" role="button" tabindex="0">
+            <span class="anadir-card-icono"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span>
+            <span class="anadir-card-texto"><strong>Añadir nueva mascota</strong></span>
+        </div>
+        <div id="lista-mis-mascotas" class="mis-pacientes-lista">
+            <div class="mis-pacientes-vacio">No hay registro</div>
+        </div>
+    </div>
+    <div data-role="footer" class="footer menu-inferior">
+        <div class="row bg-azul"><div class="col-xs-12 pt10 pb10 text-center">
+            <p class="color-blanco size13" onclick="vista('index')">Volver</p>
+        </div></div>
+    </div>
+</div>
+
+<!-- FVU: Ficha Veterinaria Única de la mascota -->
+<div data-role="page" id="fvu-mascota">
+    <div data-role="header" class="header header-blanco">
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('mis-mascotas')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <p class="color-blanco size18 text-center">Ficha Veterinaria Única</p>
+        </div></div>
+    </div>
+    <div role="main" class="ui-content fvu-contenido">
+        <div id="fvu_cuerpo"></div>
+    </div>
+    <div data-role="footer" class="footer menu-inferior bottom0">
+        <div class="row bg-azul">
+            <div class="col-xs-4 pt10 pb10 text-center">
+                <p class="color-blanco size12" onclick="vista('index')"><img class="mb10" width="20" src="src/images/home.svg"><br>Inicio</p>
+            </div>
+            <div class="col-xs-4 pt10 pb10 text-center">
+                <p class="color-blanco size12" onclick="vista('citas'); solicitarMisHorasMedicas();"><img class="mb10" width="20" src="src/images/citas.svg"><br>Citas</p>
+            </div>
+            <div class="col-xs-4 pt10 pb10 text-center">
+                <p class="color-blanco size12" onclick="vista('login')"><img class="mb10" width="20" src="src/images/salir.svg"><br>Cerrar sesión</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Registrar fallecimiento de la mascota -->
+<div data-role="page" id="fallecimiento-mascota">
+    <div data-role="header" class="header header-blanco">
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('mis-mascotas')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <p class="color-blanco size18 text-center">Registrar fallecimiento</p>
+        </div></div>
+    </div>
+    <div role="main" class="ui-content fallecimiento-contenido">
+        <form id="form-fallecimiento" class="fallecimiento-form" onsubmit="return confirmarFallecimientoMascota(event)" novalidate>
+            <input type="hidden" id="fallecimiento_mascota_id" value="">
+            <div class="fallecimiento-resumen">
+                <span class="fallecimiento-foto" id="fallecimiento_foto"></span>
+                <div>
+                    <strong id="fallecimiento_nombre">—</strong>
+                    <span>Al confirmar, pasará a la sección <em>En memoria</em> y podrá ver su álbum de recuerdos.</span>
+                </div>
+            </div>
+
+            <div class="fallecimiento-titulo">Datos del fallecimiento</div>
+            <div class="form-group">
+                <label class="floating-label-activo" for="fallecimiento_fecha"><span class="fallecimiento-req">*</span> Fecha de fallecimiento</label>
+                <input type="date" id="fallecimiento_fecha" class="form-control form-control-sm">
+            </div>
+            <div class="form-group">
+                <label class="floating-label-activo" for="fallecimiento_causa">Causa (opcional)</label>
+                <input type="text" id="fallecimiento_causa" class="form-control form-control-sm" maxlength="500" placeholder="Ej. enfermedad, edad avanzada...">
+            </div>
+            <div class="form-group">
+                <label class="floating-label-activo" for="fallecimiento_mensaje">Mensaje de despedida (opcional)</label>
+                <textarea id="fallecimiento_mensaje" class="form-control form-control-sm" rows="3" maxlength="2000" placeholder="Escriba unas palabras en su memoria..."></textarea>
+            </div>
+
+            <div class="fallecimiento-titulo">Álbum de fotos</div>
+            <label class="fallecimiento-check">
+                <input type="checkbox" data-role="none" id="fallecimiento_incluir_fotos" checked>
+                <span>Incluir las fotos ya guardadas en la ficha de la mascota</span>
+            </label>
+            <p class="fallecimiento-ayuda">Puede agregar más fotos al álbum memorial:</p>
+            <div class="fallec-foto-bloque" id="fallec_foto_bloque">
+                <button type="button" data-role="none" class="fallecimiento-subir" onclick="abrirOpcionesFotoFallec()">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                    <span id="fallecimiento_fotos_texto">Agregar fotos</span>
+                </button>
+                <input type="file" id="fallec_foto_galeria" class="perfil-foto-input" accept="image/jpeg,image/png,image/webp" tabindex="-1">
+                <input type="file" id="fallec_foto_camara" class="perfil-foto-input" accept="image/*" capture="environment" tabindex="-1">
+
+                <div class="perfil-sheet-fondo" onclick="cerrarOpcionesFotoFallec()"></div>
+                <div class="perfil-sheet" role="dialog" aria-label="Álbum de fotos">
+                    <button type="button" data-role="none" class="perfil-sheet-opcion" onclick="elegirOrigenFotoFallec('fallec_foto_galeria')">
+                        <span class="perfil-sheet-icono"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.8"/><path d="M21 16l-5-5-8 9"/></svg></span>
+                        <span class="perfil-sheet-texto"><strong>Seleccionar foto</strong><small>JPG, PNG o WEBP · Máx 5 MB</small></span>
+                    </button>
+                    <button type="button" data-role="none" class="perfil-sheet-opcion" onclick="elegirOrigenFotoFallec('fallec_foto_camara')">
+                        <span class="perfil-sheet-icono"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></span>
+                        <span class="perfil-sheet-texto"><strong>Tomar foto con la cámara</strong></span>
+                    </button>
+                </div>
+
+                <div class="perfil-ajuste">
+                    <div class="perfil-ajuste-caja">
+                        <p class="perfil-ajuste-titulo">Ajusta la foto</p>
+                        <div class="perfil-foto-marco" id="fallec_foto_marco">
+                            <img id="fallec_foto_editor" alt="" draggable="false">
+                        </div>
+                        <p class="perfil-foto-texto">Arrastra la foto y ajusta el zoom para encuadrarla</p>
+                        <div class="fallec-foto-zoom">
+                            <input type="range" data-role="none" id="fallec_foto_zoom" min="100" max="300" value="100" aria-label="Zoom de la foto">
+                        </div>
+                        <div class="btn-app7 fallec-foto-guardar" onclick="guardarFotoFallecAjustada()">Guardar foto</div>
+                        <div class="perfil-foto-cancelar" onclick="cancelarFotoFallecAjustada()">Cancelar</div>
+                    </div>
+                </div>
+            </div>
+            <div class="fallecimiento-miniaturas" id="fallecimiento_miniaturas"></div>
+
+            <div class="fallecimiento-botones">
+                <button type="button" data-role="none" class="fallecimiento-cancelar" onclick="vista('mis-mascotas')">Cancelar</button>
+                <button type="submit" data-role="none" class="fallecimiento-confirmar">Confirmar fallecimiento</button>
+            </div>
+        </form>
+    </div>
+    <div data-role="footer" class="footer menu-inferior"></div>
+</div>
+
+<!-- ===== Mascotas perdidas (basado en vetsdi_laravel13: Paciente/Mascotas_Perdidas) ===== -->
+<div data-role="page" id="mascotas-perdidas">
+    <div data-role="header" class="header header-blanco">
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('index')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <p class="color-blanco size18 text-center">Mascotas perdidas</p>
+        </div></div>
+    </div>
+    <div role="main" class="ui-content perdidas-contenido">
+        <div class="perdidas-acciones">
+            <button type="button" data-role="none" class="perdidas-accion perdidas-accion-perdida" onclick="abrirPublicarPerdida('perdida')">
+                <span class="perdidas-accion-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span>
+                <span><strong>Perdí a mi mascota</strong><small>Publica un aviso</small></span>
+            </button>
+            <button type="button" data-role="none" class="perdidas-accion" onclick="abrirPublicarPerdida('encontrada')">
+                <span class="perdidas-accion-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></span>
+                <span><strong>Encontré una</strong><small>Ayúdala a volver</small></span>
+            </button>
+        </div>
+
+        <div class="perdidas-tabs" role="tablist">
+            <button type="button" data-role="none" class="perdidas-tab activo" id="perdidas_pill_red" onclick="mostrarPanelPerdidas('red')">Avisos de la red</button>
+            <button type="button" data-role="none" class="perdidas-tab" id="perdidas_pill_mis" onclick="mostrarPanelPerdidas('mis')">Mis avisos <span class="perdidas-badge" id="perdidas_badge" style="display:none">0</span></button>
+        </div>
+
+        <div id="perdidas_panel_red">
+            <div class="perdidas-barra">
+                <button type="button" data-role="none" class="perdidas-chip filtro-boton" id="perdidas_btn_filtros" onclick="alternarFiltrosPerdidas()" aria-expanded="false">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>Filtros <span class="perdidas-chip-num" id="perdidas_filtros_num" style="display:none">0</span>
+                </button>
+                <button type="button" data-role="none" class="perdidas-chip" id="perdidas_cerca" onclick="cercaDeMiPerdidas()">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Cerca de mí
+                </button>
+                <span class="perdidas-total" id="perdidas_total"></span>
+            </div>
+            <div class="perdidas-ubicacion" id="perdidas_ubicacion" style="display:none"></div>
+            <div class="perdidas-filtros" id="perdidas_filtros" style="display:none">
+                <div class="form-group">
+                    <label class="floating-label-activo" for="filtro_region">Región</label>
+                    <select id="filtro_region" class="form-control form-control-sm" onchange="alCambiarRegionFiltroPerdidas()"><option value="">Todas</option></select>
+                </div>
+                <div class="form-group">
+                    <label class="floating-label-activo" for="filtro_comuna">Comuna</label>
+                    <select id="filtro_comuna" class="form-control form-control-sm" onchange="filtrarAvisosPerdidas()"><option value="">Todas</option></select>
+                </div>
+                <div class="perdidas-fila-2">
+                    <div class="form-group">
+                        <label class="floating-label-activo" for="filtro_especie">Especie</label>
+                        <select id="filtro_especie" class="form-control form-control-sm" onchange="filtrarAvisosPerdidas()"><option value="">Todas</option></select>
+                    </div>
+                    <div class="form-group">
+                        <label class="floating-label-activo" for="filtro_estado">Estado</label>
+                        <select id="filtro_estado" class="form-control form-control-sm" onchange="filtrarAvisosPerdidas()">
+                            <option value="">Todos</option><option value="perdida">Perdidas</option><option value="encontrada">Encontradas</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div id="perdidas_lista"></div>
+            <div class="mis-pacientes-vacio" id="perdidas_vacio" style="display:none">No hay registro</div>
+        </div>
+
+        <div id="perdidas_panel_mis" style="display:none">
+            <p class="perdidas-privacidad"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>Solo tutores registrados pueden responder. Tu teléfono no se muestra hasta que decidas compartirlo.</span></p>
+            <div id="perdidas_mis_avisos"></div>
+        </div>
+
+        <div class="perdidas-galeria" id="perdidas_galeria" style="display:none" onclick="cerrarGaleriaPerdida()">
+            <button type="button" data-role="none" class="perdidas-galeria-cerrar" aria-label="Cerrar">×</button>
+            <img id="perdidas_galeria_img" alt="">
+            <div class="perdidas-galeria-nav">
+                <button type="button" data-role="none" onclick="moverGaleriaPerdida(-1, event)" aria-label="Anterior">‹</button>
+                <span id="perdidas_galeria_pos"></span>
+                <button type="button" data-role="none" onclick="moverGaleriaPerdida(1, event)" aria-label="Siguiente">›</button>
+            </div>
+        </div>
+    </div>
+    <div data-role="footer" class="footer menu-inferior bottom0">
+        <div class="row bg-azul">
+            <div class="col-xs-4 pt10 pb10 text-center"><p class="color-blanco size12" onclick="vista('index')"><img class="mb10" width="20" src="src/images/home.svg"><br>Inicio</p></div>
+            <div class="col-xs-4 pt10 pb10 text-center"><p class="color-blanco size12" onclick="vista('citas'); solicitarMisHorasMedicas();"><img class="mb10" width="20" src="src/images/citas.svg"><br>Citas</p></div>
+            <div class="col-xs-4 pt10 pb10 text-center"><p class="color-blanco size12" onclick="vista('login')"><img class="mb10" width="20" src="src/images/salir.svg"><br>Cerrar sesión</p></div>
+        </div>
+    </div>
+</div>
+
+<!-- Publicar mascota perdida / encontrada (modal_mascota_perdida) -->
+<div data-role="page" id="perdida-publicar">
+    <div data-role="header" class="header header-blanco">
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('mascotas-perdidas')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <p class="color-blanco size18 text-center" id="perdida_titulo">Publicar mascota perdida</p>
+        </div></div>
+    </div>
+    <div role="main" class="ui-content perdida-form-contenido">
+        <form id="form-perdida" onsubmit="return publicarMascotaPerdida(event)" novalidate>
+            <!-- Paso 1: elegir la mascota -->
+            <div id="perdida_vista_seleccion">
+                <p class="perdidas-intro">Selecciona la mascota que se perdió para completar el aviso.</p>
+                <div class="form-group">
+                    <label class="floating-label-activo" for="perdida_mascota_id"><span class="fallecimiento-req">*</span> Mascota</label>
+                    <select id="perdida_mascota_id" class="form-control form-control-sm" onchange="elegirMascotaPerdida(this.value)"><option value="">Seleccione una mascota</option></select>
+                </div>
+            </div>
+
+            <!-- Paso 2: datos del aviso -->
+            <div id="perdida_vista_formulario" style="display:none">
+                <div class="fallecimiento-resumen" id="perdida_resumen">
+                    <span class="fallecimiento-foto" id="perdida_mascota_foto"></span>
+                    <div>
+                        <strong>Marcaste a <span id="perdida_mascota_nombre"></span> como perdida</strong>
+                        <button type="button" data-role="none" class="perdida-cambiar" onclick="volverSeleccionMascotaPerdida()">⇄ Cambiar mascota</button>
+                    </div>
+                </div>
+
+                <div id="perdida_datos_encontrada" style="display:none">
+                    <div class="form-group"><label class="floating-label-activo" for="perdida_nombre">Nombre (si lo conoces)</label><input id="perdida_nombre" class="form-control form-control-sm" maxlength="100" placeholder="Sin nombre"></div>
+                    <div class="form-group"><label class="floating-label-activo" for="perdida_especie">Especie</label>
+                        <select id="perdida_especie" class="form-control form-control-sm"><option>Perro</option><option>Gato</option><option>Otra</option></select></div>
+                    <div class="form-group"><label class="floating-label-activo" for="perdida_raza">Raza (si la conoces)</label><input id="perdida_raza" class="form-control form-control-sm" maxlength="100"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="floating-label-activo" for="perdida_region"><span class="fallecimiento-req">*</span> Región</label>
+                    <select id="perdida_region" class="form-control form-control-sm" onchange="cargarComunasSelect('perdida_comuna','perdida_region','Seleccione')"><option value="">Seleccione</option></select>
+                </div>
+                <div class="form-group">
+                    <label class="floating-label-activo" for="perdida_comuna"><span class="fallecimiento-req">*</span> Comuna</label>
+                    <select id="perdida_comuna" class="form-control form-control-sm"><option value="">Seleccione</option></select>
+                </div>
+                <div class="form-group">
+                    <label class="floating-label-activo" for="perdida_direccion"><span class="fallecimiento-req">*</span> <span id="perdida_direccion_texto">Dirección donde se perdió</span></label>
+                    <input id="perdida_direccion" class="form-control form-control-sm" maxlength="200" placeholder="Ej. Av. Providencia 1234, Santiago">
+                    <button type="button" data-role="none" class="perdida-ubicacion-btn" onclick="usarUbicacionPerdida('perdida_direccion','perdida_latitud','perdida_longitud')">📍 Usar mi ubicación actual</button>
+                    <input type="hidden" id="perdida_latitud"><input type="hidden" id="perdida_longitud">
+                </div>
+                <div class="perdidas-fila-2">
+                    <div class="form-group"><label class="floating-label-activo" for="perdida_fecha"><span class="fallecimiento-req">*</span> Fecha</label><input type="date" id="perdida_fecha" class="form-control form-control-sm"></div>
+                    <div class="form-group"><label class="floating-label-activo" for="perdida_hora">Hora aproximada</label><input type="time" id="perdida_hora" class="form-control form-control-sm"></div>
+                </div>
+                <div class="form-group">
+                    <label class="floating-label-activo" for="perdida_descripcion"><span class="fallecimiento-req">*</span> Descripción</label>
+                    <textarea id="perdida_descripcion" class="form-control form-control-sm" rows="4" maxlength="2000" placeholder="Cuenta cómo lucía cuando se perdió: collar, ropa, color, señas particulares, cómo ocurrió..."></textarea>
+                </div>
+
+                <div class="perdida-recompensa" id="perdida_bloque_recompensa">
+                    <label class="perdida-recompensa-cab" for="perdida_recompensa">
+                        <span class="perdida-recompensa-icono">🎁</span>
+                        <span class="perdida-recompensa-texto"><strong>Ofrecer recompensa</strong><small>Puede motivar a más personas a ayudar en la búsqueda.</small></span>
+                        <input type="checkbox" data-role="none" id="perdida_recompensa" class="perdida-switch" onchange="$('#perdida_recompensa_detalle').toggle(this.checked)">
+                    </label>
+                    <div id="perdida_recompensa_detalle" style="display:none">
+                        <div class="perdida-monto"><span>$</span><input type="number" id="perdida_recompensa_monto" class="form-control form-control-sm" min="0" step="1000" placeholder="Ej. 50000"></div>
+                    </div>
+                </div>
+
+                <div class="fallecimiento-titulo">Fotos</div>
+                <p class="fallecimiento-ayuda">Agrega fotos recientes para que sea más fácil reconocerla (hasta 4).</p>
+                <div class="perdida-foto-bloque" id="perdida_foto_bloque">
+                <button type="button" data-role="none" class="fallecimiento-subir" onclick="abrirOpcionesFotoPerdida()">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                    <span id="perdida_fotos_texto">Agregar fotos</span>
+                </button>
+                <input type="file" id="perdida_foto_galeria" class="perfil-foto-input" accept="image/jpeg,image/png,image/webp" tabindex="-1">
+                <input type="file" id="perdida_foto_camara" class="perfil-foto-input" accept="image/*" capture="environment" tabindex="-1">
+
+                <div class="perfil-sheet-fondo" onclick="cerrarOpcionesFotoPerdida()"></div>
+                <div class="perfil-sheet" role="dialog" aria-label="Álbum de fotos">
+                    <button type="button" data-role="none" class="perfil-sheet-opcion" onclick="elegirOrigenFotoPerdida('perdida_foto_galeria')">
+                        <span class="perfil-sheet-icono"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.8"/><path d="M21 16l-5-5-8 9"/></svg></span>
+                        <span class="perfil-sheet-texto"><strong>Seleccionar foto</strong><small>JPG, PNG o WEBP · Máx 5 MB</small></span>
+                    </button>
+                    <button type="button" data-role="none" class="perfil-sheet-opcion" onclick="elegirOrigenFotoPerdida('perdida_foto_camara')">
+                        <span class="perfil-sheet-icono"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></span>
+                        <span class="perfil-sheet-texto"><strong>Tomar foto con la cámara</strong></span>
+                    </button>
+                </div>
+
+                <div class="perfil-ajuste">
+                    <div class="perfil-ajuste-caja">
+                        <p class="perfil-ajuste-titulo">Ajusta la foto</p>
+                        <div class="perfil-foto-marco" id="perdida_foto_marco">
+                            <img id="perdida_foto_editor" alt="" draggable="false">
+                        </div>
+                        <p class="perfil-foto-texto">Arrastra la foto y ajusta el zoom para encuadrarla</p>
+                        <div class="perdida-foto-zoom">
+                            <input type="range" data-role="none" id="perdida_foto_zoom" min="100" max="300" value="100" aria-label="Zoom de la foto">
+                        </div>
+                        <div class="btn-app7 perdida-foto-guardar" onclick="guardarFotoPerdidaAjustada()">Guardar foto</div>
+                        <div class="perfil-foto-cancelar" onclick="cancelarFotoPerdidaAjustada()">Cancelar</div>
+                    </div>
+                </div>
+            </div>
+            <div class="fallecimiento-miniaturas" id="perdida_miniaturas"></div>
+
+                <div class="fallecimiento-botones">
+                    <button type="button" data-role="none" class="fallecimiento-cancelar" onclick="vista('mascotas-perdidas')">Cancelar</button>
+                    <button type="submit" data-role="none" class="perdida-publicar-btn">Publicar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div data-role="footer" class="footer menu-inferior"></div>
+</div>
+
+<!-- Responder a un aviso: la vi, la tengo o es mi mascota -->
+<div data-role="page" id="perdida-contacto">
+    <div data-role="header" class="header header-blanco">
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('mascotas-perdidas')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <p class="color-blanco size18 text-center" id="contacto_titulo_pagina">Avisar al tutor</p>
+        </div></div>
+    </div>
+    <div role="main" class="ui-content perdida-form-contenido">
+        <form id="form-contacto-aviso" onsubmit="return enviarContactoAviso(event)" novalidate>
+            <div class="fallecimiento-resumen">
+                <span class="fallecimiento-foto" id="contacto_foto"></span>
+                <div><strong id="contacto_titulo"></strong><span>Tu mensaje le llega a <b id="contacto_tutor"></b> dentro de la red.</span></div>
+            </div>
+
+            <div id="contacto_bloque_perdida">
+                <div class="contacto-tipos">
+                    <label class="contacto-tipo"><input type="radio" data-role="none" name="contacto_tipo" value="la_vio" checked onchange="alCambiarTipoContacto()"><span>👁 La vi</span></label>
+                    <label class="contacto-tipo"><input type="radio" data-role="none" name="contacto_tipo" value="la_tiene" onchange="alCambiarTipoContacto()"><span>🏠 La tengo conmigo</span></label>
+                </div>
+            </div>
+
+            <div id="contacto_bloque_encontrada" style="display:none">
+                <div class="form-group"><label class="floating-label-activo" for="contacto_mi_mascota">¿Cuál de tus mascotas es?</label>
+                    <select id="contacto_mi_mascota" class="form-control form-control-sm"><option value="">No la tengo registrada</option></select></div>
+                <div class="form-group"><label class="floating-label-activo" for="contacto_sena"><span class="fallecimiento-req">*</span> Una seña que solo tú conozcas</label>
+                    <input type="text" id="contacto_sena" class="form-control form-control-sm" placeholder="Ej.: cicatriz en la oreja, responde a un nombre, chip"></div>
+            </div>
+
+            <div id="contacto_grupo_lugar" class="form-group">
+                <label class="floating-label-activo" for="contacto_lugar"><span class="fallecimiento-req">*</span> <span id="contacto_lugar_texto">¿Dónde la viste?</span></label>
+                <input type="text" id="contacto_lugar" class="form-control form-control-sm" maxlength="200" placeholder="Ej. Av. Providencia 1234, Santiago">
+                <button type="button" data-role="none" class="perdida-ubicacion-btn" onclick="usarUbicacionPerdida('contacto_lugar','contacto_latitud','contacto_longitud')">📍 Usar mi ubicación actual</button>
+                <input type="hidden" id="contacto_latitud"><input type="hidden" id="contacto_longitud">
+            </div>
+            <div class="perdidas-fila-2" id="contacto_grupo_fecha">
+                <div class="form-group"><label class="floating-label-activo" for="contacto_fecha">Fecha</label><input type="date" id="contacto_fecha" class="form-control form-control-sm"></div>
+                <div class="form-group"><label class="floating-label-activo" for="contacto_hora">Hora aproximada</label><input type="time" id="contacto_hora" class="form-control form-control-sm"></div>
+            </div>
+            <div class="form-group">
+                <label class="floating-label-activo" for="contacto_mensaje"><span class="fallecimiento-req">*</span> Mensaje para el tutor</label>
+                <textarea id="contacto_mensaje" class="form-control form-control-sm" rows="3"></textarea>
+            </div>
+
+            <div class="perdida-recompensa">
+                <label class="perdida-recompensa-cab" for="contacto_compartir_telefono">
+                    <span class="perdida-recompensa-icono">📞</span>
+                    <span class="perdida-recompensa-texto"><strong>Compartir mi teléfono</strong><small>Si no lo activas, el tutor solo verá tu nombre y tu mensaje, y podrá pedirte el contacto desde la red.</small></span>
+                    <input type="checkbox" data-role="none" id="contacto_compartir_telefono" class="perdida-switch">
+                </label>
+            </div>
+
+            <div class="fallecimiento-botones">
+                <button type="button" data-role="none" class="fallecimiento-cancelar" onclick="vista('mascotas-perdidas')">Cancelar</button>
+                <button type="submit" data-role="none" class="perdida-publicar-btn">Enviar aviso</button>
+            </div>
+        </form>
+    </div>
+    <div data-role="footer" class="footer menu-inferior"></div>
+</div>
+
+<!-- Traspasar mascota a otro tutor (módulo tutoria_compartida; basado en modal_traspasar_mascota) -->
+<div data-role="page" id="traspasar-mascota">
+    <div data-role="header" class="header header-blanco">
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('mis-mascotas')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <p class="color-blanco size18 text-center">Traspasar mascota</p>
+        </div></div>
+    </div>
+    <div role="main" class="ui-content traspaso-contenido">
+        <p class="tc-texto">La mascota pasa al nuevo tutor junto a su FVU, carné de vacunas y desparasitaciones.</p>
+
+        <!-- Indicador de pasos -->
+        <ol class="traspaso-pasos" id="traspaso_pasos">
+            <li class="traspaso-paso activo" data-paso="1"><button type="button" data-role="none" data-paso="1"><span class="traspaso-paso-numero">1</span>Mascota</button></li>
+            <li class="traspaso-paso" data-paso="2"><button type="button" data-role="none" data-paso="2" disabled><span class="traspaso-paso-numero">2</span>Nuevo tutor</button></li>
+            <li class="traspaso-paso" data-paso="3"><button type="button" data-role="none" data-paso="3" disabled><span class="traspaso-paso-numero">3</span>Confirmar</button></li>
+        </ol>
+
+        <!-- Paso 1: mascota y motivo -->
+        <div class="traspaso-panel activo" data-paso="1">
+            <div class="traspaso-panel-encabezado">
+                <h6>¿Qué mascota va a traspasar?</h6>
+                <p>Elija la mascota e indique por qué cambia de tutor.</p>
+            </div>
+            <div class="tc-campo">
+                <label for="traspaso_mascota_id"><span class="tc-req">*</span> Mascota</label>
+                <select data-role="none" class="tc-input" id="traspaso_mascota_id">
+                    <option value="">Seleccione una mascota</option>
+                </select>
+            </div>
+            <div class="traspaso-mascota tc-oculto" id="traspaso_mascota_resumen">
+                <span class="tc-avatar" id="traspaso_mascota_foto"></span>
+                <div>
+                    <strong id="traspaso_mascota_nombre">-</strong>
+                    <span id="traspaso_mascota_detalle"></span>
+                </div>
+            </div>
+            <div class="tc-campo">
+                <label for="traspaso_situacion"><span class="tc-req">*</span> Motivo del traspaso</label>
+                <textarea data-role="none" class="tc-input" id="traspaso_situacion" rows="3" maxlength="1000" placeholder="Ej: adopción, cambio de domicilio, entrega a un familiar..."></textarea>
+            </div>
+            <div class="traspaso-motivos">
+                <small>Motivos frecuentes:</small>
+                <button type="button" data-role="none" class="traspaso-motivo" data-motivo="Adopción">Adopción</button>
+                <button type="button" data-role="none" class="traspaso-motivo" data-motivo="Entrega a un familiar">Entrega a un familiar</button>
+                <button type="button" data-role="none" class="traspaso-motivo" data-motivo="Cambio de domicilio">Cambio de domicilio</button>
+            </div>
+            <small class="tc-error tc-oculto" id="traspaso_paso1_error" role="alert"></small>
+        </div>
+
+        <!-- Paso 2: nuevo tutor -->
+        <div class="traspaso-panel" data-paso="2">
+            <div class="traspaso-panel-encabezado">
+                <h6>¿Quién será el nuevo tutor?</h6>
+                <p>Búsquelo por su RUT. Si aún no está registrado, podrá ingresar sus datos.</p>
+            </div>
+            <div class="traspaso-buscador">
+                <div class="tc-campo">
+                    <label for="traspaso_rut_tutor"><span class="tc-req">*</span> RUT del nuevo tutor</label>
+                    <input type="text" data-role="none" class="tc-input" id="traspaso_rut_tutor" placeholder="Ej: 12345678-9" autocomplete="off">
+                </div>
+                <button type="button" data-role="none" class="tc-btn tc-btn-primario" id="btn_traspaso_buscar_tutor" onclick="buscarTutorTraspaso()">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg> Buscar
+                </button>
+            </div>
+            <small class="tc-error tc-oculto" id="traspaso_tutor_error" role="alert"></small>
+
+            <div class="tc-aviso tc-oculto" id="traspaso_tutor_alerta">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>
+                <span id="traspaso_tutor_alerta_texto"></span>
+            </div>
+
+            <!-- Tutor ya registrado -->
+            <div class="tc-persona tc-oculto" id="traspaso_tutor_resultado" style="margin-top:12px">
+                <span class="tc-avatar"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c.7-4 3.9-6.5 8-6.5s7.3 2.5 8 6.5"/></svg></span>
+                <div class="tc-persona-datos">
+                    <strong id="traspaso_tutor_nombre">-</strong>
+                    <span>RUT <span id="traspaso_tutor_rut">-</span></span>
+                </div>
+                <span class="tc-badge tc-badge-activa">Registrado</span>
+            </div>
+
+            <!-- Tutor sin cuenta: se piden sus datos -->
+            <div class="tc-oculto" id="traspaso_tutor_formulario" style="margin-top:12px">
+                <div class="tc-subtitulo">Datos del nuevo tutor</div>
+                <div class="tc-campo"><label for="traspaso_tutor_nombres"><span class="tc-req">*</span> Nombres</label><input type="text" data-role="none" class="tc-input" id="traspaso_tutor_nombres" maxlength="120"></div>
+                <div class="tc-campo"><label for="traspaso_tutor_apellido_uno"><span class="tc-req">*</span> Apellido paterno</label><input type="text" data-role="none" class="tc-input" id="traspaso_tutor_apellido_uno" maxlength="120"></div>
+                <div class="tc-campo"><label for="traspaso_tutor_apellido_dos">Apellido materno</label><input type="text" data-role="none" class="tc-input" id="traspaso_tutor_apellido_dos" maxlength="120"></div>
+                <div class="tc-campo"><label for="traspaso_tutor_direccion">Dirección</label><input type="text" data-role="none" class="tc-input" id="traspaso_tutor_direccion" maxlength="255"></div>
+                <div class="tc-campo"><label for="traspaso_tutor_email">Correo electrónico</label><input type="email" data-role="none" class="tc-input" id="traspaso_tutor_email" maxlength="190"></div>
+                <div class="tc-campo"><label for="traspaso_tutor_telefono">Teléfono</label><input type="tel" data-role="none" class="tc-input" id="traspaso_tutor_telefono" maxlength="30"></div>
+            </div>
+        </div>
+
+        <!-- Paso 3: resumen y confirmación -->
+        <div class="traspaso-panel" data-paso="3">
+            <div class="traspaso-panel-encabezado">
+                <h6>Revise el traspaso</h6>
+                <p>Si todo está correcto, confirme para traspasar la mascota.</p>
+            </div>
+            <div class="traspaso-cambio">
+                <div class="traspaso-cambio-tutor">
+                    <span class="traspaso-etiqueta">Tutor actual</span>
+                    <strong id="traspaso_tutor_actual">-</strong>
+                    <small id="traspaso_tutor_actual_rut"></small>
+                </div>
+                <div class="traspaso-cambio-mascota">
+                    <span class="tc-avatar" id="traspaso_resumen_foto"></span>
+                    <span id="traspaso_resumen_mascota">-</span>
+                    <svg class="tc-flecha" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </div>
+                <div class="traspaso-cambio-tutor traspaso-cambio-nuevo">
+                    <span class="traspaso-etiqueta">Nuevo tutor</span>
+                    <strong id="traspaso_tutor_nuevo_resumen">-</strong>
+                    <small id="traspaso_tutor_nuevo_rut"></small>
+                </div>
+            </div>
+            <div class="traspaso-motivo-resumen">
+                <span class="traspaso-etiqueta">Motivo</span>
+                <p id="traspaso_resumen_motivo">-</p>
+            </div>
+            <div class="tc-subtitulo">Se traspasa junto a la mascota</div>
+            <div class="traspaso-documentos">
+                <div class="traspaso-documento"><strong id="traspaso_total_fvu">0</strong><span>Ficha veterinaria única</span><small>atenciones clínicas</small></div>
+                <div class="traspaso-documento"><strong id="traspaso_total_vacunas">0</strong><span>Carné de vacunas</span><small>registros</small></div>
+                <div class="traspaso-documento"><strong id="traspaso_total_desparasitaciones">0</strong><span>Desparasi&shy;taciones</span><small>registros</small></div>
+            </div>
+            <div class="tc-aviso tc-aviso-alerta">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18v.5"/></svg>
+                <span>Al confirmar, el nuevo tutor queda como responsable de la mascota. La FVU, el carné de vacunas y las desparasitaciones se mantienen asociadas a ella.</span>
+            </div>
+        </div>
+
+        <div class="traspaso-acciones">
+            <button type="button" data-role="none" class="tc-btn tc-btn-secundario" id="btn_traspaso_cancelar" onclick="vista('mis-mascotas')">Cancelar</button>
+            <button type="button" data-role="none" class="tc-btn tc-btn-secundario tc-oculto" id="btn_traspaso_anterior" onclick="anteriorPasoTraspaso()">‹ Anterior</button>
+            <button type="button" data-role="none" class="tc-btn tc-btn-primario" id="btn_traspaso_siguiente" onclick="siguientePasoTraspaso()">Siguiente ›</button>
+            <button type="button" data-role="none" class="tc-btn tc-btn-primario tc-oculto" id="btn_traspaso_confirmar" onclick="ejecutarTraspasoMascota()" disabled>Confirmar traspaso</button>
+        </div>
+    </div>
+    <div data-role="footer" class="footer menu-inferior"></div>
+</div>
+
+<div data-role="page" id="vacunas-desparasitacion">
+    <div data-role="header" class="header header-blanco">
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('mis-mascotas')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <p class="color-blanco size18 text-center">Vacunas y desparasitación</p>
+        </div></div>
+    </div>
+    <div role="main" class="ui-content vd-contenido">
+        <div class="vd-ficha" id="vd_mascota_nombre"></div>
+        <div class="vd-pills" role="tablist">
+            <button type="button" data-role="none" class="vd-pill activo" id="vd_pill_vacunas" role="tab" onclick="mostrarSeccionVD('vacunas')">Registro de vacunación</button>
+            <button type="button" data-role="none" class="vd-pill" id="vd_pill_desparasitacion" role="tab" onclick="mostrarSeccionVD('desparasitacion')">Registro de desparasitación</button>
+        </div>
+        <div id="vd_lista" class="vd-lista"></div>
+    </div>
+    <div data-role="footer" class="footer menu-inferior bottom0">
+        <div class="row bg-azul">
+            <div class="col-xs-4 pt10 pb10 text-center">
+                <p class="color-blanco size12" onclick="vista('index')"><img class="mb10" width="20" src="src/images/home.svg"><br>Inicio</p>
+            </div>
+            <div class="col-xs-4 pt10 pb10 text-center">
+                <p class="color-blanco size12" onclick="vista('citas'); solicitarMisHorasMedicas();"><img class="mb10" width="20" src="src/images/citas.svg"><br>Citas</p>
+            </div>
+            <div class="col-xs-4 pt10 pb10 text-center">
+                <p class="color-blanco size12" onclick="vista('login')"><img class="mb10" width="20" src="src/images/salir.svg"><br>Cerrar sesión</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div data-role="page" id="anadir-mascota">
+    <div data-role="header" class="header header-blanco">
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('mis-mascotas')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <p class="color-blanco size18 text-center">Añadir mascota</p>
+        </div></div>
+    </div>
+    <div role="main" class="ui-content mascota-contenido">
+        <form id="form-mascota" class="mascota-form" onsubmit="return guardarMascota(event)" novalidate>
+            <div class="form-row pt20">
+                <div class="form-group col-xs-12">
+                    <label class="floating-label-activo" for="mascota_nombre">Nombre <span class="campo-req">*</span></label>
+                    <input type="text" id="mascota_nombre" class="form-control form-control-sm" maxlength="60" placeholder="Nombre de tu mascota">
+                </div>
+                <div class="form-group col-xs-12">
+                    <label class="floating-label-activo" for="mascota_especie">Especie <span class="campo-req">*</span></label>
+                    <select id="mascota_especie" class="form-control form-control-sm" onchange="alCambiarEspecieMascota()">
+                        <option value="">Selecciona</option>
+                        <option>Perro</option>
+                        <option>Gato</option>
+                        <option>Otra</option>
+                    </select>
+                </div>
+                <div class="form-group col-xs-12" id="mascota_especie_otra_grupo" style="display:none">
+                    <label class="floating-label-activo" for="mascota_especie_otra">¿Cuál es la especie? <span class="campo-req">*</span></label>
+                    <input type="text" id="mascota_especie_otra" class="form-control form-control-sm" maxlength="60" placeholder="Ej: Conejo, Hurón, Ave">
+                </div>
+                <div class="form-group col-xs-12">
+                    <label class="floating-label-activo" for="mascota_raza">Raza <span class="campo-req">*</span></label>
+                    <input type="text" id="mascota_raza" class="form-control form-control-sm" maxlength="60" placeholder="Raza o mestizo">
+                </div>
+                <div class="form-group col-xs-12">
+                    <label class="floating-label-activo" for="mascota_tamano">Tamaño <span class="campo-req">*</span></label>
+                    <select id="mascota_tamano" class="form-control form-control-sm">
+                        <option value="">Selecciona</option>
+                        <option>Pequeño</option>
+                        <option>Mediano</option>
+                        <option>Grande</option>
+                    </select>
+                </div>
+                <div class="form-group col-xs-12">
+                    <label class="floating-label-activo" for="mascota_sexo">Sexo <span class="campo-req">*</span></label>
+                    <select id="mascota_sexo" class="form-control form-control-sm">
+                        <option value="">Selecciona</option>
+                        <option>Macho</option>
+                        <option>Hembra</option>
+                    </select>
+                </div>
+                <div class="form-group col-xs-12">
+                    <label class="floating-label-activo" for="mascota_nacimiento">Fecha de nacimiento <span class="campo-req">*</span></label>
+                    <input type="date" id="mascota_nacimiento" class="form-control form-control-sm">
+                </div>
+                <div class="form-group col-xs-12 mascota-check-fila">
+                    <label class="mascota-check" for="mascota_nacimiento_desconocida"><input type="checkbox" data-role="none" id="mascota_nacimiento_desconocida" onchange="alCambiarFechaDesconocidaMascota()"> Desconozco la fecha de nacimiento</label>
+                </div>
+                <div class="form-group col-xs-12">
+                    <label class="floating-label-activo" for="mascota_comportamiento">Comportamiento de la mascota</label>
+                    <input type="text" id="mascota_comportamiento" class="form-control form-control-sm" maxlength="150" placeholder="Ej: tranquilo, nervioso con extraños, juguetón">
+                </div>
+                <div class="form-group col-xs-12">
+                    <label class="floating-label-activo" for="mascota_color">Color</label>
+                    <input type="text" id="mascota_color" class="form-control form-control-sm" maxlength="40">
+                </div>
+                <div class="form-group col-xs-12" style="display:none">
+                    <label class="floating-label-activo" for="mascota_peso">Peso (kg)</label>
+                    <input type="number" id="mascota_peso" class="form-control form-control-sm" min="0" step="0.1" inputmode="decimal">
+                </div>
+                <div class="form-group col-xs-12">
+                    <label class="floating-label-activo" for="mascota_chip">Número de microchip</label>
+                    <input type="text" id="mascota_chip" class="form-control form-control-sm" maxlength="30" inputmode="numeric">
+                </div>
+                <div class="form-group col-xs-12">
+                    <label class="floating-label-activo" for="mascota_esterilizado">Esterilizado/a <span class="campo-req">*</span></label>
+                    <select id="mascota_esterilizado" class="form-control form-control-sm" onchange="alCambiarEsterilizadoMascota()">
+                        <option value="">Selecciona</option>
+                        <option value="Sí">Sí</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+                <div class="form-group col-xs-12 mascota-check-fila">
+                    <label class="mascota-check" for="mascota_esterilizado_desconocido"><input type="checkbox" data-role="none" id="mascota_esterilizado_desconocido" onchange="alCambiarEsterilizadoDesconocidoMascota()"> No sé si está esterilizado/a</label>
+                </div>
+                <div id="mascota_esterilizacion_grupo" style="display:none">
+                    <div class="form-group col-xs-12">
+                        <label class="floating-label-activo" for="mascota_fecha_esterilizacion">Fecha de esterilización</label>
+                        <input type="date" id="mascota_fecha_esterilizacion" class="form-control form-control-sm">
+                    </div>
+                    <div class="form-group col-xs-12 mascota-check-fila">
+                        <label class="mascota-check" for="mascota_esterilizacion_desconocida"><input type="checkbox" data-role="none" id="mascota_esterilizacion_desconocida" onchange="alCambiarFechaEsterilizacionDesconocidaMascota()"> Desconozco la fecha</label>
+                    </div>
+                </div>
+                <div class="form-group col-xs-12">
+                    <label class="floating-label-activo" for="mascota_vacunacion">¿Vacunación al día?</label>
+                    <select id="mascota_vacunacion" class="form-control form-control-sm">
+                        <option value="">Selecciona</option>
+                        <option value="Sí">Sí</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+                <div class="form-group col-xs-12">
+                    <label class="floating-label-activo" for="mascota_desparasitacion_fecha">Fecha de última desparasitación</label>
+                    <input type="date" id="mascota_desparasitacion_fecha" class="form-control form-control-sm">
+                </div>
+                <div class="form-group col-xs-12">
+                    <label class="floating-label-activo" for="mascota_desparasitacion_producto">Producto de desparasitación</label>
+                    <input type="text" id="mascota_desparasitacion_producto" class="form-control form-control-sm" maxlength="80" placeholder="Nombre del producto">
+                </div>
+                <div class="form-group col-xs-12">
+                    <label class="floating-label-activo" for="mascota_desparasitacion_tipo">Tipo de desparasitación</label>
+                    <select id="mascota_desparasitacion_tipo" class="form-control form-control-sm">
+                        <option value="">Selecciona</option>
+                        <option>Externo</option>
+                        <option>Interno</option>
+                        <option>Interno y Externo</option>
+                    </select>
+                </div>
+                <div class="form-group col-xs-12">
+                    <label class="floating-label-activo" for="mascota_convive_animales">¿Convive con otros animales?</label>
+                    <select id="mascota_convive_animales" class="form-control form-control-sm" onchange="alCambiarConviveMascota()">
+                        <option value="">Selecciona</option>
+                        <option value="Sí">Sí</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+                <div id="mascota_convive_cuales_grupo" class="form-group col-xs-12" style="display:none">
+                    <label class="floating-label-activo" for="mascota_convive_cuales">¿Cuáles?</label>
+                    <input type="text" id="mascota_convive_cuales" class="form-control form-control-sm" maxlength="120" placeholder="Ej: 2 perros y 1 gato">
+                </div>
+                <div class="form-group col-xs-12">
+                    <label class="floating-label-activo" for="mascota_enfermedades">Enfermedades recientes o crónicas</label>
+                    <textarea id="mascota_enfermedades" class="form-control form-control-sm" rows="3" maxlength="300" placeholder="Ej: dermatitis, diabetes, alergias"></textarea>
+                </div>
+                <div class="form-group col-xs-12 mascota-foto-bloque" id="mascota_foto_bloque">
+                    <label class="floating-label-activo">Foto de la mascota</label>
+                    <button type="button" data-role="none" class="mascota-foto-caja" onclick="abrirOpcionesFotoMascota()" aria-label="Agregar foto de la mascota">
+                        <img id="mascota_foto_preview" alt="Foto de la mascota">
+                        <span class="mascota-foto-vacio">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                            <span id="mascota_foto_texto">Agregar foto</span>
+                        </span>
+                    </button>
+                    <button type="button" data-role="none" id="mascota_foto_quitar" class="mascota-foto-quitar" onclick="quitarFotoMascota()" style="display:none">Quitar foto</button>
+                    <input type="file" id="mascota_foto_galeria" class="perfil-foto-input" accept="image/jpeg,image/png,image/webp" tabindex="-1">
+                    <input type="file" id="mascota_foto_camara" class="perfil-foto-input" accept="image/*" capture="environment" tabindex="-1">
+
+                    <div class="perfil-sheet-fondo" onclick="cerrarOpcionesFotoMascota()"></div>
+                    <div class="perfil-sheet" role="dialog" aria-label="Foto de la mascota">
+                        <button type="button" data-role="none" class="perfil-sheet-opcion" onclick="elegirOrigenFotoMascota('mascota_foto_galeria')">
+                            <span class="perfil-sheet-icono"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.8"/><path d="M21 16l-5-5-8 9"/></svg></span>
+                            <span class="perfil-sheet-texto"><strong>Seleccionar foto</strong><small>JPG, PNG o WEBP · Máx 5 MB</small></span>
+                        </button>
+                        <button type="button" data-role="none" class="perfil-sheet-opcion" onclick="elegirOrigenFotoMascota('mascota_foto_camara')">
+                            <span class="perfil-sheet-icono"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></span>
+                            <span class="perfil-sheet-texto"><strong>Tomar foto con la cámara</strong></span>
+                        </button>
+                    </div>
+
+                    <div class="perfil-ajuste">
+                        <div class="perfil-ajuste-caja">
+                            <p class="perfil-ajuste-titulo">Ajusta la foto</p>
+                            <div class="perfil-foto-marco" id="mascota_foto_marco">
+                                <img id="mascota_foto_editor" alt="" draggable="false">
+                            </div>
+                            <p class="perfil-foto-texto">Arrastra la foto y ajusta el zoom para encuadrarla</p>
+                            <div class="mascota-foto-zoom">
+                                <input type="range" data-role="none" id="mascota_foto_zoom" min="100" max="300" value="100" aria-label="Zoom de la foto">
+                            </div>
+                            <div class="btn-app7 mascota-foto-guardar" onclick="guardarFotoMascotaAjustada()">Guardar foto</div>
+                            <div class="perfil-foto-cancelar" onclick="cancelarFotoMascotaAjustada()">Cancelar</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" data-role="none" class="mascota-guardar">Guardar mascota</button>
+        </form>
+    </div>
+    <div data-role="footer" class="footer menu-inferior">
+        <div class="row bg-azul"><div class="col-xs-12 pt10 pb10 text-center">
+            <p class="color-blanco size13" onclick="vista('mis-mascotas')">Cancelar</p>
+        </div></div>
+    </div>
+</div>
+
 <div data-role="page" id="mis-pacientes-profesional">
-    <div data-role="header" class="header">
+    <div data-role="header" class="header header-blanco">
         <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
             <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('inicio-profesional')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
-            <p class="color-blanco size18 text-center">Mis pacientes</p>
+            <p class="color-blanco size18 text-center">Tutores y mascotas</p>
         </div></div>
     </div>
     <div role="main" class="ui-content mis-pacientes-contenido">
         <div class="mis-pacientes-buscador">
-            <label for="mis_pacientes_buscar">Buscar por nombre, RUT, correo o teléfono</label>
-            <div class="mis-pacientes-buscador-fila">
+            <div class="campo-flotante">
+                <label for="mis_pacientes_buscar" class="floating-label-activo">Rut o nombre</label>
+                <div class="mis-pacientes-buscador-fila">
                 <input type="search" data-role="none" id="mis_pacientes_buscar" placeholder="Escribe para buscar">
                 <button type="button" data-role="none" onclick="cargarMisPacientesProfesional(1)">Buscar</button>
+            </div>
             </div>
         </div>
         <p id="mis_pacientes_resumen" class="mis-pacientes-resumen"></p>
@@ -1089,8 +1847,8 @@
         <span class="dashboard-orbe dashboard-orbe-uno"></span>
         <span class="dashboard-orbe dashboard-orbe-dos"></span>
         <div class="dashboard-topbar">
-            <img alt="Medichile" class="dashboard-logo" src="src/images/logo.svg">
-            <span class="dashboard-role"><i></i> Paciente</span>
+            <img alt="VeterChile" class="dashboard-logo" src="src/images/vet-white-h.svg">
+            <span class="dashboard-role">Tutor</span>
             <div class="dashboard-user">
                 <h2>
                     <img class="img-circulo" src="src/images/avatar-generico.svg" alt="Foto de perfil">
@@ -1107,11 +1865,11 @@
                 <div class="header-menu-perfil">
                     <button type="button" class="header-menu-puntos" onclick="toggleMenuPerfil(event)" aria-label="Abrir menú de perfil">⋮</button>
                     <div class="header-menu-opciones">
-                        <div class="header-menu-cabecera"><span class="header-menu-nombre">Usuario</span></div>
-                        <button type="button" onclick="abrirMensajesApp()">Mensajes</button>
-                        <button type="button" onclick="abrirEditarPerfil()">Editar perfil</button>
-                        <button type="button" class="selector-multiple-roles" onclick="volverASeleccionRoles()">Cambiar perfil</button>
-                        <button type="button" onclick="cerrarSesion()">Cerrar sesión</button>
+                        <div class="header-menu-cabecera"><span class="header-menu-nombre">Menú</span></div>
+                        <button type="button" onclick="abrirMensajesApp()"><svg class="menu-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="m3.8 7 7.1 5.4a1.8 1.8 0 0 0 2.2 0L20.2 7"/></svg><span>Mensajes</span></button>
+                        <button type="button" onclick="abrirEditarPerfil()"><svg class="menu-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9a2.1 2.1 0 0 0-4-4L4 16v4z"/><path d="m13.5 6.5 4 4"/></svg><span>Editar perfil</span></button>
+                        <button type="button" class="selector-multiple-roles" onclick="volverASeleccionRoles()"><svg class="menu-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h13m-3-3 3 3-3 3"/><path d="M19 16H6m3-3-3 3 3 3"/></svg><span>Cambiar usuario</span></button>
+                        <button type="button" onclick="cerrarSesion()"><svg class="menu-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h4"/><path d="m15 8 4 4-4 4M19 12H9"/></svg><span>Cerrar sesión</span></button>
                     </div>
                 </div>
             </div>
@@ -1139,27 +1897,26 @@
                 <div id="contenedor-citas" class="dashboard-card dashboard-card-citas" onclick="vista('citas'); solicitarMisHorasMedicas();" role="button" tabindex="0">
                     <span id="boton_citas" class="dashboard-card-icon icon-citas"></span>
                     <div class="dashboard-card-copy">
-                        <h3>Mis citas</h3>
+                        <h3>Citas agendadas</h3>
                         <p>Próximas atenciones</p>
                     </div>
                     <span class="dashboard-card-arrow">›</span>
                 </div>
 
-                <!-- 2. INFORMACIÓN CLÍNICA -->
-                <div id="boton_fmu" class="dashboard-card" onclick="vista('fmu_paciente'); solicitarFmu()" role="button" tabindex="0">
-                    <span class="dashboard-card-icon icon-fmu"></span>
+                <div id="boton_mis_mascotas" class="dashboard-card" onclick="vista('mis-mascotas')" role="button" tabindex="0">
+                    <span class="dashboard-card-icon icon-mascotas"></span>
                     <div class="dashboard-card-copy">
-                        <h3>Mi ficha médica</h3>
-                        <p>Ficha Médica Única</p>
+                        <h3>Mis mascotas</h3>
+                        <p>Tus mascotas registradas</p>
                     </div>
                     <span class="dashboard-card-arrow">›</span>
                 </div>
 
-                <div id="boton_documentos" class="dashboard-card" onclick="vista('recetaonline')" role="button" tabindex="0">
-                    <span class="dashboard-card-icon icon-documentos"></span>
+                <div id="boton_mascotas_perdidas" class="dashboard-card" onclick="abrirMascotasPerdidas()" role="button" tabindex="0">
+                    <span class="dashboard-card-icon icon-perdida"></span>
                     <div class="dashboard-card-copy">
-                        <h3>Mis documentos</h3>
-                        <p>Recetas y certificados</p>
+                        <h3>Mascotas perdidas</h3>
+                        <p>Avisos y búsqueda</p>
                     </div>
                     <span class="dashboard-card-arrow">›</span>
                 </div>
@@ -1168,7 +1925,7 @@
                 <div id="boton_med_no_insc" class="dashboard-card" onclick="vista('med_no_insc'); solicitarEspecialidades('esp_profesional')" role="button" tabindex="0">
                     <span class="dashboard-card-icon icon-medico"></span>
                     <div class="dashboard-card-copy">
-                        <h3>Médico no inscrito</h3>
+                        <h3>Atención por veterinario externo</h3>
                         <p>Solicita una atención</p>
                     </div>
                     <span class="dashboard-card-arrow">›</span>
@@ -1184,20 +1941,20 @@
                 </div>
 
                 <!-- 4. SEGUIMIENTO Y SEGURIDAD -->
-                <div id="boton_control_reposo" class="dashboard-card" onclick="cargar_controles_reposo()" role="button" tabindex="0">
-                    <span class="dashboard-card-icon icon-prof-reposo"></span>
-                    <div class="dashboard-card-copy">
-                        <h3>Control de reposo</h3>
-                        <p>Verificaciones pendientes</p>
-                    </div>
-                    <span class="dashboard-card-arrow">›</span>
-                </div>
-
-                <div id="boton_desafios" class="dashboard-card" onclick="abrirDesafiosAcceso()" role="button" tabindex="0">
+<div id="boton_desafios" class="dashboard-card" onclick="abrirDesafiosAcceso()" role="button" tabindex="0">
                     <span class="dashboard-card-icon icon-seguridad"></span>
                     <div class="dashboard-card-copy">
                         <h3>Control de acceso</h3>
                         <p>Aprueba nuevos ingresos</p>
+                    </div>
+                    <span class="dashboard-card-arrow">›</span>
+                </div>
+
+                <div id="boton_tutoria_compartida" class="dashboard-card" onclick="abrirTutoriaCompartida(event)" role="button" tabindex="0">
+                    <span class="dashboard-card-icon icon-tutoria"></span>
+                    <div class="dashboard-card-copy">
+                        <h3>Tutoría compartida</h3>
+                        <p>Comparte el cuidado</p>
                     </div>
                     <span class="dashboard-card-arrow">›</span>
                 </div>
@@ -1229,6 +1986,11 @@
                 </button>
 
             </div>
+            <!-- Banner promocional (carrusel con imagen de fondo por slide) -->
+            <div class="home-promo" id="home_promo" role="region" aria-label="Promociones">
+                <div class="home-promo-pista" id="home_promo_pista"></div>
+                <div class="home-promo-puntos" id="home_promo_puntos"></div>
+            </div>
             </div>
         </section>
     </div>
@@ -1240,11 +2002,128 @@
     </div>
 </div>
 <!--CIRRE: INICIO-->
+
+<!-- ===== Módulo Tutoría compartida: lista de personas con acceso a la mascota ===== -->
+<div data-role="page" id="tutoria-compartida">
+    <div data-role="header" class="header header-blanco">
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="tcVolverPagina()" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <p class="color-blanco size18 text-center">Tutoría compartida</p>
+        </div></div>
+    </div>
+    <div role="main" class="ui-content tc-pagina-contenido">
+        <!-- Vista 1: lista de personas con acceso -->
+        <div id="tc_vista_lista">
+            <p class="tc-intro">Invita a un cotutor o un cuidador para que te ayude.</p>
+            <div class="tc-campo">
+                <label for="tutoria_mascota_id">Seleccionar mascota</label>
+                <select data-role="none" class="tc-input" id="tutoria_mascota_id"></select>
+            </div>
+            <div class="tc-acceso-card">
+                <div class="tc-subtitulo">Personas con acceso a <span class="tutoria-nombre-mascota">tu mascota</span></div>
+                <div id="tutoria_lista" aria-live="polite"></div>
+            </div>
+            <div class="tc-pagina-accion">
+                <button type="button" data-role="none" class="tc-btn tc-btn-primario" id="btn_tutoria_invitar" onclick="abrirInvitacionTutoria()">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.2-5.6 6.5-5.6s5.9 2 6.5 5.6M19 8v6M16 11h6"/></svg>
+                    Enviar invitación
+                </button>
+            </div>
+        </div>
+
+        <!-- Vista 2: invitar en pasos (Permisos → Persona → Confirmar) -->
+        <div id="tc_vista_invitacion" style="display:none">
+            <div class="tc-pasos" id="tc_pasos" aria-label="Pasos de la invitación">
+                <span class="tc-paso-item activo" data-paso="1"><i>1</i><b>Permisos</b></span>
+                <span class="tc-paso-linea"></span>
+                <span class="tc-paso-item" data-paso="2"><i>2</i><b>Persona</b></span>
+                <span class="tc-paso-linea"></span>
+                <span class="tc-paso-item" data-paso="3"><i>3</i><b>Confirmar</b></span>
+            </div>
+            <h4 class="tc-paso-titulo" id="modalInvitarCotutorLabel">Invita a un cotutor para cuidar a <span class="tutoria-nombre-mascota">tu mascota</span></h4>
+
+            <form id="form_invitar_cotutor" onsubmit="return false" novalidate>
+                <!-- Paso 1: permisos -->
+                <div class="tc-paso-panel" data-paso="1">
+                    <div class="tc-roles" role="radiogroup" aria-label="Permisos">
+                        <label class="tc-rol">
+                            <input type="radio" data-role="none" name="rol" value="co_tutor" checked>
+                            <span class="tc-rol-caja">
+                                <span class="tc-rol-icono"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><circle cx="17" cy="9" r="2.6"/><path d="M15.5 14.3c.5-.2 1-.3 1.5-.3 2.2 0 3.9 1.5 4.4 4"/></svg></span>
+                                <span class="tc-rol-datos">
+                                    <strong>Cotutor</strong>
+                                    <span>Comparte la responsabilidad. Puede ver y editar toda la información de <span class="tutoria-nombre-mascota">tu mascota</span>.</span>
+                                </span>
+                                <span class="tc-rol-marca"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></span>
+                            </span>
+                        </label>
+                        <label class="tc-rol">
+                            <input type="radio" data-role="none" name="rol" value="cuidador">
+                            <span class="tc-rol-caja">
+                                <span class="tc-rol-icono"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="8" r="3.5"/><path d="M3.5 20c.6-3.6 3.2-5.6 6.5-5.6 1.4 0 2.6.3 3.6 1M15 18l2 2 4-4"/></svg></span>
+                                <span class="tc-rol-datos">
+                                    <strong>Cuidador</strong>
+                                    <span>Ayuda con el día a día. Puede ver la ficha, agendar citas y llevar a <span class="tutoria-nombre-mascota">tu mascota</span> al veterinario o de paseo.</span>
+                                </span>
+                                <span class="tc-rol-marca"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Paso 2: persona -->
+                <div class="tc-paso-panel" data-paso="2" style="display:none">
+                    <div class="tc-campo">
+                        <label for="invitacion_destino">Correo electrónico o RUT</label>
+                        <input type="text" data-role="none" class="tc-input" id="invitacion_destino" name="destino" placeholder="nombre@correo.com" autocomplete="off" inputmode="email" aria-describedby="invitacion_destino_ayuda">
+                    </div>
+                    <small class="tc-ayuda" id="invitacion_destino_ayuda">Le enviaremos un correo para que acepte la invitación. Si ya tiene cuenta, también puedes buscarla por su RUT.</small>
+                    <small class="tc-error tc-oculto" id="invitacion_destino_error" role="alert"></small>
+                    <div class="tc-persona tc-oculto" id="invitacion_persona">
+                        <div class="tc-persona-datos">
+                            <strong id="invitacion_persona_nombre">-</strong>
+                            <span id="invitacion_persona_correo"></span>
+                        </div>
+                        <span class="tc-badge tc-badge-activa">Con cuenta</span>
+                    </div>
+                </div>
+
+                <!-- Paso 3: confirmar -->
+                <div class="tc-paso-panel" data-paso="3" style="display:none">
+                    <div class="tc-resumen">
+                        <div><small>Mascota</small><b class="tutoria-nombre-mascota">tu mascota</b></div>
+                        <div><small>Permisos</small><b id="invitacion_resumen_rol">-</b></div>
+                        <div><small>Invitar a</small><b id="invitacion_resumen_persona">-</b></div>
+                    </div>
+                    <div class="tc-aviso">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                        <span>La invitación vence en 7 días. Puedes cancelarla o reenviarla cuando quieras.</span>
+                    </div>
+                </div>
+            </form>
+
+            <div class="tc-paso-botones">
+                <button type="button" data-role="none" class="tc-btn tc-btn-secundario" id="btn_invitacion_atras" onclick="tcPasoAtras()">Cancelar</button>
+                <button type="button" data-role="none" class="tc-btn tc-btn-primario" id="btn_invitacion_siguiente" onclick="tcPasoSiguiente()">Siguiente</button>
+                <button type="button" data-role="none" class="tc-btn tc-btn-primario" id="btn_enviar_invitacion" style="display:none" onclick="enviarInvitacionTutoria(event)">Enviar invitación</button>
+            </div>
+        </div>
+    </div>
+    <div data-role="footer" class="footer menu-inferior bottom0">
+        <div class="row bg-azul">
+            <div class="col-xs-4 pt10 pb10 text-center"><p class="color-blanco size12" onclick="vista('index')"><img class="mb10" width="20" src="src/images/home.svg"><br>Inicio</p></div>
+            <div class="col-xs-4 pt10 pb10 text-center"><p class="color-blanco size12" onclick="vista('citas'); solicitarMisHorasMedicas();"><img class="mb10" width="20" src="src/images/citas.svg"><br>Citas</p></div>
+            <div class="col-xs-4 pt10 pb10 text-center"><p class="color-blanco size12" onclick="vista('login')"><img class="mb10" width="20" src="src/images/salir.svg"><br>Cerrar sesión</p></div>
+        </div>
+    </div>
+</div>
+
 <div data-role="page" id="medico-emergencia-app">
-    <div data-role="header" class="header">
+    <div data-role="header" class="header header-blanco">
         <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
             <button type="button" data-role="none" class="perfil-header-volver" onclick="volverDesdeEmergencia()" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
             <p class="color-blanco size18 text-center">Contacto médico de emergencia</p>
+            <button type="button" data-role="none" class="perfil-header-accion" onclick="cargarMedicoEmergencia()" aria-label="Actualizar" title="Actualizar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 4v5h-5"/><path d="M3 20v-5h5"/><path d="M5.1 9a7.5 7.5 0 0 1 12.6-2.6L21 9"/><path d="M3 15l3.3 2.6A7.5 7.5 0 0 0 18.9 15"/></svg></button>
         </div></div>
     </div>
     <div role="main" class="ui-content emergency-app-content">
@@ -1265,8 +2144,7 @@
             </section>
         </div>
         <div id="emergency-professional-panel" style="display:none">
-            <div class="app-page-toolbar"><div class="app-toolbar-titulo">Solicitudes y pacientes</div>
-                <button type="button" class="app-refresh-button" onclick="cargarMedicoEmergencia()">↻ <span>Actualizar</span></button>
+            <div class="app-page-toolbar"><div class="app-toolbar-titulo">Solicitudes y tutores</div>
             </div>
             <div id="emergency-professional-links"></div>
         </div>
@@ -1279,14 +2157,12 @@
 </div>
 <!--MENSAJES-->
 <div data-role="page" id="mensajes-app">
-    <div data-role="header" class="header">
+    <div data-role="header" class="header header-blanco">
         <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
             <button type="button" data-role="none" class="perfil-header-volver" onclick="volverInicioSegunRol()" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
             <p class="color-blanco size18 text-center">Mis mensajes</p>
+            <button type="button" data-role="none" class="perfil-header-accion" onclick="cargarMensajesApp(true)" aria-label="Actualizar mensajes" title="Actualizar mensajes"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 4v5h-5"/><path d="M3 20v-5h5"/><path d="M5.1 9a7.5 7.5 0 0 1 12.6-2.6L21 9"/><path d="M3 15l3.3 2.6A7.5 7.5 0 0 0 18.9 15"/></svg></button>
         </div></div>
-        <div class="top-titulos perfil-header-extras">
-            <div class="btn-app4 text-center mt20 mb20" role="button" tabindex="0" onclick="cargarMensajesApp(true)"><img class="pr10" src="src/images/sincro.svg" alt="">Actualizar mensajes</div>
-        </div>
     </div>
     <div role="main" class="ui-content mensajes-app-contenido">
         <div id="mensajes-app-resumen" class="mensajes-app-resumen"></div>
@@ -1313,20 +2189,12 @@
 <!--CIERRE: MENSAJES-->
 <!--FMU-->
 <div data-role="page" id="fmu_paciente">
-    <div data-role="header" class="header" id="header_fmu">
+    <div data-role="header" class="header header-blanco" id="header_fmu">
         <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
-            <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('index')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
-            <p class="color-blanco size18 text-center">Mi Ficha Médica Única</p>
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('mis-mascotas')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <p class="color-blanco size18 text-center">Ficha Veterinaria Única</p>
+            <button type="button" data-role="none" class="perfil-header-accion" onclick="solicitarFmu(true)" aria-label="Actualizar datos" title="Actualizar datos"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 4v5h-5"/><path d="M3 20v-5h5"/><path d="M5.1 9a7.5 7.5 0 0 1 12.6-2.6L21 9"/><path d="M3 15l3.3 2.6A7.5 7.5 0 0 0 18.9 15"/></svg></button>
         </div></div>
-        <div class="top-titulos perfil-header-extras">
-            <button type="button"
-                            data-role="none"
-                            class="fmu-actualizar mt20 mb20"
-                            onclick="solicitarFmu(true)">
-                        <img src="src/images/sincro.svg" alt="">
-                        <span>Actualizar datos</span>
-                    </button>
-        </div>
     </div>
     <div role="main" class="ui-content">
         <div class="row">
@@ -1451,9 +2319,9 @@
 <!--CIERRE: FMU-->
 <!--RECETA ONLINE-->
 <div data-role="page" id="recetaonline">
-    <div data-role="header" class="header" id="header_ind">
+    <div data-role="header" class="header header-blanco" id="header_ind">
         <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
-            <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('index')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('mis-mascotas')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
             <p class="color-blanco size18 text-center">Mis Documentos</p>
         </div></div>
     </div>
@@ -1504,14 +2372,12 @@
 <!--CIRRE: INICIO-->
 <!--EXÁMENES / RECETA ONLINE-->
 <div data-role="page" id="examenesro">
-    <div data-role="header" class="header" id="header">
+    <div data-role="header" class="header header-blanco" id="header">
         <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
             <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('recetaonline')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
             <p class="color-blanco size18 text-center">Mis exámenes</p>
+            <button type="button" data-role="none" class="perfil-header-accion" onclick="list_examenes_paciente()" aria-label="Actualizar exámenes" title="Actualizar exámenes"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 4v5h-5"/><path d="M3 20v-5h5"/><path d="M5.1 9a7.5 7.5 0 0 1 12.6-2.6L21 9"/><path d="M3 15l3.3 2.6A7.5 7.5 0 0 0 18.9 15"/></svg></button>
         </div></div>
-        <div class="top-titulos perfil-header-extras">
-            <div class="btn-app4 text-center mt20 mb20" onclick="list_examenes_paciente()"><img class="pr10" src="src/images/sincro.svg">Actualizar exámenes</div>
-        </div>
     </div>
     <div role="main" class="ui-content">
         <div class="row mb60">
@@ -1539,14 +2405,12 @@
 </div>
 <!--RECETAS / RECETA ONLINE-->
 <div data-role="page" id="recetasro">
-    <div data-role="header" class="header" id="header">
+    <div data-role="header" class="header header-blanco" id="header">
         <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
             <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('index')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
             <p class="color-blanco size18 text-center">Mis recetas</p>
+            <button type="button" data-role="none" class="perfil-header-accion" onclick="list_recetas_paciente()" aria-label="Actualizar recetas" title="Actualizar recetas"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 4v5h-5"/><path d="M3 20v-5h5"/><path d="M5.1 9a7.5 7.5 0 0 1 12.6-2.6L21 9"/><path d="M3 15l3.3 2.6A7.5 7.5 0 0 0 18.9 15"/></svg></button>
         </div></div>
-        <div class="top-titulos perfil-header-extras">
-            <div class="btn-app4 text-center mt20 mb20" onclick="list_recetas_paciente()"><img class="pr10" src="src/images/sincro.svg">Actualizar recetas</div>
-        </div>
     </div>
     <div role="main" class="ui-content">
         <div class="row mb60">
@@ -1571,14 +2435,12 @@
 </div>
 <!--LICENCIAS / RECETA ONLINE
 <div data-role="page" id="licenciasro">
-    <div data-role="header" class="header" id="header">
+    <div data-role="header" class="header header-blanco" id="header">
         <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
             <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('recetaonline')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
             <p class="color-blanco size18 text-center">Mis licencias</p>
+            <button type="button" data-role="none" class="perfil-header-accion" onclick="list_document_user()" aria-label="Actualizar licencias" title="Actualizar licencias"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 4v5h-5"/><path d="M3 20v-5h5"/><path d="M5.1 9a7.5 7.5 0 0 1 12.6-2.6L21 9"/><path d="M3 15l3.3 2.6A7.5 7.5 0 0 0 18.9 15"/></svg></button>
         </div></div>
-        <div class="top-titulos perfil-header-extras">
-            <div class="btn-app4 text-center mt20 mb20" onclick="list_document_user()"><img class="pr10" src="src/images/sincro.svg">Actualizar licencias</div>
-        </div>
     </div>
     <div role="main" class="ui-content">
         <div class="row mb60">
@@ -1619,14 +2481,12 @@
 </div>-->
 <!--CONSENTIMIENTOS / RECETA ONLINE-->
 <div data-role="page" id="certificadosro">
-    <div data-role="header" class="header" id="header">
+    <div data-role="header" class="header header-blanco" id="header">
         <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
             <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('recetaonline')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
             <p class="color-blanco size18 text-center">Mis consentimientos</p>
+            <button type="button" data-role="none" class="perfil-header-accion" onclick="list_consentimientos()" aria-label="Actualizar consentimientos" title="Actualizar consentimientos"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 4v5h-5"/><path d="M3 20v-5h5"/><path d="M5.1 9a7.5 7.5 0 0 1 12.6-2.6L21 9"/><path d="M3 15l3.3 2.6A7.5 7.5 0 0 0 18.9 15"/></svg></button>
         </div></div>
-        <div class="top-titulos perfil-header-extras">
-            <div class="btn-app4 text-center mt20 mb20" onclick="list_consentimientos()"><img class="pr10" src="src/images/sincro.svg">Actualizar consentimientos</div>
-        </div>
     </div>
     <div role="main" class="ui-content">
         <div class="row mb60">
@@ -1654,20 +2514,12 @@
 </div>
 <!--DOCUMENTOS / RECETA ONLINE-->
 <div data-role="page" id="documentosro">
-    <div data-role="header" class="header" id="header">
+    <div data-role="header" class="header header-blanco" id="header">
         <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
             <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('recetaonline')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
             <p class="color-blanco size18 text-center">Mis documentos</p>
+            <button type="button" data-role="none" class="perfil-header-accion" onclick="list_document_user()" aria-label="Actualizar documentos" title="Actualizar documentos"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 4v5h-5"/><path d="M3 20v-5h5"/><path d="M5.1 9a7.5 7.5 0 0 1 12.6-2.6L21 9"/><path d="M3 15l3.3 2.6A7.5 7.5 0 0 0 18.9 15"/></svg></button>
         </div></div>
-        <div class="top-titulos perfil-header-extras">
-            <button type="button"
-                            data-role="none"
-                            class="documentos-actualizar mt20 mb20"
-                            onclick="list_document_user()">
-                        <img src="src/images/sincro.svg" alt="">
-                        <span>Actualizar documentos</span>
-                    </button>
-        </div>
     </div>
     <div role="main" class="ui-content">
         <div class="row mb60">
@@ -1708,10 +2560,10 @@
 
 <!--MEDICO NO INSCRITO-->
 <div data-role="page" id="med_no_insc">
-    <div data-role="header" class="header" id="header-ni">
+    <div data-role="header" class="header header-blanco" id="header-ni">
         <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
             <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('index')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
-            <p class="color-blanco size18 text-center">Atención por médico no inscrito</p>
+            <p class="color-blanco size18 text-center">Atención por veterinario externo</p>
         </div></div>
     </div>
     <div role="main" class="ui-content">
@@ -1796,7 +2648,7 @@
                                 </div>
                                 <div class="form-row hidden" id="div_paciente_dependiente" >
                                     <div class="col-sm-10 mx-auto mt-2 mb10">
-                                        <label class="floating-label-activo">RUT Paciente</label>
+                                        <label class="floating-label-activo">RUT Tutor</label>
                                         <input type="text" class="form-control form-control-sm" name="rut_dependiente" id="rut_dependiente" placeholder="Ingrese RUT"/>
                                     </div>
                                 </div>
@@ -1828,10 +2680,11 @@
 <!--CIERRE: MEDICO NO INSCRITO-->
 <!--LOG APP-->
 <div data-role="page" id="desafios-acceso">
-    <div data-role="header" class="header">
+    <div data-role="header" class="header header-blanco">
         <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
             <button type="button" data-role="none" class="perfil-header-volver" onclick="volverDesdeDesafiosAcceso()" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
             <p class="color-blanco size18 text-center">Control de accesos</p>
+            <button type="button" data-role="none" class="perfil-header-accion" onclick="cargarDesafiosAcceso()" aria-label="Actualizar" title="Actualizar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 4v5h-5"/><path d="M3 20v-5h5"/><path d="M5.1 9a7.5 7.5 0 0 1 12.6-2.6L21 9"/><path d="M3 15l3.3 2.6A7.5 7.5 0 0 0 18.9 15"/></svg></button>
         </div></div>
     </div>
     <div role="main" class="ui-content desafios-app-contenido">
@@ -1844,7 +2697,6 @@
         </div>
         <div class="app-page-toolbar">
             <div class="app-toolbar-titulo">Solicitudes pendientes</div>
-            <button type="button" class="app-refresh-button" onclick="cargarDesafiosAcceso()">↻ <span>Actualizar</span></button>
         </div>
         <div id="lista-desafios-acceso"></div>
     </div>
@@ -1853,10 +2705,12 @@
             <div class="desafio-confirmacion-icono" id="desafio-confirmacion-icono">✓</div>
             <h2 id="desafio-confirmacion-titulo">Confirmar acceso</h2>
             <p id="desafio-confirmacion-texto">Verifica tu identidad para continuar.</p>
-            <label for="desafio_clave_web">Clave SDI de 4 dígitos</label>
-            <div class="desafio-clave-contenedor">
+            <div class="campo-flotante">
+                <label for="desafio_clave_web" class="floating-label-activo">Clave SDI de 4 dígitos</label>
+                <div class="desafio-clave-contenedor">
                 <input type="password" id="desafio_clave_web" inputmode="numeric" maxlength="4" pattern="[0-9]*" autocomplete="off" placeholder="••••">
                 <button type="button" id="desafio-ver-clave" onclick="alternarVisibilidadClaveDesafio()" aria-label="Mostrar u ocultar clave">Ver</button>
+            </div>
             </div>
             <p id="desafio-confirmacion-error" class="desafio-confirmacion-error" role="alert"></p>
             <button type="button" id="desafio-confirmar-clave" class="desafio-confirmar-clave" onclick="resolverDesafioConClave()">Confirmar con clave SDI</button>
@@ -1877,10 +2731,11 @@
 </div>
 
 <div data-role="page" id="log">
-    <div data-role="header" class="header" id="header-l">
-        <div class="row">
-            <div class="col-xs-12 bg-azul pt20 pb20"><p class="color-blanco text-center size20">LOG APP</p></div>
-        </div>
+    <div data-role="header" class="header header-blanco" id="header-l">
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('login')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <p class="color-blanco size18 text-center">Log app</p>
+        </div></div>
     </div>
     <div role="main" class="ui-content">
         <div class="row">
@@ -1898,7 +2753,7 @@
 <!--CIERRE LOG APP-->
 <!--BUSCADOR DE PROFESIONALES-->
 <div data-role="page" id="pedirhora">
-    <div data-role="header" class="header" id="header-mismed">
+    <div data-role="header" class="header header-blanco" id="header-mismed">
         <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
             <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('index')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
             <p class="color-blanco size18 text-center">Agendar hora</p>
@@ -1908,25 +2763,35 @@
         </div>
     </div>
     <div role="main" class="ui-content">
+        <div class="row mt20">
+            <div class="container">
+                <div class="form-group agendar-mascota">
+                    <label class="floating-label-activo" for="agendar_mascota">¿Para quién es la hora?</label>
+                    <select class="form-control form-control-sm" id="agendar_mascota" onchange="window.mascotaAgenda = this.value">
+                        <option value="">Cargando mascotas...</option>
+                    </select>
+                </div>
+            </div>
+        </div>
         <div class="row mt20" >
             <div class="container text-center">
                 <div class="row">
-                    <div class="col-xs-12 col-sm-6" onclick="abrirMisProfesionales()">
+                    <div class="col-xs-12 col-sm-6" onclick="if(!validarMascotaAgenda()) return; abrirMisProfesionales()">
                         <div id="boton_pedirmm" class="agendar-opcion" role="button" tabindex="0">
                             <div class="icono"></div>
                             <div class="agendar-opcion-texto">
-                                <p class="agendar-opcion-titulo">Mis profesionales</p>
-                                <p class="agendar-opcion-bajada">Agenda nuevamente con profesionales que ya te han atendido.</p>
+                                <p class="agendar-opcion-titulo">Mis veterinarios</p>
+                                <p class="agendar-opcion-bajada">Agenda nuevamente con veterinarios que ya han atendido a tu mascota.</p>
                             </div>
                             <span class="agendar-opcion-flecha" aria-hidden="true">›</span>
                         </div>
                     </div>
-                    <div class="col-xs-12 col-sm-6" onclick="vista('buscador_profesional');solicitarEspecialidades('especialidad'); dameRegiones('region')">
+                    <div class="col-xs-12 col-sm-6" onclick="if(!validarMascotaAgenda()) return; vista('buscador_profesional');solicitarEspecialidades('especialidad'); dameRegiones('region')">
                         <div id="boton_phbuscar" class="agendar-opcion" role="button" tabindex="0">
                             <div class="icono"></div>
                             <div class="agendar-opcion-texto">
-                                <p class="agendar-opcion-titulo">Buscar profesional</p>
-                                <p class="agendar-opcion-bajada">Encuentra un nuevo profesional según tu necesidad.</p>
+                                <p class="agendar-opcion-titulo">Buscar veterinario</p>
+                                <p class="agendar-opcion-bajada">Encuentra un nuevo veterinario según tu necesidad.</p>
                             </div>
                             <span class="agendar-opcion-flecha" aria-hidden="true">›</span>
                         </div>
@@ -1952,7 +2817,7 @@
 <!--CIERRE:BUSCADOR PROFESIONALES-->
 <!--BUSCADOR POR PROFESIONAL NUEVO-->
 <div data-role="page" id="buscador_profesional">
-    <div data-role="header" class="header" id="header-ni">
+    <div data-role="header" class="header header-blanco" id="header-ni">
         <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
             <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('index')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
             <p class="color-blanco size18 text-center">Buscador de profesionales</p>
@@ -2038,10 +2903,10 @@
 <!--CIERRE: BUSCADOR POR PROFESIONAL NUEVO-->
 <!--BUSCAR POR MIS PROFESIONALES-->
 <div data-role="page" id="mis_medicos">
-    <div data-role="header" class="header" id="header-ni">
+    <div data-role="header" class="header header-blanco" id="header-ni">
         <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
             <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('index')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
-            <p class="color-blanco size18 text-center">Mis profesionales</p>
+            <p class="color-blanco size18 text-center">Mis veterinarios</p>
         </div></div>
     </div>
     <div role="main" class="ui-content">
@@ -2069,7 +2934,7 @@
 
 <!-- PERFIL DEL PROFESIONAL -->
 <div data-role="page" id="perfil_medico">
-    <div data-role="header" class="header" id="header-ni">
+    <div data-role="header" class="header header-blanco" id="header-ni">
         <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
             <button type="button" data-role="none" class="perfil-header-volver" onclick="volverDesdePerfilProfesional()" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
             <p class="color-blanco size18 text-center">Perfil del Profesional</p>
@@ -2112,7 +2977,7 @@
 <!-- CIERRE PERFIL PROFESIONAL -->
 <!-- MIS MEDICOS BUSCADOS -->
 <div data-role="page" id="mis_medicos_buscados">
-    <div data-role="header" class="header" id="header-ni">
+    <div data-role="header" class="header header-blanco" id="header-ni">
         <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
             <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('index')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
             <p class="color-blanco size18 text-center">Profesionales encontrados</p>
@@ -2158,7 +3023,7 @@
 
 <!-- LUGARES DE ATENCION DE PROFESIONAL -->
 <div data-role="page" id="lugares_atencion">
-    <div data-role="header" class="header" id="header-ni">
+    <div data-role="header" class="header header-blanco" id="header-ni">
         <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
             <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('index')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
             <p class="color-blanco size18 text-center">Lugares de atención</p>
@@ -2191,7 +3056,7 @@
 <!-- CIERRE: LUGARES DE ATENCION DE PROFESIONAL -->
 <!-- seleccionar_fecha_hora -->
 <div data-role="page" id="seleccionar_fecha_hora">
-    <div data-role="header" class="header" id="header-ni">
+    <div data-role="header" class="header header-blanco" id="header-ni">
         <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
             <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('index')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
             <p class="color-blanco size18 text-center">Seleccionar fecha y hora</p>
@@ -2223,7 +3088,7 @@
 </div>
 <!-- CIERRE: seleccionar_fecha_hora -->
 <div data-role="page" id="editar-perfil-app">
-    <div data-role="header" class="header">
+    <div data-role="header" class="header header-blanco">
         <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
             <button type="button" data-role="none" class="perfil-header-volver" onclick="volverPerfilApp()" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
             <p class="color-blanco size18 text-center">Mi perfil</p>
@@ -2236,7 +3101,7 @@
             <img id="perfil_menu_foto" src="src/images/avatar-generico.svg" alt="Foto de perfil">
             <div class="perfil-app-tarjeta-datos">
                 <p class="perfil-app-tarjeta-nombre" id="perfil_menu_nombre">Nombre Apellido</p>
-                <p class="perfil-app-tarjeta-rut" id="perfil_menu_rut">RUT</p>
+                <p class="perfil-app-tarjeta-rut" id="perfil_menu_rut">RUT:</p>
             </div>
         </div>
         <nav class="perfil-app-menu" aria-label="Opciones de mi perfil">
@@ -2301,48 +3166,77 @@
         </div>
         <section class="perfil-app-seccion perfil-app-datos" data-panel="datos">
             <h3>Información personal</h3>
-            <label>RUT</label>
-            <input type="text" id="perfil_app_rut" readonly>
-            <label>Nombres</label>
-            <input type="text" id="perfil_app_nombres">
-            <label>Primer apellido</label>
-            <input type="text" id="perfil_app_apellido_uno">
-            <label>Segundo apellido</label>
-            <input type="text" id="perfil_app_apellido_dos">
-            <label>Teléfono principal</label>
-            <input type="tel" id="perfil_app_telefono_uno">
-            <label>Teléfono secundario</label>
-            <input type="tel" id="perfil_app_telefono_dos">
-            <label>Correo electrónico</label>
-            <input type="email" id="perfil_app_email" readonly>
+            <div class="campo-flotante">
+                <label class="floating-label-activo">RUT</label>
+                <input type="text" id="perfil_app_rut" readonly>
+            </div>
+            <div class="campo-flotante">
+                <label class="floating-label-activo">Nombres</label>
+                <input type="text" id="perfil_app_nombres">
+            </div>
+            <div class="campo-flotante">
+                <label class="floating-label-activo">Primer apellido</label>
+                <input type="text" id="perfil_app_apellido_uno">
+            </div>
+            <div class="campo-flotante">
+                <label class="floating-label-activo">Segundo apellido</label>
+                <input type="text" id="perfil_app_apellido_dos">
+            </div>
+            <div class="campo-flotante">
+                <label class="floating-label-activo">Teléfono principal</label>
+                <input type="tel" id="perfil_app_telefono_uno">
+            </div>
+            <div class="campo-flotante">
+                <label class="floating-label-activo">Teléfono secundario</label>
+                <input type="tel" id="perfil_app_telefono_dos">
+            </div>
+            <div class="campo-flotante">
+                <label class="floating-label-activo">Correo electrónico</label>
+                <input type="email" id="perfil_app_email" readonly>
+            </div>
             <small class="color-gris">El correo se muestra sólo como referencia.</small>
             <div class="btn-app7 mt20" onclick="guardarPerfilApp()">Guardar cambios</div>
         </section>
         <section class="perfil-app-seccion perfil-app-seguridad-card" data-panel="pin">
-            <h3><span class="perfil-app-seguridad-icono">🔐</span>Cambiar PIN del dispositivo</h3>
+            <h3>Cambiar PIN del dispositivo</h3>
             <p class="perfil-app-ayuda">La clave es el PIN de 4 dígitos usado para autorizar solicitudes desde este equipo.</p>
-            <label>Clave actual</label>
-            <input type="password" id="perfil_app_clave_actual" inputmode="numeric" maxlength="4" autocomplete="off">
-            <label>Nueva clave</label>
-            <input type="password" id="perfil_app_clave_nueva" inputmode="numeric" maxlength="4" autocomplete="new-password">
-            <label>Confirmar nueva clave</label>
-            <input type="password" id="perfil_app_clave_confirmacion" inputmode="numeric" maxlength="4" autocomplete="new-password">
+            <div class="campo-flotante">
+                <label class="floating-label-activo">Clave actual</label>
+                <input type="password" id="perfil_app_clave_actual" inputmode="numeric" maxlength="4" autocomplete="off">
+                <button type="button" data-role="none" class="campo-ojo" onclick="verClavePerfil('perfil_app_clave_actual', this)" aria-label="Mostrar contraseña"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/><path class="ojo-tachado" d="M4 4L20 20"/></svg></button>
+            </div>
+            <div class="campo-flotante">
+                <label class="floating-label-activo">Nueva clave</label>
+                <input type="password" id="perfil_app_clave_nueva" inputmode="numeric" maxlength="4" autocomplete="new-password">
+                <button type="button" data-role="none" class="campo-ojo" onclick="verClavePerfil('perfil_app_clave_nueva', this)" aria-label="Mostrar contraseña"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/><path class="ojo-tachado" d="M4 4L20 20"/></svg></button>
+            </div>
+            <div class="campo-flotante">
+                <label class="floating-label-activo">Confirmar nueva clave</label>
+                <input type="password" id="perfil_app_clave_confirmacion" inputmode="numeric" maxlength="4" autocomplete="new-password">
+                <button type="button" data-role="none" class="campo-ojo" onclick="verClavePerfil('perfil_app_clave_confirmacion', this)" aria-label="Mostrar contraseña"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/><path class="ojo-tachado" d="M4 4L20 20"/></svg></button>
+            </div>
             <div class="btn-app7 mt20" onclick="cambiarClaveDispositivoApp()">Cambiar clave</div>
         </section>
         <section class="perfil-app-seccion perfil-app-seguridad-card" id="perfil_app_biometria" data-panel="huella-documentos">
-            <h3><span class="perfil-app-seguridad-icono">☝</span>Huella para autorizar documentos</h3>
+            <h3>Huella para autorizar documentos</h3>
             <p id="perfil_app_biometria_estado" class="perfil-app-ayuda">Comprobando disponibilidad biométrica...</p>
             <p class="perfil-app-ayuda">Permite aprobar solicitudes y documentos usando la huella registrada en Android.</p>
-            <label>PIN actual de este dispositivo</label>
-            <input type="password" id="perfil_app_biometria_pin" inputmode="numeric" maxlength="4" autocomplete="off">
+            <div class="campo-flotante">
+                <label class="floating-label-activo">PIN actual de este dispositivo</label>
+                <input type="password" id="perfil_app_biometria_pin" inputmode="numeric" maxlength="4" autocomplete="off">
+                <button type="button" data-role="none" class="campo-ojo" onclick="verClavePerfil('perfil_app_biometria_pin', this)" aria-label="Mostrar contraseña"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/><path class="ojo-tachado" d="M4 4L20 20"/></svg></button>
+            </div>
             <div id="perfil_app_biometria_activar" class="btn-app7 mt10" onclick="activarBiometriaApp()">Activar huella digital</div>
             <div id="perfil_app_biometria_desactivar" class="btn-app4 mt10" onclick="desactivarBiometriaApp()" style="display:none">Desactivar huella digital</div>
         </section>
         <section class="perfil-app-seccion perfil-app-seguridad-card" data-panel="huella-login">
-            <h3><span class="perfil-app-seguridad-icono">👆</span>Inicio de sesión con huella</h3>
+            <h3>Inicio de sesión con huella</h3>
             <p id="perfil_app_biometria_login_estado" class="perfil-app-ayuda">El ingreso biométrico está desactivado.</p>
-            <label>Contraseña de tu cuenta</label>
-            <input type="password" id="perfil_app_password_login" autocomplete="current-password">
+            <div class="campo-flotante">
+                <label class="floating-label-activo">Contraseña de tu cuenta</label>
+                <input type="password" id="perfil_app_password_login" autocomplete="current-password">
+                <button type="button" data-role="none" class="campo-ojo" onclick="verClavePerfil('perfil_app_password_login', this)" aria-label="Mostrar contraseña"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/><path class="ojo-tachado" d="M4 4L20 20"/></svg></button>
+            </div>
             <div id="perfil_app_biometria_login_activar" class="btn-app7 mt10" onclick="activarLoginBiometricoApp()">Activar ingreso con huella</div>
             <div id="perfil_app_biometria_login_desactivar" class="btn-app4 mt10" onclick="desactivarLoginBiometricoApp()" style="display:none">Desactivar ingreso con huella</div>
         </section>
@@ -2356,33 +3250,45 @@
 <!-- CIERRE: seleccionar_fecha_hora -->
 <!--MIS CITAS MEDICAS AGENDADAS-->
 <div data-role="page" id="citas">
-    <div data-role="header" class="header" id="header-ni">
+    <div data-role="header" class="header header-blanco" id="header-ni">
         <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
             <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('index')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
             <p class="color-blanco size18 text-center">Mis citas agendadas</p>
+            <button type="button" data-role="none" class="perfil-header-accion" onclick="solicitarMisHorasMedicas(true)" aria-label="Actualizar citas" title="Actualizar citas"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 4v5h-5"/><path d="M3 20v-5h5"/><path d="M5.1 9a7.5 7.5 0 0 1 12.6-2.6L21 9"/><path d="M3 15l3.3 2.6A7.5 7.5 0 0 0 18.9 15"/></svg></button>
         </div></div>
     </div>
     <div role="main" class="ui-content citas-contenido">
         <div class="citas-filtros-wrap">
-            <div class="citas-filtros-cabecera">
-                <button type="button" data-role="none" class="citas-actualizar" onclick="solicitarMisHorasMedicas(true)">
-                    ↻ <span>Actualizar</span>
+            <div class="citas-cabecera">
+                <p class="citas-cabecera-titulo">Citas</p>
+                <button type="button" data-role="none" class="filtro-boton" id="citas_btn_filtro" onclick="abrirFiltroCitas()" aria-haspopup="dialog">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>
+                    <span>Filtro</span>
                 </button>
             </div>
 
-            <div class="citas-filtros" role="tablist" aria-label="Filtros de citas">
+            <div class="filtro-sheet" id="citas_filtro_sheet">
+                <div class="perfil-sheet-fondo" onclick="cerrarFiltroCitas()"></div>
+                <div class="perfil-sheet" role="dialog" aria-label="Filtrar citas">
+                    <p class="filtro-sheet-titulo">Filtrar por estado</p>
+                    <div class="citas-filtros" role="tablist" aria-label="Filtros de citas">
                 <button type="button" data-role="none" class="citas-filtro active" data-filtro="todas" onclick="cambiarFiltroCitas('todas')">
-                    Todas <span id="citas-contador-todas" class="citas-filtro-contador">0</span>
+                    Todas <span id="citas-contador-todas" class="citas-filtro-contador">0</span><svg class="filtro-opcion-check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
                 </button>
                 <button type="button" data-role="none" class="citas-filtro" data-filtro="reservadas" onclick="cambiarFiltroCitas('reservadas')">
-                    Por confirmar <span id="citas-contador-reservadas" class="citas-filtro-contador">0</span>
+                    <i class="cita-punto reservada"></i>Por confirmar <span id="citas-contador-reservadas" class="citas-filtro-contador">0</span><svg class="filtro-opcion-check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
                 </button>
                 <button type="button" data-role="none" class="citas-filtro" data-filtro="confirmadas" onclick="cambiarFiltroCitas('confirmadas')">
-                    Confirmadas <span id="citas-contador-confirmadas" class="citas-filtro-contador">0</span>
+                    <i class="cita-punto confirmada"></i>Confirmada <span id="citas-contador-confirmadas" class="citas-filtro-contador">0</span><svg class="filtro-opcion-check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
                 </button>
-                <button type="button" data-role="none" class="citas-filtro" data-filtro="otras" onclick="cambiarFiltroCitas('otras')">
-                    Otras <span id="citas-contador-otras" class="citas-filtro-contador">0</span>
+                <button type="button" data-role="none" class="citas-filtro" data-filtro="espera" onclick="cambiarFiltroCitas('espera')">
+                    <i class="cita-punto espera"></i>En espera <span id="citas-contador-espera" class="citas-filtro-contador">0</span><svg class="filtro-opcion-check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
                 </button>
+                <button type="button" data-role="none" class="citas-filtro" data-filtro="realizando" onclick="cambiarFiltroCitas('realizando')">
+                    <i class="cita-punto realizando"></i>Realizando <span id="citas-contador-realizando" class="citas-filtro-contador">0</span><svg class="filtro-opcion-check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+                </button>
+            </div>
+                </div>
             </div>
 
             <p id="citas-filtro-resumen" class="citas-filtro-resumen"></p>
@@ -2409,7 +3315,7 @@
 <!--CIERRE: MIS CITAS MEDICAS AGENDADAS-->
 <!--CLAVE DESBLOQUEO-->
 <div data-role="page" id="clave_desbloqueo">
-    <div data-role="header" class="header" id="header-d">
+    <div data-role="header" class="header header-blanco" id="header-d">
         <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
             <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('login','fade')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
             <p class="color-blanco size18 text-center">Clave de desbloqueo</p>
@@ -2419,11 +3325,12 @@
         <div class="clave-card">
             <div class="clave-icono"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><circle cx="12" cy="15.5" r="1.2"/></svg></div>
             <h2 class="clave-titulo">Crea tu clave de desbloqueo</h2>
-            <p class="clave-texto">Para registrar este equipo define una clave de 4 dígitos. Con ella podrás desbloquear la app y validar tus solicitudes.</p>
-            <label for="password_desbloqueo">Clave de 4 dígitos</label>
-            <input type="password" data-role="none" id="password_desbloqueo" class="clave-input" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="new-password" placeholder="••••">
-            <small class="clave-ayuda">Usa solo números y evita fechas de nacimiento o secuencias como 1234.</small>
-            <div class="btn-app7" onclick="registrarPassword()">Registrar equipo</div>
+            <p class="clave-texto">Crea una clave de 4 dígitos para desbloquear la app y validar tus solicitudes.</p>
+            <div class="campo-flotante clave-campo">
+                <input type="password" data-role="none" id="password_desbloqueo" aria-label="Clave de 4 dígitos" class="clave-input" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="new-password" placeholder="••••">
+            </div>
+            <small class="clave-ayuda">Usa solo números y evita combinaciones fáciles de adivinar, como fechas de nacimiento o secuencias (1234).</small>
+            <div class="btn-app7 clave-registrar" onclick="registrarPassword()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Registrar equipo</div>
         </div>
     </div>
 </div>
@@ -2447,40 +3354,38 @@
 <!--CIERRE DISPOSITIVO REGISTRADO-->
 
 <div data-role="page" id="autorizaciones_sdi">
-    <div data-role="header" class="header" id="header-ni">
+    <div data-role="header" class="header header-blanco" id="header-ni">
         <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
             <button type="button" data-role="none" class="perfil-header-volver" onclick="volverInicioSegunRol()" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
             <p class="color-blanco size18 text-center">Mis autorizaciones</p>
+            <button type="button" data-role="none" class="perfil-header-accion" onclick="list_log_device()" aria-label="Actualizar peticiones" title="Actualizar peticiones"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 4v5h-5"/><path d="M3 20v-5h5"/><path d="M5.1 9a7.5 7.5 0 0 1 12.6-2.6L21 9"/><path d="M3 15l3.3 2.6A7.5 7.5 0 0 0 18.9 15"/></svg></button>
         </div></div>
     </div>
 
     <div role="main" class="ui-content">
         <div class="row">
             <div class="col-xs-12">
-                <button type="button" class="autorizaciones-actualizar" onclick="list_log_device()">
-                    <span class="autorizaciones-actualizar-icono">↻</span>
-                    <span><strong>Actualizar peticiones</strong><small>Buscar nuevas solicitudes</small></span>
-                </button>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-12">
                 <div class="sdi-tab-content active" id="content_autorizaciones">
                     <div class="autorizaciones-listado-cabecera">
-                        <div>
-                            <p class="autorizaciones-listado-titulo">Autorizaciones recibidas</p>
-                            <small class="autorizaciones-listado-ayuda">Filtra tus solicitudes por estado.</small>
-                        </div>
+                        <p class="autorizaciones-listado-titulo">Autorizaciones</p>
+                        <button type="button" data-role="none" class="filtro-boton con-filtro" id="autorizaciones_btn_filtro" onclick="abrirFiltroAutorizaciones()" aria-haspopup="dialog">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>
+                            <span id="autorizaciones_filtro_actual">Filtro</span>
+                        </button>
                     </div>
 
-                    <div class="autorizaciones-filtros" role="group" aria-label="Filtrar autorizaciones">
+                    <div class="filtro-sheet" id="autorizaciones_filtro_sheet">
+                        <div class="perfil-sheet-fondo" onclick="cerrarFiltroAutorizaciones()"></div>
+                        <div class="perfil-sheet" role="dialog" aria-label="Filtrar autorizaciones">
+                            <p class="filtro-sheet-titulo">Filtrar por estado</p>
+                            <div class="autorizaciones-filtros" role="group" aria-label="Filtrar autorizaciones">
                         <button type="button"
                                 data-role="none"
                                 class="autorizaciones-filtro"
                                 data-filtro="todas"
                                 onclick="filtrarAutorizaciones('todas')">
                             Todas
-                            <span id="autorizaciones_count_todas" class="autorizaciones-filtro-contador">0</span>
+                            <span id="autorizaciones_count_todas" class="autorizaciones-filtro-contador">0</span><svg class="autorizaciones-filtro-check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
                         </button>
 
                         <button type="button"
@@ -2489,7 +3394,7 @@
                                 data-filtro="pendientes"
                                 onclick="filtrarAutorizaciones('pendientes')">
                             Pendientes
-                            <span id="autorizaciones_count_pendientes" class="autorizaciones-filtro-contador">0</span>
+                            <span id="autorizaciones_count_pendientes" class="autorizaciones-filtro-contador">0</span><svg class="autorizaciones-filtro-check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
                         </button>
 
                         <button type="button"
@@ -2498,7 +3403,7 @@
                                 data-filtro="aprobadas"
                                 onclick="filtrarAutorizaciones('aprobadas')">
                             Aprobadas
-                            <span id="autorizaciones_count_aprobadas" class="autorizaciones-filtro-contador">0</span>
+                            <span id="autorizaciones_count_aprobadas" class="autorizaciones-filtro-contador">0</span><svg class="autorizaciones-filtro-check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
                         </button>
 
                         <button type="button"
@@ -2507,8 +3412,10 @@
                                 data-filtro="rechazadas"
                                 onclick="filtrarAutorizaciones('rechazadas')">
                             Rechazadas
-                            <span id="autorizaciones_count_rechazadas" class="autorizaciones-filtro-contador">0</span>
+                            <span id="autorizaciones_count_rechazadas" class="autorizaciones-filtro-contador">0</span><svg class="autorizaciones-filtro-check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
                         </button>
+                    </div>
+                        </div>
                     </div>
 
                     <p id="autorizaciones_filtro_resumen" class="autorizaciones-filtro-resumen"></p>
@@ -2536,7 +3443,7 @@
 </div>
 
 <div data-role="page" id="autorizacion">
-    <div data-role="header" class="header" id="header-ni">
+    <div data-role="header" class="header header-blanco" id="header-ni">
         <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
             <button type="button" data-role="none" class="perfil-header-volver" onclick="vista('index')" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
             <p class="color-blanco size18 text-center">Mis autorizaciones</p>
@@ -2555,8 +3462,9 @@
 
                     <div class="autorizacion-pin-card">
                         <div class="autorizacion-pin-bloque">
-                            <label for="password_">Clave SDI de 4 dígitos</label>
-                            <input type="password"
+                            <div class="campo-flotante">
+                                <label for="password_" class="floating-label-activo">Clave SDI de 4 dígitos</label>
+                                <input type="password"
                                    id="password_"
                                    data-role="none"
                                    inputmode="numeric"
@@ -2565,6 +3473,7 @@
                                    autocomplete="off"
                                    value=""
                                    placeholder="••••">
+                            </div>
                         </div>
 
                         <div id="autorizar_con_biometria"
@@ -2602,7 +3511,7 @@
 
 
 <div data-role="page" id="autorizado">
-    <div data-role="header" class="header" id="header">
+    <div data-role="header" class="header header-blanco" id="header">
         <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
             <button type="button" data-role="none" class="perfil-header-volver" onclick="volverInicioSegunRol()" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
             <p class="color-blanco size18 text-center">Solicitud aceptada</p>
@@ -2620,7 +3529,7 @@
 </div>
 
 <div data-role="page" id="rechazado">
-    <div data-role="header" class="header" id="header">
+    <div data-role="header" class="header header-blanco" id="header">
         <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
             <button type="button" data-role="none" class="perfil-header-volver" onclick="volverInicioSegunRol()" aria-label="Volver"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
             <p class="color-blanco size18 text-center">Solicitud rechazada</p>
@@ -2638,10 +3547,10 @@
 </div>
 
 <div data-role="page" id="log-secundario">
-    <div data-role="header" class="header" id="header">
-        <div class="row">
-            <div class="col-xs-12 bg-azul pt20 pb20"><p class="color-blanco text-center size20">LOG APP</p></div>
-        </div>
+    <div data-role="header" class="header header-blanco" id="header">
+        <div class="row bg-azul pt20 pb20 perfil-header"><div class="col-xs-12">
+            <p class="color-blanco size18 text-center">Log app</p>
+        </div></div>
     </div>
 
     <div role="main" class="ui-content">

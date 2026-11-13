@@ -6,6 +6,12 @@
       "runtimeExecutable": "npx",
       "runtimeArgs": ["--yes", "http-server", "www", "-p", "8080", "-c-1"],
       "port": 8080
+    },
+    {
+      "name": "medsdi-www-2",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["--yes", "http-server", "www", "-p", "8091", "-c-1"],
+      "port": 8091
     }
   ]
 }

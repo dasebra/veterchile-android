@@ -56,7 +56,7 @@ const decodificarBovedaBiometricaApp = (secreto) => {
 };
 
 const opcionesBiometriaApp = (descripcion) => ({
-    title: 'MED-SDI',
+    title: 'VeterChile App',
     subtitle: 'Autorización segura',
     description: descripcion,
     disableBackup: true,
@@ -228,9 +228,67 @@ const desactivarLoginBiometricoApp = () => {
     msg('Ingreso con huella', 'El inicio de sesión con huella fue desactivado.', 'success');
 };
 
+// El botón "Ingresar con huella" del login solo aparece si en este teléfono
+// ya hay una cuenta protegida con huella (si no, el lector fallaría al tocarlo).
 const actualizarBotonLoginBiometricoApp = () => {
-    var disponible = typeof Fingerprint !== 'undefined';
+    var disponible = typeof Fingerprint !== 'undefined' && loginBiometricoHabilitadoApp();
     $('#login_con_biometria').toggle(disponible);
+    $('#login_biometria_cuenta').text(localStorage.getItem('biometria_login_usuario') || 'Acceso rápido y seguro');
+};
+
+// Guarda usuario y contraseña en la bóveda biométrica (Android Keystore).
+// Si la huella ya protegía la clave SDI para autorizar documentos, se conserva ese PIN.
+const guardarLoginEnBovedaApp = (email, password, exito, error) => {
+    var pin = localStorage.getItem('password') || $('#pass_device').val() || '';
+    var registrar = function(pinFinal) {
+        registrarBovedaBiometricaApp(
+            {pin: pinFinal, user: email, pass: password},
+            'Confirma tu huella para activar el ingreso con huella.',
+            exito,
+            error
+        );
+    };
+    if (pin || !biometriaHabilitadaApp()) { registrar(pin); return; }
+    Fingerprint.loadBiometricSecret(
+        opcionesBiometriaApp('Confirma tu huella para mantener tu clave SDI.'),
+        function(secreto) {
+            try { registrar(decodificarBovedaBiometricaApp(secreto).pin || ''); }
+            catch (e) { registrar(''); }
+        },
+        function() { registrar(''); }
+    );
+};
+
+// Tras ingresar con correo y contraseña, ofrece (una sola vez por cuenta)
+// activar el ingreso con huella en este teléfono.
+const ofrecerLoginBiometricoApp = (email, password) => {
+    if (typeof Fingerprint === 'undefined' || !email || !password) return;
+    var cuentaActual = localStorage.getItem('biometria_login_usuario') || '';
+    if (loginBiometricoHabilitadoApp() && cuentaActual === email) return;
+    var claveOmitida = 'biometria_login_omitida_' + String(email).toLowerCase();
+    if (localStorage.getItem(claveOmitida) === '1') return;
+
+    comprobarBiometriaApp(function() {
+        var texto = '¿Quieres ingresar con tu huella la próxima vez?';
+        if (loginBiometricoHabilitadoApp() && cuentaActual) {
+            texto += ' Reemplazará a la cuenta ' + cuentaActual + ' en este teléfono.';
+        }
+        confirmarMedsdi('Ingreso con huella', texto, {
+            icon: 'info', confirmButtonText: 'Activar huella', cancelButtonText: 'Ahora no'
+        }).then(function(respuesta) {
+            var aceptado = respuesta === true || (respuesta && respuesta.isConfirmed);
+            if (!aceptado) { localStorage.setItem(claveOmitida, '1'); return; }
+            guardarLoginEnBovedaApp(email, password, function() {
+                localStorage.setItem('biometria_login_habilitada', '1');
+                localStorage.setItem('biometria_login_usuario', email);
+                localStorage.removeItem(claveOmitida);
+                actualizarBotonLoginBiometricoApp();
+                msg('Ingreso con huella', 'Listo. La próxima vez podrás ingresar con tu huella.', 'success');
+            }, function(error) {
+                msg('Ingreso con huella', (error && error.message) || 'No fue posible activar el ingreso con huella.', 'error');
+            });
+        });
+    }, function() { /* El teléfono no tiene huella configurada: no se ofrece. */ });
 };
 
 const ingresarConBiometriaApp = () => {
@@ -240,7 +298,7 @@ const ingresarConBiometriaApp = () => {
     }
 
     Fingerprint.loadBiometricSecret(
-        opcionesBiometriaApp('Confirma tu huella para ingresar a MED-SDI.'),
+        opcionesBiometriaApp('Confirma tu huella para ingresar a VeterChile App.'),
         function(secreto) {
             try {
                 var boveda = decodificarBovedaBiometricaApp(secreto);

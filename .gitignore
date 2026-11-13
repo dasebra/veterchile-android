@@ -44,3 +44,4 @@ Thumbs.db
 # Credenciales privadas
 *service-account*.json
 firebase-adminsdk-*.json
+package.json

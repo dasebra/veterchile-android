@@ -435,7 +435,7 @@ const renderEmergencyProfessionalLinks = (links) => {
             return '<article class="emergency-link-card professional">' +
                 '<span class="emergency-link-icon">♥</span>' +
                 '<div><small>' +
-                (pending ? 'Solicitud pendiente' : 'Paciente vinculado') +
+                (pending ? 'Solicitud pendiente' : 'Tutor vinculado') +
                 '</small><h2>' +
                 escapeEmergency(link.patient) +
                 '</h2></div>' +
@@ -455,8 +455,7 @@ const renderEmergencyProfessionalLinks = (links) => {
                 ) +
                 '</article>';
         }).join('')
-        : '<div class="emergency-empty"><strong>Sin solicitudes</strong>' +
-            '<p>No tienes pacientes de emergencia vinculados.</p></div>';
+        : '<div class="emergency-empty"><strong>No hay registro</strong></div>';
 
     $('#emergency-professional-links').html(html);
 };

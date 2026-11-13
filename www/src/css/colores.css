@@ -7,12 +7,12 @@
 }
 
 .color-azul{ /* AZUL SDI */
-    color: #2054A8;
+    color: #6f42c1;
 }
 
 
 .color-azul-oscuro{
-    color: #0C5BC1;
+    color: #6f42c1;
 }
 
 
@@ -51,12 +51,12 @@
 }
 
 /*.bg-azul{  AZUL SDI 
-    background-color: #2054A8;
+    background-color: #6f42c1;
 }*/
 
 .bg-azul{
-    background: #0047C9;
-    background: linear-gradient(252deg,rgba(0, 71, 201, 1) 0%, rgba(3, 61, 168, 1) 100%);
+    background: #6f42c1;
+    background: linear-gradient(252deg,rgba(111, 66, 193, 1) 0%, rgba(111, 66, 193, 1) 100%);
 }
 
 .bg-verde{

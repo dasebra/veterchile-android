@@ -260,6 +260,7 @@ var Api = /** @class */ (function () {
         var protectedRoutes = [
             'paciente/mi_ficha_medica',
             'paciente/mis_profesionales',
+            'paciente/mis_mascotas_app',
             'paciente/mis_horas_medicas',
             'paciente/agenda',
             'profesional/agenda',

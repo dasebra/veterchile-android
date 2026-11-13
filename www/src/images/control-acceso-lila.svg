@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <!-- Escudo exterior (lila claro) -->
+  <path d="M128 8c-22 14-58 26-92 28-5 0-6 3-6 8v92c0 48 40 86 98 112 58-26 98-64 98-112V44c0-5-1-8-6-8-34-2-70-14-92-28z" fill="#bfa9f2"/>
+  <!-- Escudo interior (lila medio) -->
+  <path d="M128 34c-18 11-44 22-72 26v82c0 36 30 64 72 84 42-20 72-48 72-84V60c-28-4-54-15-72-26z" fill="#9370dc"/>
+  <!-- Arco del candado -->
+  <path d="M105 117V96c0-13 10-23 23-23s23 10 23 23v21" fill="none" stroke="#fff" stroke-width="11" stroke-linecap="round"/>
+  <!-- Cuerpo del candado -->
+  <rect x="92" y="112" width="73" height="66" rx="11" fill="#fac80c"/>
+  <path d="M165 140v27a11 11 0 0 1-11 11h-43c26-2 48-16 54-38z" fill="#f4a30a"/>
+  <!-- Ojo de la cerradura -->
+  <circle cx="128.500" cy="139" r="8" fill="#333"/>
+  <path d="M125.500 144h6l2 17h-10z" fill="#333"/>
+</svg>

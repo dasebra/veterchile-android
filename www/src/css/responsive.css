@@ -1,0 +1,179 @@
+/* =====================================================================
+   RESPONSIVE + TIPOGRAFÍA
+   Se carga al final para que estas reglas sean la última palabra.
+
+   Escala tipográfica única: todos los font-size de la app usan estas
+   variables (--fs-*). Para ajustar un tamaño en toda la app basta con
+   cambiarlo aquí; no escribir px sueltos en los estilos nuevos.
+
+   Rol sugerido de cada paso:
+     3xs  contadores y badges diminutos
+     2xs  metadatos, fechas, etiquetas en mayúscula
+     xs   texto de ayuda, chips, menú inferior
+     sm   texto secundario, labels
+     base texto de lectura
+     md   títulos de tarjeta, botones
+     lg   inputs, subtítulos
+     xl   títulos de sección
+     2xl  títulos de página
+     3xl+ titulares y cifras destacadas
+   ===================================================================== */
+
+/* Celular común (360–599px) — referencia del diseño */
+:root {
+    --fs-3xs: 10px;
+    --fs-2xs: 11px;
+    --fs-xs: 12px;
+    --fs-sm: 13px;
+    --fs-base: 14px;
+    --fs-md: 15px;
+    --fs-lg: 16px;
+    --fs-xl: 18px;
+    --fs-xl2: 19px;
+    --fs-2xl: 20px;
+    --fs-3xl: 22px;
+    --fs-4xl: 24px;
+    --fs-5xl: 26px;
+    --fs-6xl: 30px;
+    --fs-7xl: 34px;
+    --fs-8xl: 40px;
+
+    /* Ancho máximo del contenido en tablets */
+    --ancho-contenido: 720px;
+
+    /* Barras fijas: un solo alto para todas las pantallas y tamaños */
+    --alto-header: 65px;   /* header de las vistas internas (flecha + título) */
+    --alto-menu: 56px;     /* menú inferior y pie del inicio */
+}
+
+/* Celular pequeño (gama de entrada, < 360px) */
+@media (max-width: 359px) {
+    :root {
+        --fs-2xs: 10.5px;
+        --fs-xs: 11.5px;
+        --fs-sm: 12.5px;
+        --fs-base: 13px;
+        --fs-md: 14px;
+        --fs-lg: 15px;
+        --fs-xl: 17px;
+        --fs-xl2: 18px;
+        --fs-2xl: 18.5px;
+        --fs-3xl: 20px;
+        --fs-4xl: 22px;
+        --fs-5xl: 24px;
+        --fs-6xl: 27px;
+        --fs-7xl: 30px;
+        --fs-8xl: 35px;
+    }
+}
+
+/* Tablet (ancho y alto >= 600px: excluye celulares en horizontal) */
+@media (min-width: 600px) and (min-height: 600px) {
+    :root {
+        --fs-3xs: 11px;
+        --fs-2xs: 12px;
+        --fs-xs: 13px;
+        --fs-sm: 14px;
+        --fs-base: 15px;
+        --fs-md: 16px;
+        --fs-lg: 17px;
+        --fs-xl: 19.5px;
+        --fs-xl2: 20.5px;
+        --fs-2xl: 22px;
+        --fs-3xl: 24px;
+        --fs-4xl: 26px;
+        --fs-5xl: 28px;
+        --fs-6xl: 32px;
+        --fs-7xl: 38px;
+        --fs-8xl: 44px;
+    }
+}
+
+/* ---------------------------------------------------------------------
+   Texto fijo: el navegador no debe inflar ni reescalar la letra.
+   (El tamaño de fuente del sistema Android se bloquea en el plugin nativo
+   plugins-locales/cordova-plugin-texto-fijo; esto cubre el resto.)
+   --------------------------------------------------------------------- */
+html {
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    /* Sin zoom por doble toque; el desplazamiento sigue normal. */
+    touch-action: manipulation;
+}
+
+body {
+    font-size: var(--fs-base, 14px);
+    /* Palabras largas (correos, nombres) parten línea en vez de salirse. */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+/* Sin desplazamiento horizontal accidental en ningún tamaño. */
+html,
+body.ui-mobile-viewport {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+/* Tablas generadas por los módulos: desplazables si no caben */
+.ui-content table {
+    max-width: 100%;
+}
+
+/* ---------------------------------------------------------------------
+   Tablets: el diseño es para celular, así que el contenido se mantiene
+   en una columna centrada en vez de estirarse a todo el ancho. El fondo
+   de cada página sigue ocupando la pantalla completa.
+   --------------------------------------------------------------------- */
+@media (min-width: 768px) {
+    html body .ui-page:not(#login) > .ui-content {
+        padding-left: max(20px, calc((100% - var(--ancho-contenido)) / 2)) !important;
+        padding-right: max(20px, calc((100% - var(--ancho-contenido)) / 2)) !important;
+    }
+}
+
+/* ---------------------------------------------------------------------
+   Header de las vistas internas (.perfil-header): mismo alto, misma letra
+   y mismo grosor en todas las pantallas. Los títulos largos ocupan hasta
+   dos líneas dentro del mismo alto en vez de achicar la letra o estirar
+   la barra. El inicio (dashboard) tiene su propio encabezado.
+   --------------------------------------------------------------------- */
+html body .ui-page > .header .row.perfil-header {
+    box-sizing: border-box;
+    height: calc(var(--alto-header) + env(safe-area-inset-top, 0px));
+    min-height: 0 !important;
+    padding-top: env(safe-area-inset-top, 0px) !important;
+    padding-bottom: 0 !important;
+}
+
+html body .ui-page > .header .row.perfil-header > .col-xs-12 {
+    height: 100%;
+    min-height: 0 !important;
+}
+
+html body .ui-page > .header .row.perfil-header > .col-xs-12 > p {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    font-size: var(--fs-xl, 18px) !important;
+    font-weight: 800 !important;
+    letter-spacing: 0;
+    line-height: 1.2;
+    overflow: hidden;
+}
+
+/* ---------------------------------------------------------------------
+   Pie del inicio (Cerrar sesión): mismo alto que el menú inferior de las
+   vistas internas, siempre pegado al borde.
+   --------------------------------------------------------------------- */
+html body #index > .dashboard-footer,
+html body #inicio-profesional > .dashboard-footer {
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    flex: 0 0 var(--alto-menu);
+    height: var(--alto-menu);
+    padding-bottom: 0;
+    padding-top: 0;
+}
